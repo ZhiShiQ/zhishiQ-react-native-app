@@ -105,11 +105,12 @@ class AppContainer extends React.Component {
                                rightTitle="消息"
                                onRight={() => alert()}
                                title="服务" icon={TabIcon}/>
-                        <Scene initial key="tab_cart" component={extendProps.bind(this, CartPage)} title="购物车"
+                        <Scene key="tab_cart" component={extendProps.bind(this, CartPage)} title="购物车"
                                onRight={() => alert()}
                                rightTitle="编辑"
                                icon={TabIcon}/>
-                        <Scene key="tab_mine" component={extendProps.bind(this, MinePage)} title="我的"
+                        <Scene initial key="tab_mine" component={extendProps.bind(this, MinePage)} title="我的"
+                               navigationBarStyle={{borderBottomColor: 'transparent'}}
                                onLeft={() => alert()}
                                leftTitle="设置"
                                onRight={() => alert()}

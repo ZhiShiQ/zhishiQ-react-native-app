@@ -5,5 +5,6 @@ import {combineReducers} from "redux";
 export default combineReducers({
     switch: require('./switch').default,
     service: require('./service').default,
-    cart: require('./cart').default
+    cart: require('./cart').default,
+    mine: require('./mine').default
 })

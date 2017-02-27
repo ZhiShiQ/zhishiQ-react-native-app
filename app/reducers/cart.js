@@ -24,7 +24,6 @@ const initialState = {
         prompt: '使用优惠券',
         thumbnail: {}
     }],
-    selectedNum: 0,
     save: 900,
     sum: 999999
 };

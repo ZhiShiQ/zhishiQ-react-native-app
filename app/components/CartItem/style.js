@@ -70,7 +70,7 @@ export default StyleSheet.create({
         flexDirection: 'row'
     },
     footerLeft: {
-        // flex: 1
+        flex: 1
     },
     promptText: {
         fontSize: 12.6,
@@ -79,7 +79,6 @@ export default StyleSheet.create({
     priceText: {
         fontWeight: '600',
         fontSize: 14,
-        textAlign: 'right',
         color: '#4A4A4A'
     },
     footerRight: {

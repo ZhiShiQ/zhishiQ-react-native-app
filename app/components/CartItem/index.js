@@ -14,6 +14,7 @@ import {
 import style from './style';
 
 import Radio from '../Radio';
+import Hr from '../Hr';
 
 @autobind
 class CartItem extends Component {
@@ -55,7 +56,7 @@ class CartItem extends Component {
                             <Text style={style.contentText}>{content}</Text>
                         </View>
                     </View>
-                    <View style={style.horizontal}/>
+                    <Hr/>
                     <View style={style.footContainer}>
                         <View style={style.footerLeft}><Text style={style.promptText}>{prompt}</Text></View>
                         <View style={style.footerRight}><Text style={style.priceText}>¥{price}</Text></View>
