@@ -27,15 +27,20 @@ class ServicePage extends Component {
     componentWillUpdate(newProps, newState, newContext) {}
     componentDidUpdate(oldProps, oldState, oldContext) {}
     componentWillUnmount() {}
-    static defaultProps = {}
+    static defaultProps = {
+        headers: ["热门服务", "更多服务"],
+        groups: [
+            ["外籍导师", "留学行家"], ["一站式服务", "全套文书", "国际优化快递", "单项文书", "简历", "模拟考试"]
+        ]
+    }
     state = {}
     static propTypes = {}
     render() {
-      const {store: {service}} = this.props
+      const {store: {service}, headers, groups} = this.props
 
       return (
           <View style={style.main}>
-              <GridGroupView {...service} />
+              <GridGroupView groups={groups} headers={headers} />
           </View>
       )
     }

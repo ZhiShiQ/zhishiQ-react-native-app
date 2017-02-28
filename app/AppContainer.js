@@ -33,6 +33,7 @@ import MyInformationPage from './pages/MyInformationPage';
 import MyBasicInfoPage from './pages/MyBasicInfoPage';
 import ExaminationPage from './pages/ExaminationPage';
 import ExaminationDetailPage from './pages/ExaminationDetailPage';
+import SetSchoolPage from './pages/SetSchoolPage';
 
 import TabIcon from './components/TabIcon';
 import NavigationDrawer from './components/NavigationDrawer'
@@ -138,11 +139,24 @@ class AppContainer extends React.Component {
                                     component={extendProps.bind(this, MyInformationPage)}
                                 />
                                 <Scene
-                                    key="myBasicInfo"
+                                    key="myBasicInfo_main"
                                     title="基本资料"
                                     backTitle="返回"
-                                    component={extendProps.bind(this, MyBasicInfoPage)}
-                                />
+                                    hideTabBar
+                                >
+                                    <Scene
+                                        key="myBasicInfo"
+                                        component={extendProps.bind(this, MyBasicInfoPage)}
+                                    />
+                                    <Scene
+                                        title="当前院校"
+                                        backTitle="取消"
+                                        onRight={()=>alert()}
+                                        rightTitile="确定"
+                                        key="setMySchool"
+                                        component={extendProps.bind(this, SetSchoolPage)}
+                                    />
+                                </Scene>
                                 <Scene initial hideTabBar backTitle="取消" title="考试" key="examination_main">
                                     <Scene
                                         key="examination"

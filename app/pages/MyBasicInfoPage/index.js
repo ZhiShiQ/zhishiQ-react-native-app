@@ -52,12 +52,15 @@ class MyBasicInfoPage extends Component {
             rightText: '大三'
         }, {
             leftText: '当前专业',
+            rightText: 'right',
             onPress: null
         }, {
             leftText: '经历',
+            rightText: 'right',
             onPress: null
         }, {
             leftText: '考试',
+            rightText: 'right',
             onPress: () => Actions.examination()
         }]
     }
