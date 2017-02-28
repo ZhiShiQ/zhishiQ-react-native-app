@@ -28,6 +28,11 @@ import HomePage from './pages/HomePage';
 import MinePage from './pages/MinePage';
 import CartPage from './pages/CartPage';
 import ServicePage from './pages/ServicePage';
+import TotalOrderPage from './pages/TotalOrderPage';
+import MyInformationPage from './pages/MyInformationPage';
+import MyBasicInfoPage from './pages/MyBasicInfoPage';
+import ExaminationPage from './pages/ExaminationPage';
+import ExaminationDetailPage from './pages/ExaminationDetailPage';
 
 import TabIcon from './components/TabIcon';
 import NavigationDrawer from './components/NavigationDrawer'
@@ -44,7 +49,7 @@ const reducerCreate = params => {
 const getSceneStyle = (/* NavigationSceneRendererProps */ props, computedProps) => {
     const style = {
         flex: 1,
-        backgroundColor: '#fff',
+        backgroundColor: '#F7F7F7',
         shadowColor: null,
         shadowOffset: null,
         shadowOpacity: null,
@@ -71,12 +76,12 @@ const styles = StyleSheet.create({
 });
 
 
-
 @autobind
 class AppContainer extends React.Component {
-    extendProps (Component, props) {
+    extendProps(Component, props) {
         return <Component {...props} {...this.props}/>
     }
+
     render() {
         const {extendProps} = this;
         const {store, actions} = this.props;
@@ -89,6 +94,7 @@ class AppContainer extends React.Component {
                     <Scene
                         key="tab_main"
                         tabs
+                        initial
                         tabBarStyle={styles.tabBarStyle}
                         tabBarSelectedItemStyle={styles.tabBarSelectedItemStyle}
                     >
@@ -109,15 +115,56 @@ class AppContainer extends React.Component {
                                onRight={() => alert()}
                                rightTitle="编辑"
                                icon={TabIcon}/>
-                        <Scene initial key="tab_mine" component={extendProps.bind(this, MinePage)} title="我的"
-                               navigationBarStyle={{borderBottomColor: 'transparent'}}
-                               onLeft={() => alert()}
-                               leftTitle="设置"
-                               onRight={() => alert()}
-                               rightTitle="消息"
-                               icon={TabIcon}/>
+                        <Scene initial key="tab_mine_main" title="我的"
+                               hideBackImage hideTabBar
+                               icon={TabIcon}>
+                            <Scene key="tab_mine" component={extendProps.bind(this, MinePage)} title="我的"
+                                   navigationBarStyle={{borderBottomColor: 'transparent'}}
+                                   onLeft={() => alert()}
+                                   hideTabBar={false}
+                                   leftTitle="设置"
+                                   onRight={() => alert()}
+                                   rightTitle="消息"/>
+                            <Scene key="totalOrder" component={extendProps.bind(this, TotalOrderPage)} title="所有服务"
+                                   backTitle="返回"/>
+                            <Scene key="myInformation_main"
+                                   initial
+                                   backTitle="返回">
+                                <Scene
+                                    key="myInformation"
+                                    title="我的资料"
+                                    rightTitle="网页版"
+                                    onRight={() => alert()}
+                                    component={extendProps.bind(this, MyInformationPage)}
+                                />
+                                <Scene
+                                    key="myBasicInfo"
+                                    title="基本资料"
+                                    backTitle="返回"
+                                    component={extendProps.bind(this, MyBasicInfoPage)}
+                                />
+                                <Scene initial hideTabBar backTitle="取消" title="考试" key="examination_main">
+                                    <Scene
+                                        key="examination"
+                                        rightTitle="添加"
+                                        onRight={() => alert(1)}
+                                        component={extendProps.bind(this, ExaminationPage)}
+                                    />
+                                    <Scene
+                                        initial
+                                        key="examinationDetail"
+                                        rightTitle="确认"
+                                        onRight={() => alert(1)}
+                                        component={extendProps.bind(this, ExaminationDetailPage)}
+                                    />
+                                </Scene>
+                            </Scene>
+                        </Scene>
+
                     </Scene>
+
                 </Scene>
+
             </Router>
         )
     }

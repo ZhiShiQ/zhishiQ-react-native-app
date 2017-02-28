@@ -37,16 +37,20 @@ class LinkItems extends Component {
         items: React.PropTypes.array.isRequired
     }
     render() {
-        const {items} = this.props;
+        const {items, style, ...rest} = this.props;
 
         return (
             <ListView
+                {...rest}
+                style={style}
                 renderRow={this._renderRow}
                 dataSource={
                     new ListView.DataSource({
                         rowHasChanged: (r1, r2)=>!Map(r1).equals(Map(r2)),
                     }).cloneWithRows(items)
                 }
+                /*contentInset={{bottom: 49}}*/
+                /*automaticallyAdjustContentInsets={false}*/
             />
         )
     }

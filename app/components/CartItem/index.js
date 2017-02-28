@@ -51,7 +51,7 @@ class CartItem extends Component {
                 <View style={style.mainContainer}>
                     <View style={style.mainTitleContainer}><Text style={style.titleText}>{title}</Text></View>
                     <View style={style.mainInnerContainer}>
-                        <View style={style.imageContainer}><Image style={style.image} {...thumbnail} /></View>
+                        <View style={style.imageContainer}><Image style={style.image} source={thumbnail} /></View>
                         <View style={style.contentContainer}>
                             <Text style={style.contentText}>{content}</Text>
                         </View>

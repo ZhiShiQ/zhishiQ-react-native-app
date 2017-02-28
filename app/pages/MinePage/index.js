@@ -66,7 +66,7 @@ class MinePage extends Component {
             onPress: Actions.recentSkim
         }, {
             leftText: '我的资料',
-            onPress: Actions.myInfo
+            onPress: Actions.myInformation
         }],
         iconItems: [{
             text: '待付款',

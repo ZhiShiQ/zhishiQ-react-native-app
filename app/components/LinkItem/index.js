@@ -31,19 +31,22 @@ class LinkItem extends Component {
     componentWillUnmount() {}
     static defaultProps = {
         style: {},
-        borderColor: '#E5E5E5'
+        borderColor: '#E5E5E5',
+        showBorder: ''
     }
     state = {}
     static propTypes = {
         leftText: React.PropTypes.string.isRequired,
         rightText: React.PropTypes.string,
-        showBorder: React.PropTypes.string,
+        showBorder: React.PropTypes.oneOf(["top", "both", "bottom"]),
         borderColor: React.PropTypes.string,
         style: React.PropTypes.object,
-        onPress: React.PropTypes.func
+        onPress: React.PropTypes.func,
+        leftComponent: React.PropTypes.element,
+        rightComponent: React.PropTypes.element
     }
     render() {
-        const {style, leftText, onPress=()=>{}, rightText, showBorder, borderColor} = this.props
+        const {style, leftText, leftComponent, rightComponent, onPress, rightText, showBorder, borderColor} = this.props
         return (
             <View>
                 {
@@ -54,9 +57,13 @@ class LinkItem extends Component {
                     activeOpacity={.83}
                     onPress={onPress} style={[sty.main, style, {borderColor}]}>
                     <View style={sty.container}>
-                        <View style={sty.left}><Text>{leftText}</Text></View>
+                        <View style={[sty.left, leftComponent?{flex: 5}:{}]}>
+                            {leftComponent}
+                            {!leftComponent && <Text>{leftText}</Text>}
+                        </View>
                         <View style={sty.right}>
-                            <Text style={sty.rightText}>{rightText}</Text>
+                            {rightComponent}
+                            {!rightComponent  && <Text style={sty.rightText}>{rightText}</Text>}
                             <Icon style={sty.rightIcon} name="angle-right" size={20} color="#C4C4C4" />
                         </View>
                     </View>
