@@ -28,8 +28,6 @@ else
     [ "$LAST" != "Page" ] && NAME="$1""Page" || NAME="${1:0:$[${#1}-4]}""Page"
 
     NAME=`echo ${NAME:0:1} | tr [a-z] [A-Z]`"${NAME:1}"
-    echo $NAME
-    exit;
     CONTENT=`cat "$_PATH"/index.js`
     CONTENT=${CONTENT//_Component_/"$NAME"}
 
