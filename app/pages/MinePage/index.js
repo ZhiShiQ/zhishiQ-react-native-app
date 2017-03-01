@@ -57,7 +57,7 @@ class MinePage extends Component {
         }, {
             leftText: '我的收藏',
             showBorder: null,
-            onPress: Actions.myCollection
+            onPress: () => Actions.myCollection()
         }, {
             leftText: '我的优惠券',
             onPress: Actions.myDiscount

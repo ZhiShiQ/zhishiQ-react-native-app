@@ -12,14 +12,12 @@ import {
     ScrollView,
     Button
 } from 'react-native';
-import SwipeOut3rd from 'react-native-swipeable';
-import {SWIPE_BLOCK_WIDTH} from '../../constant';
 
 import sty from './style';
 
 
 @autobind
-class Swipeout extends Component {
+class SubMenu extends Component {
     constructor(props) {
       super(props)
     }
@@ -32,33 +30,26 @@ class Swipeout extends Component {
     componentWillUpdate(newProps, newState, newContext) {}
     componentDidUpdate(oldProps, oldState, oldContext) {}
     componentWillUnmount() {}
-    static defaultProps = {
-        children: <View><Text>SwipeOut</Text></View>
-    }
+    static defaultProps = {}
     state = {}
     static propTypes = {
-        onRemove: PropTypes.func
+        title: PropTypes.string,
+        onPress: PropTypes.func,
+        active: PropTypes.bool,
+        style: PropTypes.object
     }
     render() {
-        const {children, onRemove, ...rest} = this.props
+        const {title, onPress, active, style} = this.props
+
         return (
-            <SwipeOut3rd
-                leftButtonWidth={SWIPE_BLOCK_WIDTH}
-                rightButtonWidth={SWIPE_BLOCK_WIDTH}
-                rightButtons={[
-                    <TouchableOpacity
-                        style={[sty.btn, sty.delBtn]}
-                        onPress={onRemove}
-                    >
-                        <Text>删除</Text>
-                    </TouchableOpacity>
-                ]}
-                {...rest}
+            <TouchableHighlight
+                style={[sty.rowContainer, active ? sty.active : {}, style]}
+                onPress={onPress}
             >
-                {children}
-            </SwipeOut3rd>
+                <Text style={sty.rowText}>{title}</Text>
+            </TouchableHighlight>
         )
     }
 }
 
-export default Swipeout;
+export default SubMenu;

@@ -13,6 +13,7 @@ import {
 
 import sty from './style';
 
+import SubMenu from '../SubMenu';
 
 @autobind
 class HorizontalMenu extends Component {
@@ -93,15 +94,8 @@ class HorizontalMenu extends Component {
         )
     }
 
-    _renderRow({title, onPress, active}, sID, rID) {
-        return (
-            <TouchableHighlight
-                style={[sty.rowContainer, active ? sty.active : {}]}
-                onPress={onPress}
-            >
-                <Text style={sty.rowText}>{title}</Text>
-            </TouchableHighlight>
-        )
+    _renderRow(data, sID, rID) {
+        return <SubMenu {...data}/>;
     }
 }
 

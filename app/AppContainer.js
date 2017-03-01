@@ -40,6 +40,7 @@ import StudyAbroadIntentionPage from './pages/StudyAbroadIntentionPage';
 import ApplySchoolPage from './pages/ApplySchoolPage';
 import TimezoneNFreeTimePage from './pages/TimezoneNFreeTimePage';
 import WayOfContactPage from './pages/WayOfContactPage';
+import MyCollectionPage from './pages/MyCollectionPage';
 
 import TabIcon from './components/TabIcon';
 import NavigationDrawer from './components/NavigationDrawer';
@@ -131,11 +132,10 @@ class AppContainer extends React.Component {
             <Router createReducer={reducerCreate} getSceneStyle={getSceneStyle}>
                 <Scene hideTabBar key="login" component={(props) => <LoginPage {...props} {...this.props}/>} title="Login"
                        type={ActionConst.REPLACE}/>
-                <Scene initial key="tabbar" component={(props) => <NavigationDrawer {...props} {...this.props} />}>
+                <Scene key="tabbar" component={(props) => <NavigationDrawer {...props} {...this.props} />}>
                     <Scene
                         key="tab_main"
                         tabs
-                        initial
                         tabBarStyle={styles.tabBarStyle}
                         tabBarSelectedItemStyle={styles.tabBarSelectedItemStyle}
                     >
@@ -156,7 +156,7 @@ class AppContainer extends React.Component {
                                onRight={() => alert()}
                                rightTitle="编辑"
                                icon={TabIcon}/>
-                        <Scene initial key="tab_mine_main" title="我的"
+                        <Scene key="tab_mine_main" title="我的"
                                icon={TabIcon}>
                             <Scene key="tab_mine" component={extendProps.bind(this, MinePage)} title="我的"
                                    navigationBarStyle={{borderBottomColor: 'transparent'}}
@@ -193,6 +193,7 @@ class AppContainer extends React.Component {
                        onRight={() => alert()}
                        component={extendProps.bind(this, MyInformationPage)}
                 />
+
 
                 <Scene
                     title="留学意向"
@@ -263,6 +264,15 @@ class AppContainer extends React.Component {
                     onRight={() => alert(1)}
                     component={extendProps.bind(this, ExaminationDetailPage)}
                 />
+
+                <Scene key="myCollection"
+                       initial
+                       title="我的收藏"
+                       hideTabBar
+                       onRight={() => alert()}
+                       component={extendProps.bind(this, MyCollectionPage)}
+                />
+
             </Router>
         )
     }
