@@ -16,6 +16,7 @@ import sty from './style';
 
 import HorizontalMenu from '../../components/HorizontalMenu'
 import BoughtViews from '../../components/BoughtViews';
+import ModalDropdown from 'react-native-modal-dropdown';
 
 @autobind
 class TotalOrderPage extends Component {

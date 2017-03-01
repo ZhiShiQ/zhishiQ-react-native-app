@@ -102,7 +102,9 @@ class BoughtView extends Component {
                     <Touchable
                         diabled={btnDisabled}
                         onPress={btnDisabled?null:onPress} >
-                        <Text style={sty.btnText}>{btnTitle}</Text>
+                        <View>
+                            <Text style={sty.btnText}>{btnTitle}</Text>
+                        </View>
                     </Touchable>
                     </View>
                 </View>

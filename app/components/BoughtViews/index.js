@@ -39,7 +39,6 @@ class BoughtViews extends Component {
     }
     render() {
         const {items, style} = this.props
-
         return (
             <ListView
                 renderRow={this._renderRow}

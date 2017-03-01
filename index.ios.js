@@ -13,7 +13,8 @@ import {
 } from 'react-native';
 
 import App from './app/index';
-// import Example from './Example/Example'
+// import App from './Example/Example'
+// import App from './Example/swipeable-example'
 
 console.disableYellowBox = true;
 

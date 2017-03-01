@@ -54,7 +54,9 @@ class BlockButton extends Component {
                     onPress={onPress}
                     style={[sty.main, {backgroundColor}, disabled&&disabledStyle]}
                 >
-                    <Text style={[sty.titleText, {color}]}>{title}</Text>
+                    <View style={sty.view}>
+                        <Text style={[sty.titleText, {color}]}>{title}</Text>
+                    </View>
                 </Container>
         )
     }

@@ -54,7 +54,7 @@ class CirImageWithText extends Component {
             TextView = <Text style={sty.text}>{text}</Text>
         } else {
             TextView = <View style={sty.textContainer}>
-                {text.map(x => <Text style={sty.text}>{x}</Text>)}
+                {text.map((x, i) => <Text key={i} style={sty.text}>{x}</Text>)}
             </View>
         }
         return TextView;

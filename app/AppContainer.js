@@ -6,7 +6,6 @@ import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 import {
     Actions,
-    Modal,
     ActionConst,
     DefaultRenderer,
     Router,
@@ -16,12 +15,14 @@ import {
 import {
     View,
     Text,
+    Dimensions,
     Button,
     StyleSheet,
     TouchableHighlight
 } from 'react-native';
-import autobind from 'autobind-decorator';
 
+
+import autobind from 'autobind-decorator';
 
 import LoginPage from './pages/LoginPage';
 import HomePage from './pages/HomePage';
@@ -34,10 +35,19 @@ import MyBasicInfoPage from './pages/MyBasicInfoPage';
 import ExaminationPage from './pages/ExaminationPage';
 import ExaminationDetailPage from './pages/ExaminationDetailPage';
 import SetSchoolPage from './pages/SetSchoolPage';
+import MyExperiencePage from './pages/MyExperiencePage';
+import StudyAbroadIntentionPage from './pages/StudyAbroadIntentionPage';
+import ApplySchoolPage from './pages/ApplySchoolPage';
+import TimezoneNFreeTimePage from './pages/TimezoneNFreeTimePage';
+import WayOfContactPage from './pages/WayOfContactPage';
 
 import TabIcon from './components/TabIcon';
-import NavigationDrawer from './components/NavigationDrawer'
+import NavigationDrawer from './components/NavigationDrawer';
+import TitleDropdown from './components/TitleDropdown';
+import Modal from './components/Modal';
+import CirImageWithText from './components/CirImageWithText';
 
+import * as $ from './constant';
 
 const reducerCreate = params => {
     const defaultReducer = new Reducer(params);
@@ -57,8 +67,8 @@ const getSceneStyle = (/* NavigationSceneRendererProps */ props, computedProps) 
         shadowRadius: null,
     };
     if (computedProps.isActive) {
-        style.marginTop = computedProps.hideNavBar ? 0 : 64;
-        style.marginBottom = computedProps.hideTabBar ? 0 : 50;
+        style.marginTop = computedProps.hideNavBar ? 0 : $.NAV_BAR_HEIGHT;
+        style.marginBottom = computedProps.hideTabBar ? 0 : $.TAB_BAR_HEIGHT;
     }
     return style;
 };
@@ -84,12 +94,42 @@ class AppContainer extends React.Component {
     }
 
     render() {
-        const {extendProps} = this;
         const {store, actions} = this.props;
 
         return (
+            <View style={{flex: 1}}>
+                {this._renderRouter()}
+                {/*公用组件放路由下面*/}
+                {this._renderModal()}
+            </View>
+        )
+    }
+
+    _renderModal() {
+        const {extendProps, store, actions} = this;
+
+        return (
+            <Modal
+                isOpen={false}
+                buttons={[{
+                    title: "已打开网址，点击扫描"
+                }]}
+                onClose={() => {}}
+                height={442}
+            >
+                <CirImageWithText
+                    size={120}
+                    text={['亲爱的用户，可用电脑浏览器打开网址', '进行更多操作哦：', 'address']}
+                />
+            </Modal>
+        )
+    }
+
+    _renderRouter() {
+        const {extendProps} = this;
+        return (
             <Router createReducer={reducerCreate} getSceneStyle={getSceneStyle}>
-                <Scene key="login" component={(props) => <LoginPage {...props} {...this.props}/>} title="Login"
+                <Scene hideTabBar key="login" component={(props) => <LoginPage {...props} {...this.props}/>} title="Login"
                        type={ActionConst.REPLACE}/>
                 <Scene initial key="tabbar" component={(props) => <NavigationDrawer {...props} {...this.props} />}>
                     <Scene
@@ -117,7 +157,6 @@ class AppContainer extends React.Component {
                                rightTitle="编辑"
                                icon={TabIcon}/>
                         <Scene initial key="tab_mine_main" title="我的"
-                               hideBackImage hideTabBar
                                icon={TabIcon}>
                             <Scene key="tab_mine" component={extendProps.bind(this, MinePage)} title="我的"
                                    navigationBarStyle={{borderBottomColor: 'transparent'}}
@@ -126,59 +165,104 @@ class AppContainer extends React.Component {
                                    leftTitle="设置"
                                    onRight={() => alert()}
                                    rightTitle="消息"/>
-                            <Scene key="totalOrder" component={extendProps.bind(this, TotalOrderPage)} title="所有服务"
-                                   backTitle="返回"/>
-                            <Scene key="myInformation_main"
-                                   initial
-                                   backTitle="返回">
-                                <Scene
-                                    key="myInformation"
-                                    title="我的资料"
-                                    rightTitle="网页版"
-                                    onRight={() => alert()}
-                                    component={extendProps.bind(this, MyInformationPage)}
-                                />
-                                <Scene
-                                    key="myBasicInfo_main"
-                                    title="基本资料"
-                                    backTitle="返回"
-                                    hideTabBar
-                                >
-                                    <Scene
-                                        key="myBasicInfo"
-                                        component={extendProps.bind(this, MyBasicInfoPage)}
-                                    />
-                                    <Scene
-                                        title="当前院校"
-                                        backTitle="取消"
-                                        onRight={()=>alert()}
-                                        rightTitile="确定"
-                                        key="setMySchool"
-                                        component={extendProps.bind(this, SetSchoolPage)}
-                                    />
-                                </Scene>
-                                <Scene initial hideTabBar backTitle="取消" title="考试" key="examination_main">
-                                    <Scene
-                                        key="examination"
-                                        rightTitle="添加"
-                                        onRight={() => alert(1)}
-                                        component={extendProps.bind(this, ExaminationPage)}
-                                    />
-                                    <Scene
-                                        initial
-                                        key="examinationDetail"
-                                        rightTitle="确认"
-                                        onRight={() => alert(1)}
-                                        component={extendProps.bind(this, ExaminationDetailPage)}
-                                    />
-                                </Scene>
-                            </Scene>
                         </Scene>
 
                     </Scene>
-
                 </Scene>
 
+                <Scene key="totalOrder" component={extendProps.bind(this, TotalOrderPage)}
+                       hideTabBar
+                       getTitle={() =>
+                           <TitleDropdown
+                               title="所有服务"
+                               onSelect={null}
+                               selectedIndex={0}
+                               options={[
+                                   '所有服务', '单项服务', '一站式申请', '留学行家咨询', '全套文书服务',
+                                   '国际快递', '留学文书免费试改', '雅思写作评阅服务', '简历', '学术文章'
+                               ]}
+                           />
+                       }
+                       backTitle="返回"/>
+
+                <Scene key="myInformation"
+                       backTitle="返回"
+                       title="我的资料"
+                       hideTabBar
+                       rightTitle="网页版"
+                       onRight={() => alert()}
+                       component={extendProps.bind(this, MyInformationPage)}
+                />
+
+                <Scene
+                    title="留学意向"
+                    backTitle="返回"
+                    key="studyAbroadIntention"
+                    component={extendProps.bind(this, StudyAbroadIntentionPage)}
+                />
+                <Scene
+                    title="申请学校"
+                    backTitle="取消"
+                    rightText="确定"
+                    onRight={() => {
+                    }}
+                    key="applySchool"
+                    component={extendProps.bind(this, ApplySchoolPage)}
+                />
+                <Scene
+                    backTitle="返回"
+                    key="wayOfContact"
+                    titile="联系方式"
+                    component={extendProps.bind(this, WayOfContactPage)}
+                />
+                <Scene
+                    key="timezoneAndFreeTime"
+                    titile="时区与空闲时间"
+                    backTitle="返回"
+                    component={extendProps.bind(this, TimezoneNFreeTimePage)}
+                />
+                <Scene
+                    key="myBasicInfo_main"
+                    hideTabBar
+                >
+                    <Scene
+                        clone
+                        title="基本资料"
+                        backTitle="返回"
+                        key="myBasicInfo"
+                        component={extendProps.bind(this, MyBasicInfoPage)}
+                    />
+                    <Scene
+                        title="当前院校"
+                        backTitle="取消"
+                        onRight={() => alert()}
+                        rightTitile="确定"
+                        key="setMySchool"
+                        component={extendProps.bind(this, SetSchoolPage)}
+                    />
+                    <Scene
+                        title="经历"
+                        backTitle="取消"
+                        onRight={() => alert()}
+                        rightTitile="确定"
+                        key="myExperience"
+                        component={extendProps.bind(this, MyExperiencePage)}
+                    />
+                </Scene>
+                <Scene
+                    backTitle="取消"
+                    title="考试" key="examination"
+                    rightTitle="添加"
+                    onRight={() => alert(1)}
+                    component={extendProps.bind(this, ExaminationPage)}
+                />
+                <Scene
+                    getTitle={({params}) => (params ? params.title : '')}
+                    key="examinationDetail"
+                    rightTitle="确认"
+                    onRight={() => alert(1)}
+                    component={extendProps.bind(this, ExaminationDetailPage)}
+                />
             </Router>
         )
     }

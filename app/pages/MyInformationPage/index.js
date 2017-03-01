@@ -58,13 +58,13 @@ class MyInformationPage extends Component {
             onPress: () => Actions.myBasicInfo()
         }, {
             leftText: '留学意向',
-            onPress: null
+            onPress: () => Actions.studyAbroadIntention()
         }, {
             leftText: '联系方式',
-            onPress: null
+            onPress: () => Actions.wayOfContact()
         }, {
             leftText: '时区与空闲时间',
-            onPress: null
+            onPress: () => Actions.timezoneAndFreeTime()
         }]
     }
     state = {}

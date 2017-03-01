@@ -32,7 +32,9 @@ class LinkItem extends Component {
     static defaultProps = {
         style: {},
         borderColor: '#E5E5E5',
-        showBorder: ''
+        showBorder: '',
+        showIcon: true,
+        iconName: "angle-right"
     }
     state = {}
     static propTypes = {
@@ -43,10 +45,12 @@ class LinkItem extends Component {
         style: React.PropTypes.object,
         onPress: React.PropTypes.func,
         leftComponent: React.PropTypes.element,
-        rightComponent: React.PropTypes.element
+        rightComponent: React.PropTypes.element,
+        showIcon: React.PropTypes.bool,
+        iconName: React.PropTypes.string
     }
     render() {
-        const {style, leftText, leftComponent, rightComponent, onPress, rightText, showBorder, borderColor} = this.props
+        const {style, leftText, leftComponent, rightComponent, showIcon, onPress, rightText, iconName, showBorder, borderColor} = this.props
         return (
             <View>
                 {
@@ -64,7 +68,7 @@ class LinkItem extends Component {
                         <View style={sty.right}>
                             {rightComponent}
                             {!rightComponent  && <Text style={sty.rightText}>{rightText}</Text>}
-                            <Icon style={sty.rightIcon} name="angle-right" size={20} color="#C4C4C4" />
+                            {showIcon && <Icon style={sty.rightIcon} name={iconName} size={20} color="#C4C4C4" />}
                         </View>
                     </View>
                 </TouchableOpacity>

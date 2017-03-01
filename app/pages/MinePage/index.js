@@ -93,13 +93,18 @@ class MinePage extends Component {
 
         return (
             <View style={style.main}>
-                <View style={style.avatarContainer}>
-                    <CirImage size={70} />
-                    <Text style={style.username}>{username}</Text>
-                </View>
-                <LinkItem showBorder="bottom" leftText="我的订单" rightText="全部订单" onPress={Actions.totalOrder}/>
-                <IconsGroup items={iconItems}/>
-                <LinkItems items={linkItems}/>
+                <LinkItems
+                    renderHeader={() =>
+                        <View>
+                            <View style={style.avatarContainer}>
+                                <CirImage size={70} />
+                                <Text style={style.username}>{username}</Text>
+                            </View>
+                            <LinkItem showBorder="bottom" leftText="我的订单" rightText="全部订单" onPress={Actions.totalOrder}/>
+                            <IconsGroup items={iconItems}/>
+                        </View>
+                    }
+                    items={linkItems}/>
             </View>
         )
     }

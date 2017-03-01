@@ -80,6 +80,9 @@ WorkApp/
 - react-native-router-flux:  路由控制
 - immutable:  配合 redux，书写高性能 reducer
 - react-native-vector-icons:  字体图标库
+- react-native-modal-dropdown:  头部 dropdown (TitleDropdown)
+- react-native-modalbox:  自定义 Modal (通用组件Modal)
+- react-native-swipeable:  滑动块删除 (Swipeout)
 - redux-multi:  同时调度多 action
 - redux-thunk:  支持 dispatch function，异步调用
 - autobind-decorator:  es6 自动 bind(this) 修饰器

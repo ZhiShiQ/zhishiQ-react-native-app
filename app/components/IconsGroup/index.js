@@ -45,6 +45,7 @@ class IconsGroup extends Component {
     _renderItem({text, onPress}, index) {
         return (
             <TouchableHighlight
+                key={index}
                 onPress={onPress}
                 >
                 <View style={style.container}>
