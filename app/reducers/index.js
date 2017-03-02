@@ -3,8 +3,8 @@
  */
 import {combineReducers} from "redux";
 export default combineReducers({
-    switch: require('./switch').default,
     service: require('./service').default,
     cart: require('./cart').default,
-    mine: require('./mine').default
+    mine: require('./mine').default,
+    my_collections: require('./my_collections').default
 })

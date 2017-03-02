@@ -2,18 +2,19 @@
  * Created by moyu on 2017/2/26.
  */
 import {Map, List, Set} from 'immutable';
-import * as CONST from '../constant';
+import * as $ from '../constant';
 
 const initialState = {
-    text: 'TEXT'
+    activeIndex: 0
 };
 
 export default function (state=initialState, action) {
     let newState = {...state};
     const {type, ...rest} = action;
     switch (type) {
-        case CONST.SWITCH_MAIN_TEXT:
-            return {...newState, ...rest};
+        case $.SET_MY_ACTIVE_COLLECTION_TAB:
+            alert("reducer"+rest.index)
+            return {...newState, activeIndex: rest.index};
         default:
             return newState;
     }

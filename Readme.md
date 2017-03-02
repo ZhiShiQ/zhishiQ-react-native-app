@@ -27,6 +27,14 @@ npm start
     #   npm run component button # => Button 将在 app/components 创建
     #   npm run page main # => MainPage 将在 app/pages 创建
     ```
+    
+- 命名方式(文件命名)（以 hello world 为例）
+    1. 路由 Key:  helloWorld（GOOD）
+    2. Component:  HelloWorld（GOOD）
+    3. Page:  HelloWorldPage（GOOD）
+    4. action: hello_word
+    5. reducer: hello_word
+
 
 - 第三方库安装
 

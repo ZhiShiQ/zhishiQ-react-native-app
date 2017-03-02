@@ -5,5 +5,5 @@
 
 
 export default {
-    ...require('./switch')
+    ...require('./my_collections')
 }

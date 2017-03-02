@@ -8,6 +8,8 @@ export default StyleSheet.create({
         backgroundColor: '#F7F7F7'
     },
     menus: {
+        backgroundColor: '#F7F7F7',
+        zIndex: 2,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',

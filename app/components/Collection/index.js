@@ -48,7 +48,6 @@ class Collection extends Component {
     static defaultProps = {
         title: 'TITLE',
         state: "STATE",
-        content: "CONTENT...CONTENT...CONTENT...CONTENT",
         prompt: "prompt",
         price: 12345,
         count: 233,
@@ -63,13 +62,14 @@ class Collection extends Component {
         deNumerator: React.PropTypes.number,
         serviceTimes: React.PropTypes.number,
         style: React.PropTypes.object,
-        tags: React.PropTypes.array
+        tags: React.PropTypes.array,
+        content: React.PropTypes.string
     }
 
     render() {
         const {
             onPress, style, title, thumbnail, serviceTimes,
-            numerator, deNumerator, tags
+            numerator, deNumerator, tags, content
         } = this.props;
         const Touchable = TouchableHighlight;
         return (
@@ -80,6 +80,7 @@ class Collection extends Component {
                         <View style={sty.contentContainer}>
                             <Text style={sty.titleText}>{title}</Text>
                             <View style={sty.tags} >
+                                {content && <Text>{content}</Text>}
                                 {tags.map((tag, i) => <TextWithBg onPress={tag.onPress} title={typeof tag === 'string' ? tag : tag.title} key={i} />)}
                             </View>
                         </View>

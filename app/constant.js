@@ -11,8 +11,10 @@ export const SWIPE_BLOCK_WIDTH = 75;
 
 /* UI related end */
 
+/* start of my collections' logic related */
+export const SET_MY_ACTIVE_COLLECTION_TAB = "SET_MY_ACTIVE_COLLECTION_TAB";
 
-export const SWITCH_MAIN_TEXT = "SWITCH_MAIN_TEXT"
+/* end of my collections' logic related */
 
 /* start of cart's logic related */
 export const CART_SELECT_ITEM = "CART_SELECT_ITEM"

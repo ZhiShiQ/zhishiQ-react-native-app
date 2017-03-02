@@ -34,7 +34,7 @@ class MyCollectionPage extends Component {
     }
 
     shouldComponentUpdate(newProps, newState, newContext) {
-        return !Map(this.props).equals(Map(newProps))
+        return true;
     }
 
     componentWillUpdate(newProps, newState, newContext) {
@@ -51,16 +51,21 @@ class MyCollectionPage extends Component {
     static propTypes = {}
 
     render() {
-        const {...props} = this.props
-
+        const {
+            store: {
+                my_collections: {activeIndex}
+            },
+            actions
+        } = this.props;
+        alert(activeIndex);
         return (
             <View style={sty.main}>
                 <View style={sty.menus}>
                     <View style={sty.submenu}>
-                        <SubMenu title="收藏的顾问" active onPress={alert}/>
+                        <SubMenu title="收藏的顾问" active={activeIndex==0} onPress={() => actions.setMyActiveCollectionTab(0)}/>
                     </View>
                     <View style={sty.submenu}>
-                        <SubMenu title="收藏的服务" onPress={alert}/>
+                        <SubMenu title="收藏的服务" active={activeIndex==1} onPress={() => actions.setMyActiveCollectionTab(1)}/>
                     </View>
                 </View>
 

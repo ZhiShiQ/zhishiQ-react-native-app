@@ -4,4 +4,4 @@
 import {_t} from '../helpers';
 import * as $ from '../constant'
 
-export const switchMainText = (text) => _t($.SWITCH_MAIN_TEXT, {text})
+export const setMyActiveCollectionTab = (index) => _t($.SET_MY_ACTIVE_COLLECTION_TAB, {index})

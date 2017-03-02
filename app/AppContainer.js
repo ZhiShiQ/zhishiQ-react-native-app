@@ -3,6 +3,7 @@
  */
 import React from 'react';
 import {bindActionCreators} from "redux";
+import {Map} from 'immutable';
 import {connect} from "react-redux";
 import {
     Actions,
@@ -126,8 +127,15 @@ class AppContainer extends React.Component {
         )
     }
 
+    componentWillReceiveProps(newProps) {
+        if (!Map(this.props.store).equals(Map(newProps.store))) {
+            alert(this.forceUpdate)
+            this.forceUpdate();
+        }
+    }
+
     _renderRouter() {
-        const {extendProps} = this;
+        const {extendProps, store} = this;
         return (
             <Router createReducer={reducerCreate} getSceneStyle={getSceneStyle}>
                 <Scene hideTabBar key="login" component={(props) => <LoginPage {...props} {...this.props}/>} title="Login"
