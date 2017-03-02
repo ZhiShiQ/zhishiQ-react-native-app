@@ -70,7 +70,6 @@ export default StyleSheet.create({
         textAlign: 'right'
     },
     footerRight: {
-        textAlign: 'right',
         marginRight: 12
     },
     bottomContainer: {

@@ -13,7 +13,6 @@ export default function (state=initialState, action) {
     const {type, ...rest} = action;
     switch (type) {
         case $.SET_MY_ACTIVE_COLLECTION_TAB:
-            alert("reducer"+rest.index)
             return {...newState, activeIndex: rest.index};
         default:
             return newState;

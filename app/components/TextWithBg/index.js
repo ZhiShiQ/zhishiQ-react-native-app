@@ -64,12 +64,14 @@ class TextWithBg extends Component {
             <TouchableWithoutFeedback
                 onPress={onPress}
             >
-                <Text
-                    {...props}
-                    style={[sty.main, style, {color, backgroundColor: bgColor}]}
-                >
-                    {title}
-                </Text>
+                <View>
+                    <Text
+                        {...props}
+                        style={[sty.main, style, {color, backgroundColor: bgColor}]}
+                    >
+                        {title}
+                    </Text>
+                </View>
             </TouchableWithoutFeedback>
         )
     }

@@ -12,6 +12,8 @@ import {
     ScrollView,
     Button
 } from 'react-native';
+import { connect } from 'react-redux';
+
 
 import sty from './style';
 
@@ -57,7 +59,6 @@ class MyCollectionPage extends Component {
             },
             actions
         } = this.props;
-        alert(activeIndex);
         return (
             <View style={sty.main}>
                 <View style={sty.menus}>
@@ -162,3 +163,7 @@ class MyCollectionPage extends Component {
 }
 
 export default MyCollectionPage;
+// export default connect((a, b) => {
+//     debugger;
+//     return p;
+// })(MyCollectionPage);

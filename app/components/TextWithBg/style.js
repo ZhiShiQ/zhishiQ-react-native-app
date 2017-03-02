@@ -7,7 +7,6 @@ export default StyleSheet.create({
         textAlign: 'center',
         paddingVertical: 5,
         paddingHorizontal: 8,
-
         marginHorizontal: 3
     }
 });

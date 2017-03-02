@@ -81,7 +81,7 @@ class Collection extends Component {
                             <Text style={sty.titleText}>{title}</Text>
                             <View style={sty.tags} >
                                 {content && <Text>{content}</Text>}
-                                {tags.map((tag, i) => <TextWithBg onPress={tag.onPress} title={typeof tag === 'string' ? tag : tag.title} key={i} />)}
+                                {tags.map((tag, i) => <TextWithBg k onPress={tag.onPress} title={typeof tag === 'string' ? tag : tag.title} key={i} />)}
                             </View>
                         </View>
                     </View>
