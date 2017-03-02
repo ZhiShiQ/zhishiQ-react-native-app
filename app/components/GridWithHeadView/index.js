@@ -5,6 +5,8 @@ import {
     Text,
     View,
     TouchableHighlight,
+    TouchableOpacity,
+    TouchableWithoutFeedback,
     Button,
     ScrollView,
     ListView
@@ -100,9 +102,9 @@ class GridGroupView extends Component {
 
     static renderRow(rowData, sectionID, rowID) {
         return (
-            <View style={style.gridContainer}>
-                <Text style={style.gridText}>{rowData}</Text>
-            </View>
+            <TouchableOpacity onPress={rowData.onPress} style={style.gridContainer}>
+                <Text style={style.gridText}>{rowData.text}</Text>
+            </TouchableOpacity>
         )
     }
 }

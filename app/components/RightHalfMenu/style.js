@@ -4,7 +4,7 @@ import {
 
 export default StyleSheet.create({
     main: {
-        height: StyleSheet.hairlineWidth,
-        marginBottom: 8
+        flex: 1,
+        justifyContent: 'center',
     }
 });

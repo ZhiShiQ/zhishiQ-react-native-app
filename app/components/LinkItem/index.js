@@ -52,7 +52,7 @@ class LinkItem extends Component {
     render() {
         const {style, leftText, leftComponent, rightComponent, showIcon, onPress, rightText, iconName, showBorder, borderColor} = this.props
         return (
-            <View>
+            <View style={style}>
                 {
                     (showBorder === 'both' || showBorder=== 'top') &&
                     <Hr marginBottom={0} style={sty.hr}/>

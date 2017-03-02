@@ -44,6 +44,8 @@ import MyCollectionPage from './pages/MyCollectionPage';
 import MyDiscountCouponPage from './pages/MyDiscountCouponPage';
 import InviteFriendPage from './pages/InviteFriendPage';
 import RecentSkimPage from './pages/RecentSkimPage';
+import ForeignTeacherPage from './pages/ForeignTeacherPage';
+import AbroadExpertPage from './pages/AbroadExpertPage';
 
 import TabIcon from './components/TabIcon';
 import NavigationDrawer from './components/NavigationDrawer';
@@ -183,11 +185,11 @@ class Routers extends React.Component {
                                onRight={(a) => alert(JSON.stringify(a))}
                                rightTitle="消息"
                                icon={TabIcon}/>
-                        <Scene key="tab_service" component={conn(ServicePage)}
+                        <Scene initial key="tab_service" component={conn(ServicePage)}
                                rightTitle="消息"
                                onRight={() => alert()}
                                title="服务" icon={TabIcon}/>
-                        <Scene initial key="tab_cart" component={conn(CartPage)} title="购物车"
+                        <Scene key="tab_cart" component={conn(CartPage)} title="购物车"
                                onRight={() => alert()}
                                rightTitle="编辑"
                                icon={TabIcon}/>
@@ -211,6 +213,20 @@ class Routers extends React.Component {
                            const ConnectedDrop = conn(ReduxTitleDropdown);
                            return <ConnectedDrop {...p} />
                        }}
+                       backTitle="返回"/>
+
+                <Scene key="foreignTeacher" component={conn(ForeignTeacherPage)}
+                       hideTabBar
+                       title="外籍文书顾问"
+                       rightTitle="搜索"
+                       onRight={() => alert()}
+                       backTitle="返回"/>
+
+                <Scene key="abroadExpert" component={conn(AbroadExpertPage)}
+                       hideTabBar
+                       title="留学行家咨询"
+                       rightTitle="搜索"
+                       onRight={() => alert()}
                        backTitle="返回"/>
 
                 <Scene key="myInformation"

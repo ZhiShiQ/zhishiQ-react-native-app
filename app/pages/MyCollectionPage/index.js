@@ -61,20 +61,32 @@ class MyCollectionPage extends Component {
         } = this.props;
         return (
             <View style={sty.main}>
-                <View style={sty.menus}>
-                    <View style={sty.submenu}>
-                        <SubMenu title="收藏的顾问" active={activeIndex==0} onPress={() => actions.setMyActiveCollectionTab(0)}/>
-                    </View>
-                    <View style={sty.submenu}>
-                        <SubMenu title="收藏的服务" active={activeIndex==1} onPress={() => actions.setMyActiveCollectionTab(1)}/>
-                    </View>
-                </View>
-
+                {this.menu}
                 {activeIndex ==0 && this.renderFirstItems()}
                 {activeIndex ==1 && this.renderSecondItems()}
             </View>
         )
     }
+
+    get menu() {
+        const {
+            store: {
+                my_collections: {activeIndex}
+            },
+            actions
+        } = this.props;
+        return (
+            <View style={sty.menus}>
+                <View style={sty.submenu}>
+                    <SubMenu title="收藏的顾问" active={activeIndex==0} onPress={() => actions.setMyActiveCollectionTab(0)}/>
+                </View>
+                <View style={sty.submenu}>
+                    <SubMenu title="收藏的服务" active={activeIndex==1} onPress={() => actions.setMyActiveCollectionTab(1)}/>
+                </View>
+            </View>
+        )
+    }
+
     renderSecondItems() {
         return (
             <Collections

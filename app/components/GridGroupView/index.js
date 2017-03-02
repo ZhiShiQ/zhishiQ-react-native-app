@@ -28,8 +28,6 @@ class GridGroupView extends Component {
     componentDidUpdate(oldProps, oldState, oldContext) {}
     componentWillUnmount() {}
     static defaultProps = {
-        headers: ["H1", "H2", "H3", "H4"],
-        groups: [["H1A", "H1B"], ["H2A", "H2B", "H2A", "H2B"], ["H2A", "H2B"], ["H2A", "H2B"]]
     }
     state = {}
     static propTypes = {

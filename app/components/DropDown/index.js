@@ -25,67 +25,97 @@ import LinkItem from '../LinkItem';
 
 
 @autobind
-class TitleDropdown extends Component {
+class DropDown extends Component {
     constructor(props) {
-      super(props)
+        super(props)
     }
     componentWillMount() {}
-    componentDidMount() {}
+    componentDidMount() {
+        // setTimeout(() => this.dropdown.show(), 1000)
+    }
     componentWillReceiveProps(newProps) {}
     shouldComponentUpdate(newProps, newState, newContext) {
-      return !Map(this.props).equals(Map(newProps))
+        return !Map(this.props).equals(Map(newProps))
     }
     componentWillUpdate(newProps, newState, newContext) {}
     componentDidUpdate(oldProps, oldState, oldContext) {}
     componentWillUnmount() {}
+    show() {
+        this.dropdown.show();
+    }
+
+    hide() {
+        this.dropdown.hide();
+    }
+    select(idx) {
+        this.dropdown.select(idx);
+    }
     static defaultProps = {
+        rightHalf: false,
+        leftHalf: false,
+        hidden: false,
+        dropdownStyle: {}
     }
     state = {}
     static propTypes = {
+        rightHalf: PropTypes.bool,
         options: PropTypes.array.isRequired,
         title: PropTypes.string.isRequired,
         onSelect: PropTypes.func,
-        selectedIndex: PropTypes.number
+        selectedIndex: PropTypes.number,
+        height: PropTypes.number,
+        dropdownStyle: PropTypes.object,
+        hidden: PropTypes.bool,
+        leftHalf: PropTypes.bool,
+        onPress: PropTypes.func
     }
     render() {
-        const {options, title, onSelect, selectedIndex, ...rest} = this.props
+        const {options, onPress, leftHalf, height, hidden, dropdownStyle, rightHalf, title, onSelect, selectedIndex, ...rest} = this.props
         return (
             <ModalDropdown
                 ref={r => this.dropdown = r}
                 options={options}
                 onSelect={onSelect}
-                adjustFrame={(p) => ({...p, left: 0, top: NAV_BAR_HEIGHT})}
-                style={sty.style}
-                dropdownStyle={sty.dropdown}
+                adjustFrame={(p) => {
+                    const bound = {...p, left: (rightHalf?deviceWidth/2:0), right: (leftHalf?deviceWidth/2:0)};
+                    if (height!=null) {
+                        bound.height = height;
+                    }
+                    this.bound = bound;
+                    return bound;
+                }}
+                style={[sty.style, hidden && sty.hidden]}
+                dropdownStyle={[sty.dropdown, dropdownStyle]}
                 renderRow={this._renderRow}
+                textStyle={sty.title}
                 renderSeparator={(s, i, h) =>
                     i!=options.length-1 && <Hr color="#EEE" style={{marginHorizontal: PADDING_SIZE}} marginBottom={0} />
                 }
-                textStyle={sty.title}
                 defaultIndex={selectedIndex}
                 {...rest}
-                /*defaultValue={title}*/
             >
                 <View>
-                <Text style={sty.title}>
-                    {title}
-                    <Icon name="check" size={18}/>
-                </Text>
+                    <Text style={sty.title}>
+                        {title+' '}
+                        <Icon name="caret-down" size={12}/>
+                    </Text>
                 </View>
             </ModalDropdown>
         )
     }
     _renderRow(rowData, sID, rID) {
-        const {selectedIndex} = this.props;
+        const {selectedIndex, dropdownStyle, options} = this.props;
         sID = parseInt(sID);
         return (
             <View key={sID} >
                 <LinkItem
                     onPress={() => {
-                        rowData.onPress && rowData.onPress(sID, rowData.title);
+                        rowData.onPress && rowData.onPress(sID, rowData.title, rowData);
                     }}
-                    leftText={typeof rowData === 'string' ? rowData : rowData.title} showBorder={null}
+                    leftText={typeof rowData === 'string' ? rowData : rowData.title}
+                    showBorder={null}
                     showIcon={selectedIndex == sID}
+                    style={[dropdownStyle]}
                     iconName="check"
                 />
             </View>
@@ -93,4 +123,4 @@ class TitleDropdown extends Component {
     }
 }
 
-export default TitleDropdown;
+export default DropDown;

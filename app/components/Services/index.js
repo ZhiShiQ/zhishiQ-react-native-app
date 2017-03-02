@@ -1,21 +1,24 @@
-import React, {Component} from 'react';
+import React, {Component, PropTypes} from 'react';
 import {Map} from 'immutable';
 import autobind from 'autobind-decorator';
 import {
     Text,
     View,
     TouchableHighlight,
+    TouchableOpacity,
+    TouchableWithoutFeedback,
+    StyleSheet,
     ListView,
     ScrollView,
     Button
 } from 'react-native';
 
-import style from './style';
-import CartItem from '../CartItem'
+import sty from './style';
 
+import ServiceItem from '../ServiceItem';
 
 @autobind
-class CartItems extends Component {
+class Services extends Component {
     constructor(props) {
       super(props)
     }
@@ -29,27 +32,38 @@ class CartItems extends Component {
     componentDidUpdate(oldProps, oldState, oldContext) {}
     componentWillUnmount() {}
     static defaultProps = {
-        disableSwipe: false
     }
     state = {}
     static propTypes = {
-        items: React.PropTypes.array.isRequired,
-        disableSwipe: React.PropTypes.bool
+        ...ListView.propTypes,
+        items: PropTypes.array,
+        style: PropTypes.object,
     }
     render() {
-        const {items, disableSwipe} = this.props
+        const {items, style, ...rest} = this.props
 
         return (
             <ListView
-                renderRow={(data, sectionId, rowId) => <CartItem disableSwipe={disableSwipe} key={data.title} {...data}/>}
+                contentContainerStyle={[style]}
                 dataSource={
                     new ListView.DataSource({
-                        rowHasChanged: (r1, r2)=>!Map(r1).equals(Map(r2)),
+                        rowHasChanged: (a, b) => !Map(a).equals(b)
                     }).cloneWithRows(items)
                 }
+                renderRow={this._renderRow}
+                renderSeparator={this._renderSeparator}
+                {...rest}
             />
         )
     }
+    _renderSeparator() {
+        return (
+            <View style={{height: 10}}></View>
+        )
+    }
+    _renderRow(data, s, i) {
+        return <ServiceItem key={i} {...data} />
+    }
 }
 
-export default CartItems;
+export default Services;

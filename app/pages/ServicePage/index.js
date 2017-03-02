@@ -7,7 +7,7 @@ import {
     TouchableHighlight,
     Button
 } from 'react-native';
-
+import {Actions} from 'react-native-router-flux';
 import style from './style';
 
 import GridGroupView from '../../components/GridGroupView';
@@ -30,7 +30,17 @@ class ServicePage extends Component {
     static defaultProps = {
         headers: ["热门服务", "更多服务"],
         groups: [
-            ["外籍导师", "留学行家"], ["一站式服务", "全套文书", "国际优化快递", "单项文书", "简历", "模拟考试"]
+            [
+                {text: "外籍导师", onPress: () => Actions.foreignTeacher()},
+                {text: "留学行家", onPress: () => Actions.abroadExpert()}
+            ], [
+                {text: "一站式服务", onPress: () => null},
+                {text: "全套文书", onPress: null},
+                {text: "国际优化快递", onPress: null},
+                {text: "单项文书", onPress: null},
+                {text: "简历", onPress: null},
+                {text: "模拟考试", onPress: null}
+            ]
         ]
     }
     state = {}

@@ -6,9 +6,10 @@ export default StyleSheet.create({
     main: {
         backgroundColor: '#FFF',
         justifyContent: 'center',
+        paddingHorizontal: 15
     },
     mainContainer: {
-        paddingVertical: 6,
+        paddingVertical: 12,
     },
     mainTitleContainer: {
         marginVertical: 4,
@@ -20,14 +21,16 @@ export default StyleSheet.create({
         fontSize: 14,
         color: '#4A4A4A',
         flex: 1,
+        marginBottom: 4,
     },
     mainInnerContainer: {
         flexDirection: 'row',
-        padding: 6,
+        // padding: 6,
     },
     tags: {
+        flexWrap: 'wrap',
         flexDirection: 'row',
-        flexWrap: 'wrap'
+        marginBottom: 6,
     },
     imageContainer: {
         marginRight: 6,
@@ -37,9 +40,11 @@ export default StyleSheet.create({
         backgroundColor: '#D8D8D8',
         height: 50,
         width: 50,
+        borderRadius: 25,
     },
     contentContainer: {
-        // flex: 1
+        flex: 1,
+        marginBottom: 6
     },
     contentText: {
         justifyContent: 'flex-start',
@@ -49,11 +54,12 @@ export default StyleSheet.create({
     },
 
     footContainer: {
-        alignSelf: 'flex-end',
+        // alignSelf: 'stretch',
         flexDirection: 'row'
     },
     footerLeft: {
-        flex: 1
+        flex: 1,
+        flexDirection: 'row'
     },
     promptText: {
         fontSize: 12.6,
@@ -64,13 +70,16 @@ export default StyleSheet.create({
         color: '#4A4A4A'
     },
     countText: {
-
+        marginRight: 8
     },
     stateText: {
         flex: 1,
         textAlign: 'right'
     },
     footerRight: {
+        flex: 1,
+        // alignSelf: 'flex-end',
+        alignItems: 'flex-end',
         marginRight: 12
     },
     bottomContainer: {

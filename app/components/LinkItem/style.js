@@ -4,12 +4,13 @@ import {
 
 export default StyleSheet.create({
     main: {
-        height: 52,
+        // height: 52,
         flex: 0,
         backgroundColor: '#FFF',
         flexDirection: 'row',
         alignItems: 'center',
         paddingHorizontal: 15,
+        paddingVertical: 15,
         // alignSelf: 'stretch'
     },
     container: {

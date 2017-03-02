@@ -8,7 +8,7 @@ import {PADDING_SIZE, NAV_BAR_HEIGHT} from '../../constant';
 export default StyleSheet.create({
     style: {
         height: 20,
-        width: 120,
+        // width: 120,
         alignItems: 'center',
         justifyContent: 'center'
     },

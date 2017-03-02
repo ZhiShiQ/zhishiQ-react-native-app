@@ -5,7 +5,8 @@ import {
 export default StyleSheet.create({
     main: {
         justifyContent: 'center',
-        backgroundColor: '#F7F7F7'
+        backgroundColor: '#F7F7F7',
+        flex: 1
     },
     menus: {
         backgroundColor: '#F7F7F7',
