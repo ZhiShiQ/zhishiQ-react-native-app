@@ -51,7 +51,9 @@ class Collection extends Component {
         prompt: "prompt",
         price: 12345,
         count: 233,
-        btnTitle: 'BUTTON'
+        btnTitle: 'BUTTON',
+        tags: [],
+        content: ''
     }
     state = {}
     static propTypes = {
@@ -80,7 +82,7 @@ class Collection extends Component {
                         <View style={sty.contentContainer}>
                             <Text style={sty.titleText}>{title}</Text>
                             <View style={sty.tags} >
-                                {content && <Text>{content}</Text>}
+                                {!!content && <Text>{content}</Text>}
                                 {tags.map((tag, i) => <TextWithBg k onPress={tag.onPress} title={typeof tag === 'string' ? tag : tag.title} key={i} />)}
                             </View>
                         </View>

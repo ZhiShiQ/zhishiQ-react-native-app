@@ -34,14 +34,18 @@ class Radio extends Component {
     state = {}
     static propTypes = {
         selected: React.PropTypes.bool,
-        onPress: React.PropTypes.func
+        onPress: React.PropTypes.func,
+        selectedStyle: React.PropTypes.object
     }
     render() {
-        const {selected, style, children} = this.props
+        const {selected, onPress, selectedStyle=sty.selected, style, children} = this.props
 
         return (
-            <TouchableHighlight style={[sty.main, selected?sty.selected:{}, style||{}]}>
-                {React.Children.only(children)}
+            <TouchableHighlight
+                style={[sty.main, selected?selectedStyle:{}, style||{}]}
+                onPress={onPress}
+            >
+                {children}
             </TouchableHighlight>
         )
     }

@@ -12,14 +12,13 @@ import {
     ScrollView,
     Button
 } from 'react-native';
-import {Actions} from 'react-native-router-flux';
 
 import sty from './style';
 
-import LinkItems from '../../components/LinkItems';
+import Collections from '../../components/Collections'
 
 @autobind
-class StudyAbroadIntentionPage extends Component {
+class RecentSkimPage extends Component {
     constructor(props) {
       super(props)
     }
@@ -35,36 +34,18 @@ class StudyAbroadIntentionPage extends Component {
     static defaultProps = {}
     state = {}
     static propTypes = {}
-    _computeData() {
-        const {actions, store: {
-            abroad_intention: {
-                futureDevelopment, degree, country, schoolNum
-            }
-        }} = this.props;
-        return [{
-            leftText: "未来发展",
-            rightText: futureDevelopment.join('、')
-        }, {
-            leftText: "申请学位",
-            rightText: degree
-        }, {
-            leftText: "申请国家",
-            rightText: country.join('、')
-        }, {
-            leftText: "申请学校",
-            rightText: schoolNum+"个学校",
-            onPress: () => Actions.applySchool()
-        }]
-    }
     render() {
-        const {...props} = this.props;
+        const {store: {recent_skim: {items}}} = this.props
 
         return (
             <View style={sty.main}>
-                <LinkItems items={this._computeData()}/>
+                <Collections
+                    disableSwipe={true}
+                    items={items.map(x => ({...x, onPress: () => alert(x.title)}))}
+                />
             </View>
         )
     }
 }
 
-export default StudyAbroadIntentionPage;
+export default RecentSkimPage;

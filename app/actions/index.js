@@ -5,5 +5,9 @@
 
 
 export default {
-    ...require('./my_collections')
+    ...require('./my_collections'),
+    ...require('./common'),
+    ...require('./recent_skim'),
+    ...require('./my_total_order'),
+    ...require('./cart'),
 }

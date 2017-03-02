@@ -48,10 +48,11 @@ class TitleDropdown extends Component {
         selectedIndex: PropTypes.number
     }
     render() {
-        const {options, title, onSelect, selectedIndex} = this.props
-
+        const {options, title, onSelect, selectedIndex, ...rest} = this.props
+        console.log(options);
         return (
             <ModalDropdown
+                ref={r => this.dropdown = r}
                 options={options}
                 onSelect={onSelect}
                 adjustFrame={(p) => ({...p, left: 0, top: NAV_BAR_HEIGHT})}
@@ -60,21 +61,28 @@ class TitleDropdown extends Component {
                 renderRow={this._renderRow}
                 textStyle={sty.title}
                 defaultIndex={selectedIndex}
+                {...rest}
                 /*defaultValue={title}*/
             >
+                <View>
                 <Text style={sty.title}>
                     {title}
                     <Icon name="check" size={18}/>
                 </Text>
+                </View>
             </ModalDropdown>
         )
     }
     _renderRow(rowData, sID, rID) {
         const {selectedIndex} = this.props;
+        sID = parseInt(sID);
         return (
-            <View>
+            <View key={sID} >
                 <LinkItem
-                    leftText={rowData} showBorder={rID!=0?'top':null}
+                    onPress={() => {
+                        rowData.onPress && rowData.onPress(sID, rowData.title);
+                    }}
+                    leftText={typeof rowData === 'string' ? rowData : rowData.title} showBorder={rID!=0?'top':null}
                     showIcon={selectedIndex == sID}
                     iconName="check"
                 />

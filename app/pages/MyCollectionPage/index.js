@@ -70,94 +70,144 @@ class MyCollectionPage extends Component {
                     </View>
                 </View>
 
-                <Collections
-                    style={{marginTop: 33}}
-                    items={[{
-                        onPress: alert,
-                        onRemove: alert,
-                        thumbnail: null,
-                        title: 'Abby R',
-                        numerator: 4.9,
-                        deNumerator: 5,
-                        serviceTimes: 1666,
-                        tags: [{
-                            title: '一站式申请',
-                            onPress: alert
-                        }, {
-                            title: '全套文书导师',
-                            onPress: alert
-                        }, {
-                            title: '文书导师',
-                            onPress: alert
-                        }]
-                    }, {
-                        onPress: alert,
-                        onRemove: alert,
-                        thumbnail: null,
-                        title: 'Abby R',
-                        numerator: 4.9,
-                        deNumerator: 5,
-                        serviceTimes: 1666,
-                        tags: [
-                            '一站式申请',
-                            '全套文书导师',
-                            '文书导师'
-                        ]
-                    }, {
-                        onPress: alert,
-                        onRemove: alert,
-                        thumbnail: null,
-                        title: 'Abby R',
-                        numerator: 4.9,
-                        deNumerator: 5,
-                        serviceTimes: 1666,
-                        tags: [
-                            '一站式申请',
-                            '全套文书导师',
-                            '文书导师'
-                        ]
-                    }, {
-                        onPress: alert,
-                        onRemove: alert,
-                        thumbnail: null,
-                        title: 'Abby R',
-                        numerator: 4.9,
-                        deNumerator: 5,
-                        serviceTimes: 1666,
-                        tags: [
-                            '一站式申请',
-                            '全套文书导师',
-                            '文书导师'
-                        ]
-                    }, {
-                        onPress: alert,
-                        onRemove: alert,
-                        thumbnail: null,
-                        title: 'Abby R',
-                        numerator: 4.9,
-                        deNumerator: 5,
-                        serviceTimes: 1666,
-                        tags: [
-                            '一站式申请',
-                            '全套文书导师',
-                            '文书导师'
-                        ]
-                    }, {
-                        onPress: alert,
-                        onRemove: alert,
-                        thumbnail: null,
-                        title: 'Abby R',
-                        numerator: 4.9,
-                        deNumerator: 5,
-                        serviceTimes: 1666,
-                        tags: [
-                            '一站式申请',
-                            '全套文书导师',
-                            '文书导师'
-                        ]
-                    }]}
-                />
+                {activeIndex ==0 && this.renderFirstItems()}
+                {activeIndex ==1 && this.renderSecondItems()}
             </View>
+        )
+    }
+    renderSecondItems() {
+        return (
+            <Collections
+                style={{marginTop: 33}}
+                items={[{
+                    onPress: alert,
+                    onRemove: alert,
+                    thumbnail: null,
+                    title: 'Abby R',
+                    numerator: 4.9,
+                    deNumerator: 5,
+                    serviceTimes: 1666,
+                    content: ''
+                }, {
+                    onPress: alert,
+                    onRemove: alert,
+                    thumbnail: null,
+                    title: 'Abby R',
+                    numerator: 4.9,
+                    deNumerator: 5,
+                    serviceTimes: 1666,
+                    content: '一站式申请'
+                }, {
+                    onPress: alert,
+                    onRemove: alert,
+                    thumbnail: null,
+                    title: 'Abby R',
+                    numerator: 4.9,
+                    deNumerator: 5,
+                    serviceTimes: 1666,
+                }, {
+                    onPress: alert,
+                    onRemove: alert,
+                    thumbnail: null,
+                    title: 'Abby R',
+                    numerator: 4.9,
+                    deNumerator: 5,
+                    serviceTimes: 1666,
+                    content: 'xxxxxxxxx'
+                }]}
+            />
+        )
+    }
+
+    renderFirstItems() {
+        return (
+            <Collections
+                style={{marginTop: 33}}
+                items={[{
+                    onPress: alert,
+                    onRemove: alert,
+                    thumbnail: null,
+                    title: 'Abby R',
+                    numerator: 4.9,
+                    deNumerator: 5,
+                    serviceTimes: 1666,
+                    tags: [{
+                        title: '一站式申请',
+                        onPress: alert
+                    }, {
+                        title: '全套文书导师',
+                        onPress: alert
+                    }, {
+                        title: '文书导师',
+                        onPress: alert
+                    }]
+                }, {
+                    onPress: alert,
+                    onRemove: alert,
+                    thumbnail: null,
+                    title: 'Abby R',
+                    numerator: 4.9,
+                    deNumerator: 5,
+                    serviceTimes: 1666,
+                    tags: [
+                        '一站式申请',
+                        '全套文书导师',
+                        '文书导师'
+                    ]
+                }, {
+                    onPress: alert,
+                    onRemove: alert,
+                    thumbnail: null,
+                    title: 'Abby R',
+                    numerator: 4.9,
+                    deNumerator: 5,
+                    serviceTimes: 1666,
+                    tags: [
+                        '一站式申请',
+                        '全套文书导师',
+                        '文书导师'
+                    ]
+                }, {
+                    onPress: alert,
+                    onRemove: alert,
+                    thumbnail: null,
+                    title: 'Abby R',
+                    numerator: 4.9,
+                    deNumerator: 5,
+                    serviceTimes: 1666,
+                    tags: [
+                        '一站式申请',
+                        '全套文书导师',
+                        '文书导师'
+                    ]
+                }, {
+                    onPress: alert,
+                    onRemove: alert,
+                    thumbnail: null,
+                    title: 'Abby R',
+                    numerator: 4.9,
+                    deNumerator: 5,
+                    serviceTimes: 1666,
+                    tags: [
+                        '一站式申请',
+                        '全套文书导师',
+                        '文书导师'
+                    ]
+                }, {
+                    onPress: alert,
+                    onRemove: alert,
+                    thumbnail: null,
+                    title: 'Abby R',
+                    numerator: 4.9,
+                    deNumerator: 5,
+                    serviceTimes: 1666,
+                    tags: [
+                        '一站式申请',
+                        '全套文书导师',
+                        '文书导师'
+                    ]
+                }]}
+            />
         )
     }
 }

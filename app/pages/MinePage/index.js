@@ -53,17 +53,17 @@ class MinePage extends Component {
             style: {
                 marginVertical: 10
             },
-            onPress: Actions.inviteFriend
+            onPress: () => Actions.inviteFriend()
         }, {
             leftText: '我的收藏',
             showBorder: null,
             onPress: () => Actions.myCollection()
         }, {
             leftText: '我的优惠券',
-            onPress: Actions.myDiscount
+            onPress: () => Actions.myDiscountCoupon()
         }, {
             leftText: '最近浏览',
-            onPress: Actions.recentSkim
+            onPress: () => Actions.recentSkim()
         }, {
             leftText: '我的资料',
             onPress: () => Actions.myInformation()

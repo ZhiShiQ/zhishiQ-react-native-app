@@ -65,8 +65,6 @@ class LinkItems extends Component {
                         rowHasChanged: (r1, r2) => !Map(r1).equals(Map(r2)),
                     }).cloneWithRows(items)
                 }
-                /*contentInset={{bottom: 49}}*/
-                /*automaticallyAdjustContentInsets={false}*/
             />
         )
     }

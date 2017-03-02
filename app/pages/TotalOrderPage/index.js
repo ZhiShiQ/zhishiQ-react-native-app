@@ -59,17 +59,17 @@ class TotalOrderPage extends Component {
         ],
         boughtList: [{
             title: 'sds', active: true, thumbnail: {},
-            state: '进行中', prompt: '2016-09-12', count: 300,
+            state: '进行中', prompt: '2016-09-12', disCount: 300,
             price: 99999, btnText: '服务进行中',
             content: 'CONTENT',
             onPress: null, onBtnPress: null, btnDisabled: true
         }, {
             title: 'sds', active: true, thumbnail: {},
-            state: '进行中', prompt: '2016-09-12', count: 300,
+            state: '进行中', prompt: '2016-09-12', disCount: 300,
             price: 99999, content: 'CONTENT'
         }, {
             title: 'sds', active: true, thumbnail: {},
-            state: '进行中', prompt: '2016-09-12', count: 300,
+            state: '进行中', prompt: '2016-09-12', disCount: 300,
             price: 99999, content: 'CONTENT'
         }]
     }

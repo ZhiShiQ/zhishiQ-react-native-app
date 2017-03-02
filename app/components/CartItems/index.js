@@ -28,17 +28,20 @@ class CartItems extends Component {
     componentWillUpdate(newProps, newState, newContext) {}
     componentDidUpdate(oldProps, oldState, oldContext) {}
     componentWillUnmount() {}
-    static defaultProps = {}
+    static defaultProps = {
+        disableSwipe: false
+    }
     state = {}
     static propTypes = {
-        items: React.PropTypes.array.isRequired
+        items: React.PropTypes.array.isRequired,
+        disableSwipe: React.PropTypes.bool
     }
     render() {
-        const {items} = this.props
+        const {items, disableSwipe} = this.props
 
         return (
             <ListView
-                renderRow={(data, sectionId, rowId) => <CartItem key={rowId} {...data}/>}
+                renderRow={(data, sectionId, rowId) => <CartItem disableSwipe={disableSwipe} key={rowId} {...data}/>}
                 dataSource={
                     new ListView.DataSource({
                         rowHasChanged: (r1, r2)=>!Map(r1).equals(Map(r2)),

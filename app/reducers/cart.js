@@ -1,7 +1,8 @@
 /**
  * Created by moyu on 2017/2/26.
  */
-import {Map, List, Set} from 'immutable';
+import {Map, List, Set, fromJS} from 'immutable';
+import {UpdateAllList} from '../helpers/reducer-helper';
 import * as $ from '../constant';
 
 const initialState = {
@@ -15,7 +16,7 @@ const initialState = {
         title: '行家咨询 ID:3369',
         content: '10分钟免费墨尔本大学行前指导 Free 10-minute guidance for new unimelb students',
         price: 99999,
-        prompt: '已惠券200元',
+        save: 200,
         thumbnail: {}
     }, {
         title: '模拟面试服务 ID:3195',
@@ -23,17 +24,19 @@ const initialState = {
         price: 88,
         prompt: '使用优惠券',
         thumbnail: {}
-    }],
-    save: 900,
-    sum: 999999
+    }]
 };
 
 export default function (state=initialState, action) {
     let newState = {...state};
     const {type, ...rest} = action;
     switch (type) {
-        case $.CART_SELECT_ITEM:
-
+        case $.SET_CART_ITEM_SELECTED_BY_INDEX:
+            return {...newState, items: fromJS(newState.items).setIn([rest.index, 'selected'], rest.selected).toJS()};
+        case $.DEL_CART_ITEM_BY_INDEX:
+            return {...newState, items: List(newState.items).remove(rest.index).toArray()}
+        case $.SET_ALL_CART_ITEM_SELECTED:
+            return {...newState, items: UpdateAllList(newState.items, 'selected', rest.selected)}
         default:
             return newState;
     }

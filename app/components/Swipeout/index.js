@@ -37,17 +37,18 @@ class Swipeout extends Component {
     }
     state = {}
     static propTypes = {
-        onRemove: PropTypes.func
+        onRemove: PropTypes.func,
+        swipeBlockStyle: PropTypes.object
     }
     render() {
-        const {children, onRemove, ...rest} = this.props
+        const {children, onRemove, swipeBlockStyle, ...rest} = this.props
         return (
             <SwipeOut3rd
                 leftButtonWidth={SWIPE_BLOCK_WIDTH}
                 rightButtonWidth={SWIPE_BLOCK_WIDTH}
                 rightButtons={[
                     <TouchableOpacity
-                        style={[sty.btn, sty.delBtn]}
+                        style={[sty.btn, sty.delBtn, swipeBlockStyle]}
                         onPress={onRemove}
                     >
                         <Text>删除</Text>

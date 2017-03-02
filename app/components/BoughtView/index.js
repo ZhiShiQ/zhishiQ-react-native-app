@@ -50,7 +50,7 @@ class BoughtView extends Component {
         content: "CONTENT...CONTENT...CONTENT...CONTENT",
         prompt: "prompt",
         price: 12345,
-        count: 233,
+        disCount: 233,
         btnTitle: 'BUTTON'
     }
     state = {}
@@ -62,7 +62,7 @@ class BoughtView extends Component {
         prompt: React.PropTypes.string,
         content: React.PropTypes.string,
         price: React.PropTypes.number,
-        count: React.PropTypes.number,
+        disCount: React.PropTypes.number,
         btnText: React.PropTypes.string,
         onBtnPress: React.PropTypes.func,
         style: React.PropTypes.object,
@@ -70,7 +70,7 @@ class BoughtView extends Component {
     }
 
     render() {
-        const {onPress, style, btnTitle, onBtnPress, btnDisabled, title, thumbnail, prompt, state, content, price, count} = this.props
+        const {onPress, style, btnTitle, onBtnPress, btnDisabled, title, thumbnail, prompt, state, content, price, disCount} = this.props
         const Touchable = btnDisabled ? TouchableWithoutFeedback : TouchableHighlight;
         return (
             <TouchableOpacity onPress={onPress} style={[sty.main, style]}>
@@ -91,7 +91,7 @@ class BoughtView extends Component {
                             <Text style={sty.promptText}>{prompt}</Text>
                         </View>
                         <View style={sty.footerRight}>
-                            <Text style={sty.countText}>已优惠¥{count}</Text>
+                            <Text style={sty.countText}>已优惠¥{disCount}</Text>
                         </View>
                         <View style={sty.footerRight}>
                             <Text style={sty.priceText}>¥{price}</Text>

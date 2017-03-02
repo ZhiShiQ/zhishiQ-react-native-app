@@ -39,7 +39,7 @@ class Modal extends Component {
     static defaultProps = {
         isOpen: false,
         buttons: [],
-        showClose: true
+        showClose: false
     }
     static propTypes = {
         isOpen: PropTypes.bool,
@@ -68,9 +68,11 @@ class Modal extends Component {
             >
                 <View style={{alignSelf: 'stretch', flex: 1}}>
                 {children}
-                {buttons.map((p, i) =>
-                    <BlockButton key={i} {...p} />
-                )}
+                <View style={{position: 'absolute', bottom: 0, left: 0, right: 0}}>
+                    {buttons.map((p, i) =>
+                        <BlockButton key={i} {...p} />
+                    )}
+                </View>
                 {showClose ? CloseBtn : null}
                 </View>
             </ModalBox>

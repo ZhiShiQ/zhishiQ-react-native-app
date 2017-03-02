@@ -42,25 +42,29 @@ class MyBasicInfoPage extends Component {
      * @private
      */
     _computeData() {
-        const {store: {}} = this.props;
+        const {store: {
+            basic_info: {
+                school, grade, speciality, experienceNum, examNum
+            }
+        }} = this.props;
         return [{
             leftText: '当前院校',
-            rightText: '南京师范大学',
-            onPress: null
+            rightText: school,
+            onPress: () => Actions.setMySchool()
         }, {
             leftText: '当前年级',
-            rightText: '大三'
+            rightText: grade
         }, {
             leftText: '当前专业',
-            rightText: 'right',
+            rightText: speciality,
             onPress: null
         }, {
             leftText: '经历',
-            rightText: 'right',
-            onPress: null
+            rightText: experienceNum + "个标签",
+            onPress: () => Actions.myExperience()
         }, {
             leftText: '考试',
-            rightText: 'right',
+            rightText: examNum + "项成绩",
             onPress: () => Actions.examination()
         }]
     }

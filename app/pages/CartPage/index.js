@@ -45,25 +45,45 @@ class CartPage extends Component {
     state = {}
     static propTypes = {}
 
+    itemsWithFunc() {
+        const {store: {cart: {items}}, actions} = this.props;
+        return items.reduce((a, x, index) => {
+            a.items.push({
+                ...x,
+                onRemove: () => actions.delCartItemByIndex(index),
+                onControlPress: () => actions.setCartItemSelectedByIndex(index, !x.selected),
+                onBtnPress: () => actions.discountModalOpen()
+            });
+            a.saveSum += x.save || 0;
+            a.sum += x.price || 0;
+            a.selectedNum += (x.selected ? 1 : 0);
+            return a;
+        }, {items: [], saveSum: 0, sum: 0, selectedNum: 0});
+    }
+
     render() {
-        const {store: {cart: {sum, save, items}}} = this.props
-        const selectedNum = items.filter(x => x.selected).length
+        const {store: {cart: {items}}, actions} = this.props;
+        const {items: computedItems, saveSum, sum, selectedNum} = this.itemsWithFunc();
 
         return (
             <View style={style.main}>
-                <Carts items={items} />
+                <Carts disableSwipe={false} items={computedItems} />
                 <View style={style.bottomBar}>
                     <View style={style.ctl}>
-                        <Radio selected={selectedNum===items.length}>
+                        <Radio
+                            onPress={() => actions.setAllCartItemSelected( !(selectedNum===items.length) )}
+                            selected={selectedNum===items.length}>
                         </Radio>
                         <Text style={style.ctlText}>全选</Text>
                     </View>
                     <View style={style.info}>
                         <Text style={style.sum}>总计：{sum}</Text>
-                        <Text style={style.save}>已节省：{save}</Text>
+                        <Text style={style.save}>已节省：{saveSum}</Text>
                     </View>
                     <TouchableHighlight style={style.done}>
-                        <Text style={style.doneText}>结算({selectedNum})</Text>
+                        <View>
+                            <Text style={style.doneText}>结算({selectedNum})</Text>
+                        </View>
                     </TouchableHighlight>
                 </View>
             </View>
