@@ -7,8 +7,6 @@ import * as $ from '../constant'
 export const setCommonModalIsOpen = (isOpen) => _t($.SET_COMMON_MODAL_OPEN, {isOpen})
 export const setCommonModalType = (_type) => _t($.SET_COMMON_MODAL_TYPE, {_type})
 
-export const refererModalOpen = () =>
-    (emit) => emit([setCommonModalIsOpen(true), setCommonModalType('referer')])
-
-export const discountModalOpen = () =>
-    (emit) => emit([setCommonModalIsOpen(true), setCommonModalType('discount')])
+export const refererModalOpen = () => (emit) => emit([setCommonModalIsOpen(true), setCommonModalType('referer')])
+export const discountModalOpen = () => (emit) => emit([setCommonModalIsOpen(true), setCommonModalType('discount')])
+export const abroadExpertFormModalOpen = () => (emit) => emit([setCommonModalIsOpen(true), setCommonModalType('abroadExpert')])

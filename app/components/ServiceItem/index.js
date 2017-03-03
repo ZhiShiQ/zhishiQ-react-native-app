@@ -15,7 +15,7 @@ import {
 import Button from 'react-native-button';
 import sty from './style';
 import Hr from  '../Hr';
-import TextWithBg from  '../TextWithBg';
+import TextWithBgs from  '../TextWithBgs';
 
 @autobind
 class ServiceItem extends Component {
@@ -85,7 +85,7 @@ class ServiceItem extends Component {
                         <View style={sty.contentContainer}>
                             <Text style={sty.titleText}>{title}</Text>
                             <View style={sty.tags} >
-                                {tags.map((tag, i) => <TextWithBg style={{paddingVertical: -2}} onPress={tag.onPress} title={typeof tag === 'string' ? tag : tag.title} key={i} />)}
+                                <TextWithBgs items={tags} />
                             </View>
                             <Hr />
                             <Text>{points.join("｜")}</Text>
@@ -99,7 +99,7 @@ class ServiceItem extends Component {
                             <Text style={sty.countText}>预约 {appointNum}</Text>
                         </View>
                         <View style={sty.footerRight}>
-                            <Text style={sty.priceText}>{'¥'+price+'/次'}</Text>
+                            <Text style={sty.priceText}>{'¥'+price+'／次'}</Text>
                         </View>
                     </View>
                 </View>

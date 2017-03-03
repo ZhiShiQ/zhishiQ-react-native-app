@@ -18,7 +18,7 @@ import Hr from  '../Hr';
 import TextWithBgs from  '../TextWithBgs';
 
 @autobind
-class Collection extends Component {
+class Education extends Component {
     constructor(props) {
         super(props)
     }
@@ -60,18 +60,16 @@ class Collection extends Component {
         onPress: React.PropTypes.func,
         title: React.PropTypes.string.isRequired,
         thumbnail: React.PropTypes.object,
-        numerator: React.PropTypes.number,
-        deNumerator: React.PropTypes.number,
-        serviceTimes: React.PropTypes.number,
         style: React.PropTypes.object,
-        tags: React.PropTypes.array,
-        content: React.PropTypes.string
+        status: React.PropTypes.string,
+        date_from: React.PropTypes.string,
+        date_to: React.PropTypes.string
     }
 
     render() {
         const {
-            onPress, style, title, thumbnail, serviceTimes,
-            numerator, deNumerator, tags, content
+            onPress, style, title, thumbnail,
+            status, date_from, date_to
         } = this.props;
         const Touchable = TouchableHighlight;
         return (
@@ -81,19 +79,8 @@ class Collection extends Component {
                         <View style={sty.imageContainer}><Image style={sty.image} source={thumbnail} /></View>
                         <View style={sty.contentContainer}>
                             <Text style={sty.titleText}>{title}</Text>
-                            <View style={sty.tags} >
-                                {!!content && <Text>{content}</Text>}
-                                {tags && <TextWithBgs items={tags} />}
-                            </View>
-                        </View>
-                    </View>
-                    <Hr/>
-                    <View style={sty.footContainer}>
-                        <View style={sty.footerRight}>
-                            <Text style={sty.countText}>平均分数：{numerator}/{deNumerator}</Text>
-                        </View>
-                        <View style={sty.footerRight}>
-                            <Text style={sty.priceText}>服务次数：{serviceTimes}</Text>
+                            <Text style={sty.secText}>{status}</Text>
+                            <Text style={sty.thrText}>{date_from+" ~ "+date_to}</Text>
                         </View>
                     </View>
                 </View>
@@ -102,4 +89,4 @@ class Collection extends Component {
     }
 }
 
-export default Collection;
+export default Education;

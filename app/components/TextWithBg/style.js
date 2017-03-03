@@ -5,7 +5,7 @@ import {
 export default StyleSheet.create({
     main: {
         textAlign: 'center',
-        paddingVertical: 5,
+        // paddingVertical: 5,
         paddingHorizontal: 8,
         marginHorizontal: 3
     }

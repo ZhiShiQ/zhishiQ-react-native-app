@@ -14,6 +14,8 @@ import {
     Button
 } from 'react-native';
 const {height: deviceHeight, width: deviceWidth} = Dimensions.get('window');
+import {Actions} from 'react-native-router-flux';
+
 import sty from './style';
 
 
@@ -63,13 +65,12 @@ class AbroadExpertPage extends Component {
             }
         } = this.props
 
-        /* TODO: HERE */
         return (
             <View style={sty.main}>
                 {this.subMenu}
                 <Services
                     items={[{
-                        onPress: null,
+                        onPress: () => Actions.abroadExpertDetail({params: {title: 'titile'}}),
                         title: 'titile',
                         thumbnail: {},
                         tags: ["a", "b", "c", "d"],

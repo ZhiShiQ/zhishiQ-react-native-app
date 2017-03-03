@@ -46,10 +46,13 @@ import InviteFriendPage from './pages/InviteFriendPage';
 import RecentSkimPage from './pages/RecentSkimPage';
 import ForeignTeacherPage from './pages/ForeignTeacherPage';
 import AbroadExpertPage from './pages/AbroadExpertPage';
+import AbroadExpertDetailPage from './pages/AbroadExpertDetailPage';
+import BoughtDonePage from './pages/BoughtDonePage';
 
 import TabIcon from './components/TabIcon';
 import NavigationDrawer from './components/NavigationDrawer';
 import Modal from './components/Modal';
+import LinkItems from './components/LinkItems';
 import CirImageWithText from './components/CirImageWithText';
 import ReduxTitleDropdown from './components/ReduxTitleDropdown';
 
@@ -117,6 +120,13 @@ class Routers extends React.Component {
                 return {buttons: [{title: "已打开网址，点击扫描"}], height: 442};
             case 'discount':
                 return {buttons: [{title: "查看我的优惠券"}, {title: "取消／确定"}], height: 470}
+            case 'abroadExpert':
+                return {buttons: [{title: "预约！",
+                    onPress: () => {
+                        actions.setCommonModalIsOpen(false);
+                        Actions.boughtDone();
+                    }
+                }], height: 340}
         }
     }
 
@@ -138,7 +148,27 @@ class Routers extends React.Component {
                 {
                     modalType === 'discount' && <Text>我的优惠券</Text>
                 }
+                {
+                    modalType === 'abroadExpert' && this.abroadExpertForm
+                }
             </Modal>
+        )
+    }
+
+    get abroadExpertForm() {
+        return (
+            <View>
+                <Text>表单</Text>
+                <LinkItems
+                    items={[{
+                        leftText: "姓名"
+                    }, {
+                        leftText: "年龄"
+                    }, {
+                        leftText: "性别"
+                    }]}
+                />
+            </View>
         )
     }
 
@@ -168,11 +198,12 @@ class Routers extends React.Component {
             <Scene key="Root">
                 <Scene hideTabBar key="login" component={conn(LoginPage)} title="Login"
                        type={ActionConst.REPLACE}/>
-                <Scene initial key="tabbar" component={conn(NavigationDrawer)}>
+                <Scene type={ActionConst.RESET} initial key="tabbar" component={conn(NavigationDrawer)}>
                     <Scene
                         initial
                         key="tab_main"
                         tabs
+                        type={ActionConst.RESET}
                         tabBarStyle={styles.tabBarStyle}
                         tabBarSelectedItemStyle={styles.tabBarSelectedItemStyle}
                     >
@@ -229,6 +260,13 @@ class Routers extends React.Component {
                        onRight={() => alert()}
                        backTitle="返回"/>
 
+                <Scene key="abroadExpertDetail" component={conn(AbroadExpertDetailPage)}
+                       hideTabBar
+                       getTitle={({params}) => (params ? params.title : '')}
+                       rightTitle="分享"
+                       onRight={() => alert()}
+                       backTitle="返回"/>
+
                 <Scene key="myInformation"
                        backTitle="返回"
                        title="我的资料"
@@ -236,6 +274,13 @@ class Routers extends React.Component {
                        rightTitle="网页版"
                        onRight={() => alert()}
                        component={conn(MyInformationPage)}
+                />
+
+                <Scene key="boughtDone"
+                       backTitle="返回"
+                       title="预约/购买成功"
+                       hideTabBar
+                       component={conn(BoughtDonePage)}
                 />
 
 

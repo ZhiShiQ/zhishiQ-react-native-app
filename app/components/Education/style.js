@@ -6,10 +6,9 @@ export default StyleSheet.create({
     main: {
         backgroundColor: '#FFF',
         justifyContent: 'center',
-        paddingHorizontal: 15
     },
     mainContainer: {
-        paddingVertical: 12,
+        paddingVertical: 6,
     },
     mainTitleContainer: {
         marginVertical: 4,
@@ -21,16 +20,10 @@ export default StyleSheet.create({
         fontSize: 14,
         color: '#4A4A4A',
         flex: 1,
-        marginBottom: 4,
     },
     mainInnerContainer: {
         flexDirection: 'row',
-        // padding: 6,
-    },
-    tags: {
-        flexWrap: 'wrap',
-        flexDirection: 'row',
-        marginBottom: 6,
+        padding: 6,
     },
     imageContainer: {
         marginRight: 6,
@@ -38,13 +31,11 @@ export default StyleSheet.create({
     },
     image: {
         backgroundColor: '#D8D8D8',
-        height: 50,
-        width: 50,
-        borderRadius: 25,
+        height: 38,
+        width: 38,
     },
     contentContainer: {
-        flex: 1,
-        marginBottom: 6
+        // flex: 1
     },
     contentText: {
         justifyContent: 'flex-start',
@@ -53,34 +44,17 @@ export default StyleSheet.create({
         color: '#848484'
     },
 
-    footContainer: {
-        // alignSelf: 'stretch',
-        flexDirection: 'row'
-    },
-    footerLeft: {
+    thrText: {
         flex: 1,
-        flexDirection: 'row'
-    },
-    promptText: {
-        fontSize: 12.6,
-        color: '#4A4A4A',
-    },
-    priceText: {
+        color: '#4a4a4a',
         fontSize: 14,
-        fontWeight: '600',
-        color: '#4A4A4A'
     },
-    countText: {
-        marginRight: 8
-    },
-    stateText: {
+    secText: {
         flex: 1,
-        textAlign: 'right'
+        color: '#848484',
+        fontSize: 14,
     },
     footerRight: {
-        flex: 1,
-        // alignSelf: 'flex-end',
-        alignItems: 'flex-end',
         marginRight: 12
     },
     bottomContainer: {
