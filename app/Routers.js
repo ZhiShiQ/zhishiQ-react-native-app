@@ -14,6 +14,7 @@ import {
     Reducer,
     Scene
 } from 'react-native-router-flux';
+
 import {
     View,
     Text,
@@ -198,12 +199,11 @@ class Routers extends React.Component {
             <Scene key="Root">
                 <Scene hideTabBar key="login" component={conn(LoginPage)} title="Login"
                        type={ActionConst.REPLACE}/>
-                <Scene type={ActionConst.RESET} initial key="tabbar" component={conn(NavigationDrawer)}>
+                <Scene initial key="tabbar" component={conn(NavigationDrawer)}>
                     <Scene
                         initial
                         key="tab_main"
                         tabs
-                        type={ActionConst.RESET}
                         tabBarStyle={styles.tabBarStyle}
                         tabBarSelectedItemStyle={styles.tabBarSelectedItemStyle}
                     >
@@ -255,6 +255,7 @@ class Routers extends React.Component {
 
                 <Scene key="abroadExpert" component={conn(AbroadExpertPage)}
                        hideTabBar
+                       type={ActionConst.PUSH_OR_POP}
                        title="留学行家咨询"
                        rightTitle="搜索"
                        onRight={() => alert()}
@@ -262,6 +263,7 @@ class Routers extends React.Component {
 
                 <Scene key="abroadExpertDetail" component={conn(AbroadExpertDetailPage)}
                        hideTabBar
+                       type={ActionConst.PUSH_OR_POP}
                        getTitle={({params}) => (params ? params.title : '')}
                        rightTitle="分享"
                        onRight={() => alert()}
