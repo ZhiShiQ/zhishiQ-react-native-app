@@ -197,8 +197,7 @@ class Routers extends React.Component {
         } = this.props;
         return (
             <Scene key="Root">
-                <Scene hideTabBar key="login" component={conn(LoginPage)} title="Login"
-                       type={ActionConst.REPLACE}/>
+                <Scene hideTabBar key="login" component={conn(LoginPage)} title="Login"/>
                 <Scene initial key="tabbar" component={conn(NavigationDrawer)}>
                     <Scene
                         initial
