@@ -15,6 +15,7 @@ import {
 import App from './app/index';
 // import App from './Example/Example'
 // import App from './Example/swipeable-example'
+// import App from './Example/accordion'
 
 console.disableYellowBox = true;
 

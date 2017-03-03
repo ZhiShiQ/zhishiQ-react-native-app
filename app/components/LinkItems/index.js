@@ -49,7 +49,8 @@ class LinkItems extends Component {
     }
     state = {}
     static propTypes = {
-        items: React.PropTypes.array.isRequired
+        items: React.PropTypes.array.isRequired,
+        style: React.PropTypes.object
     }
 
     render() {

@@ -54,6 +54,7 @@ class DropDown extends Component {
         rightHalf: false,
         leftHalf: false,
         hidden: false,
+        autoHidden: false,
         dropdownStyle: {}
     }
     state = {}
@@ -67,6 +68,7 @@ class DropDown extends Component {
         dropdownStyle: PropTypes.object,
         hidden: PropTypes.bool,
         leftHalf: PropTypes.bool,
+        autoHidden: PropTypes.bool,
         onPress: PropTypes.func
     }
     render() {
@@ -104,7 +106,7 @@ class DropDown extends Component {
         )
     }
     _renderRow(rowData, sID, rID) {
-        const {selectedIndex, dropdownStyle, options} = this.props;
+        const {selectedIndex, autoHidden, dropdownStyle, options} = this.props;
         sID = parseInt(sID);
         return (
             <View key={sID} >

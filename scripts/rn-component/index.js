@@ -12,6 +12,7 @@ import {
     ScrollView,
     Button
 } from 'react-native';
+import * as Animatable from 'react-native-animatable';
 
 import sty from './style';
 

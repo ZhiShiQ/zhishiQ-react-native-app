@@ -10,6 +10,7 @@ export const NAV_BAR_HEIGHT = 64;
 export const TAB_BAR_HEIGHT = 50;
 export const PADDING_SIZE = 15;
 export const SWIPE_BLOCK_WIDTH = 75;
+export const DURATION = 300;
 
 /* UI related end */
 

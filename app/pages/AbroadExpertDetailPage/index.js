@@ -12,13 +12,19 @@ import {
     ScrollView,
     Button
 } from 'react-native';
+import * as Animatable from 'react-native-animatable';
+import Collapsible from 'react-native-collapsible';
 
 import sty from './style';
 
 import TeacherBasicInfo from '../../components/TeacherBasicInfo';
 import Educations from '../../components/Educations';
-
 import SubMenu from '../../components/SubMenu';
+
+
+
+
+EXPEND_HEIGHT = 250;
 
 @autobind
 class AbroadExpertDetailPage extends Component {
@@ -36,20 +42,39 @@ class AbroadExpertDetailPage extends Component {
     }
 
     shouldComponentUpdate(newProps, newState, newContext) {
-        return !Map(this.props).equals(Map(newProps))
+        return !Map(this.props).equals(Map(newProps)) || !Map(this.state).equals(Map(newState))
     }
 
     componentWillUpdate(newProps, newState, newContext) {
+        const animate = (height) => {
+            if (newState.expended)
+                this.refs.expend.transitionTo({height: height})
+            else
+                this.refs.expend.transitionTo({height: 10})
+        }
+
+        /* if (newState.expended !== this.state.expended) {
+            if (this.refs.expend.measure) {
+                this.refs.expend.measure((ox, oy, width, height, px, py) => {
+                    animate(height);
+                })
+            } else {
+                animate(EXPEND_HEIGHT);
+            }
+        } */
     }
 
     componentDidUpdate(oldProps, oldState, oldContext) {
+
     }
 
     componentWillUnmount() {
     }
 
     static defaultProps = {}
-    state = {}
+    state = {
+        expended: false
+    }
     static propTypes = {}
 
     render() {
@@ -169,12 +194,14 @@ class AbroadExpertDetailPage extends Component {
         )
     }
 
-    expendableCtl(expendable, onPress) {
+    expendableCtl(onPress) {
+        const {expended} = this.state;
+
         return <TouchableOpacity
             style={{paddingVertical: 12, alignItems: 'center'}}
             onPress={onPress}>
             <View style={{}}>
-                <Text style={{color: '#4A4A4A', fontSize: 14}}>{expendable ? "全部展开" : "部分收缩"}</Text>
+                <Text style={{color: '#4A4A4A', fontSize: 14}}>{!expended ? "全部展开" : "部分收缩"}</Text>
             </View>
         </TouchableOpacity>
     }
@@ -184,6 +211,8 @@ class AbroadExpertDetailPage extends Component {
     }
 
     get intro() {
+        const {expended} = this.state;
+
         return (
             <View style={sty.container}>
                 {this.getHead("自我介绍")}
@@ -192,7 +221,31 @@ class AbroadExpertDetailPage extends Component {
                     probabilty得文书机构时，我选择了相信自己。不靠论坛上流传的空穴来风，不轻信所谓前辈的内幕消息，运用逻辑来分析申请中得每一个环节和条件，通过教授的论文了解录取委员会的预期。一年前我以3.66总体水平一般的GPA，克服了单学期GPA1.77，缺少实习的不利条件，进入哈佛大学，同时也取得了录取率只有6%
                     NYU金融数学的青睐。我相信，申请的重点在于发挥长处突出自身和项目的契合。我对MFE, Data Science各个主流项目都有较深入的了解，对于文书的结构和内容也…
                 </Text>
-                {this.expendableCtl(true)}
+                {
+                    // expended &&
+                    /*<Animatable.View
+                        ref="expend"
+                        style={{overflow: 'hidden', height: 0}}
+                        animation={"fadeIn"}
+                    >
+                        <Text>研究生申请，我也曾同你一样一筹莫展。在面对把哥大统计当做金字招牌大肆宣传自己水平的中介时，在面对范文中把calculus-based
+                        probabilty当做calculus +
+                        probabilty得文书机构时，我选择了相信自己。不靠论坛上流传的空穴来风，不轻信所谓前辈的内幕消息，运用逻辑来分析申请中得每一个环节和条件，通过教授的论文了解录取委员会的预期。一年前我以3.66总体水平一般的GPA，克服了单学期GPA1.77，缺少实习的不利条件，进入哈佛大学，同时也取得了录取率只有6%
+                        NYU金融数学的青睐。我相信，申请的重点在于发挥长处突出自身和项目的契合。我对MFE, Data Science各个主流项目都有较深入的了解，对于文书的结构和内容也…
+                        </Text>
+                    </Animatable.View>*/
+                }
+                {
+                    <Collapsible collapsed={!this.state.expended} align="center">
+                        <Text>研究生申请，我也曾同你一样一筹莫展。在面对把哥大统计当做金字招牌大肆宣传自己水平的中介时，在面对范文中把calculus-based
+                            probabilty当做calculus +
+                            probabilty得文书机构时，我选择了相信自己。不靠论坛上流传的空穴来风，不轻信所谓前辈的内幕消息，运用逻辑来分析申请中得每一个环节和条件，通过教授的论文了解录取委员会的预期。一年前我以3.66总体水平一般的GPA，克服了单学期GPA1.77，缺少实习的不利条件，进入哈佛大学，同时也取得了录取率只有6%
+                            NYU金融数学的青睐。我相信，申请的重点在于发挥长处突出自身和项目的契合。我对MFE, Data Science各个主流项目都有较深入的了解，对于文书的结构和内容也…</Text>
+                    </Collapsible>
+                }
+                {this.expendableCtl(() => {
+                    this.setState({expended: !expended});
+                })}
             </View>
         )
     }

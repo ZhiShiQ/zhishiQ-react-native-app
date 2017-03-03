@@ -34,7 +34,8 @@ class LinkItem extends Component {
         borderColor: '#E5E5E5',
         showBorder: '',
         showIcon: true,
-        iconName: "angle-right"
+        iconName: "angle-right",
+        iconSize: 12,
     }
     state = {}
     static propTypes = {
@@ -47,18 +48,19 @@ class LinkItem extends Component {
         leftComponent: React.PropTypes.element,
         rightComponent: React.PropTypes.element,
         showIcon: React.PropTypes.bool,
-        iconName: React.PropTypes.string
+        iconName: React.PropTypes.string,
+        iconSize: React.PropTypes.number
     }
     render() {
-        const {style, leftText, leftComponent, rightComponent, showIcon, onPress, rightText, iconName, showBorder, borderColor} = this.props
+        const {style, leftText, iconSize, leftComponent, rightComponent, showIcon, onPress, rightText, iconName, showBorder, borderColor} = this.props
         return (
             <View style={style}>
                 {
                     (showBorder === 'both' || showBorder=== 'top') &&
                     <Hr marginBottom={0} style={sty.hr}/>
                 }
-                <TouchableOpacity
-                    activeOpacity={.83}
+                <TouchableHighlight
+                    underlayColor={"#EEE"}
                     onPress={onPress} style={[sty.main, style, {borderColor}]}>
                     <View style={sty.container}>
                         <View style={[sty.left, leftComponent?{flex: 5}:{}]}>
@@ -68,10 +70,10 @@ class LinkItem extends Component {
                         <View style={sty.right}>
                             {rightComponent}
                             {!rightComponent  && <Text style={sty.rightText}>{rightText}</Text>}
-                            {showIcon && <Icon style={sty.rightIcon} name={iconName} size={20} color="#C4C4C4" />}
+                            {showIcon && <Icon style={sty.rightIcon} name={iconName} size={iconSize} color="#C4C4C4" />}
                         </View>
                     </View>
-                </TouchableOpacity>
+                </TouchableHighlight>
                 {
                     (showBorder === 'both' || showBorder=== 'bottom') &&
                     <Hr marginBottom={0} style={sty.hr}/>

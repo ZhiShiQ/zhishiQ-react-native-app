@@ -29,7 +29,12 @@ class Hr extends Component {
     componentWillUnmount() {}
     static defaultProps = {}
     state = {}
-    static propTypes = {}
+    static propTypes = {
+        color: React.PropTypes.string,
+        style: React.PropTypes.object,
+        marginTop: React.PropTypes.number,
+        marginBottom: React.PropTypes.number,
+    }
     render() {
         const {color='#C4C4C4', marginTop=0, marginBottom=8, style} = this.props
 
