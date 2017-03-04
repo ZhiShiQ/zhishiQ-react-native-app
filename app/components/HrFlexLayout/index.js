@@ -45,7 +45,6 @@ class HrFlexLayout extends Component {
     }
 
     static defaultProps = {
-        renders: []
     }
     state = {}
     static propTypes = {
@@ -55,14 +54,14 @@ class HrFlexLayout extends Component {
     }
 
     render() {
-        const {style, renders, separator} = this.props
+        const {style, renders=this.props.children, separator} = this.props;
 
         return (
             <View style={[sty.main, style]}>
                 {
-                    renders.map((x, i) => {
+                    renders && renders.map((x, i) => {
                         return (
-                            <View style={{flexDirection: 'row'}}>
+                            <View style={[]}>
                                 {i != 0 && separator}
                                 {React.cloneElement(x, {key: i})}
                             </View>

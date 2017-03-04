@@ -91,6 +91,9 @@ WorkApp/
 - react-native-modal-dropdown:  头部 dropdown (TitleDropdown)
 - react-native-modalbox:  自定义 Modal (通用组件Modal)
 - react-native-swipeable:  滑动块删除 (Swipeout)
+- react-native-collapsible:  展开查看和收缩 (顾问详情页)
+- react-native-animatable:  小白也能实现动画效果！
+- react-native-looped-carousel：  轮播图插件 (首页)
 - redux-multi:  同时调度多 action
 - redux-thunk:  支持 dispatch function，异步调用
 - autobind-decorator:  es6 自动 bind(this) 修饰器

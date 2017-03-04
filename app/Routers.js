@@ -49,6 +49,9 @@ import ForeignTeacherPage from './pages/ForeignTeacherPage';
 import AbroadExpertPage from './pages/AbroadExpertPage';
 import AbroadExpertDetailPage from './pages/AbroadExpertDetailPage';
 import BoughtDonePage from './pages/BoughtDonePage';
+import MessagesPage from './pages/MessagesPage';
+import SearchPage from './pages/SearchPage';
+import ChatPage from './pages/ChatPage';
 
 import TabIcon from './components/TabIcon';
 import NavigationDrawer from './components/NavigationDrawer';
@@ -206,16 +209,24 @@ class Routers extends React.Component {
                         tabBarStyle={styles.tabBarStyle}
                         tabBarSelectedItemStyle={styles.tabBarSelectedItemStyle}
                     >
-                        <Scene key="tab_home" component={conn(HomePage)}
+                        <Scene key="search" component={conn(SearchPage)}
+                               title="我是输入框"
+                               backTitle="取消"
+                        />
+                        <Scene key="tab_home_main" initial
                                title="首页"
                                navigationBarStyle={{}}
                                titleStyle={{}}
-                               onLeft={(a) => alert(JSON.stringify(a))}
-                               leftTitle="搜索"
-                               onRight={(a) => alert(JSON.stringify(a))}
-                               rightTitle="消息"
-                               icon={TabIcon}/>
-                        <Scene initial key="tab_service" component={conn(ServicePage)}
+                               icon={TabIcon}>
+                            <Scene
+                                key="tab_home" component={conn(HomePage)}
+                                onLeft={() => Actions.search()}
+                                leftTitle="搜索"
+                                onRight={() => Actions.messages()}
+                                rightTitle="消息"
+                            />
+                        </Scene>
+                        <Scene key="tab_service" component={conn(ServicePage)}
                                rightTitle="消息"
                                onRight={() => alert()}
                                title="服务" icon={TabIcon}/>
@@ -236,6 +247,19 @@ class Routers extends React.Component {
 
                     </Scene>
                 </Scene>
+
+
+
+                <Scene key="messages" component={conn(MessagesPage)}
+                       hideTabBar
+                       title="消息"
+                       rightTitle="客服"
+                       onRight={() => alert()}
+                       backTitle="返回"/>
+                <Scene key="chat" component={conn(ChatPage)}
+                       hideTabBar
+                       title="消息"
+                       backTitle="返回"/>
 
                 <Scene key="totalOrder" component={conn(TotalOrderPage)}
                        hideTabBar

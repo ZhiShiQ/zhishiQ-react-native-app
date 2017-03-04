@@ -4,12 +4,16 @@ import autobind from 'autobind-decorator';
 import {
     Text,
     Button,
-
-    View
+    View,
+    Dimensions,
+    StyleSheet,
+    TouchableHighlight
 } from 'react-native';
 
-import style from './style';
+import sty from './style';
 
+import Carousel from '../../components/Carousel';
+import HrFlexLayout from '../../components/HrFlexLayout';
 
 @autobind
 class HomePage extends Component {
@@ -45,9 +49,40 @@ class HomePage extends Component {
 
     render() {
         const {...props} = this.props;
-        console.log(this.props);
         return (
-            <Text>HomePage</Text>
+            <View style={sty.main}>
+                <Carousel>
+                    <View style={[{ backgroundColor: '#BADA55'}, {height: 100}]}><Text>1</Text></View>
+                    <View style={[{ backgroundColor: 'red' }, {height: 100}]}><Text>2</Text></View>
+                    <View style={[{ backgroundColor: 'blue' }, {height: 100}]}><Text>3</Text></View>
+                </Carousel>
+                <HrFlexLayout
+                    style={{
+                        justifyContent: 'space-around',
+                        alignSelf: 'stretch',
+                        paddingHorizontal: 10,
+                        marginVertical: 20
+                    }}
+                >
+                    <View style={sty.rect}></View>
+                    <View style={sty.rect}></View>
+                    <View style={sty.rect}></View>
+                    <View style={sty.rect}></View>
+                </HrFlexLayout>
+
+                <HrFlexLayout
+                    style={{
+                        justifyContent: 'space-around',
+                        alignSelf: 'stretch',
+                        paddingHorizontal: 10
+                    }}
+                >
+                    <View style={sty.rect}></View>
+                    <View style={sty.rect}></View>
+                    <View style={sty.rect}></View>
+                    <View style={sty.rect}></View>
+                </HrFlexLayout>
+            </View>
         )
     }
 }
