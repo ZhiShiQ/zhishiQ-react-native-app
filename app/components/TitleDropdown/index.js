@@ -22,6 +22,7 @@ import sty from './style';
 
 import Hr from '../Hr';
 import LinkItem from '../LinkItem';
+import CustomDropDown from "../CustomDropDown";
 
 
 @autobind
@@ -39,23 +40,32 @@ class TitleDropdown extends Component {
     componentDidUpdate(oldProps, oldState, oldContext) {}
     componentWillUnmount() {}
     static defaultProps = {
+        showTitleIcon: false
     }
     state = {}
     static propTypes = {
         options: PropTypes.array.isRequired,
         title: PropTypes.string.isRequired,
         onSelect: PropTypes.func,
-        selectedIndex: PropTypes.number
+        selectedIndex: PropTypes.number,
+        showTitleIcon: PropTypes.bool,
+        style: PropTypes.object
+    }
+    hideDropDown() {
+        this.dropdown.hide();
+    }
+    showDropDown() {
+        this.dropdown.show();
     }
     render() {
-        const {options, title, onSelect, selectedIndex, ...rest} = this.props
+        const {options, title, showTitleIcon, onSelect, style, selectedIndex, ...rest} = this.props
         return (
             <ModalDropdown
                 ref={r => this.dropdown = r}
                 options={options}
                 onSelect={onSelect}
                 adjustFrame={(p) => ({...p, left: 0, top: NAV_BAR_HEIGHT})}
-                style={sty.style}
+                style={[sty.style, style]}
                 dropdownStyle={sty.dropdown}
                 renderRow={this._renderRow}
                 renderSeparator={(s, i, h) =>
@@ -64,17 +74,21 @@ class TitleDropdown extends Component {
                 textStyle={sty.title}
                 defaultIndex={selectedIndex}
                 {...rest}
-                /*defaultValue={title}*/
+                defaultValue={title}
             >
                 <View>
-                <Text style={sty.title}>
-                    {title}
-                    <Icon name="check" size={18}/>
+                <Text style={[sty.title, {textAlign: 'center'}]}>
+                    {title+(showTitleIcon?" ":"")}
+                    {showTitleIcon && <Icon name="check" size={12}/>}
                 </Text>
                 </View>
             </ModalDropdown>
         )
     }
+    rendercus() {
+        const {options, title, onSelect, selectedIndex, ...rest} = this.props
+    }
+
     _renderRow(rowData, sID, rID) {
         const {selectedIndex} = this.props;
         sID = parseInt(sID);

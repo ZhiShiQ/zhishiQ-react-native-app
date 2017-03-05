@@ -205,7 +205,7 @@ class AbroadExpertPage extends Component {
                     autoHidden
                     textStyle={sty.title}
                     getModalStyle={(layout) => ({right: -layout.width, left: 0})}
-                    onPress={(show) => {!show && this.hideMenus()}}
+                    onPress={(show) => {this.hideMenus(["submenu1"])}}
                     title={"地区"}
                     selectedStyle={{}}
                     items={this.computeFilterZone}
@@ -216,7 +216,7 @@ class AbroadExpertPage extends Component {
                     showIcon={false}
                     dynamicTitle={false}
                     textStyle={sty.title}
-                    onPress={(show) => {!show && this.hideMenus()}}
+                    onPress={(show) => {this.hideMenus(["submenu2"])}}
                     getModalStyle={(layout) => ({left: -layout.width, right: 0, height: deviceHeight-(layout.y+layout.height)})}
                     title={"专业"}
                     items={this.computeFilterPro}

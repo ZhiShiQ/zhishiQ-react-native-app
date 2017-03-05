@@ -49,11 +49,14 @@ class ReduxTitleDropdown extends Component {
         ].map(title => ({
             title,
             onPress: (index, value) => {
-                actions.setMyActiveTotalOrderTitleIndex(index)
+                actions.setMyActiveTotalOrderTitleIndex(index);
+                setTimeout(()=>this.refs.drop.hideDropDown(), 100)
             }
         }))
 
         return <TitleDropdown
+            ref="drop"
+            style={{width: 200}}
             title={list[titleIndex].title}
             selectedIndex={titleIndex}
             options={list}

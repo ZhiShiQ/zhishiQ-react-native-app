@@ -9,8 +9,8 @@ export default StyleSheet.create({
         backgroundColor: '#F5FCFF'
     },
     bottomBar: {
-        position: 'absolute',
-        bottom: 0,
+        // position: 'absolute',
+        // bottom: 0,
         flexDirection: 'row',
         backgroundColor: '#fff',
         alignItems: 'center',

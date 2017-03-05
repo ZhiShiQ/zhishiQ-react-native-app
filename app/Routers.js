@@ -52,6 +52,7 @@ import BoughtDonePage from './pages/BoughtDonePage';
 import MessagesPage from './pages/MessagesPage';
 import SearchPage from './pages/SearchPage';
 import ChatPage from './pages/ChatPage';
+import RegisterPage from './pages/RegisterPage';
 
 import TabIcon from './components/TabIcon';
 import NavigationDrawer from './components/NavigationDrawer';
@@ -201,6 +202,7 @@ class Routers extends React.Component {
         return (
             <Scene key="Root">
                 <Scene hideTabBar key="login" component={conn(LoginPage)} title="Login"/>
+                <Scene hideTabBar key="register" component={conn(RegisterPage)} title="注册"/>
                 <Scene initial key="tabbar" component={conn(NavigationDrawer)}>
                     <Scene
                         initial
@@ -213,7 +215,7 @@ class Routers extends React.Component {
                                title="我是输入框"
                                backTitle="取消"
                         />
-                        <Scene key="tab_home_main" initial
+                        <Scene initial key="tab_home_main"
                                title="首页"
                                navigationBarStyle={{}}
                                titleStyle={{}}

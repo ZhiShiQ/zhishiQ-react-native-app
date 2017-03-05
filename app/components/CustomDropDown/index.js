@@ -239,7 +239,7 @@ class CustomDropDown extends Component {
         }
         this.setState({selectedIndex: i});
 
-        autoHidden && this.hide();
+        (autoHidden || rest.autoHidden) && setTimeout(()=>this.hide(), 100);
     }
 
     _btnPress() {

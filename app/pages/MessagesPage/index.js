@@ -13,6 +13,7 @@ import {
     Button
 } from 'react-native';
 import * as Animatable from 'react-native-animatable';
+import {Actions} from 'react-native-router-flux';
 
 import sty from './style';
 
@@ -39,7 +40,13 @@ class MessagesPage extends Component {
 
         return (
             <View style={sty.main}>
-                <Text>MessagesPage</Text>
+                <TouchableOpacity
+                    onPress={() => Actions.chat()}
+                >
+                    <View>
+                        <Text>MessagesPage</Text>
+                    </View>
+                </TouchableOpacity>
             </View>
         )
     }

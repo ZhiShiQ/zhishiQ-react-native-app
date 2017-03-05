@@ -8,13 +8,16 @@ import {
     TouchableOpacity,
     TouchableWithoutFeedback,
     StyleSheet,
+    TextInput,
     ListView,
     ScrollView,
     Button
 } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 
-import sty from './style';
+import sty, {BGCLR, IMGSIZE} from './style';
+
+import ChatMessage from '../../components/ChatMessage';
 
 
 @autobind
@@ -33,16 +36,63 @@ class ChatPage extends Component {
     componentWillUnmount() {}
     static defaultProps = {}
     state = {}
-    static propTypes = {}
+    static propTypes = {};
     render() {
-        const {...props} = this.props
+        const {store} = this.props
 
         return (
             <View style={sty.main}>
-                <Text>ChatPage</Text>
+                <ListView
+                    contentContainerStyle={sty.chats}
+                    renderRow={this._renderRow}
+                    dataSource={
+                        new ListView.DataSource({
+                            rowHasChanged: (r1, r2) => !Map(r1).equals(Map(r2))
+                        }).cloneWithRows([{
+                            content: "内容是什么内容是什么内容是什么内容内容...",
+                            type: 'other'
+                        }, {
+                            content: "内容是什么内容是什么内容是什么内容内容...",
+                            type: 'other'
+                        }, {
+                            content: "",
+                            type: 'self'
+                        }, {
+                            content: "内容是什么内容是什么内容是什么内容内容...",
+                            type: 'other'
+                        }, {
+                            content: "内容是什么内容是什么内容是什么内容内容...",
+                            type: 'other'
+                        }, {
+                            content: "",
+                            type: 'self'
+                        }, {
+                            content: "内容是什么内容是什么内容是什么内容内容...",
+                            type: 'other'
+                        }, {
+                            content: "内容是什么内容是什么内容是什么内容内容...",
+                            type: 'other'
+                        }, {
+                            content: "",
+                            type: 'self'
+                        }])
+                    }
+                />
+                <View style={sty.sender}>
+                    <TextInput
+                        style={sty.input}
+                    />
+                    <View style={[sty.btn, {marginHorizontal: 10}]}></View>
+                    <View style={sty.btn}></View>
+                </View>
             </View>
         )
     }
+
+    _renderRow(data, s, index) {
+        return <ChatMessage {...data} />
+    }
+
 }
 
 export default ChatPage;
