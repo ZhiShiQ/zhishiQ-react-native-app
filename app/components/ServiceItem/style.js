@@ -2,11 +2,13 @@ import {
     StyleSheet
 } from 'react-native';
 
+import {PADDING_SIZE} from '../../constant'
+
 export default StyleSheet.create({
     main: {
         backgroundColor: '#FFF',
         justifyContent: 'center',
-        paddingHorizontal: 15
+        paddingHorizontal: PADDING_SIZE
     },
     mainContainer: {
         paddingVertical: 12,

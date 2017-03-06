@@ -47,9 +47,8 @@ class TextWithBgs extends Component {
     render() {
         const {style, items, eachStyle, bgColor, color, borderColor} = this.props
         return (
-            <View style={[sty.main, style]}>
-            <HrFlexLayout
-                renders={
+            <HrFlexLayout style={[sty.main, style]}>
+                {
                     items.map((item, i) =>
                         <TextWithBg
                             key={i}
@@ -61,8 +60,7 @@ class TextWithBgs extends Component {
                         />
                     )
                 }
-            />
-            </View>
+            </HrFlexLayout>
         )
     }
 }

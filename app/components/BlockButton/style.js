@@ -20,7 +20,7 @@ export default StyleSheet.create({
 
     },
     titleText: {
-        paddingVertical: 10,
+        paddingVertical: 12,
         fontSize: 15,
         textAlign: 'center'
     }

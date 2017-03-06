@@ -10,4 +10,7 @@ export default {
     ...require('./recent_skim'),
     ...require('./my_total_order'),
     ...require('./cart'),
+    ...require('./entry'),
+    ...require('./reset_pwd_by_phone'),
+    ...require('./reset_pwd_by_mail'),
 }

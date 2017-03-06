@@ -61,7 +61,7 @@ class HrFlexLayout extends Component {
                 {
                     renders && renders.map((x, i) => {
                         return (
-                            <View style={[]}>
+                            <View style={{flex: 0, flexDirection: 'row'}}>
                                 {i != 0 && separator}
                                 {React.cloneElement(x, {key: i})}
                             </View>

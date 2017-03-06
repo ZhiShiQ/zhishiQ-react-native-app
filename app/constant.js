@@ -17,9 +17,17 @@ export const DURATION = 300;
 /* start of my common' logic related */
 export const SET_COMMON_MODAL_OPEN = uint();
 export const SET_COMMON_MODAL_TYPE = uint();
-
+export const ABROAD_EXPERT_FORM_SELECT = uint();
 /* end of my common' logic related */
 
+/* start of entry's logic related */
+export const SET_ENTRY_ACTIVE_INDEX = uint();
+export const SET_ENTRY_REG = uint();
+export const SET_ENTRY_LOGIN = uint();
+
+export const SET_RESET_PWD_BY_PHONE = uint();
+export const SET_RESET_PWD_BY_MAIL = uint();
+/* end of entry's logic related */
 
 
 /* start of my total order's logic related */

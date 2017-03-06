@@ -13,12 +13,15 @@ import {
     ScrollView,
     Button
 } from 'react-native';
-
+import {Actions, ActionConst} from 'react-native-router-flux';
 const {height: deviceHeight, width: deviceWidth} = Dimensions.get('window');
+import {PADDING_SIZE} from '../../constant';
 import sty from './style';
 
 import Collections from '../../components/Collections';
 import DropDown from '../../components/DropDown';
+import CirImage from '../../components/CirImage';
+import ForeignTeacherItem from '../../components/ForeignTeacherItem';
 
 
 @autobind
@@ -44,47 +47,45 @@ class ForeignTeacherPage extends Component {
         return (
             <View style={{flex: 1}}>
                 {this.subMenu}
-                <Collections
-                    items={[{
-                        onPress: alert,
-                        onRemove: alert,
-                        thumbnail: null,
-                        title: 'Abby R',
-                        numerator: 4.9,
-                        deNumerator: 5,
-                        serviceTimes: 1666,
-                        content: ''
-                    }, {
-                        onPress: alert,
-                        onRemove: alert,
-                        thumbnail: null,
-                        title: 'Abby R',
-                        numerator: 4.9,
-                        deNumerator: 5,
-                        serviceTimes: 1666,
-                        content: '一站式申请'
-                    }, {
-                        onPress: alert,
-                        onRemove: alert,
-                        thumbnail: null,
-                        title: 'Abby R',
-                        numerator: 4.9,
-                        deNumerator: 5,
-                        serviceTimes: 1666,
-                    }, {
-                        onPress: alert,
-                        onRemove: alert,
-                        thumbnail: null,
-                        title: 'Abby R',
-                        numerator: 4.9,
-                        deNumerator: 5,
-                        serviceTimes: 1666,
-                        content: 'xxxxxxxxx'
-                    }]}
+                <ListView
+                    dataSource={
+                        new ListView.DataSource({
+                            rowHasChanged: (r1, r2) => !Map(r1).equals(Map(r2))
+                        }).cloneWithRows([{
+                            title: "Ssssss",
+                            tags: ["1", "b", "x"],
+                            experience: "~ 2015/12 Texarkana Gazette | assistant city editor…",
+                            clients: 994,
+                            rate: 4.9,
+                            reviews: 141,
+                            onPress: () => Actions.foreignTeacherDetail(),
+                            dollar: 25.08
+                        }, {
+                            title: "Ssssss",
+                            tags: ["1", "b", "x"],
+                            experience: "~ 2015/12 Texarkana Gazette | assistant city editor…",
+                            education: "~ 2015/12 Texarkana Gazette | assistant city editor…",
+                            clients: 994,
+                            rate: 4.9,
+                            reviews: 141,
+                            onPress: () => Actions.foreignTeacherDetail(),
+                            dollar: 25.08
+                        }])
+                    }
+                    renderRow={this._renderRow}
+                    renderSeparator={this._renderSeparator}
                 />
             </View>
         )
     }
+    _renderSeparator() {
+        return <View style={{height: 10}}></View>
+    }
+
+    _renderRow(data, s, i) {
+        return <ForeignTeacherItem {...data} key={i} />
+    }
+
 
     get computeFilterPro() {
         const {

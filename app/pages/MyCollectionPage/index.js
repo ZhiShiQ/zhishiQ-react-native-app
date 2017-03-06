@@ -19,6 +19,7 @@ import sty from './style';
 
 import SubMenu from '../../components/SubMenu';
 import Collections from '../../components/Collections';
+import ScrollTab from '../../components/ScrollTab';
 
 @autobind
 class MyCollectionPage extends Component {
@@ -52,7 +53,7 @@ class MyCollectionPage extends Component {
     state = {}
     static propTypes = {}
 
-    render() {
+    renderOld() {
         const {
             store: {
                 my_collections: {activeIndex}
@@ -64,6 +65,32 @@ class MyCollectionPage extends Component {
                 {this.menu}
                 {activeIndex ==0 && this.renderFirstItems()}
                 {activeIndex ==1 && this.renderSecondItems()}
+            </View>
+        )
+    }
+    render() {
+        const {
+            store: {
+                my_collections: {activeIndex}
+            },
+            actions
+        } = this.props;
+
+        return (
+            <View style={sty.main}>
+                <ScrollTab
+                    tabBarStyle={{height: 40}}
+                    tabBarTextStyle={{fontSize: 15}}
+                    page={activeIndex}
+                    onChangeTab={({i}) => actions.setMyActiveCollectionTab(+i)}
+                >
+                    <View style={{flex: 1}} tabLabel="收藏的顾问">
+                        {this.renderFirstItems()}
+                    </View>
+                    <View style={{flex: 1}} tabLabel="收藏的服务">
+                        {this.renderSecondItems()}
+                    </View>
+                </ScrollTab>
             </View>
         )
     }
@@ -90,7 +117,7 @@ class MyCollectionPage extends Component {
     renderSecondItems() {
         return (
             <Collections
-                style={{marginTop: 33}}
+                /*style={{marginTop: 33}}*/
                 items={[{
                     onPress: alert,
                     onRemove: alert,
@@ -134,7 +161,7 @@ class MyCollectionPage extends Component {
     renderFirstItems() {
         return (
             <Collections
-                style={{marginTop: 33}}
+                /*style={{marginTop: 33}}*/
                 items={[{
                     onPress: alert,
                     onRemove: alert,

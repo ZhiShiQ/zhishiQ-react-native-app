@@ -5,11 +5,8 @@ import {
 export default StyleSheet.create({
     main: {
         flex: 1,
-        // justifyContent: 'center',
+        justifyContent: 'center',
         // alignItems: 'center',
         backgroundColor: '#F7F7F7'
-    },
-    top: {
-        height: 120
     }
 });

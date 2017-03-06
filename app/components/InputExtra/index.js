@@ -48,7 +48,8 @@ class InputExtra extends Component {
 
     static defaultProps = {
         label: "LABEL",
-        inputProps: {}
+        inputProps: {},
+        input: <TextInput></TextInput>
     }
     state = {}
     static propTypes = {
@@ -56,19 +57,21 @@ class InputExtra extends Component {
         rText: PropTypes.string,
         onRight: PropTypes.func,
         inputProps: PropTypes.object,
-        style: PropTypes.object
+        input: PropTypes.element,
+        style: PropTypes.object,
+        labelStyle: PropTypes.object,
     }
 
     render() {
-        const {label, rText, onRight, style, inputProps} = this.props;
+        const {label, input, rText, onRight, style, inputProps, labelStyle} = this.props;
 
         return (
             <View style={[sty.main, style]}>
-                {label && <Text style={sty.label}>{label}</Text>}
-                <TextInput
-                    style={[sty.input, label ? {paddingRight: 14} : {}]}
-                    {...inputProps}
-                />
+                {label && <Text style={[sty.label, labelStyle]}>{label}</Text>}
+                {React.cloneElement(input, {
+                    style: [sty.input, label ? {paddingRight: 14} : {}],
+                    ...inputProps
+                })}
                 {rText && <TouchableOpacity
                     style={sty.rBtn}
                     onPress={onRight}

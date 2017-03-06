@@ -80,7 +80,7 @@ class HorizontalMenu extends Component {
         return (
             <View style={[sty.main, style]}>
                 <ListView
-                    contentContainerStyle={{}}
+                    contentContainerStyle={{style}}
                     horizontal
                     showsHorizontalScrollIndicator={false}
                     dataSource={

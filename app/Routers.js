@@ -52,16 +52,22 @@ import BoughtDonePage from './pages/BoughtDonePage';
 import MessagesPage from './pages/MessagesPage';
 import SearchPage from './pages/SearchPage';
 import ChatPage from './pages/ChatPage';
-import RegisterPage from './pages/RegisterPage';
+import EntryPage from './pages/EntryPage';
+import ResetPwdByPhonePage from './pages/ResetPwdByPhonePage';
+import ForeignTeacherDetailPage from './pages/ForeignTeacherDetailPage';
+import ResetPwdByMailPage from './pages/ResetPwdByMailPage';
 
 import TabIcon from './components/TabIcon';
 import NavigationDrawer from './components/NavigationDrawer';
 import Modal from './components/Modal';
 import LinkItems from './components/LinkItems';
 import CirImageWithText from './components/CirImageWithText';
+import CirImage from './components/CirImage';
 import ReduxTitleDropdown from './components/ReduxTitleDropdown';
+import BlockButton from './components/BlockButton';
 
 import * as $ from './constant';
+import {BACK_ICON} from './helpers/resource';
 
 const MapStateToProps = (state) => ({store: state})
 const MapDispatchToProps = (dispatch) => ({
@@ -69,11 +75,16 @@ const MapDispatchToProps = (dispatch) => ({
     actions: bindActionCreators(require('./actions').default, dispatch)
 })
 const conn = (Component) => connect(MapStateToProps, MapDispatchToProps)(Component)
-
+const TITLE = "芝士圈留学";
 const styles = StyleSheet.create({
     container: {
         flex: 1, backgroundColor: 'transparent', justifyContent: 'center',
         alignItems: 'center',
+    },
+    navigationBarStyle: {
+        backgroundColor: '#fff',
+        borderBottomColor: '#E5E5E5',
+        borderBottomWidth: StyleSheet.hairlineWidth
     },
     tabBarStyle: {
         backgroundColor: '#eee',
@@ -126,12 +137,15 @@ class Routers extends React.Component {
             case 'discount':
                 return {buttons: [{title: "查看我的优惠券"}, {title: "取消／确定"}], height: 470}
             case 'abroadExpert':
-                return {buttons: [{title: "预约！",
-                    onPress: () => {
-                        actions.setCommonModalIsOpen(false);
-                        Actions.boughtDone();
-                    }
-                }], height: 340}
+                return {
+                    buttons: [{
+                        title: "确定",
+                        onPress: () => {
+                            actions.setCommonModalIsOpen(false);
+                            Actions.boughtDone();
+                        }
+                    }], height: 440
+                }
         }
     }
 
@@ -161,18 +175,51 @@ class Routers extends React.Component {
     }
 
     get abroadExpertForm() {
+        const {
+            store: {
+                common: {
+                    abroadExpertForm: {
+                        items, index, name
+                    }
+                }
+            }, actions
+        } = this.props;
         return (
-            <View>
-                <Text>表单</Text>
-                <LinkItems
-                    items={[{
-                        leftText: "姓名"
-                    }, {
-                        leftText: "年龄"
-                    }, {
-                        leftText: "性别"
-                    }]}
-                />
+            <View style={{marginTop: 20}}>
+                <View style={{alignItems: 'center'}}>
+                    <CirImage size={100}source={{}}/>
+                    <Text style={{fontSize: 18, fontWeight: '600', marginTop: 6}}>{name}</Text>
+                </View>
+
+                <View style={{marginTop: 20}}>
+                    {
+                        items.map((x, i) => (
+                            <TouchableHighlight
+                                style={{marginVertical: 6, marginHorizontal: 15, borderRadius: 6, overflow: 'hidden'}}
+                                onPress={() => {
+                                    actions.abroadExpertFormModalSelect(i);
+                                }}
+                            >
+                                <View style={[{
+                                    padding: 10
+                                }, i == index ? {backgroundColor: '#fc6d34'} : {
+                                        backgroundColor: '#fafafa',
+                                        borderWidth: StyleSheet.hairlineWidth,
+                                        borderColor: '#e5e5e5'
+                                    }]}>
+                                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                                        <View style={{flex: 1}}>
+                                            <Text style={[i == index ? {color: '#fff'} : {}]}>{x.leftText}</Text>
+                                        </View>
+                                        <View style={{flex: 0, marginLeft: 15}}>
+                                            <Text style={[i == index ? {color: '#fff'} : {}]}>{x.rightText}</Text>
+                                        </View>
+                                    </View>
+                                </View>
+                            </TouchableHighlight>)
+                        )
+                    }
+                </View>
             </View>
         )
     }
@@ -199,10 +246,14 @@ class Routers extends React.Component {
             },
             actions
         } = this.props;
+        const backIcon = {uri: BACK_ICON};
         return (
-            <Scene key="Root">
+            <Scene key="Root" backButtonImage={backIcon} navigationBarStyle={styles.navigationBarStyle}>
                 <Scene hideTabBar key="login" component={conn(LoginPage)} title="Login"/>
-                <Scene hideTabBar key="register" component={conn(RegisterPage)} title="注册"/>
+                <Scene hideTabBar key="entry" component={conn(EntryPage)} title={TITLE}/>
+
+                <Scene key="resetPwdByPhone" component={conn(ResetPwdByPhonePage)} title={'重置密码'}/>
+                <Scene key="resetPwdByMail" component={conn(ResetPwdByMailPage)} title={'重置密码'}/>
                 <Scene initial key="tabbar" component={conn(NavigationDrawer)}>
                     <Scene
                         initial
@@ -212,12 +263,13 @@ class Routers extends React.Component {
                         tabBarSelectedItemStyle={styles.tabBarSelectedItemStyle}
                     >
                         <Scene key="search" component={conn(SearchPage)}
+                               navigationBarStyle={styles.navigationBarStyle}
                                title="我是输入框"
                                backTitle="取消"
                         />
                         <Scene initial key="tab_home_main"
+                               navigationBarStyle={styles.navigationBarStyle}
                                title="首页"
-                               navigationBarStyle={{}}
                                titleStyle={{}}
                                icon={TabIcon}>
                             <Scene
@@ -229,14 +281,17 @@ class Routers extends React.Component {
                             />
                         </Scene>
                         <Scene key="tab_service" component={conn(ServicePage)}
+                               navigationBarStyle={styles.navigationBarStyle}
                                rightTitle="消息"
                                onRight={() => alert()}
                                title="服务" icon={TabIcon}/>
                         <Scene key="tab_cart" component={conn(CartPage)} title="购物车"
+                               navigationBarStyle={styles.navigationBarStyle}
                                onRight={() => alert()}
                                rightTitle="编辑"
                                icon={TabIcon}/>
                         <Scene key="tab_mine_main" title="我的"
+                               navigationBarStyle={styles.navigationBarStyle}
                                icon={TabIcon}>
                             <Scene key="tab_mine" component={conn(MinePage)} title="我的"
                                    navigationBarStyle={{borderBottomColor: 'transparent'}}
@@ -249,7 +304,6 @@ class Routers extends React.Component {
 
                     </Scene>
                 </Scene>
-
 
 
                 <Scene key="messages" component={conn(MessagesPage)}
@@ -277,6 +331,13 @@ class Routers extends React.Component {
                        rightTitle="搜索"
                        onRight={() => alert()}
                        backTitle="返回"/>
+
+                <Scene key="foreignTeacherDetail" component={conn(ForeignTeacherDetailPage)}
+                       hideTabBar
+                       title=""
+                       rightTitle="分享"
+                       onRight={() => alert()}
+                />
 
                 <Scene key="abroadExpert" component={conn(AbroadExpertPage)}
                        hideTabBar
@@ -339,8 +400,8 @@ class Routers extends React.Component {
                     component={conn(TimezoneNFreeTimePage)}
                 />
                 {/*<Scene*/}
-                    {/*key="myBasicInfo_main"*/}
-                    {/*hideTabBar*/}
+                {/*key="myBasicInfo_main"*/}
+                {/*hideTabBar*/}
                 {/*>*/}
                 <Scene
                     title="基本资料"

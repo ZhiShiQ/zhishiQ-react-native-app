@@ -7,13 +7,13 @@ export default StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#F7F7F7'
+        backgroundColor: '#FFF'
     },
     rowContainer: {
         borderBottomWidth: 2,
         borderBottomColor: 'transparent',
         marginHorizontal: 18,
-        paddingVertical: 8
+        paddingVertical: 10,
     },
     rowText: {
         textAlign: 'center',
@@ -21,6 +21,7 @@ export default StyleSheet.create({
         color: '#4A4A4A'
     },
     active: {
-        borderBottomColor: '#4A4A4A'
+        color: "#EA5502",
+        borderBottomColor: '#EA5502'
     }
 });

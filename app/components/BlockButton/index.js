@@ -31,7 +31,7 @@ class BlockButton extends Component {
     componentDidUpdate(oldProps, oldState, oldContext) {}
     componentWillUnmount() {}
     static defaultProps = {
-        backgroundColor: 'rgb(17,169,138)',
+        backgroundColor: '#ea5502',
         title: 'title',
         disabledStyle: {},
         color: '#FFF'

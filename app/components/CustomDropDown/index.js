@@ -78,8 +78,11 @@ class CustomDropDown extends Component {
                 this.setState({__noModal: false});
                 onShow && onShow();
             } else {
-                setTimeout(() => this.setState({__noModal: true}), duration+10)
-                onHidden && onHidden();
+                setTimeout(() => {
+                    this.setState({__noModal: true}, () => {
+                        onHidden && onHidden();
+                    });
+                }, duration>>1)
             }
         }
     }
@@ -138,7 +141,7 @@ class CustomDropDown extends Component {
     renderDropDown() {
         const {modalStyle, getModalStyle, duration} = this.props;
         const {showDropdown, __noModal} = this.state;
-        if (!__noModal && this._btnLayout) {
+        if (showDropdown/*!__noModal*/ && this._btnLayout) {
             const {items} = this.props;
             return (
                 <Animatable.View

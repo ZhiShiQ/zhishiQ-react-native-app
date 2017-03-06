@@ -2,13 +2,16 @@ import {
     StyleSheet
 } from 'react-native';
 
+import {PADDING_SIZE} from '../../constant'
+
 export default StyleSheet.create({
     main: {
         backgroundColor: '#FFF',
         justifyContent: 'center',
+        paddingHorizontal: PADDING_SIZE
     },
     mainContainer: {
-        paddingVertical: 6,
+        paddingVertical: 12,
     },
     mainTitleContainer: {
         marginVertical: 4,
@@ -20,14 +23,17 @@ export default StyleSheet.create({
         fontSize: 14,
         color: '#4A4A4A',
         flex: 1,
+        marginLeft: 3,
+        marginBottom: 4,
     },
     mainInnerContainer: {
         flexDirection: 'row',
-        padding: 6,
+        // padding: 6,
     },
     tags: {
-        // flexDirection: 'row',
-        flexWrap: 'wrap'
+        flexWrap: 'wrap',
+        flexDirection: 'row',
+        marginBottom: 6,
     },
     imageContainer: {
         marginRight: 6,
@@ -35,11 +41,13 @@ export default StyleSheet.create({
     },
     image: {
         backgroundColor: '#D8D8D8',
-        height: 50,
-        width: 50,
+        height: 45,
+        width: 45,
+        borderRadius: 22.5,
     },
     contentContainer: {
-        // flex: 1
+        flex: 1,
+        marginBottom: 6
     },
     contentText: {
         justifyContent: 'flex-start',
@@ -49,11 +57,12 @@ export default StyleSheet.create({
     },
 
     footContainer: {
-        alignSelf: 'flex-end',
+        // alignSelf: 'stretch',
         flexDirection: 'row'
     },
     footerLeft: {
-        flex: 1
+        flex: 1,
+        flexDirection: 'row'
     },
     promptText: {
         fontSize: 12.6,
@@ -61,16 +70,20 @@ export default StyleSheet.create({
     },
     priceText: {
         fontSize: 14,
+        fontWeight: '600',
         color: '#4A4A4A'
     },
     countText: {
-
+        marginRight: 8
     },
     stateText: {
         flex: 1,
         textAlign: 'right'
     },
     footerRight: {
+        flex: 1,
+        // alignSelf: 'flex-end',
+        alignItems: 'flex-end',
         marginRight: 12
     },
     bottomContainer: {
@@ -78,5 +91,14 @@ export default StyleSheet.create({
     },
     btnText: {
         // backgroundColor: 'blue'
+    },
+    tag: {
+        alignItems: 'center',
+        marginHorizontal: 10
+    },
+    tip: {
+        fontSize: 12,
+        color: '#848484',
+        fontWeight: 'normal'
     }
 });

@@ -83,7 +83,7 @@ class Collection extends Component {
                             <Text style={sty.titleText}>{title}</Text>
                             <View style={sty.tags} >
                                 {!!content && <Text>{content}</Text>}
-                                {tags && <TextWithBgs items={tags} />}
+                                {tags && <TextWithBgs eachStyle={{paddingVertical: 3, borderRadius: 2, overflow:'hidden'}} items={tags} />}
                             </View>
                         </View>
                     </View>

@@ -9,4 +9,6 @@ export const setCommonModalType = (_type) => _t($.SET_COMMON_MODAL_TYPE, {_type}
 
 export const refererModalOpen = () => (emit) => emit([setCommonModalIsOpen(true), setCommonModalType('referer')])
 export const discountModalOpen = () => (emit) => emit([setCommonModalIsOpen(true), setCommonModalType('discount')])
-export const abroadExpertFormModalOpen = () => (emit) => emit([setCommonModalIsOpen(true), setCommonModalType('abroadExpert')])
+export const abroadExpertFormModalOpen = () => (emit) => emit([setCommonModalIsOpen(true), abroadExpertFormModalSelect(0), setCommonModalType('abroadExpert')])
+
+export const abroadExpertFormModalSelect = (index) => _t($.ABROAD_EXPERT_FORM_SELECT, {index});

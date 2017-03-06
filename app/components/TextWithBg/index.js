@@ -59,12 +59,11 @@ class TextWithBg extends Component {
 
     render() {
         const {title, style, onPress, bgColor, color, ...props} = this.props
-
         return (
             <TouchableWithoutFeedback
                 onPress={onPress}
             >
-                <View>
+                <View style={{alignSelf: 'center'}}>
                     <Text
                         {...props}
                         style={[sty.main, style, {color, backgroundColor: bgColor}]}

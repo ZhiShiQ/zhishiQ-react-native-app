@@ -44,12 +44,15 @@ class TeacherBasicInfo extends Component {
         tags: PropTypes.array,
         appointNum: PropTypes.number,
         average: PropTypes.number,
-        commentNum: PropTypes.number
+        commentNum: PropTypes.number,
+
+        listKeys: PropTypes.array,
+        listValues: PropTypes.array,
     }
     render() {
-        const {style, thumbnail, name, content, tags, appointNum, average, commentNum} = this.props
+        const {style, listValues, listKeys, thumbnail, name, content, tags, appointNum, average, commentNum} = this.props
         return (
-            <View style={sty.main}>
+            <View style={[sty.main]}>
                 <CirImage size={110} source={thumbnail} style={{marginBottom: 6}}/>
                 <Text style={sty.name}>{name}</Text>
                 <Text style={sty.content}>{content}</Text>
@@ -61,20 +64,7 @@ class TeacherBasicInfo extends Component {
                 />
                 <HrFlexLayout
                     style={{marginTop: 14}}
-                    renders={[
-                        <View style={sty.tag}>
-                            <Text>{appointNum}</Text>
-                            <Text style={sty.tip}>预约人数</Text>
-                        </View>,
-                        <View style={sty.tag}>
-                            <Text>{average}</Text>
-                            <Text style={sty.tip}>平均评分</Text>
-                        </View>,
-                        <View style={sty.tag}>
-                            <Text>{commentNum}</Text>
-                            <Text style={sty.tip}>用户评价</Text>
-                        </View>
-                    ]}
+                    renders={this.renders}
                     separator={
                         <View
                             style={{
@@ -86,6 +76,29 @@ class TeacherBasicInfo extends Component {
                 />
             </View>
         )
+    }
+
+    get renders() {
+        const {style, listValues, listKeys, thumbnail, name, content, tags, appointNum, average, commentNum} = this.props
+        return listKeys ? listKeys.map((k, i) => (
+            <View style={sty.tag} key={i}>
+                <Text>{listValues[i]}</Text>
+                <Text style={sty.tip}>{k}</Text>
+            </View>
+        )) : [
+            <View style={sty.tag}>
+                <Text>{appointNum}</Text>
+                <Text style={sty.tip}>预约人数</Text>
+            </View>,
+            <View style={sty.tag}>
+                <Text>{average}</Text>
+                <Text style={sty.tip}>平均评分</Text>
+            </View>,
+            <View style={sty.tag}>
+                <Text>{commentNum}</Text>
+                <Text style={sty.tip}>用户评价</Text>
+            </View>
+        ]
     }
 }
 

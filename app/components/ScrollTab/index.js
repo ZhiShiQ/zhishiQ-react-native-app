@@ -12,12 +12,13 @@ import {
     ScrollView,
     Button
 } from 'react-native';
+import * as Animatable from 'react-native-animatable';
 
 import sty from './style';
 
-
+import ScrollableTab, {DefaultTabBar} from 'react-native-scrollable-tab-view';
 @autobind
-class SubMenu extends Component {
+class ScrollTab extends Component {
     constructor(props) {
       super(props)
     }
@@ -33,23 +34,26 @@ class SubMenu extends Component {
     static defaultProps = {}
     state = {}
     static propTypes = {
-        title: PropTypes.string,
-        onPress: PropTypes.func,
-        active: PropTypes.bool,
-        style: PropTypes.object
+        tabBarStyle: PropTypes.object,
+        tabContainerStyle: PropTypes.object,
     }
     render() {
-        const {title, onPress, active, style} = this.props
+        const {children, tabContainerStyle, tabBarStyle, ...rest} = this.props
 
         return (
-            <TouchableHighlight
-                style={[sty.rowContainer, active ? sty.active : {}, style]}
-                onPress={onPress}
+            <ScrollableTab
+                renderTabBar={() => <DefaultTabBar tabContainerStyle={tabContainerStyle} style={[{height: 48}, tabBarStyle]} tabStyle={{paddingBottom: 0}}/>}
+                tabBarTextStyle={{fontSize: 17}}
+                tabBarInactiveTextColor="#4A4A4A"
+                tabBarActiveTextColor="#EA5502"
+                tabBarBackgroundColor="#fff"
+                tabBarUnderlineStyle={{backgroundColor: "#EA5502", height: 2}}
+                {...rest}
             >
-                    <Text style={sty.rowText}>{title}</Text>
-            </TouchableHighlight>
+                {children}
+            </ScrollableTab>
         )
     }
 }
 
-export default SubMenu;
+export default ScrollTab;

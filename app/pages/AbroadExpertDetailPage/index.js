@@ -20,8 +20,9 @@ import sty from './style';
 import TeacherBasicInfo from '../../components/TeacherBasicInfo';
 import Educations from '../../components/Educations';
 import SubMenu from '../../components/SubMenu';
-
-
+import ScrollTab from '../../components/ScrollTab';
+import BottomBtns from '../../components/BottomBtns';
+import CollapsibleIntro from '../../components/CollapsibleIntro';
 
 
 EXPEND_HEIGHT = 250;
@@ -54,14 +55,14 @@ class AbroadExpertDetailPage extends Component {
         }
 
         /* if (newState.expended !== this.state.expended) {
-            if (this.refs.expend.measure) {
-                this.refs.expend.measure((ox, oy, width, height, px, py) => {
-                    animate(height);
-                })
-            } else {
-                animate(EXPEND_HEIGHT);
-            }
-        } */
+         if (this.refs.expend.measure) {
+         this.refs.expend.measure((ox, oy, width, height, px, py) => {
+         animate(height);
+         })
+         } else {
+         animate(EXPEND_HEIGHT);
+         }
+         } */
     }
 
     componentDidUpdate(oldProps, oldState, oldContext) {
@@ -93,16 +94,39 @@ class AbroadExpertDetailPage extends Component {
                         commentNum={112}
                     />
                     {this.sep}
-                    {this.menu}
-                    {this.intro}
-                    {this.sep}
-                    {this.educ}
-                    {this.sep}
-                    {this.experience}
-                    {this.sep}
-                    {this.sep}
-                    {this.sep}
-                    {this.sep}
+                    <ScrollTab
+                        /*onChangeTab={({i}) => actions.setEntryActiveIndex(a[+i])}*/
+                        tabContainerStyle={{flex: -1, alignItems: 'center'}}
+                        tabBarTextStyle={{fontSize: 14}}
+                        tabBarStyle={{height: 40}}
+                    >
+                        <View tabLabel="详情" style={{flex: 1}}>
+                            <CollapsibleIntro
+                                title={"自我介绍"}
+                                showTexts={["研究生申请，我也曾同你一样一筹莫展。在面对把哥大统计当做金字招牌大肆宣传自己水平的中介时，在面对范文中把calculus-based",
+                                    "probabilty当做calculus +",
+                                    "probabilty得文书机构时，我选择了相信自己。不靠论坛上流传的空穴来风，不轻信所谓前辈的内幕消息，运用逻辑来分析申请中得每一个环节和条件，通过教授的论文了解录取委员会的预期。一年前我以3.66总体水平一般的GPA，克服了单学期GPA1.77，缺少实习的不利条件，进入哈佛大学，同时也取得了录取率只有6%",
+                                    "NYU金融数学的青睐。我相信，申请的重点在于发挥长处突出自身和项目的契合。我对MFE, Data Science各个主流项目都有较深入的了解，对于文书的结构和内容也…"]}
+                                hideTexts={["研究生申请，我也曾同你一样一筹莫展。在面对把哥大统计当做金字招牌大肆宣传自己水平的中介时，在面对范文中把calculus-based",
+                                    "probabilty当做calculus +",
+                                    "probabilty得文书机构时，我选择了相信自己。不靠论坛上流传的空穴来风，不轻信所谓前辈的内幕消息，运用逻辑来分析申请中得每一个环节和条件，通过教授的论文了解录取委员会的预期。一年前我以3.66总体水平一般的GPA，克服了单学期GPA1.77，缺少实习的不利条件，进入哈佛大学，同时也取得了录取率只有6%",
+                                    "NYU金融数学的青睐。我相信，申请的重点在于发挥长处突出自身和项目的契合。我对MFE, Data Science各个主流项目都有较深入的了解，对于文书的结构和内容也…"]}
+
+                            />
+                            {this.sep}
+                            {this.educ}
+                            {this.sep}
+                            {this.experience}
+                            {this.sep}
+                            {this.sep}
+                            {this.sep}
+                            {this.sep}
+                        </View>
+                        <View tabLabel="服务"></View>
+                        <View tabLabel="评价"></View>
+                    </ScrollTab>
+
+
                 </ScrollView>
                 {this.fixBottom}
             </View>
@@ -112,35 +136,17 @@ class AbroadExpertDetailPage extends Component {
     get fixBottom() {
         const {actions} = this.props;
         return (
-            <View
-                style={{
-                    flexDirection: 'row',
-                    position: 'absolute',
-                    bottom: 0,
-                }}
-            >
-                <TouchableOpacity style={{
-                    flex: 1, alignItems: 'center',
-                    paddingVertical: 15, backgroundColor: "#fff"
-                }}>
-                    <View><Text>收藏</Text></View>
-                </TouchableOpacity>
-                <TouchableOpacity style={{
-                    flex: 1, alignItems: 'center',
-                    paddingVertical: 15, backgroundColor: "#fff"
-                }}>
-                    <View><Text>客服</Text></View>
-                </TouchableOpacity>
-                <TouchableOpacity
-                    style={{
-                        flex: 2, alignItems: 'center',
-                        paddingVertical: 15, backgroundColor: "#E5E5E5"
-                    }}
-                    onPress={() => actions.abroadExpertFormModalOpen()}
-                >
-                    <View><Text>立即预约</Text></View>
-                </TouchableOpacity>
-            </View>
+            <BottomBtns
+                lefts={[{
+                    text: "收藏",
+                    onPress: null
+                }, {
+                    text: "客服",
+                    onPress: null
+                }]}
+                mainText={"立即预约"}
+                onMainPress={() => actions.abroadExpertFormModalOpen()}
+            />
         )
     }
 
@@ -194,67 +200,15 @@ class AbroadExpertDetailPage extends Component {
         )
     }
 
-    expendableCtl(onPress) {
-        const {expended} = this.state;
-
-        return <TouchableOpacity
-            style={{paddingVertical: 12, alignItems: 'center'}}
-            onPress={onPress}>
-            <View style={{}}>
-                <Text style={{color: '#4A4A4A', fontSize: 14}}>{!expended ? "全部展开" : "部分收缩"}</Text>
-            </View>
-        </TouchableOpacity>
-    }
-
     get collapse() {
 
-    }
-
-    get intro() {
-        const {expended} = this.state;
-
-        return (
-            <View style={sty.container}>
-                {this.getHead("自我介绍")}
-                <Text style={{color: '#848484'}}>研究生申请，我也曾同你一样一筹莫展。在面对把哥大统计当做金字招牌大肆宣传自己水平的中介时，在面对范文中把calculus-based
-                    probabilty当做calculus +
-                    probabilty得文书机构时，我选择了相信自己。不靠论坛上流传的空穴来风，不轻信所谓前辈的内幕消息，运用逻辑来分析申请中得每一个环节和条件，通过教授的论文了解录取委员会的预期。一年前我以3.66总体水平一般的GPA，克服了单学期GPA1.77，缺少实习的不利条件，进入哈佛大学，同时也取得了录取率只有6%
-                    NYU金融数学的青睐。我相信，申请的重点在于发挥长处突出自身和项目的契合。我对MFE, Data Science各个主流项目都有较深入的了解，对于文书的结构和内容也…
-                </Text>
-                {
-                    // expended &&
-                    /*<Animatable.View
-                        ref="expend"
-                        style={{overflow: 'hidden', height: 0}}
-                        animation={"fadeIn"}
-                    >
-                        <Text>研究生申请，我也曾同你一样一筹莫展。在面对把哥大统计当做金字招牌大肆宣传自己水平的中介时，在面对范文中把calculus-based
-                        probabilty当做calculus +
-                        probabilty得文书机构时，我选择了相信自己。不靠论坛上流传的空穴来风，不轻信所谓前辈的内幕消息，运用逻辑来分析申请中得每一个环节和条件，通过教授的论文了解录取委员会的预期。一年前我以3.66总体水平一般的GPA，克服了单学期GPA1.77，缺少实习的不利条件，进入哈佛大学，同时也取得了录取率只有6%
-                        NYU金融数学的青睐。我相信，申请的重点在于发挥长处突出自身和项目的契合。我对MFE, Data Science各个主流项目都有较深入的了解，对于文书的结构和内容也…
-                        </Text>
-                    </Animatable.View>*/
-                }
-                {
-                    <Collapsible collapsed={!this.state.expended} align="center">
-                        <Text>研究生申请，我也曾同你一样一筹莫展。在面对把哥大统计当做金字招牌大肆宣传自己水平的中介时，在面对范文中把calculus-based
-                            probabilty当做calculus +
-                            probabilty得文书机构时，我选择了相信自己。不靠论坛上流传的空穴来风，不轻信所谓前辈的内幕消息，运用逻辑来分析申请中得每一个环节和条件，通过教授的论文了解录取委员会的预期。一年前我以3.66总体水平一般的GPA，克服了单学期GPA1.77，缺少实习的不利条件，进入哈佛大学，同时也取得了录取率只有6%
-                            NYU金融数学的青睐。我相信，申请的重点在于发挥长处突出自身和项目的契合。我对MFE, Data Science各个主流项目都有较深入的了解，对于文书的结构和内容也…</Text>
-                    </Collapsible>
-                }
-                {this.expendableCtl(() => {
-                    this.setState({expended: !expended});
-                })}
-            </View>
-        )
     }
 
     get sep() {
         return <View style={{height: 10}}/>
     }
 
-    get menu() {
+    get menu_1() {
         return (
             <View style={sty.menus}>
                 <SubMenu style={sty.submenu}
