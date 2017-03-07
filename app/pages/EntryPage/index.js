@@ -119,6 +119,9 @@ class EntryPage extends Component {
                     <View style={{marginTop: 28}}>
                         <BlockButton
                             title={" 登录 "}
+                            onPress={() => {
+                                Actions.tabbar({type: "replace"});
+                            }}
                         />
                         {this.social}
                     </View>

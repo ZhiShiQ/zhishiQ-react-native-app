@@ -62,10 +62,13 @@ import OrderConfirmPage from './pages/OrderConfirmPage';
 import TabIcon from './components/TabIcon';
 import NavigationDrawer from './components/NavigationDrawer';
 import Modal from './components/Modal';
+import LinkItem from './components/LinkItem';
+import HrFlexLayout from './components/HrFlexLayout';
 import LinkItems from './components/LinkItems';
 import CirImageWithText from './components/CirImageWithText';
 import CirImage from './components/CirImage';
 import ReduxTitleDropdown from './components/ReduxTitleDropdown';
+import Hr from './components/Hr';
 import BlockButton from './components/BlockButton';
 
 import * as $ from './constant';
@@ -148,6 +151,8 @@ class Routers extends React.Component {
                         }
                     }], height: 440
                 }
+            case 'simplePay':
+                return {buttons: [], height: 300}
         }
     }
 
@@ -166,13 +171,31 @@ class Routers extends React.Component {
                         text={['亲爱的用户，可用电脑浏览器打开网址', '进行更多操作哦：', 'address']}
                     />
                 }
-                {
-                    modalType === 'discount' && <Text>我的优惠券</Text>
-                }
-                {
-                    modalType === 'abroadExpert' && this.abroadExpertForm
-                }
+                {modalType === 'discount' && <Text>我的优惠券</Text>}
+                {modalType === 'abroadExpert' && this.abroadExpertForm}
+                {modalType === 'simplePay' && this.simplePlay}
             </Modal>
+        )
+    }
+
+    get simplePlay() {
+        return (
+            <View style={{alignItems: 'center', backgroundColor: '#fff', flex: 1}}>
+                <Text style={{marginBottom: 8, marginTop: 35, fontSize: 17, fontWeight: 'bold', color: '#4a4a4a'}}>感谢您选择
+                    芝士圈留学 的服务！</Text>
+                <Text style={{marginBottom: 13.5, fontSize: 12, color: '#a1a1a1'}}>PO号码：<Text selectable>PO12345</Text></Text>
+                <Text style={{marginBottom: 2, fontSize: 14, color: '#4a4a4a'}}>订单总价：</Text>
+                <Text style={{marginBottom: 28.5, fontSize: 16, color: '#ea5502'}}>￥532.00 RMB</Text>
+                <Hr marginBottom={0} style={{alignSelf: 'stretch'}} borderColor={"#e5e5e5"}/>
+                <LinkItem onPress={null} showBorder={""} style={{paddingHorizontal: $.PADDING_SIZE, paddingVertical: 4}}
+                          leftComponent={<HrFlexLayout style={{alignItems: 'center'}}><CirImage style={{marginRight: 12}}
+                              size={32}/><Text>微信支付</Text></HrFlexLayout>} borderColor={"#e5e5e5"}/>
+                <Hr marginBottom={0} style={{alignSelf: 'stretch', marginHorizontal: $.PADDING_SIZE}}/>
+                <LinkItem onPress={null} showBorder={""} style={{paddingHorizontal: $.PADDING_SIZE, paddingVertical: 4}}
+                          leftComponent={<HrFlexLayout style={{alignItems: 'center'}}><CirImage style={{marginRight: 12}}
+                              size={32}/><Text>支付宝支付</Text></HrFlexLayout>}/>
+                <Hr marginBottom={0} style={{alignSelf: 'stretch', marginHorizontal: $.PADDING_SIZE}}/>
+            </View>
         )
     }
 
@@ -252,11 +275,11 @@ class Routers extends React.Component {
         return (
             <Scene key="Root" backButtonImage={backIcon} navigationBarStyle={styles.navigationBarStyle}>
                 <Scene hideTabBar key="login" component={conn(LoginPage)} title="Login"/>
-                <Scene hideTabBar key="entry" component={conn(EntryPage)} title={TITLE}/>
+                <Scene initial hideTabBar key="entry" component={conn(EntryPage)} title={TITLE}/>
 
                 <Scene key="resetPwdByPhone" component={conn(ResetPwdByPhonePage)} title={'重置密码'}/>
                 <Scene key="resetPwdByMail" component={conn(ResetPwdByMailPage)} title={'重置密码'}/>
-                <Scene initial key="tabbar" component={conn(NavigationDrawer)}>
+                <Scene key="tabbar" component={conn(NavigationDrawer)}>
                     <Scene
                         initial
                         key="tab_main"
@@ -324,7 +347,7 @@ class Routers extends React.Component {
                                    title="确认订单"
                             />
                         </Scene>
-                        <Scene  key="tab_cart" component={conn(CartPage)} title="购物车"
+                        <Scene key="tab_cart" component={conn(CartPage)} title="购物车"
                                navigationBarStyle={styles.navigationBarStyle}
                                onRight={() => alert()}
                                rightTitle="编辑"
@@ -468,17 +491,12 @@ class Routers extends React.Component {
                 />
 
 
-
-
-
                 <Scene key="boughtDone"
                        backTitle=""
                        title="预约/购买成功"
                        hideTabBar
                        component={conn(BoughtDonePage)}
                 />
-
-
 
 
             </Scene>

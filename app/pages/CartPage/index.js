@@ -54,9 +54,11 @@ class CartPage extends Component {
                 onControlPress: () => actions.setCartItemSelectedByIndex(index, !x.selected),
                 onBtnPress: () => actions.discountModalOpen()
             });
-            a.saveSum += x.save || 0;
-            a.sum += x.price || 0;
-            a.selectedNum += (x.selected ? 1 : 0);
+            if (x.selected) {
+                a.saveSum += x.save || 0;
+                a.sum += x.price || 0;
+                a.selectedNum += 1;
+            }
             return a;
         }, {items: [], saveSum: 0, sum: 0, selectedNum: 0});
     }
@@ -80,7 +82,12 @@ class CartPage extends Component {
                         <Text style={style.sum}>总计：{sum}</Text>
                         <Text style={style.save}>已节省：{saveSum}</Text>
                     </View>
-                    <TouchableHighlight style={style.done}>
+                    <TouchableHighlight
+                        style={style.done}
+                        onPress={() => {
+                            actions.simplePayModalOpen();
+                        }}
+                    >
                         <View>
                             <Text style={style.doneText}>结算({selectedNum})</Text>
                         </View>
