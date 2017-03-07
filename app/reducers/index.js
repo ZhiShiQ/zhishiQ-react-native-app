@@ -20,4 +20,8 @@ export default combineReducers({
     entry: require('./entry').default,
     reset_pwd_by_phone: require('./reset_pwd_by_phone').default,
     reset_pwd_by_mail: require('./reset_pwd_by_mail').default,
+    foreign_teacher_detail: require('./foreign_teacher_detail').default,
+    abroad_expert_detail: require('./abroad_expert_detail').default,
+    foreign_teacher: require('./foreign_teacher').default,
+    abroad_expert: require('./abroad_expert').default,
 })

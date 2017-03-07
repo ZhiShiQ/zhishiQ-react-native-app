@@ -23,6 +23,7 @@ import SubMenu from '../../components/SubMenu';
 import ScrollTab from '../../components/ScrollTab';
 import BottomBtns from '../../components/BottomBtns';
 import CollapsibleIntro from '../../components/CollapsibleIntro';
+import Comments from '../../components/Comments';
 
 
 EXPEND_HEIGHT = 250;
@@ -79,19 +80,19 @@ class AbroadExpertDetailPage extends Component {
     static propTypes = {}
 
     render() {
-        const {params = {}} = this.props
-        const {title = "TITLE"} = params;
-
+        const {store: {abroad_expert_detail}, actions} = this.props
+        const {base, detail} = abroad_expert_detail;
         return (
             <View>
                 <ScrollView contentContainerStyle={[sty.main, {paddingBottom: 45}]}>
                     <TeacherBasicInfo
-                        tags={["文书导师", "全套文书导师", "一站式申请"]}
-                        name={title}
-                        content={"2016.9 - 2017.7 ESSEC Business School, Master of Finance; 2016.1 - 2016.4 ESC Rennes, Exchange student; 2012.9 - 2016.7 Nankai University, Bachelor of Economics"}
-                        appointNum={400}
-                        average={4.5}
-                        commentNum={112}
+                        thumbnail={base.avatar}
+                        tags={base.tags}
+                        name={base.name}
+                        content={base.content}
+                        appointNum={base.appointNum}
+                        average={base.average}
+                        commentNum={base.commentNum}
                     />
                     {this.sep}
                     <ScrollTab
@@ -100,17 +101,11 @@ class AbroadExpertDetailPage extends Component {
                         tabBarTextStyle={{fontSize: 14}}
                         tabBarStyle={{height: 40}}
                     >
-                        <View tabLabel="详情" style={{flex: 1}}>
+                        <View tabLabel="详情">
                             <CollapsibleIntro
                                 title={"自我介绍"}
-                                showTexts={["研究生申请，我也曾同你一样一筹莫展。在面对把哥大统计当做金字招牌大肆宣传自己水平的中介时，在面对范文中把calculus-based",
-                                    "probabilty当做calculus +",
-                                    "probabilty得文书机构时，我选择了相信自己。不靠论坛上流传的空穴来风，不轻信所谓前辈的内幕消息，运用逻辑来分析申请中得每一个环节和条件，通过教授的论文了解录取委员会的预期。一年前我以3.66总体水平一般的GPA，克服了单学期GPA1.77，缺少实习的不利条件，进入哈佛大学，同时也取得了录取率只有6%",
-                                    "NYU金融数学的青睐。我相信，申请的重点在于发挥长处突出自身和项目的契合。我对MFE, Data Science各个主流项目都有较深入的了解，对于文书的结构和内容也…"]}
-                                hideTexts={["研究生申请，我也曾同你一样一筹莫展。在面对把哥大统计当做金字招牌大肆宣传自己水平的中介时，在面对范文中把calculus-based",
-                                    "probabilty当做calculus +",
-                                    "probabilty得文书机构时，我选择了相信自己。不靠论坛上流传的空穴来风，不轻信所谓前辈的内幕消息，运用逻辑来分析申请中得每一个环节和条件，通过教授的论文了解录取委员会的预期。一年前我以3.66总体水平一般的GPA，克服了单学期GPA1.77，缺少实习的不利条件，进入哈佛大学，同时也取得了录取率只有6%",
-                                    "NYU金融数学的青睐。我相信，申请的重点在于发挥长处突出自身和项目的契合。我对MFE, Data Science各个主流项目都有较深入的了解，对于文书的结构和内容也…"]}
+                                showTexts={detail.intro.substr(0, 50)}
+                                hideTexts={detail.intro.slice(50)}
 
                             />
                             {this.sep}
@@ -123,13 +118,27 @@ class AbroadExpertDetailPage extends Component {
                             {this.sep}
                         </View>
                         <View tabLabel="服务"></View>
-                        <View tabLabel="评价"></View>
+                        <View tabLabel="评价">
+                            {this.comments}
+                        </View>
                     </ScrollTab>
 
 
                 </ScrollView>
                 {this.fixBottom}
             </View>
+        )
+    }
+
+    get comments() {
+        const {store: {abroad_expert_detail}, actions} = this.props
+        const {comment: {comments}} = abroad_expert_detail;
+
+        return (
+            <Comments
+                noScroll
+                items={comments}
+            />
         )
     }
 
@@ -151,6 +160,9 @@ class AbroadExpertDetailPage extends Component {
     }
 
     get experience() {
+        const {store: {abroad_expert_detail}, actions} = this.props
+        const {base, detail: {experiences}} = abroad_expert_detail;
+
         return (
             <View style={[sty.container]}>
                 {this.getHead("经历")}
@@ -159,24 +171,14 @@ class AbroadExpertDetailPage extends Component {
     }
 
     get educ() {
+        const {store: {abroad_expert_detail}, actions} = this.props
+        const {base, detail: {educations}} = abroad_expert_detail;
         return (
             <View style={[sty.container, {paddingHorizontal: 6}]}>
                 {this.getHead("教育")}
                 <Educations
                     noScroll
-                    items={[{
-                        title: "ESSEC Business School",
-                        status: "Master Finance",
-                        date_from: "2016-09",
-                        date_to: "2017-07",
-                        thumbnail: {}
-                    }, {
-                        title: "ESSEC Business School",
-                        status: "Master Finance",
-                        date_from: "2016-09",
-                        date_to: "2017-07",
-                        thumbnail: {}
-                    }]}
+                    items={educations}
                 />
             </View>
         )

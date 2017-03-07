@@ -5,44 +5,7 @@ import {Map, List, Set} from 'immutable';
 import * as $ from '../constant';
 
 const initialState = {
-
-    list: [{
-        title: 'titile',
-        thumbnail: {},
-        tags: ["a", "b", "c", "d"],
-        points: ["a", "b", "c", "d"],
-        intro: "helllllll",
-        price: 12333,
-        mark: 4,
-        appointNum: 4
-    }, {
-        title: 'titile',
-        thumbnail: {},
-        tags: ["a", "b", "c", "d"],
-        points: ["a", "b", "c", "d"],
-        intro: "helllllll",
-        price: 12333,
-        mark: 4,
-        appointNum: 4
-    }, {
-        title: 'titile',
-        thumbnail: {},
-        tags: ["a", "b", "c", "d"],
-        points: ["a", "b", "c", "d"],
-        intro: "helllllll",
-        price: 12333,
-        mark: 4,
-        appointNum: 4
-    }, {
-        title: 'titile',
-        thumbnail: {},
-        tags: ["a", "b", "c", "d"],
-        points: ["a", "b", "c", "d"],
-        intro: "helllllll",
-        price: 12333,
-        mark: 4,
-        appointNum: 4
-    }],
+    isFetching: false,
 
     filterZone: [{
         title: "地区1"
@@ -86,9 +49,29 @@ const initialState = {
         title: "AAAA"
     }, {
         title: "BBBB"
+    }],
+
+    list: [{
+        thumbnail: {},
+        title: "Ssssss",
+        tags: ["1", "b", "x"],
+        brief: "~ 2015/12 Texarkana Gazette | assistant city editor…",
+        experience: "~ 2015/12 Texarkana Gazette | assistant city editor…",
+        clients: 994,
+        rate: 4.9,
+        reviews: 141,
+        dollar: 25.08
+    }, {
+        thumbnail: {},
+        title: "Ssssss",
+        tags: ["1", "b", "x"],
+        experience: "~ 2015/12 Texarkana Gazette | assistant city editor…",
+        education: "~ 2015/12 Texarkana Gazette | assistant city editor…",
+        clients: 994,
+        rate: 4.9,
+        reviews: 141,
+        dollar: 25.08
     }]
-
-
 };
 
 export default function (state=initialState, action) {

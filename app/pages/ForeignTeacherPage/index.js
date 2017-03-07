@@ -28,22 +28,43 @@ import ForeignTeacherItem from '../../components/ForeignTeacherItem';
 @autobind
 class ForeignTeacherPage extends Component {
     constructor(props) {
-      super(props)
+        super(props)
     }
-    componentWillMount() {}
-    componentDidMount() {}
-    componentWillReceiveProps(newProps) {}
+
+    componentWillMount() {
+    }
+
+    componentDidMount() {
+    }
+
+    componentWillReceiveProps(newProps) {
+    }
+
     shouldComponentUpdate(newProps, newState, newContext) {
-      return !Map(this.props).equals(Map(newProps))
+        return !Map(this.props).equals(Map(newProps))
     }
-    componentWillUpdate(newProps, newState, newContext) {}
-    componentDidUpdate(oldProps, oldState, oldContext) {}
-    componentWillUnmount() {}
+
+    componentWillUpdate(newProps, newState, newContext) {
+    }
+
+    componentDidUpdate(oldProps, oldState, oldContext) {
+    }
+
+    componentWillUnmount() {
+    }
+
     static defaultProps = {}
     state = {}
     static propTypes = {}
+
     render() {
-        const {...props} = this.props
+        const {
+            store: {
+                foreign_teacher: {
+                    list
+                }
+            }, actions
+        } = this.props
 
         return (
             <View style={{flex: 1}}>
@@ -52,26 +73,7 @@ class ForeignTeacherPage extends Component {
                     dataSource={
                         new ListView.DataSource({
                             rowHasChanged: (r1, r2) => !Map(r1).equals(Map(r2))
-                        }).cloneWithRows([{
-                            title: "Ssssss",
-                            tags: ["1", "b", "x"],
-                            experience: "~ 2015/12 Texarkana Gazette | assistant city editor…",
-                            clients: 994,
-                            rate: 4.9,
-                            reviews: 141,
-                            onPress: () => Actions.foreignTeacherDetail(),
-                            dollar: 25.08
-                        }, {
-                            title: "Ssssss",
-                            tags: ["1", "b", "x"],
-                            experience: "~ 2015/12 Texarkana Gazette | assistant city editor…",
-                            education: "~ 2015/12 Texarkana Gazette | assistant city editor…",
-                            clients: 994,
-                            rate: 4.9,
-                            reviews: 141,
-                            onPress: () => Actions.foreignTeacherDetail(),
-                            dollar: 25.08
-                        }])
+                        }).cloneWithRows(list)
                     }
                     renderRow={this._renderRow}
                     renderSeparator={this._renderSeparator}
@@ -80,19 +82,28 @@ class ForeignTeacherPage extends Component {
             </View>
         )
     }
+
     _renderSeparator() {
         return <View style={{height: 10}}></View>
     }
 
     _renderRow(data, s, i) {
-        return <ForeignTeacherItem {...data} key={i} />
+        const {actions} = this.props;
+        return <ForeignTeacherItem
+            onPress={() => {
+                const newData = {...data, avatar: data.thumbnail, name: data.title};
+                delete newData.thumbnail;
+                delete newData.title;
+                actions.setForeignTeacherDetailBase(newData);
+                Actions.foreignTeacherDetail();
+            }} {...data} key={i}/>
     }
 
 
     get computeFilterPro() {
         const {
             store: {
-                abroad_expert: {
+                foreign_teacher: {
                     filterZone, filterPro
                 }
             }, actions
@@ -102,15 +113,17 @@ class ForeignTeacherPage extends Component {
         return filterPro.map((pro, i) => {
             const {categories, ...rest} = pro;
             if (categories) {
-                rest.onPress = () => {}
+                rest.onPress = () => {
+                }
             }
             return rest;
         });
     }
+
     get computeFilterZone() {
         const {
             store: {
-                abroad_expert: {
+                foreign_teacher: {
                     filterZone, filterPro
                 }
             }, actions
@@ -121,7 +134,7 @@ class ForeignTeacherPage extends Component {
     get subMenu() {
         const {
             store: {
-                abroad_expert: {
+                foreign_teacher: {
                     filterZone, filterPro
                 }
             }, actions
@@ -142,7 +155,11 @@ class ForeignTeacherPage extends Component {
                     autoHidden
                     dynamicTitle={false}
                     ref={r => this.drop = r}
-                    getModalStyle={(layout) => ({left: -layout.width, right: 0, height: deviceHeight-(layout.y+layout.height)})}
+                    getModalStyle={(layout) => ({
+                        left: -layout.width,
+                        right: 0,
+                        height: deviceHeight - (layout.y + layout.height)
+                    })}
                     title={"专业"}
                     items={this.computeFilterPro}
                 />

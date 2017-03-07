@@ -29,6 +29,14 @@ export const SET_RESET_PWD_BY_PHONE = uint();
 export const SET_RESET_PWD_BY_MAIL = uint();
 /* end of entry's logic related */
 
+/* start of foreign_teacher_detail's logic related */
+export const FOREIGN_TEACHER_DETAIL_BASE_SET = uint();
+/* end of foreign_teacher_detail's logic related */
+
+/* start of abroad_expert_detail's logic related */
+export const ABROAD_EXPERT_DETAIL_BASE_SET = uint();
+export const ABROAD_EXPERT_DETAIL_COMMENT_COMMENTS_SET = uint();
+/* end of abroad_expert_detail's logic related */
 
 /* start of my total order's logic related */
 export const SET_MY_ACTIVE_TOTAL_ORDER_TITLE_INDEX = uint();

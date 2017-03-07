@@ -66,56 +66,19 @@ class AbroadExpertPage extends Component {
     render() {
         const {
             store: {
-                abroad_expert: {}, actions
+                abroad_expert: {list}, actions
             }
-        } = this.props
+        } = this.props;
 
         return (
             <View style={sty.main}>
-                {<Services
+                <Services
                     style={{marginTop: 33}}
-                    items={[{
-                        onPress: () => Actions.abroadExpertDetail({params: {title: 'titile'}}),
-                        title: 'titile',
-                        thumbnail: {},
-                        tags: ["a", "b", "c", "d"],
-                        points: ["a", "b", "c", "d"],
-                        intro: "helllllll",
-                        price: 12333,
-                        mark: 4,
-                        appointNum: 4
-                    }, {
-                        onPress: () => Actions.abroadExpertDetail({params: {title: 'titile'}}),
-                        title: 'titile',
-                        thumbnail: {},
-                        tags: ["a", "b", "c", "d"],
-                        points: ["a", "b", "c", "d"],
-                        intro: "helllllll",
-                        price: 12333,
-                        mark: 4,
-                        appointNum: 4
-                    }, {
-                        onPress: () => Actions.abroadExpertDetail({params: {title: 'titile'}}),
-                        title: 'titile',
-                        thumbnail: {},
-                        tags: ["a", "b", "c", "d"],
-                        points: ["a", "b", "c", "d"],
-                        intro: "helllllll",
-                        price: 12333,
-                        mark: 4,
-                        appointNum: 4
-                    }, {
-                        onPress: () => Actions.abroadExpertDetail({params: {title: 'titile'}}),
-                        title: 'titile',
-                        thumbnail: {},
-                        tags: ["a", "b", "c", "d"],
-                        points: ["a", "b", "c", "d"],
-                        intro: "helllllll",
-                        price: 12333,
-                        mark: 4,
-                        appointNum: 4
-                    }]}
-                />}
+                    items={list.map(x=>({...x, onPress: () =>{
+
+                        Actions.abroadExpertDetail();
+                    } }))}
+                />
                 {this.subMenu}
             </View>
         )

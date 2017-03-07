@@ -60,6 +60,7 @@ class ForeignTeacherItem extends Component {
         tags: React.PropTypes.array,
         experience: React.PropTypes.string,
         education: React.PropTypes.string,
+        brief: React.PropTypes.string,
         clients: React.PropTypes.number,
         rate: React.PropTypes.number,
         reviews: React.PropTypes.number,
@@ -68,7 +69,7 @@ class ForeignTeacherItem extends Component {
 
     render() {
         const {
-            onPress, style, title, thumbnail, dollar,
+            onPress, style, title, thumbnail, dollar, brief,
             tags, experience, education, clients, rate, reviews
         } = this.props;
         const Touchable = TouchableHighlight;
@@ -94,6 +95,10 @@ class ForeignTeacherItem extends Component {
                         </View>
                     </View>
                     <Hr marginTop={10}/>
+
+                    {brief && <Text style={{marginBottom: 8, fontSize: 13}}>
+                        <Text style={{color: '#848484'}}>{brief}</Text>
+                    </Text>}
                     {experience && <Text style={{marginBottom: 8, fontSize: 13}}>
                         <Text style={{color: '#4A4A4A'}}>Experience：</Text>
                         <Text style={{color: '#848484'}}>{experience}</Text>

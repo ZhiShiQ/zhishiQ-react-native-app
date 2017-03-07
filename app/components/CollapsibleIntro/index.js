@@ -37,12 +37,11 @@ class CollapsibleIntro extends Component {
         expended: false
     }
     static propTypes = {
-        showTexts: PropTypes.array,
+        showTexts: PropTypes.oneOfType(PropTypes.array, PropTypes.string),
         title: PropTypes.string,
-        hideTexts: PropTypes.array,
+        hideTexts: PropTypes.oneOfType(PropTypes.array, PropTypes.string),
     }
     render() {
-
         return (
             <View style={[sty.main, {backgroundColor: '#fff', padding: PADDING_SIZE}]}>
                 {this.getHead()}
@@ -52,11 +51,16 @@ class CollapsibleIntro extends Component {
         )
     }
     getText() {
-        const {showTexts, hideTexts} = this.props;
+        let {showTexts, hideTexts} = this.props;
         const {expended} = this.state;
         if (!showTexts && !hideTexts) {
             return;
         }
+        showTexts = !Array.isArray(showTexts) ? [showTexts] : showTexts;
+        if (hideTexts) {
+            hideTexts = !Array.isArray(hideTexts) ? [hideTexts] : hideTexts;
+        }
+
         return (
             <View style={{backgroundColor: '#fff'}}>
                 <Text>
