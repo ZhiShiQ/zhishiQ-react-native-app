@@ -46,30 +46,49 @@ class Collections extends Component {
     componentWillUnmount() {
     }
 
-    static defaultProps = {}
+    static defaultProps = {
+        noScroll: false
+    }
     state = {}
     static propTypes = {
         ...ListView.propTypes,
         items: PropTypes.array,
         style: PropTypes.object,
+        noScroll: PropTypes.bool
     }
 
     render() {
-        const {items, style, ...rest} = this.props
+        const {items, style, noScroll, ...rest} = this.props
 
-        return (
-            <ListView
-                contentContainerStyle={[style]}
-                dataSource={
-                    new ListView.DataSource({
-                        rowHasChanged: (a, b) => !Map(a).equals(b)
-                    }).cloneWithRows(items)
-                }
-                renderRow={this._renderRow}
-                renderSeparator={this._renderSeparator}
-                {...rest}
-            />
-        )
+        // if (noScroll) {
+        //     return (
+        //         <View style={[style]}>
+        //             {items.map((data, i) => {
+        //                 return (
+        //                     <View>
+        //                         {i>0 && this._renderSeparator(data, i)}
+        //                         {this._renderRow(data, null, i)}
+        //                     </View>
+        //                 )
+        //             })}
+        //         </View>
+        //     )
+        // } else {
+            return (
+                <ListView
+                    renderScrollComponent={noScroll?(p) => <View {...p}></View>:ListView.defaultProps.renderScrollComponent}
+                    contentContainerStyle={[style]}
+                    dataSource={
+                        new ListView.DataSource({
+                            rowHasChanged: (a, b) => !Map(a).equals(b)
+                        }).cloneWithRows(items)
+                    }
+                    renderRow={this._renderRow}
+                    renderSeparator={this._renderSeparator}
+                    {...rest}
+                />
+            )
+        // }
     }
 
     _renderSeparator(n, i) {

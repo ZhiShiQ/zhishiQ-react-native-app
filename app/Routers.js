@@ -275,25 +275,26 @@ class Routers extends React.Component {
         return (
             <Scene key="Root" backButtonImage={backIcon} navigationBarStyle={styles.navigationBarStyle}>
                 <Scene hideTabBar key="login" component={conn(LoginPage)} title="Login"/>
-                <Scene initial hideTabBar key="entry" component={conn(EntryPage)} title={TITLE}/>
+                <Scene hideTabBar key="entry" component={conn(EntryPage)} title={TITLE}/>
 
                 <Scene key="resetPwdByPhone" component={conn(ResetPwdByPhonePage)} title={'重置密码'}/>
                 <Scene key="resetPwdByMail" component={conn(ResetPwdByMailPage)} title={'重置密码'}/>
-                <Scene key="tabbar" component={conn(NavigationDrawer)}>
+                <Scene initial key="tabbar" component={conn(NavigationDrawer)}>
                     <Scene
                         initial
                         key="tab_main"
                         tabs
+                        backButtonImage={backIcon}
                         tabBarStyle={styles.tabBarStyle}
                         tabBarSelectedItemStyle={styles.tabBarSelectedItemStyle}
                     >
-                        <Scene initial key="search" component={conn(SearchPage)}
+                        <Scene key="search" component={conn(SearchPage)}
                                navigationBarStyle={styles.navigationBarStyle}
                                title="我是输入框"
                                backTitle="取消"
                         />
 
-                        <Scene initial key="tab_home_main"
+                        <Scene backButtonImage={backIcon} initial key="tab_home_main"
                                navigationBarStyle={styles.navigationBarStyle}
                                title="首页"
                                titleStyle={{}}
@@ -306,7 +307,7 @@ class Routers extends React.Component {
                                 rightTitle="消息"
                             />
                         </Scene>
-                        <Scene key="tab_service_main" navigationBarStyle={styles.navigationBarStyle}
+                        <Scene backButtonImage={backIcon} key="tab_service_main" navigationBarStyle={styles.navigationBarStyle}
                                title="服务" icon={TabIcon}>
                             <Scene key="tab_service" hideTabBar={false} component={conn(ServicePage)}
                                    navigationBarStyle={styles.navigationBarStyle}

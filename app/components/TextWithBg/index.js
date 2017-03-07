@@ -63,7 +63,7 @@ class TextWithBg extends Component {
             <TouchableWithoutFeedback
                 onPress={onPress}
             >
-                <View style={{alignSelf: 'center'}}>
+                <View style={{alignSelf: 'center', justifyContent: 'center'}}>
                     <Text
                         {...props}
                         style={[sty.main, style, {color, backgroundColor: bgColor}]}

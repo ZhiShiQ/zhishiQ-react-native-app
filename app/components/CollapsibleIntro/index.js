@@ -61,7 +61,7 @@ class CollapsibleIntro extends Component {
             <View style={{backgroundColor: '#fff'}}>
                 <Text>
                 {showTexts.map((t, i) =>
-                    <Text key={i} style={{color: '#848484', marginBottom: 10}}>
+                    <Text key={i} style={{color: '#848484', marginBottom: 10, lineHeight: 17}}>
                         {t}
                     </Text>
                 )}
@@ -69,7 +69,7 @@ class CollapsibleIntro extends Component {
                 <Collapsible collapsed={!expended} align="center">
                     <Text>
                     {hideTexts && hideTexts.map((t, i) =>
-                        <Text key={i} style={{color: '#848484', marginBottom: 10}}>
+                        <Text key={i} style={{color: '#848484', marginBottom: 10, lineHeight: 17}}>
                             {t}
                         </Text>
                     )}
@@ -89,7 +89,7 @@ class CollapsibleIntro extends Component {
             style={{paddingTop: 12, alignItems: 'center'}}
             onPress={onPress}>
             <View style={{}}>
-                <Text style={{color: '#4A4A4A', fontSize: 14}}>{!expended ? "全部展开" : "部分收缩"}</Text>
+                <Text style={{color: '#4A4A4A', fontSize: 14, lineHeight: 17}}>{!expended ? "全部展开" : "部分收缩"}</Text>
             </View>
         </TouchableOpacity>
     }

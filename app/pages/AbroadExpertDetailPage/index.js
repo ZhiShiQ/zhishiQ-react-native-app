@@ -163,6 +163,7 @@ class AbroadExpertDetailPage extends Component {
             <View style={[sty.container, {paddingHorizontal: 6}]}>
                 {this.getHead("教育")}
                 <Educations
+                    noScroll
                     items={[{
                         title: "ESSEC Business School",
                         status: "Master Finance",

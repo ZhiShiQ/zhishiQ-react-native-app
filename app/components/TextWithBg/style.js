@@ -11,6 +11,7 @@ export default StyleSheet.create({
         // flex: 0,
         // height: 40,
         // width: 100,
-        alignSelf: 'center'
+        alignSelf: 'center',
+        justifyContent: 'center'
     }
 });
