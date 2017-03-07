@@ -97,7 +97,8 @@ class CustomDropDown extends Component {
         modalStyle: {},
         icon: <Icon name="caret-down" size={12}/>,
         showIcon: true,
-        duration: DURATION
+        duration: DURATION,
+        hideBackground: false
     }
     state = {
         title: "",
@@ -124,6 +125,7 @@ class CustomDropDown extends Component {
         zIndex: PropTypes.number,
         onShow: PropTypes.func,
         duration: PropTypes.number,
+        hideBackground: PropTypes.bool,
     }
 
     get btnLayout() {
@@ -155,7 +157,7 @@ class CustomDropDown extends Component {
                 >
                     {this._renderSeparator(null, -1)}
                     <ListView
-                        contentContainerStyle={sty.dropdown}
+                        contentContainerStyle={[sty.dropdown]}
                         dataSource={
                             new ListView.DataSource({
                                 rowHasChanged: (a, b) => !Map(a).equals(Map(b))
@@ -208,7 +210,7 @@ class CustomDropDown extends Component {
     }
 
     render() {
-        const {textStyle, icon, withoutTitle, zIndex, style} = this.props;
+        const {textStyle, icon, withoutTitle, hideBackground, zIndex, style} = this.props;
         const {title} = this.state;
 
         if (withoutTitle) {

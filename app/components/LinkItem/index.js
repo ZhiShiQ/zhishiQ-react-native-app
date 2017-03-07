@@ -35,24 +35,26 @@ class LinkItem extends Component {
         showBorder: '',
         showIcon: true,
         iconName: "angle-right",
-        iconSize: 12,
-    }
-    state = {}
+        iconSize: 16,
+    };
+    state = {};
     static propTypes = {
         leftText: React.PropTypes.string.isRequired,
         rightText: React.PropTypes.string,
         showBorder: React.PropTypes.oneOf(["top", "both", "bottom"]),
         borderColor: React.PropTypes.string,
         style: React.PropTypes.object,
+        leftStyle: React.PropTypes.object,
+        rightTextStyle: React.PropTypes.object,
         onPress: React.PropTypes.func,
         leftComponent: React.PropTypes.element,
         rightComponent: React.PropTypes.element,
         showIcon: React.PropTypes.bool,
         iconName: React.PropTypes.string,
         iconSize: React.PropTypes.number
-    }
+    };
     render() {
-        const {style, leftText, iconSize, leftComponent, rightComponent, showIcon, onPress, rightText, iconName, showBorder, borderColor} = this.props
+        const {style, leftText, iconSize, leftStyle, rightTextStyle, leftComponent, rightComponent, showIcon, onPress, rightText, iconName, showBorder, borderColor} = this.props
         return (
             <View style={style}>
                 {
@@ -63,13 +65,13 @@ class LinkItem extends Component {
                     underlayColor={"#EEE"}
                     onPress={onPress} style={[sty.main, style, {borderColor}]}>
                     <View style={sty.container}>
-                        <View style={[sty.left, leftComponent?{flex: 5}:{}]}>
+                        <View style={[sty.left, leftComponent?{flex: 5}:{}, leftStyle]}>
                             {leftComponent}
                             {!leftComponent && <Text>{leftText}</Text>}
                         </View>
                         <View style={sty.right}>
                             {rightComponent}
-                            {!rightComponent  && <Text style={sty.rightText}>{rightText}</Text>}
+                            {!rightComponent  && <Text style={[sty.rightText, rightTextStyle]}>{rightText}</Text>}
                             {showIcon && <Icon style={sty.rightIcon} name={iconName} size={iconSize} color="#C4C4C4" />}
                         </View>
                     </View>

@@ -1,6 +1,8 @@
 import {
-    StyleSheet
+    StyleSheet,
+    Dimensions
 } from 'react-native';
+const {height, width} = Dimensions.get('window');
 
 export default StyleSheet.create({
     main: {
@@ -18,6 +20,10 @@ export default StyleSheet.create({
         flexGrow: 1,
         position: 'absolute',
         top: 30,
+        backgroundColor: 'rgba(0,0,0,.5)',
+        // opacity: .1,
+        height: height
+        // bottom: 0,
     },
     text: {
         fontSize: 13.5,
@@ -27,6 +33,7 @@ export default StyleSheet.create({
         color: '#4a4a4a'
     },
     dropdown: {
+        backgroundColor: '#FFF'
         // position: 'absolute',
 
         // h

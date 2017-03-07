@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: 'center',
-        backgroundColor: '#F5FCFF',
+        backgroundColor: '#f7f7f7',
     },
     title: {
         textAlign: 'center',
@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
         marginBottom: 20,
     },
     header: {
-        backgroundColor: '#F5FCFF',
+        backgroundColor: '#f7f7f7',
         padding: 10,
     },
     headerText: {
@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     selector: {
-        backgroundColor: '#F5FCFF',
+        backgroundColor: '#f7f7f7',
         padding: 10,
     },
     activeSelector: {

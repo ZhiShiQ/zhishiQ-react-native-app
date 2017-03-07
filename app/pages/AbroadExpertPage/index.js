@@ -84,6 +84,36 @@ class AbroadExpertPage extends Component {
                         price: 12333,
                         mark: 4,
                         appointNum: 4
+                    }, {
+                        onPress: () => Actions.abroadExpertDetail({params: {title: 'titile'}}),
+                        title: 'titile',
+                        thumbnail: {},
+                        tags: ["a", "b", "c", "d"],
+                        points: ["a", "b", "c", "d"],
+                        intro: "helllllll",
+                        price: 12333,
+                        mark: 4,
+                        appointNum: 4
+                    }, {
+                        onPress: () => Actions.abroadExpertDetail({params: {title: 'titile'}}),
+                        title: 'titile',
+                        thumbnail: {},
+                        tags: ["a", "b", "c", "d"],
+                        points: ["a", "b", "c", "d"],
+                        intro: "helllllll",
+                        price: 12333,
+                        mark: 4,
+                        appointNum: 4
+                    }, {
+                        onPress: () => Actions.abroadExpertDetail({params: {title: 'titile'}}),
+                        title: 'titile',
+                        thumbnail: {},
+                        tags: ["a", "b", "c", "d"],
+                        points: ["a", "b", "c", "d"],
+                        intro: "helllllll",
+                        price: 12333,
+                        mark: 4,
+                        appointNum: 4
                     }]}
                 />}
                 {this.subMenu}

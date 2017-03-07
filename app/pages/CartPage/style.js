@@ -6,7 +6,7 @@ export default StyleSheet.create({
     main: {
         flex: 1,
         justifyContent: 'center',
-        backgroundColor: '#F5FCFF'
+        backgroundColor: '#f7f7f7'
     },
     bottomBar: {
         // position: 'absolute',

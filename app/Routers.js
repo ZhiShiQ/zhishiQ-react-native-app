@@ -21,6 +21,7 @@ import {
     Dimensions,
     Button,
     StyleSheet,
+    ScrollView,
     TouchableHighlight
 } from 'react-native';
 import autobind from 'autobind-decorator';
@@ -56,6 +57,7 @@ import EntryPage from './pages/EntryPage';
 import ResetPwdByPhonePage from './pages/ResetPwdByPhonePage';
 import ForeignTeacherDetailPage from './pages/ForeignTeacherDetailPage';
 import ResetPwdByMailPage from './pages/ResetPwdByMailPage';
+import OrderConfirmPage from './pages/OrderConfirmPage';
 
 import TabIcon from './components/TabIcon';
 import NavigationDrawer from './components/NavigationDrawer';
@@ -142,7 +144,7 @@ class Routers extends React.Component {
                         title: "确定",
                         onPress: () => {
                             actions.setCommonModalIsOpen(false);
-                            Actions.boughtDone();
+                            Actions.orderConfirm();
                         }
                     }], height: 440
                 }
@@ -187,11 +189,11 @@ class Routers extends React.Component {
         return (
             <View style={{marginTop: 20}}>
                 <View style={{alignItems: 'center'}}>
-                    <CirImage size={100}source={{}}/>
+                    <CirImage size={100} source={{}}/>
                     <Text style={{fontSize: 18, fontWeight: '600', marginTop: 6}}>{name}</Text>
                 </View>
 
-                <View style={{marginTop: 20}}>
+                <ScrollView style={{marginTop: 20}}>
                     {
                         items.map((x, i) => (
                             <TouchableHighlight
@@ -219,7 +221,7 @@ class Routers extends React.Component {
                             </TouchableHighlight>)
                         )
                     }
-                </View>
+                </ScrollView>
             </View>
         )
     }
@@ -262,11 +264,12 @@ class Routers extends React.Component {
                         tabBarStyle={styles.tabBarStyle}
                         tabBarSelectedItemStyle={styles.tabBarSelectedItemStyle}
                     >
-                        <Scene key="search" component={conn(SearchPage)}
+                        <Scene initial key="search" component={conn(SearchPage)}
                                navigationBarStyle={styles.navigationBarStyle}
                                title="我是输入框"
                                backTitle="取消"
                         />
+
                         <Scene initial key="tab_home_main"
                                navigationBarStyle={styles.navigationBarStyle}
                                title="首页"
@@ -280,12 +283,48 @@ class Routers extends React.Component {
                                 rightTitle="消息"
                             />
                         </Scene>
-                        <Scene key="tab_service" component={conn(ServicePage)}
-                               navigationBarStyle={styles.navigationBarStyle}
-                               rightTitle="消息"
-                               onRight={() => alert()}
-                               title="服务" icon={TabIcon}/>
-                        <Scene key="tab_cart" component={conn(CartPage)} title="购物车"
+                        <Scene key="tab_service_main" navigationBarStyle={styles.navigationBarStyle}
+                               title="服务" icon={TabIcon}>
+                            <Scene key="tab_service" hideTabBar={false} component={conn(ServicePage)}
+                                   navigationBarStyle={styles.navigationBarStyle}
+                                   rightTitle="消息"
+                                   onRight={() => Actions.messages()}
+                                   title="服务" icon={TabIcon}/>
+                            <Scene key="abroadExpert" component={conn(AbroadExpertPage)}
+                                   hideTabBar
+                                   type={ActionConst.PUSH_OR_POP}
+                                   title="留学行家咨询"
+                                   rightTitle="搜索"
+                                   onRight={() => alert()}/>
+                            <Scene key="abroadExpertDetail" component={conn(AbroadExpertDetailPage)}
+                                   hideTabBar
+                                   type={ActionConst.PUSH_OR_POP}
+                                   getTitle={({params}) => (params ? params.title : '')}
+                                   rightTitle="分享"
+                                   onRight={() => alert()}/>
+                            <Scene key="foreignTeacher" component={conn(ForeignTeacherPage)}
+                                   type={ActionConst.PUSH_OR_POP}
+                                   hideTabBar
+                                   title="外籍文书顾问"
+                                   rightTitle="搜索"
+                                   onRight={() => alert()}
+                                   backTitle=""/>
+
+                            <Scene key="foreignTeacherDetail" component={conn(ForeignTeacherDetailPage)}
+                                   type={ActionConst.PUSH_OR_POP}
+                                   hideTabBar
+                                   title=""
+                                   rightTitle="分享"
+                                   onRight={() => alert()}
+                            />
+
+                            <Scene key="orderConfirm" component={conn(OrderConfirmPage)}
+                                   type={ActionConst.PUSH_OR_POP}
+                                   hideTabBar
+                                   title="确认订单"
+                            />
+                        </Scene>
+                        <Scene  key="tab_cart" component={conn(CartPage)} title="购物车"
                                navigationBarStyle={styles.navigationBarStyle}
                                onRight={() => alert()}
                                rightTitle="编辑"
@@ -300,9 +339,119 @@ class Routers extends React.Component {
                                    leftTitle="设置"
                                    onRight={() => alert()}
                                    rightTitle="消息"/>
+                            <Scene key="totalOrder" component={conn(TotalOrderPage)}
+                                   hideTabBar
+                                   getTitle={(p) => {
+                                       const ConnectedDrop = conn(ReduxTitleDropdown);
+                                       return <ConnectedDrop {...p} />
+                                   }}/>
+                            <Scene key="myInformation"
+                                   backTitle=""
+                                   title="我的资料"
+                                   hideTabBar
+                                   rightTitle="网页版"
+                                   onRight={() => alert()}
+                                   component={conn(MyInformationPage)}
+                            />
+                            <Scene
+                                title="留学意向"
+                                backTitle=""
+                                key="studyAbroadIntention"
+                                component={conn(StudyAbroadIntentionPage)}
+                            />
+                            <Scene
+                                title="申请学校"
+                                backTitle="取消"
+                                rightText="确定"
+                                onRight={() => {
+                                }}
+                                key="applySchool"
+                                component={conn(ApplySchoolPage)}
+                            />
+                            <Scene
+                                backTitle=""
+                                key="wayOfContact"
+                                titile="联系方式"
+                                component={conn(WayOfContactPage)}
+                            />
+                            <Scene
+                                key="timezoneAndFreeTime"
+                                titile="时区与空闲时间"
+                                backTitle=""
+                                component={conn(TimezoneNFreeTimePage)}
+                            />
+                            <Scene
+                                title="基本资料"
+                                backTitle=""
+                                key="myBasicInfo"
+                                component={conn(MyBasicInfoPage)}
+                            />
+                            <Scene
+                                title="当前院校"
+                                backTitle="取消"
+                                onRight={() => alert()}
+                                rightTitile="确定"
+                                key="setMySchool"
+                                component={conn(SetSchoolPage)}
+                            />
+                            <Scene
+                                title="经历"
+                                backTitle="取消"
+                                onRight={() => alert()}
+                                rightTitile="确定"
+                                key="myExperience"
+                                component={conn(MyExperiencePage)}
+                            />
+
+
+                            <Scene
+                                backTitle="取消"
+                                title="考试" key="examination"
+                                rightTitle="添加"
+                                onRight={() => alert(1)}
+                                component={conn(ExaminationPage)}
+                            />
+                            <Scene
+                                getTitle={({params}) => (params ? params.title : '')}
+                                key="examinationDetail"
+                                rightTitle="确认"
+                                onRight={() => alert(1)}
+                                component={conn(ExaminationDetailPage)}
+                            />
+
+                            <Scene key="myCollection"
+                                   title="我的收藏"
+                                   hideTabBar
+                                   component={conn(MyCollectionPage)}
+                            />
+
+                            <Scene key="myDiscountCoupon"
+                                   title="优惠券"
+                                   hideTabBar
+                                   rightTitle="获取"
+                                   onRight={() => actions.discountModalOpen(true) }
+                                   component={conn(MyDiscountCouponPage)}
+                            />
+
+                            <Scene key="inviteFriend"
+                                   title="邀请好友"
+                                   hideTabBar
+                                   rightTitle="获取"
+                                   onRight={() => alert()}
+                                   component={conn(InviteFriendPage)}
+                            />
+
+                            <Scene key="recentSkim"
+                                   title="最近浏览"
+                                   backTitle=""
+                                   hideTabBar
+                                   component={conn(RecentSkimPage)}
+                            />
                         </Scene>
 
                     </Scene>
+
+
                 </Scene>
 
 
@@ -310,167 +459,28 @@ class Routers extends React.Component {
                        hideTabBar
                        title="消息"
                        rightTitle="客服"
-                       onRight={() => alert()}
-                       backTitle="返回"/>
+                       type={ActionConst.PUSH_OR_POP}
+                       onRight={() => alert()}/>
                 <Scene key="chat" component={conn(ChatPage)}
                        hideTabBar
+                       type={ActionConst.PUSH_OR_POP}
                        title="消息"
-                       backTitle="返回"/>
-
-                <Scene key="totalOrder" component={conn(TotalOrderPage)}
-                       hideTabBar
-                       getTitle={(p) => {
-                           const ConnectedDrop = conn(ReduxTitleDropdown);
-                           return <ConnectedDrop {...p} />
-                       }}
-                       backTitle="返回"/>
-
-                <Scene key="foreignTeacher" component={conn(ForeignTeacherPage)}
-                       hideTabBar
-                       title="外籍文书顾问"
-                       rightTitle="搜索"
-                       onRight={() => alert()}
-                       backTitle="返回"/>
-
-                <Scene key="foreignTeacherDetail" component={conn(ForeignTeacherDetailPage)}
-                       hideTabBar
-                       title=""
-                       rightTitle="分享"
-                       onRight={() => alert()}
                 />
 
-                <Scene key="abroadExpert" component={conn(AbroadExpertPage)}
-                       hideTabBar
-                       type={ActionConst.PUSH_OR_POP}
-                       title="留学行家咨询"
-                       rightTitle="搜索"
-                       onRight={() => alert()}
-                       backTitle="返回"/>
 
-                <Scene key="abroadExpertDetail" component={conn(AbroadExpertDetailPage)}
-                       hideTabBar
-                       type={ActionConst.PUSH_OR_POP}
-                       getTitle={({params}) => (params ? params.title : '')}
-                       rightTitle="分享"
-                       onRight={() => alert()}
-                       backTitle="返回"/>
 
-                <Scene key="myInformation"
-                       backTitle="返回"
-                       title="我的资料"
-                       hideTabBar
-                       rightTitle="网页版"
-                       onRight={() => alert()}
-                       component={conn(MyInformationPage)}
-                />
+
 
                 <Scene key="boughtDone"
-                       backTitle="返回"
+                       backTitle=""
                        title="预约/购买成功"
                        hideTabBar
                        component={conn(BoughtDonePage)}
                 />
 
 
-                <Scene
-                    title="留学意向"
-                    backTitle="返回"
-                    key="studyAbroadIntention"
-                    component={conn(StudyAbroadIntentionPage)}
-                />
-                <Scene
-                    title="申请学校"
-                    backTitle="取消"
-                    rightText="确定"
-                    onRight={() => {
-                    }}
-                    key="applySchool"
-                    component={conn(ApplySchoolPage)}
-                />
-                <Scene
-                    backTitle="返回"
-                    key="wayOfContact"
-                    titile="联系方式"
-                    component={conn(WayOfContactPage)}
-                />
-                <Scene
-                    key="timezoneAndFreeTime"
-                    titile="时区与空闲时间"
-                    backTitle="返回"
-                    component={conn(TimezoneNFreeTimePage)}
-                />
-                {/*<Scene*/}
-                {/*key="myBasicInfo_main"*/}
-                {/*hideTabBar*/}
-                {/*>*/}
-                <Scene
-                    title="基本资料"
-                    backTitle="返回"
-                    key="myBasicInfo"
-                    component={conn(MyBasicInfoPage)}
-                />
-                <Scene
-                    title="当前院校"
-                    backTitle="取消"
-                    onRight={() => alert()}
-                    rightTitile="确定"
-                    key="setMySchool"
-                    component={conn(SetSchoolPage)}
-                />
-                <Scene
-                    title="经历"
-                    backTitle="取消"
-                    onRight={() => alert()}
-                    rightTitile="确定"
-                    key="myExperience"
-                    component={conn(MyExperiencePage)}
-                />
-                {/*</Scene>*/}
 
 
-                <Scene
-                    backTitle="取消"
-                    title="考试" key="examination"
-                    rightTitle="添加"
-                    onRight={() => alert(1)}
-                    component={conn(ExaminationPage)}
-                />
-                <Scene
-                    getTitle={({params}) => (params ? params.title : '')}
-                    key="examinationDetail"
-                    rightTitle="确认"
-                    onRight={() => alert(1)}
-                    component={conn(ExaminationDetailPage)}
-                />
-
-                <Scene key="myCollection"
-                       title="我的收藏"
-                       hideTabBar
-                       component={conn(MyCollectionPage)}
-                />
-
-                <Scene key="myDiscountCoupon"
-                       title="优惠券"
-                       hideTabBar
-                       rightTitle="获取"
-                       onRight={() => actions.discountModalOpen(true) }
-                       component={conn(MyDiscountCouponPage)}
-                />
-
-                <Scene key="inviteFriend"
-                       title="邀请好友"
-                       hideTabBar
-                       rightTitle="获取"
-                       onRight={() => alert()}
-                       component={conn(InviteFriendPage)}
-                />
-
-                <Scene key="recentSkim"
-                       title="最近浏览"
-                       backTitle="返回"
-                       hideTabBar
-                       component={conn(RecentSkimPage)}
-                />
             </Scene>
         )
     }

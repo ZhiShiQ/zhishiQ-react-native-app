@@ -20,6 +20,7 @@ import sty from './style';
 
 import Collections from '../../components/Collections';
 import DropDown from '../../components/DropDown';
+import CustomDropDown from '../../components/CustomDropDown';
 import CirImage from '../../components/CirImage';
 import ForeignTeacherItem from '../../components/ForeignTeacherItem';
 
@@ -46,8 +47,8 @@ class ForeignTeacherPage extends Component {
 
         return (
             <View style={{flex: 1}}>
-                {this.subMenu}
                 <ListView
+                    contentContainerStyle={{marginTop: 33}}
                     dataSource={
                         new ListView.DataSource({
                             rowHasChanged: (r1, r2) => !Map(r1).equals(Map(r2))
@@ -75,6 +76,7 @@ class ForeignTeacherPage extends Component {
                     renderRow={this._renderRow}
                     renderSeparator={this._renderSeparator}
                 />
+                {this.subMenu}
             </View>
         )
     }
@@ -105,7 +107,16 @@ class ForeignTeacherPage extends Component {
             return rest;
         });
     }
-
+    get computeFilterZone() {
+        const {
+            store: {
+                abroad_expert: {
+                    filterZone, filterPro
+                }
+            }, actions
+        } = this.props;
+        return filterZone;
+    }
 
     get subMenu() {
         const {
@@ -118,15 +129,22 @@ class ForeignTeacherPage extends Component {
         return (
             <View style={sty.menu}>
 
-                <DropDown
-                    height={deviceHeight*.45}
-                    options={this.computeFilterZone} title="地区"/>
+                <CustomDropDown
+                    showIcon={false}
+                    getModalStyle={(layout) => ({right: -layout.width, left: 0})}
+                    items={this.computeFilterZone}
+                    dynamicTitle={false}
+                    autoHidden
+                    title="地区"/>
 
-                <DropDown
+                <CustomDropDown
+                    showIcon={false}
+                    autoHidden
+                    dynamicTitle={false}
                     ref={r => this.drop = r}
-                    textStyle={sty.title}
+                    getModalStyle={(layout) => ({left: -layout.width, right: 0, height: deviceHeight-(layout.y+layout.height)})}
                     title={"专业"}
-                    options={this.computeFilterPro}
+                    items={this.computeFilterPro}
                 />
             </View>
         )

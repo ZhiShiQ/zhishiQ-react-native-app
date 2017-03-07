@@ -4,7 +4,7 @@ import {
 
 export default StyleSheet.create({
     main: {
-        backgroundColor: '#F5FCFF',
+        backgroundColor: '#f7f7f7',
         marginHorizontal: 10,
         borderRadius: 5,
         shadowColor: '#CCC',

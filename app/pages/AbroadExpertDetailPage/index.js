@@ -96,7 +96,7 @@ class AbroadExpertDetailPage extends Component {
                     {this.sep}
                     <ScrollTab
                         /*onChangeTab={({i}) => actions.setEntryActiveIndex(a[+i])}*/
-                        tabContainerStyle={{flex: -1, alignItems: 'center'}}
+                        tabContainerStyle={{flex: 1, alignItems: 'center'}}
                         tabBarTextStyle={{fontSize: 14}}
                         tabBarStyle={{height: 40}}
                     >
