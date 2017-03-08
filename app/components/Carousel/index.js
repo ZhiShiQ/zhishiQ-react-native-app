@@ -15,8 +15,7 @@ import {
 } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import LoopedCarousel from 'react-native-looped-carousel';
-const { width, height } = Dimensions.get('window');
-
+let { width, height } = Dimensions.get('window');
 
 import sty from './style';
 
@@ -53,12 +52,14 @@ class Carousel extends Component {
                 <LoopedCarousel
                     bullets
                     delay={2000}
+                    bulletStyle={{backgroundColor: 'rgba(255,255,255,.6)'}}
+                    chosenBulletStyle={{backgroundColor: '#ea5502'}}
                     style={[this.state.size, style]}
                     autoplay
                 >
-                    <View style={[{ backgroundColor: '#BADA55' }, this.state.size, style]}></View>
-                    <View style={[{ backgroundColor: 'red' }, this.state.size, style]}></View>
-                    <View style={[{ backgroundColor: 'blue' }, this.state.size, style]}></View>
+                    {React.Children.map(children, (Child, i) =>
+                        React.cloneElement(Child, {key: i, style: [this.state.size, Child.props.style]})
+                    )}
                 </LoopedCarousel>
             </View>
         )

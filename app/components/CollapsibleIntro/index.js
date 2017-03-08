@@ -14,6 +14,8 @@ import {
 } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import Collapsible from 'react-native-collapsible';
+import EvilIcon from 'react-native-vector-icons/EvilIcons'
+import Entypo from 'react-native-vector-icons/EvilIcons'
 import {PADDING_SIZE} from '../../constant'
 import sty from './style';
 
@@ -44,7 +46,7 @@ class CollapsibleIntro extends Component {
     render() {
         return (
             <View style={[sty.main, {backgroundColor: '#fff', padding: PADDING_SIZE}]}>
-                {this.getHead()}
+                {CollapsibleIntro.getHead(this.props.title)}
                 {this.getText()}
                 {this.props.children}
             </View>
@@ -93,20 +95,23 @@ class CollapsibleIntro extends Component {
             style={{paddingTop: 12, alignItems: 'center'}}
             onPress={onPress}>
             <View style={{}}>
-                <Text style={{color: '#4A4A4A', fontSize: 14, lineHeight: 17}}>{!expended ? "全部展开" : "部分收缩"}</Text>
+                <Text style={{color: '#ea5502', fontSize: 14, lineHeight: 17}}>
+                    {!expended ? <Text>全部展开<Entypo size={18} color="#c4c4c4" name="chevron-down" /></Text> :
+                        <Text>部分收缩<Entypo size={18} color="#c4c4c4" name="chevron-up" /></Text>
+                    }
+                </Text>
             </View>
         </TouchableOpacity>
     }
 
-    getHead() {
+    getHead2() {
         const {title} = this.props;
         return (
             <View style={{
                 marginBottom: 15, alignItems: 'center'
             }}>
                 <View style={{
-                    borderBottomWidth: 2, paddingBottom: 3,
-                    borderBottomColor: '#4a4a4a'
+                    paddingBottom: 3,
                 }}>
                     <Text
                         style={{
@@ -114,6 +119,27 @@ class CollapsibleIntro extends Component {
                         }}
                     >{title}</Text>
                 </View>
+            </View>
+        )
+    }
+
+    static getHead(title, noMargin) {
+        return (
+            <View style={[{
+                marginBottom: noMargin?0:15, flexDirection: 'row'
+            }]}>
+                <View style={{
+                    width: 2,
+                    backgroundColor: '#ea5502',
+                    marginRight: 6
+                }}>
+                </View>
+                <Text
+                    style={{
+                        fontWeight: 'bold',
+                        color: '#4a4a4a'
+                    }}
+                >{title}</Text>
             </View>
         )
     }

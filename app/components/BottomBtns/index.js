@@ -36,16 +36,18 @@ class BottomBtns extends Component {
             {text: '收藏', onPress: null},
             {text: '客服', onPress: null}
         ],
-        mainText: "main"
+        mainText: "main",
     }
     state = {}
     static propTypes = {
         lefts: PropTypes.array,
         mainText: PropTypes.string,
-        onMainPress: PropTypes.func
+        subText: PropTypes.string,
+        onMainPress: PropTypes.func,
+        onSubPress: PropTypes.func,
     }
     render() {
-        const {lefts, onMainPress, mainText} = this.props
+        const {lefts, onMainPress, onSubPress, mainText, subText} = this.props
 
         return (
             <View
@@ -58,12 +60,26 @@ class BottomBtns extends Component {
                 {
                     lefts.map(({text, onPress}, i) => <TouchableOpacity style={{
                         flex: 1, alignItems: 'center',
-                        paddingVertical: 15, backgroundColor: "#fff"
-                    }}>
-                        <View><Text>{text}</Text></View>
+                        paddingVertical: 16.5, backgroundColor: "#fff"
+                    }} onPress={onPress}
+                    >
+                        <View>
+                            <View></View>
+                            <Text style={{fontSize: 11, color: '#4a4a4a'}}>{text}</Text>
+                        </View>
                     </TouchableOpacity>)
                 }
 
+
+                {subText && <TouchableOpacity
+                    style={{
+                        flex: 2, alignItems: 'center',
+                        paddingVertical: 15, backgroundColor: "#ffb12e  ",
+                    }}
+                    onPress={onSubPress}
+                >
+                    <View><Text style={{color: '#fff'}}>{subText}</Text></View>
+                </TouchableOpacity>}
 
                 <TouchableOpacity
                     style={{

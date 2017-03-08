@@ -13,15 +13,13 @@ import {
     Button
 } from 'react-native';
 import * as Animatable from 'react-native-animatable';
-import {PADDING_SIZE} from '../../constant'
-import sty from './style';
 
-import InputExtra from '../InputExtra';
+import sty from './style';
+import HomeItem from '../HomeItem';
 import Hr from '../Hr';
 
-
 @autobind
-class InputExtras extends Component {
+class HomeItems extends Component {
     constructor(props) {
       super(props)
     }
@@ -37,45 +35,36 @@ class InputExtras extends Component {
     static defaultProps = {}
     state = {}
     static propTypes = {
-        items: PropTypes.array.isRequired,
         style: PropTypes.object,
-        noScroll: PropTypes.bool,
+        items: PropTypes.array,
+        noScroll: PropTypes.bool
     }
     render() {
-        const {items, style, noScroll, ...rest} = this.props
+        const {style, items, noScroll, ...rest} = this.props
 
         return (
             <ListView
-                renderScrollComponent={noScroll?p => <View {...p}/>:ListView.defaultProps.renderScrollComponent}
-                contentContainerStyle={style}
+                renderScrollComponent={noScroll?(p) => <View {...p}/>:ListView.defaultProps.renderScrollComponent}
+                contentContainerStyle={[sty.main, style]}
                 renderRow={this._renderRow}
+                renderSeparator={this._renderSeparator}
                 dataSource={
                     new ListView.DataSource({
                         rowHasChanged: (r1, r2) => !Map(r1).equals(Map(r2))
                     }).cloneWithRows(items)
-                }
-                renderSeparator={
-                    (data, i) => this._renderSeparator(data, i)
                 }
                 {...rest}
             />
         )
     }
 
-    _renderSeparator(data, i) {
-        const {length} = this.props.items
-        return <Hr
-            style={{
-                marginHorizontal: PADDING_SIZE
-            }}
-            marginBottom={0} color={"#E5E5E5"}/>
+    _renderSeparator(a, i) {
+        if (i != this.props.items.length-1)
+            return <Hr color="#e5e5e5" marginBottom={0}></Hr>
     }
-
-    _renderRow(data, s, index) {
-        return (
-            <InputExtra {...data} />
-        )
+    _renderRow(data, s, i) {
+        return <HomeItem key={i} {...data} />
     }
 }
 
-export default InputExtras;
+export default HomeItems;

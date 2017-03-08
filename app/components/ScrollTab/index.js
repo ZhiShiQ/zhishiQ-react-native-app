@@ -31,19 +31,23 @@ class ScrollTab extends Component {
     componentWillUpdate(newProps, newState, newContext) {}
     componentDidUpdate(oldProps, oldState, oldContext) {}
     componentWillUnmount() {}
-    static defaultProps = {}
+    static defaultProps = {
+        wrap: false
+    }
     state = {}
     static propTypes = {
         tabBarStyle: PropTypes.object,
         tabContainerStyle: PropTypes.object,
+        tabBarTextStyle: PropTypes.object,
+        wrap: PropTypes.bool
     }
     render() {
-        const {children, tabContainerStyle, tabBarStyle, ...rest} = this.props
+        const {children, wrap, tabContainerStyle, tabBarStyle, tabBarTextStyle, ...rest} = this.props
 
         return (
             <ScrollableTab
-                renderTabBar={() => <DefaultTabBar tabContainerStyle={tabContainerStyle} style={[{height: 48}, tabBarStyle]} tabStyle={{paddingBottom: 0}}/>}
-                tabBarTextStyle={{fontSize: 17}}
+                renderTabBar={() => <DefaultTabBar wrap={wrap} tabContainerStyle={tabContainerStyle} style={[{height: 48}, tabBarStyle]} tabStyle={{paddingBottom: 0}}/>}
+                tabBarTextStyle={[{fontSize: 17, color: '#4a4a4a'}, tabBarTextStyle]}
                 tabBarInactiveTextColor="#4A4A4A"
                 tabBarActiveTextColor="#EA5502"
                 tabBarBackgroundColor="#fff"

@@ -17,10 +17,12 @@ import {
 
 import {
     View,
+    Platform,
     Text,
     Dimensions,
     Button,
     StyleSheet,
+    TextInput,
     ScrollView,
     TouchableHighlight
 } from 'react-native';
@@ -57,6 +59,7 @@ import EntryPage from './pages/EntryPage';
 import ResetPwdByPhonePage from './pages/ResetPwdByPhonePage';
 import ForeignTeacherDetailPage from './pages/ForeignTeacherDetailPage';
 import ResetPwdByMailPage from './pages/ResetPwdByMailPage';
+import ServiceClausePage from './pages/ServiceClausePage';
 import OrderConfirmPage from './pages/OrderConfirmPage';
 
 import TabIcon from './components/TabIcon';
@@ -68,9 +71,10 @@ import LinkItems from './components/LinkItems';
 import CirImageWithText from './components/CirImageWithText';
 import CirImage from './components/CirImage';
 import ReduxTitleDropdown from './components/ReduxTitleDropdown';
+import SearchTitle from './components/SearchTitle';
 import Hr from './components/Hr';
 import BlockButton from './components/BlockButton';
-
+import EvilIcon from 'react-native-vector-icons/EvilIcons'
 import * as $ from './constant';
 import {BACK_ICON} from './helpers/resource';
 
@@ -92,10 +96,27 @@ const styles = StyleSheet.create({
         borderBottomWidth: StyleSheet.hairlineWidth
     },
     tabBarStyle: {
-        backgroundColor: '#eee',
+        backgroundColor: '#fff',
     },
     tabBarSelectedItemStyle: {
-        backgroundColor: '#ddd',
+        backgroundColor: '#fff',
+    },
+    titleWrapper: {
+        marginTop: 10,
+        position: 'absolute',
+        ...Platform.select({
+            ios: {
+                top: 20,
+            },
+            android: {
+                top: 5,
+            },
+            windows: {
+                top: 5,
+            },
+        }),
+        left: 0,
+        right: 0,
     },
 });
 const getSceneStyle = (/* NavigationSceneRendererProps */ props, computedProps) => {
@@ -274,7 +295,6 @@ class Routers extends React.Component {
         const backIcon = {uri: BACK_ICON};
         return (
             <Scene key="Root" backButtonImage={backIcon} navigationBarStyle={styles.navigationBarStyle}>
-                <Scene hideTabBar key="login" component={conn(LoginPage)} title="Login"/>
                 <Scene hideTabBar key="entry" component={conn(EntryPage)} title={TITLE}/>
 
                 <Scene key="resetPwdByPhone" component={conn(ResetPwdByPhonePage)} title={'重置密码'}/>
@@ -285,7 +305,8 @@ class Routers extends React.Component {
                         key="tab_main"
                         tabs
                         backButtonImage={backIcon}
-                        tabBarStyle={styles.tabBarStyle}
+                        tabBarIconContainerStyle={{height: $.TAB_BAR_HEIGHT}}
+                        tabBarStyle={[styles.tabBarStyle, {height: $.TAB_BAR_HEIGHT}]}
                         tabBarSelectedItemStyle={styles.tabBarSelectedItemStyle}
                     >
                         <Scene key="search" component={conn(SearchPage)}
@@ -296,18 +317,25 @@ class Routers extends React.Component {
 
                         <Scene backButtonImage={backIcon} initial key="tab_home_main"
                                navigationBarStyle={styles.navigationBarStyle}
+                               iconName={"home"}
                                title="首页"
-                               titleStyle={{}}
-                               icon={TabIcon}>
+                               icon={TabIcon}
+                        >
                             <Scene
+                                renderTitle={(p) => {
+                                    const ConnectedSerachTitle = conn(SearchTitle);
+                                    return <ConnectedSerachTitle {...p}/>
+                                }}
                                 key="tab_home" component={conn(HomePage)}
-                                onLeft={() => Actions.search()}
-                                leftTitle="搜索"
+                                /*onLeft={() => Actions.search()}*/
+                                /*leftTitle="搜索"*/
                                 onRight={() => Actions.messages()}
                                 rightTitle="消息"
                             />
                         </Scene>
                         <Scene backButtonImage={backIcon} key="tab_service_main" navigationBarStyle={styles.navigationBarStyle}
+                               type={ActionConst.JUMP}
+                               iconName={"service"}
                                title="服务" icon={TabIcon}>
                             <Scene key="tab_service" hideTabBar={false} component={conn(ServicePage)}
                                    navigationBarStyle={styles.navigationBarStyle}
@@ -347,13 +375,20 @@ class Routers extends React.Component {
                                    hideTabBar
                                    title="确认订单"
                             />
+                            <Scene key="serviceClause" component={conn(ServiceClausePage)}
+                                   type={ActionConst.PUSH_OR_POP}
+                                   hideTabBar
+                                   title="服务条款"
+                            />
                         </Scene>
                         <Scene key="tab_cart" component={conn(CartPage)} title="购物车"
                                navigationBarStyle={styles.navigationBarStyle}
                                onRight={() => alert()}
                                rightTitle="编辑"
+                               iconName={"cart"}
                                icon={TabIcon}/>
                         <Scene key="tab_mine_main" title="我的"
+                               iconName={"mine"}
                                navigationBarStyle={styles.navigationBarStyle}
                                icon={TabIcon}>
                             <Scene key="tab_mine" component={conn(MinePage)} title="我的"

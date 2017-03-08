@@ -50,7 +50,7 @@ export default StyleSheet.create({
     },
     contentText: {
         justifyContent: 'flex-start',
-        fontSize: 13,
+        fontSize: 12,
         marginRight: 10,
         color: '#848484'
     },
@@ -73,7 +73,9 @@ export default StyleSheet.create({
         color: '#4A4A4A'
     },
     countText: {
-        marginRight: 8
+        marginRight: 8,
+        color: '#4A4A4A',
+        fontSize: 13
     },
     stateText: {
         flex: 1,

@@ -15,6 +15,7 @@ import {
 import * as Animatable from 'react-native-animatable';
 import Collapsible from 'react-native-collapsible';
 import sty from './style';
+import {splitText} from '../../helpers';
 
 import TeacherBasicInfo from '../../components/TeacherBasicInfo';
 import ScrollTab from '../../components/ScrollTab';
@@ -58,9 +59,13 @@ class ForeignTeacherDetailPage extends Component {
     static propTypes = {}
 
     render() {
-        const {store: {foreign_teacher_detail: {
-            isFetching, base: {avatar, name, brief, tags, clients, rate, reviews}, detail, service, comment
-        }}, actions} = this.props;
+        const {
+            store: {
+                foreign_teacher_detail: {
+                    isFetching, base: {avatar, name, brief, tags, clients, rate, reviews}, detail, service, comment
+                }
+            }, actions
+        } = this.props;
 
         return (
             <View>
@@ -77,17 +82,16 @@ class ForeignTeacherDetailPage extends Component {
                     <ScrollTab
                         /*onChangeTab={({i}) => actions.setEntryActiveIndex(a[+i])}*/
                         tabContainerStyle={{flex: 1, alignItems: 'center'}}
-                        tabBarTextStyle={{fontSize: 14}}
+                        tabBarTextStyle={{fontSize: 15, fontWeight: 'normal'}}
                         tabBarStyle={{height: 40}}
-                        page={2}
+                        page={0}
                     >
-                        <View tabLabel="详情">
+                        <View tabLabel="导师详情">
+                            {this.sep}
                             {this.intro}
                         </View>
-                        <View tabLabel="服务">
-
-                        </View>
-                        <View tabLabel={"评价("+comment.total+")"}>
+                        <View tabLabel={"用户评价(" + comment.total + ")"}>
+                            {this.sep}
                             {this.comments}
                         </View>
                     </ScrollTab>
@@ -105,16 +109,19 @@ class ForeignTeacherDetailPage extends Component {
                 }
             }, actions
         } = this.props;
+        const selfIntroObj = splitText(selfIntro);
         return (
             <View>
-                <CollapsibleIntro title={"简介"}
+                <CollapsibleIntro title={"个人简介"}
                                   showTexts={intro}/>
                 {this.sep}
-                <CollapsibleIntro title={"自我介绍"} showTexts={selfIntro.substr(0, 50)}
-                                  hideTexts={selfIntro.length>50?selfIntro.slice(50):null}
+                <CollapsibleIntro
+                    title={"自我介绍"}
+                    showTexts={selfIntroObj.showText}
+                    hideTexts={selfIntroObj.hideText}
                 />
                 {this.sep}
-                <CollapsibleIntro title={"教育"}>
+                <CollapsibleIntro title={"教育背景"}>
                     <Educations
                         noScroll
                         style={{alignItems: 'stretch'}}
@@ -122,13 +129,13 @@ class ForeignTeacherDetailPage extends Component {
                     />
                 </CollapsibleIntro>
                 {this.sep}
-                <CollapsibleIntro title={"经历"}/>
+                <CollapsibleIntro title={"导师经历"}/>
                 {this.sep}
-                <LinkItem leftText={"获奖 & 荣誉"}/>
+                <LinkItem leftComponent={CollapsibleIntro.getHead("获奖 & 荣誉", true)}/>
                 {this.sep}
-                <LinkItem leftText={"发表的文章"}/>
+                <LinkItem leftComponent={CollapsibleIntro.getHead("发表的文章", true)}/>
                 {this.sep}
-                <LinkItem leftText={"各项能力"}/>
+                <LinkItem leftComponent={CollapsibleIntro.getHead("各项能力", true)}/>
                 {this.sep}
                 {this.sep}
                 {this.sep}
@@ -138,10 +145,14 @@ class ForeignTeacherDetailPage extends Component {
     }
 
     get comments() {
-        const {store: {foreign_teacher_detail: {
-            isFetching, detail, service,
-            comment: {total, average, levels, comments}
-        }}, actions} = this.props;
+        const {
+            store: {
+                foreign_teacher_detail: {
+                    isFetching, detail, service,
+                    comment: {total, average, levels, comments}
+                }
+            }, actions
+        } = this.props;
         const s = {
             item: {
                 paddingVertical: 15,
@@ -196,11 +207,15 @@ class ForeignTeacherDetailPage extends Component {
             <BottomBtns
                 lefts={[{
                     text: "收藏",
+                    iconName: 'collection',
                     onPress: null
                 }, {
                     text: "客服",
+                    iconName: 'customer_service',
                     onPress: null
                 }]}
+                subText="加入购物车"
+                onSubPress={() => alert()}
                 mainText={"立即预约"}
                 onMainPress={() => actions.abroadExpertFormModalOpen()}
             />
@@ -208,7 +223,12 @@ class ForeignTeacherDetailPage extends Component {
     }
 
     get sep() {
-        return <View style={{height: 10}}/>
+        return <View style={{
+            height: 10,
+            borderTopWidth: StyleSheet.hairlineWidth,
+            borderBottomWidth: StyleSheet.hairlineWidth,
+            borderColor: '#e5e5e5'
+        }}></View>
     }
 }
 

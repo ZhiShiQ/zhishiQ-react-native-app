@@ -10,12 +10,14 @@ import {
     StyleSheet,
     ListView,
     ScrollView,
+    Image,
     TextInput,
     Button
 } from 'react-native';
 import {Actions} from 'react-native-router-flux';
 import * as Animatable from 'react-native-animatable';
 import sty from './style';
+import {QQ_COLORFUL, WB_COLORFUL, WX_COLORFUL, BACK_ICON} from '../../helpers/resource'
 
 import InputExtra from '../../components/InputExtra';
 import InputExtras from '../../components/InputExtras';
@@ -74,18 +76,39 @@ class EntryPage extends Component {
                         {this. loginPage}
                     </View>
                 </ScrollTab>
-                {/*<HrFlexLayout style={{backgroundColor: '#FFF', flex: 0}}>*/}
-                    {/*<SubMenu style={{marginHorizontal: 0}} title={"注册"} onPress={()=>actions.setEntryActiveIndex('reg')} active={activeIndex=='reg'}/>*/}
-                    {/*<SubMenu style={{marginHorizontal: 0}} title={"登录"} onPress={()=>actions.setEntryActiveIndex('login')} active={activeIndex=='login'}/>*/}
-                {/*</HrFlexLayout>*/}
 
             </View>
         )
     }
     get social() {
+        const logoStyle = {resizeMode: 'contain', width: 25, height: 30, marginBottom: 10};
+        const textStyle = {fontSize: 12.5, color: '#848484'}
         return (
-            <View style={{alignItems: "center"}}>
-                <Text>用社交账号登录</Text>
+            <View style={{
+                alignItems: 'center'
+            }}>
+                <Text style={{marginBottom: 20, color: '#4a4a4a'}}>用社交账号登录</Text>
+                <HrFlexLayout style={{marginBottom: 30, justifyContent: 'space-around',
+                    alignSelf: 'stretch', marginHorizontal: 20}}>
+                    <TouchableOpacity>
+                        <View style={{alignItems: 'center'}}>
+                            <Image style={logoStyle} source={{uri: QQ_COLORFUL}}/>
+                            <Text style={textStyle}>QQ登录</Text>
+                        </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity>
+                        <View style={{alignItems: 'center'}}>
+                            <Image style={logoStyle} source={{uri: WX_COLORFUL}}/>
+                            <Text style={textStyle}>微信登录</Text>
+                        </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity>
+                        <View style={{alignItems: 'center'}}>
+                            <Image style={logoStyle} source={{uri: WB_COLORFUL}}/>
+                            <Text style={textStyle}>微博登录</Text>
+                        </View>
+                    </TouchableOpacity>
+                </HrFlexLayout>
             </View>
         )
     }
@@ -93,6 +116,7 @@ class EntryPage extends Component {
     get loginPage() {
         const {store: {entry: {login, activeIndex}}, actions} = this.props;
         return (
+            <View style={{flex: 1}}>
             <InputExtras
                 renderHeader={() => <View style={sty.top}></View>}
                 ref="inputs"
@@ -123,10 +147,11 @@ class EntryPage extends Component {
                                 Actions.tabbar({type: "replace"});
                             }}
                         />
-                        {this.social}
                     </View>
                 }
             />
+                {this.social}
+            </View>
         )
     }
 

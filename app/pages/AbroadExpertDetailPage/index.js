@@ -16,6 +16,7 @@ import * as Animatable from 'react-native-animatable';
 import Collapsible from 'react-native-collapsible';
 
 import sty from './style';
+import {splitText} from '../../helpers';
 
 import TeacherBasicInfo from '../../components/TeacherBasicInfo';
 import Educations from '../../components/Educations';
@@ -82,6 +83,7 @@ class AbroadExpertDetailPage extends Component {
     render() {
         const {store: {abroad_expert_detail}, actions} = this.props
         const {base, detail} = abroad_expert_detail;
+        const introObj = splitText(detail.intro);
         return (
             <View>
                 <ScrollView contentContainerStyle={[sty.main, {paddingBottom: 45}]}>
@@ -104,8 +106,8 @@ class AbroadExpertDetailPage extends Component {
                         <View tabLabel="详情">
                             <CollapsibleIntro
                                 title={"自我介绍"}
-                                showTexts={detail.intro.substr(0, 50)}
-                                hideTexts={detail.intro.slice(50)}
+                                showTexts={introObj.showText}
+                                hideTexts={introObj.hideText}
 
                             />
                             {this.sep}
@@ -148,11 +150,15 @@ class AbroadExpertDetailPage extends Component {
             <BottomBtns
                 lefts={[{
                     text: "收藏",
+                    iconName: 'collection',
                     onPress: null
                 }, {
                     text: "客服",
+                    iconName: 'customer_service',
                     onPress: null
                 }]}
+                subText="加入购物车"
+                onSubPress={() => alert()}
                 mainText={"立即预约"}
                 onMainPress={() => actions.abroadExpertFormModalOpen()}
             />
@@ -164,7 +170,7 @@ class AbroadExpertDetailPage extends Component {
         const {base, detail: {experiences}} = abroad_expert_detail;
 
         return (
-            <View style={[sty.container]}>
+            <View style={[sty.container, {paddingVertical: 15}]}>
                 {this.getHead("经历")}
             </View>
         )
@@ -174,8 +180,8 @@ class AbroadExpertDetailPage extends Component {
         const {store: {abroad_expert_detail}, actions} = this.props
         const {base, detail: {educations}} = abroad_expert_detail;
         return (
-            <View style={[sty.container, {paddingHorizontal: 6}]}>
-                {this.getHead("教育")}
+            <View style={[sty.container, {paddingHorizontal: 6, paddingTop: 15}]}>
+                <View style={{paddingHorizontal: 9}}>{this.getHead("教育")}</View>
                 <Educations
                     noScroll
                     items={educations}
@@ -186,20 +192,7 @@ class AbroadExpertDetailPage extends Component {
 
     getHead(name) {
         return (
-            <View style={{
-                marginVertical: 10, alignItems: 'center'
-            }}>
-                <View style={{
-                    borderBottomWidth: 2, paddingBottom: 3,
-                    borderBottomColor: '#4a4a4a'
-                }}>
-                    <Text
-                        style={{
-                            textAlign: 'center',
-                        }}
-                    >{name}</Text>
-                </View>
-            </View>
+            CollapsibleIntro.getHead(name, true)
         )
     }
 

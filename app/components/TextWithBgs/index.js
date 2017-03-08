@@ -56,7 +56,10 @@ class TextWithBgs extends Component {
                             onPress={item.onPress}
                             bgColor={bgColor}
                             color={color}
-                            style={[{borderColor, borderWidth: StyleSheet.hairlineWidth}, eachStyle]}
+                            style={[
+                                {borderColor, borderWidth: StyleSheet.hairlineWidth}, eachStyle,
+                                (i==items.length-1)?{marginRight: 0}:{}
+                            ]}
                         />
                     )
                 }

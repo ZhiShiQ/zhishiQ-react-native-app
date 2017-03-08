@@ -7,7 +7,7 @@ import {uint} from './helpers'
 /* UI related */
 
 export const NAV_BAR_HEIGHT = 64;
-export const TAB_BAR_HEIGHT = 50;
+export const TAB_BAR_HEIGHT = 52;
 export const PADDING_SIZE = 15;
 export const SWIPE_BLOCK_WIDTH = 75;
 export const DURATION = 300;

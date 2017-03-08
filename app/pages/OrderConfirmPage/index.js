@@ -14,6 +14,7 @@ import {
 } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import {Actions, ActionConst} from 'react-native-router-flux';
+import EvilIcon from 'react-native-vector-icons/EvilIcons';
 
 import InputExtra from '../../components/InputExtra';
 import LinkItem from '../../components/LinkItem';
@@ -71,11 +72,14 @@ class OrderConfirmPage extends Component {
                     <InputExtra labelStyle={{width: 80}} label={"Skype"} inputProps={{placeholder: '输入您的Skype（选题）'}}/>
                     {this.pureText("顾问会通过qq或skype与您取得联系")}
                     <LinkItem leftText="设置空闲时间" onPress={() => Actions.timezoneAndFreeTime()}/>
-                    {this.pureText("已阅读或同意服务条款")}
+                    {this.pureText(
+                        "已阅读或同意",
+                        "服务条款"
+                    )}
                 </ScrollView>
                 <BottomBtns lefts={[{text: "收藏"}, {text: "客服"}]} onMainPress={() => {
                     // Actions.tabbar({type: ActionConst.PUSH});
-                    Actions.tab_service();
+                    Actions.tab_cart({type: ActionConst.JUMP});
                     // Actions.tab_service({type: ActionConst.POP_AND_REPLACE});
                     // Actions.tab_cart({type: ActionConst.REPLACE});
                     const {what: {value}} = this.refs;
@@ -84,15 +88,26 @@ class OrderConfirmPage extends Component {
         )
     }
 
-    pureText(text) {
+    pureText(text, btnText) {
         return (
+            <View style={{flexDirection: 'row', marginTop: 4,
+                marginBottom: 15, paddingLeft: 15,}}>
+                {btnText && <Text style={{top: 7}} ><EvilIcon size={18} color="#ea5502" name="check"/></Text>}
             <Text style={{
-                paddingHorizontal: 15,
                 color: '#a1a1a1',
-                marginTop: 10,
-                marginBottom: 20,
-                fontSize: 13.5
-            }}>{text}</Text>
+                lineHeight: 25,
+                fontSize: 13.5,
+                paddingRight: !btnText? 15: 0,
+            }}>
+                {text}
+            </Text>
+                {btnText && <TouchableWithoutFeedback
+                    onPress={()=>Actions.serviceClause()}>
+                    <View>
+                    <Text style={{fontSize: 13.5, lineHeight: 25, color: '#ea5502'}}>{btnText}</Text>
+                    </View>
+                </TouchableWithoutFeedback>}
+            </View>
         )
     }
 }

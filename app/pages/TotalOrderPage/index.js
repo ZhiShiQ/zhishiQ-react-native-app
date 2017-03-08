@@ -15,6 +15,7 @@ import {
 import sty from './style';
 
 import HorizontalMenu from '../../components/HorizontalMenu'
+import ScrollTab from '../../components/ScrollTab';
 import BoughtViews from '../../components/BoughtViews';
 import ModalDropdown from 'react-native-modal-dropdown';
 
@@ -80,8 +81,24 @@ class TotalOrderPage extends Component {
         const {store, menus, boughtList} = this.props;
         return (
             <View sty={sty.main}>
-                <HorizontalMenu items={menus}/>
-                <BoughtViews items={boughtList} style={{marginTop: 36}}/>
+                <ScrollTab
+                    style={{flex: 0}}
+                    page={0}
+                    tabContainerStyle={{flexWrap: 'wrap'}}
+                    tabBarStyle={{height: 33}}
+                    tabBarTextStyle={{fontSize: 13}}
+                >
+                    <View tabLabel="全部" style={{flex: 0}}>
+                        <BoughtViews items={boughtList}/>
+                    </View>
+                    <View tabLabel="待付款"></View>
+                    <View tabLabel="待开始"></View>
+                    <View tabLabel="进行中"></View>
+                    <View tabLabel="待反馈"></View>
+                    <View tabLabel="待确认"></View>
+                    <View tabLabel="待评价"></View>
+                    <View tabLabel="已取消"></View>
+                </ScrollTab>
             </View>
         )
     }

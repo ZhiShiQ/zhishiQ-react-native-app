@@ -85,18 +85,29 @@ class ServiceItem extends Component {
                         <View style={sty.contentContainer}>
                             <Text style={sty.titleText}>{title}</Text>
                             <View style={sty.tags} >
-                                <TextWithBgs items={tags} />
+                                <TextWithBgs
+                                    items={tags}
+                                    eachStyle={{borderRadius: 2, fontSize: 12, paddingVertical: 0}}
+                                    bgColor="#FFF"
+                                    borderColor="#979797"
+                                />
                             </View>
                             <Hr />
-                            <Text>{points.join("｜")}</Text>
-                            <Text>{intro}</Text>
+                            <Text style={{color: '#4a4a4a'}}>{points.join("｜")}</Text>
+                            <Text style={{color: '#848484'}}>{intro}</Text>
                         </View>
                     </View>
                     <Hr/>
                     <View style={sty.footContainer}>
                         <View style={sty.footerLeft}>
-                            <Text style={sty.countText}>评分 {mark}</Text>
-                            <Text style={sty.countText}>预约 {appointNum}</Text>
+                            <Text style={[sty.countText]}>
+                                <Text style={{color: '#848484'}}>评分 </Text>
+                                {mark}
+                            </Text>
+                            <Text style={sty.countText}>
+                                <Text style={{color: '#848484'}}>预约 </Text>
+                                {appointNum}
+                                </Text>
                         </View>
                         <View style={sty.footerRight}>
                             <Text style={sty.priceText}>{'¥'+price+'／次'}</Text>
