@@ -76,7 +76,7 @@ import Hr from './components/Hr';
 import BlockButton from './components/BlockButton';
 import EvilIcon from 'react-native-vector-icons/EvilIcons'
 import * as $ from './constant';
-import {BACK_ICON} from './helpers/resource';
+import {BACK_ICON, shareIcon} from './helpers/resource';
 
 const MapStateToProps = (state) => ({store: state})
 const MapDispatchToProps = (dispatch) => ({
@@ -162,13 +162,26 @@ class Routers extends React.Component {
                 return {buttons: [{title: "已打开网址，点击扫描"}], height: 442};
             case 'discount':
                 return {buttons: [{title: "查看我的优惠券"}, {title: "取消／确定"}], height: 470}
-            case 'abroadExpert':
+            case 'abroadExpertBuy':
                 return {
                     buttons: [{
+                        full: true,
                         title: "确定",
                         onPress: () => {
                             actions.setCommonModalIsOpen(false);
-                            Actions.orderConfirm();
+                            Actions.orderConfirm({params: {type: 'buy'}});
+                        }
+                    }], height: 440
+                }
+            case 'abroadExpertCart':
+                return {
+                    buttons: [{
+                        full: true,
+                        title: "加入购物车",
+                        backgroundColor: '#ffb12e',
+                        onPress: () => {
+                            actions.setCommonModalIsOpen(false);
+                            Actions.orderConfirm({params: {type: 'cart'}});
                         }
                     }], height: 440
                 }
@@ -193,7 +206,8 @@ class Routers extends React.Component {
                     />
                 }
                 {modalType === 'discount' && <Text>我的优惠券</Text>}
-                {modalType === 'abroadExpert' && this.abroadExpertForm}
+                {modalType === 'abroadExpertBuy' && this.abroadExpertForm}
+                {modalType === 'abroadExpertCart' && this.abroadExpertForm}
                 {modalType === 'simplePay' && this.simplePlay}
             </Modal>
         )
@@ -352,7 +366,7 @@ class Routers extends React.Component {
                                    hideTabBar
                                    type={ActionConst.PUSH_OR_POP}
                                    getTitle={({params}) => (params ? params.title : '')}
-                                   rightTitle="分享"
+                                   getRightTitle={() => shareIcon}
                                    onRight={() => alert()}/>
                             <Scene key="foreignTeacher" component={conn(ForeignTeacherPage)}
                                    type={ActionConst.PUSH_OR_POP}

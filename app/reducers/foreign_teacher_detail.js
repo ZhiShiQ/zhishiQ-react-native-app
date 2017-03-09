@@ -51,12 +51,13 @@ const initialState = {
             tags: ['会计、审计、金融管理', '留学文书润色 VIP文书辅导'],
             comment: "This is the fourth time that I work with her on my document (in another major). And just several days after submitting the application of one of my dream schools (in my former major), I have received the offer, using the ps and cv that she polished! I really appreciate her work!!!",
             time: "2015/11/13 23:21",
-            thumbnail: {}
+            thumbnail: {uri: 'https://facebook.github.io/react-native/img/header_logo.png'}
         }, {
             title: '刘泽方 Zephyr Lewis',
             tags: ['会计、审计、金融管理', '留学文书润色 VIP文书辅导'],
             comment: "This is the fourth time that I work with her on my document (in another major). And just several days after submitting the application of one of my dream schools (in my former major), I have received the offer, using the ps and cv that she polished! I really appreciate her work!!!",
-            time: "2015/11/13 23:21"
+            time: "2015/11/13 23:21",
+            thumbnail: {uri: 'http://blog.moyuyc.xyz/head.jpg'}
         }, {
             title: '刘泽方 Zephyr Lewis',
             tags: ['会计、审计、金融管理', '留学文书润色 VIP文书辅导'],

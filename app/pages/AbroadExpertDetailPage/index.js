@@ -158,9 +158,9 @@ class AbroadExpertDetailPage extends Component {
                     onPress: null
                 }]}
                 subText="加入购物车"
-                onSubPress={() => alert()}
+                onSubPress={() => actions.abroadExpertCartFormModalOpen()}
                 mainText={"立即预约"}
-                onMainPress={() => actions.abroadExpertFormModalOpen()}
+                onMainPress={() => actions.abroadExpertBuyFormModalOpen()}
             />
         )
     }

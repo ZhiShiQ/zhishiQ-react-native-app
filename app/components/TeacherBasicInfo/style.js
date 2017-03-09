@@ -18,13 +18,14 @@ export default StyleSheet.create({
         fontSize: 18,
         fontWeight: '500',
         lineHeight: 25,
+        marginBottom: 3,
     },
     content: {
-        lineHeight: 20,
+        lineHeight: 16,
         fontSize: 14,
         color: '#848484',
         textAlign: 'center',
-        marginBottom: 12
+        marginBottom: 10
     },
     tag: {
         alignItems: 'center',

@@ -50,7 +50,8 @@ class Comment extends Component {
     }
 
     static defaultProps = {
-        tags: []
+        tags: [],
+        thumbnail: {}
     }
     state = {}
     static propTypes = {
@@ -64,7 +65,6 @@ class Comment extends Component {
 
     render() {
         const {thumbnail, title, containerStyle, tags, comment, time} = this.props
-
         return (
             <View style={[sty.main, containerStyle]}>
                 <View style={sty.hor}>

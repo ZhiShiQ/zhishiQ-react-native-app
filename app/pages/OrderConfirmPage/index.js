@@ -57,12 +57,15 @@ class OrderConfirmPage extends Component {
     static propTypes = {}
 
     render() {
-        const {...props} = this.props;
+        const {actions, store, params: {type}} = this.props;
 
         return (
             <View style={sty.main}>
                 <ScrollView>
-                    <LinkItem showIcon={false} leftText={"主题咨询：加拿大留学生活学习"} leftStyle={{flex: 5}}
+                    <LinkItem showIcon={false}
+                              emphasize
+                              leftText={"主题咨询：加拿大留学生活学习"}
+                              leftStyle={{flex: 5}}
                               rightTextStyle={{color: '#ea5502', fontWeight: '600'}} rightText={"￥21"}/>
                     <InputExtra ref="what" style={{marginTop: 16}} labelStyle={{width: 80}} label={"我想咨询"}
                                 inputProps={{placeholder: '输入想咨询的内容'}}/>
@@ -77,15 +80,27 @@ class OrderConfirmPage extends Component {
                         "服务条款"
                     )}
                 </ScrollView>
-                <BottomBtns lefts={[{text: "收藏"}, {text: "客服"}]} onMainPress={() => {
-                    // Actions.tabbar({type: ActionConst.PUSH});
-                    Actions.tab_cart({type: ActionConst.JUMP});
-                    // Actions.tab_service({type: ActionConst.POP_AND_REPLACE});
-                    // Actions.tab_cart({type: ActionConst.REPLACE});
-                    const {what: {value}} = this.refs;
-                }} mainText={"去付款"}/>
+                <BottomBtns lefts={[{text: "收藏"}, {text: "客服"}]}
+                    {...this._getBottomBtnsProps()}
+                />
             </View>
         )
+    }
+
+    _getBottomBtnsProps() {
+        const {params: {type}} = this.props;
+        switch (type) {
+            case 'buy':
+                return {mainText: "去付款", onMainPress: () => {
+                    Actions.tab_cart({type: ActionConst.JUMP});
+                    const {what: {value}} = this.refs;
+                }}
+            case 'cart':
+                return {subText: " 加入购物车", onSubPress: () => {
+                    Actions.tab_cart({type: ActionConst.JUMP});
+                    const {what: {value}} = this.refs;
+                }}
+        }
     }
 
     pureText(text, btnText) {

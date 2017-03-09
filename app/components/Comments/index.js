@@ -57,8 +57,12 @@ class Comments extends Component {
             />
         )
     }
-    _renderSeparator() {
-        return <View style={{height: 10}} ></View>
+    _renderSeparator(a, i) {
+        const {length} = this.props.items
+        // if (i!=length-1)
+            return <View style={{
+                height: 10,
+            }}></View>
     }
     _renderRow(data, s, i) {
         return <Comment key={i} {...data} />

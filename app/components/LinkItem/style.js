@@ -15,7 +15,8 @@ export default StyleSheet.create({
     },
     container: {
         flexDirection: 'row',
-        alignItems: 'center'
+        alignItems: 'center',
+
     },
     left: {
         flex: 1

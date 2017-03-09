@@ -50,11 +50,12 @@ class LinkItem extends Component {
         leftComponent: React.PropTypes.element,
         rightComponent: React.PropTypes.element,
         showIcon: React.PropTypes.bool,
+        emphasize: React.PropTypes.bool,
         iconName: React.PropTypes.string,
         iconSize: React.PropTypes.number
     };
     render() {
-        const {style, leftText, iconSize, leftStyle, rightTextStyle, leftComponent, rightComponent, showIcon, onPress, rightText, iconName, showBorder, borderColor} = this.props
+        const {style, leftText, emphasize, iconSize, leftStyle, rightTextStyle, leftComponent, rightComponent, showIcon, onPress, rightText, iconName, showBorder, borderColor} = this.props
         return (
             <View style={style}>
                 {
@@ -63,7 +64,9 @@ class LinkItem extends Component {
                 }
                 <TouchableHighlight
                     underlayColor={"#EEE"}
-                    onPress={onPress} style={[sty.main, style, {borderColor}]}>
+                    onPress={onPress} style={[sty.main, style, {borderColor}, emphasize && {
+                        borderLeftWidth: 5, borderColor: '#fc6d34', paddingLeft: 15-5,
+                }]}>
                     <View style={sty.container}>
                         <View style={[sty.left, leftComponent?{flex: 5}:{}, leftStyle]}>
                             {leftComponent}

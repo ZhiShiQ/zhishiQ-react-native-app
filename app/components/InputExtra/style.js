@@ -17,11 +17,11 @@ export default StyleSheet.create({
     input: {
         flex: 2,
         // paddingLeft: 14.5,
-        fontSize: 16,
+        fontSize: 15,
     },
     label: {
         // paddingLeft: 14.5,
-        fontSize: 16,
+        fontSize: 15,
         color: '#4A4A4A',
         flex: 0,
         width: 80-PADDING_SIZE,

@@ -34,11 +34,13 @@ class BlockButton extends Component {
         backgroundColor: '#ea5502',
         title: 'title',
         disabledStyle: {},
-        color: '#FFF'
+        color: '#FFF',
+        full: false
     }
     state = {}
     static propTypes = {
         disabled: React.PropTypes.bool,
+        full: React.PropTypes.bool,
         onPress: React.PropTypes.func,
         backgroundColor: React.PropTypes.string,
         disabledStyle: React.PropTypes.object,
@@ -46,16 +48,16 @@ class BlockButton extends Component {
         color: React.PropTypes.string,
     }
     render() {
-        const {title, disabled, onPress, backgroundColor, disabledStyle, color} = this.props
+        const {title, disabled, full, onPress, backgroundColor, disabledStyle, color} = this.props
         const Container = disabled ? TouchableWithoutFeedback : TouchableOpacity
         return (
                 <Container
                     disabled={disabled}
                     onPress={onPress}
-                    style={[sty.main, {backgroundColor}, disabled&&disabledStyle]}
+                    style={[!full?sty.main:sty.full, {backgroundColor}, disabled&&disabledStyle]}
                 >
                     <View style={sty.view}>
-                        <Text style={[sty.titleText, {color}]}>{title}</Text>
+                        <Text style={[sty.titleText, {color}, full&&{paddingVertical: 0}]}>{title}</Text>
                     </View>
                 </Container>
         )

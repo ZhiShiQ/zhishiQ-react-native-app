@@ -45,7 +45,6 @@ class TeacherBasicInfo extends Component {
         appointNum: PropTypes.number,
         average: PropTypes.number,
         commentNum: PropTypes.number,
-
         listKeys: PropTypes.array,
         listValues: PropTypes.array,
     }
@@ -58,7 +57,7 @@ class TeacherBasicInfo extends Component {
                 <Text style={sty.content}>{content}</Text>
                 <TextWithBgs
                     items={tags}
-                    eachStyle={{borderRadius: 2, fontSize: 12}}
+                    eachStyle={{borderRadius: 2, paddingVertical: .5, fontSize: 12}}
                     bgColor="#FFF"
                     borderColor="#4a4a4a"
                 />

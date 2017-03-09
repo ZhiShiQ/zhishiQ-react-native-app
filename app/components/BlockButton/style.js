@@ -16,12 +16,17 @@ export default StyleSheet.create({
         alignItems: 'center',
         alignSelf: 'stretch'
     },
+    full: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        alignSelf: 'stretch',
+    },
     view: {
-
+        paddingVertical: 15,
     },
     titleText: {
         paddingVertical: 12,
-        fontSize: 15,
+        // fontSize: 15,
         textAlign: 'center'
     }
 });

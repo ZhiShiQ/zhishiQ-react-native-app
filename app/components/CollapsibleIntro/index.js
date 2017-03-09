@@ -16,7 +16,8 @@ import * as Animatable from 'react-native-animatable';
 import Collapsible from 'react-native-collapsible';
 import EvilIcon from 'react-native-vector-icons/EvilIcons'
 import Entypo from 'react-native-vector-icons/EvilIcons'
-import {PADDING_SIZE} from '../../constant'
+import {PADDING_SIZE} from '../../constant';
+import {upIcon, downIcon} from '../../helpers/resource';
 import sty from './style';
 
 
@@ -42,16 +43,37 @@ class CollapsibleIntro extends Component {
         showTexts: PropTypes.oneOfType(PropTypes.array, PropTypes.string),
         title: PropTypes.string,
         hideTexts: PropTypes.oneOfType(PropTypes.array, PropTypes.string),
+        hideComponent: PropTypes.element,
+        showComponent: PropTypes.element,
     }
     render() {
+        const {hideComponent, hideTexts} = this.props;
         return (
-            <View style={[sty.main, {backgroundColor: '#fff', padding: PADDING_SIZE}]}>
+            <View style={[sty.main, {backgroundColor: '#fff', padding: PADDING_SIZE, paddingTop: 20}]}>
                 {CollapsibleIntro.getHead(this.props.title)}
-                {this.getText()}
                 {this.props.children}
+                {this.getText()}
+                {this.getComponent()}
+                {(hideComponent || hideTexts) && this.expendableCtl()}
             </View>
         )
     }
+
+    getComponent() {
+        const {hideComponent, showComponent} = this.props;
+        const {expended} = this.state;
+        if (!hideComponent && !showComponent) {
+            return;
+        }
+        return (
+            <View style={{backgroundColor: '#fff'}}>
+                <Collapsible collapsed={!expended} align={"center"} >
+                    {hideComponent}
+                </Collapsible>
+            </View>
+        )
+    }
+
     getText() {
         let {showTexts, hideTexts} = this.props;
         const {expended} = this.state;
@@ -81,14 +103,11 @@ class CollapsibleIntro extends Component {
                     )}
                     </Text>
                 </Collapsible>
-                {hideTexts && this.expendableCtl(() => {
-                    this.setState({expended: !expended});
-                })}
             </View>
         )
     }
 
-    expendableCtl(onPress) {
+    expendableCtl(onPress=() => this.setState({expended: !expended})) {
         const {expended} = this.state;
 
         return <TouchableOpacity
@@ -96,8 +115,8 @@ class CollapsibleIntro extends Component {
             onPress={onPress}>
             <View style={{}}>
                 <Text style={{color: '#ea5502', fontSize: 14, lineHeight: 17}}>
-                    {!expended ? <Text>全部展开<Entypo size={18} color="#c4c4c4" name="chevron-down" /></Text> :
-                        <Text>部分收缩<Entypo size={18} color="#c4c4c4" name="chevron-up" /></Text>
+                    {!expended ? <Text>全部展开{downIcon}</Text> :
+                        <Text>收起{upIcon}</Text>
                     }
                 </Text>
             </View>
