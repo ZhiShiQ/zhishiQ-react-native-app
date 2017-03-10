@@ -85,7 +85,7 @@ class ForeignTeacherDetailPage extends Component {
                         listKeys={["Clients", "Rate", "Reviews"]}
                         listValues={[clients, rate, reviews]}
                     />
-                    {this.sep()}
+                    <Hr marginBottom={0} color={'#e5e5e5'}/>
                     <ScrollTab
                         /*onChangeTab={({i}) => actions.setEntryActiveIndex(a[+i])}*/
                         tabContainerStyle={{flex: 1, alignItems: 'center'}}
@@ -365,6 +365,7 @@ class ForeignTeacherDetailPage extends Component {
         }
         return (
             <View>
+                {this.sep()}
                 {/*<HrFlexLayout style={{backgroundColor: '#fff', justifyContent: 'space-around'}}>*/}
                 {/*<View style={s.item}>*/}
                 {/*<View><Text style={s.text}>{4.9}</Text></View>*/}
@@ -397,7 +398,7 @@ class ForeignTeacherDetailPage extends Component {
                     commentNum={259}
                     rate={4}
                 />
-                {this.sep()}
+                {this.sep(true, {height: 1})}
                 <Comments
                     noScroll
                     items={comments}
@@ -427,13 +428,13 @@ class ForeignTeacherDetailPage extends Component {
         )
     }
 
-    sep(noBorder) {
+    sep(noBorder, style) {
         return <View style={[{
             height: 10,
             borderTopWidth: StyleSheet.hairlineWidth,
             borderBottomWidth: StyleSheet.hairlineWidth,
             borderColor: '#e5e5e5'
-        }, noBorder ? {borderColor: 'transparent'} : {}]}></View>
+        }, noBorder ? {borderColor: 'transparent'} : {}, style]}></View>
     }
 }
 

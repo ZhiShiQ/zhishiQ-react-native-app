@@ -92,27 +92,33 @@ class ServiceItem extends Component {
                                     borderColor="#979797"
                                 />
                             </View>
-                            <Hr />
-                            <Text style={{color: '#4a4a4a'}}>{points.join("｜")}</Text>
-                            <Text style={{color: '#848484'}}>{intro}</Text>
+                            {/*<Hr />*/}
+                            <Text style={{color: '#4a4a4a', marginBottom: 4, lineHeight: 17 }}>{points.join("｜")}</Text>
+                            <Text style={{color: '#848484', marginBottom: 4}}>{intro}</Text>
+
+                            <View style={sty.footContainer}>
+                                <View style={sty.footerLeft}>
+                                    <Text style={[sty.countText]}>
+                                        <Text style={{color: '#848484'}}>评分 </Text>
+                                        {mark}
+                                    </Text>
+                                    <Text style={sty.countText}>
+                                        <Text style={{color: '#848484'}}>预约 </Text>
+                                        {appointNum}
+                                    </Text>
+                                </View>
+                                <View style={sty.footerRight}>
+                                    <Text style={sty.priceText}>
+                                        <Text style={sty.price}>{'¥'+price}</Text>
+                                        <Text> /次</Text>
+                                    </Text>
+                                </View>
+                            </View>
+
                         </View>
                     </View>
-                    <Hr/>
-                    <View style={sty.footContainer}>
-                        <View style={sty.footerLeft}>
-                            <Text style={[sty.countText]}>
-                                <Text style={{color: '#848484'}}>评分 </Text>
-                                {mark}
-                            </Text>
-                            <Text style={sty.countText}>
-                                <Text style={{color: '#848484'}}>预约 </Text>
-                                {appointNum}
-                                </Text>
-                        </View>
-                        <View style={sty.footerRight}>
-                            <Text style={sty.priceText}>{'¥'+price+'／次'}</Text>
-                        </View>
-                    </View>
+                    {/*<Hr/>*/}
+
                 </View>
             </TouchableOpacity>
         )

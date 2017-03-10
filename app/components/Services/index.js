@@ -18,6 +18,7 @@ import {
 import sty from './style';
 
 import ServiceItem from '../ServiceItem';
+import Hr from '../Hr';
 
 @autobind
 class Services extends Component {
@@ -87,7 +88,9 @@ class Services extends Component {
     }
     _renderSeparator() {
         return (
-            <View style={{height: 10}}></View>
+            <Hr marginBottom={0} color={'#e5e5e5'}
+                style={{marginHorizontal: 15}}
+            />
         )
     }
     _renderRow(data, s, i) {

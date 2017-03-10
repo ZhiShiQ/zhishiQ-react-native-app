@@ -25,6 +25,8 @@ import ScrollTab from '../../components/ScrollTab';
 import BottomBtns from '../../components/BottomBtns';
 import CollapsibleIntro from '../../components/CollapsibleIntro';
 import Comments from '../../components/Comments';
+import CommentStar from '../../components/CommentStar';
+import Hr from '../../components/Hr';
 
 
 EXPEND_HEIGHT = 250;
@@ -88,6 +90,7 @@ class AbroadExpertDetailPage extends Component {
             <View>
                 <ScrollView contentContainerStyle={[sty.main, {paddingBottom: 45}]}>
                     <TeacherBasicInfo
+                        contentCollapsible={true}
                         thumbnail={base.avatar}
                         tags={base.tags}
                         name={base.name}
@@ -96,31 +99,30 @@ class AbroadExpertDetailPage extends Component {
                         average={base.average}
                         commentNum={base.commentNum}
                     />
-                    {this.sep}
+                    <Hr marginBottom={0} color={'#e5e5e5'}/>
                     <ScrollTab
                         /*onChangeTab={({i}) => actions.setEntryActiveIndex(a[+i])}*/
                         tabContainerStyle={{flex: 1, alignItems: 'center'}}
                         tabBarTextStyle={{fontSize: 14}}
                         tabBarStyle={{height: 40}}
                     >
-                        <View tabLabel="详情">
+                        <View tabLabel="导师详情">
                             <CollapsibleIntro
                                 title={"自我介绍"}
                                 showTexts={introObj.showText}
                                 hideTexts={introObj.hideText}
 
                             />
-                            {this.sep}
+                            {this.sep()}
                             {this.educ}
-                            {this.sep}
+                            {this.sep()}
                             {this.experience}
-                            {this.sep}
-                            {this.sep}
-                            {this.sep}
-                            {this.sep}
+                            {this.sep()}
+                            {this.sep()}
+                            {this.sep()}
+                            {this.sep()}
                         </View>
-                        <View tabLabel="服务"></View>
-                        <View tabLabel="评价">
+                        <View tabLabel="用户评价">
                             {this.comments}
                         </View>
                     </ScrollTab>
@@ -137,10 +139,24 @@ class AbroadExpertDetailPage extends Component {
         const {comment: {comments}} = abroad_expert_detail;
 
         return (
-            <Comments
-                noScroll
-                items={comments}
-            />
+            <View>
+                {this.sep()}
+                <CommentStar
+                    collapsed={true}
+                    levels={[100, 7.8, 0.5, .4, 0]}
+                    speed={5}
+                    quality={3.5}
+                    pro={4}
+                    manner={1}
+                    commentNum={259}
+                    rate={4}
+                />
+                {this.sep(true, {height: 1})}
+                <Comments
+                    noScroll
+                    items={comments}
+                />
+            </View>
         )
     }
 
@@ -200,8 +216,13 @@ class AbroadExpertDetailPage extends Component {
 
     }
 
-    get sep() {
-        return <View style={{height: 10}}/>
+    sep(noBorder, style) {
+        return <View style={[{
+            height: 10,
+            borderTopWidth: StyleSheet.hairlineWidth,
+            borderBottomWidth: StyleSheet.hairlineWidth,
+            borderColor: '#e5e5e5'
+        }, noBorder ? {borderColor: 'transparent'} : {}, style]}></View>
     }
 
     get menu_1() {

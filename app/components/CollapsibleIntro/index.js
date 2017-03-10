@@ -45,12 +45,14 @@ class CollapsibleIntro extends Component {
         hideTexts: PropTypes.oneOfType(PropTypes.array, PropTypes.string),
         hideComponent: PropTypes.element,
         showComponent: PropTypes.element,
+        style: PropTypes.object,
+        textStyle: PropTypes.object,
     }
     render() {
-        const {hideComponent, hideTexts} = this.props;
+        const {hideComponent, style, textStyle, hideTexts, title} = this.props;
         return (
-            <View style={[sty.main, {backgroundColor: '#fff', padding: PADDING_SIZE, paddingTop: 20}]}>
-                {CollapsibleIntro.getHead(this.props.title)}
+            <View style={[sty.main, {backgroundColor: '#fff', padding: PADDING_SIZE, paddingTop: 20}, style]}>
+                {title && CollapsibleIntro.getHead(title)}
                 {this.props.children}
                 {this.getText()}
                 {this.getComponent()}
@@ -75,7 +77,7 @@ class CollapsibleIntro extends Component {
     }
 
     getText() {
-        let {showTexts, hideTexts} = this.props;
+        let {showTexts, hideTexts, textStyle} = this.props;
         const {expended} = this.state;
         if (!showTexts && !hideTexts) {
             return;
@@ -87,15 +89,16 @@ class CollapsibleIntro extends Component {
 
         return (
             <View style={{backgroundColor: '#fff'}}>
-                <Text>
+                <Text style={textStyle}>
                 {showTexts.map((t, i) =>
                     <Text key={i} style={{color: '#848484', marginBottom: 10, lineHeight: 17}}>
                         {t}
                     </Text>
                 )}
                 </Text>
-                <Collapsible collapsed={!expended} align="center">
-                    <Text>
+                <Collapsible
+                    collapsed={!expended} align="center">
+                    <Text style={textStyle}>
                     {hideTexts && hideTexts.map((t, i) =>
                         <Text key={i} style={{color: '#848484', marginBottom: 10, lineHeight: 17}}>
                             {t}

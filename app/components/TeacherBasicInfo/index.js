@@ -14,6 +14,10 @@ import {
 } from 'react-native';
 
 import sty from './style';
+import {splitText} from '../../helpers'
+
+import Collapsible from 'react-native-collapsible';
+import CollapsibleIntro from '../CollapsibleIntro';
 
 import CirImage from '../CirImage';
 import TextWithBgs from '../TextWithBgs';
@@ -34,8 +38,12 @@ class TeacherBasicInfo extends Component {
     componentWillUpdate(newProps, newState, newContext) {}
     componentDidUpdate(oldProps, oldState, oldContext) {}
     componentWillUnmount() {}
-    static defaultProps = {}
-    state = {}
+    static defaultProps = {
+        contentCollapsible: false
+    }
+    state = {
+        collapsed: true
+    }
     static propTypes = {
         style: PropTypes.object,
         thumbnail: PropTypes.object,
@@ -45,16 +53,33 @@ class TeacherBasicInfo extends Component {
         appointNum: PropTypes.number,
         average: PropTypes.number,
         commentNum: PropTypes.number,
+        contentCollapsible: PropTypes.bool,
         listKeys: PropTypes.array,
         listValues: PropTypes.array,
     }
     render() {
-        const {style, listValues, listKeys, thumbnail, name, content, tags, appointNum, average, commentNum} = this.props
+        const {style, listValues, contentCollapsible, listKeys, thumbnail, name, content, tags, appointNum, average, commentNum} = this.props;
+        const {collapsed} = this.state;
+        let obj;
+        if (contentCollapsible) {
+            obj = { //splitText(content, 30);
+                showTexts: content.substr(0, 30),
+                hideTexts: content.slice(30)
+            };
+        }
         return (
             <View style={[sty.main]}>
                 <CirImage size={110} source={thumbnail} style={{marginBottom: 6}}/>
                 <Text style={sty.name}>{name}</Text>
-                <Text style={sty.content}>{content}</Text>
+                {!contentCollapsible || true
+                    ? <Text style={sty.content}>{content}</Text>
+                    : <CollapsibleIntro
+                        {...obj}
+                        textStyle={{textAlign: 'center'}}
+                        style={{padding: 0, paddingTop: 0,
+                            marginBottom: 10}}
+                    >
+                    </CollapsibleIntro>}
                 <TextWithBgs
                     items={tags}
                     eachStyle={{borderRadius: 2, paddingVertical: .5, fontSize: 12}}

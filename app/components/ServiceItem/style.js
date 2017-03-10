@@ -11,7 +11,8 @@ export default StyleSheet.create({
         paddingHorizontal: PADDING_SIZE
     },
     mainContainer: {
-        paddingVertical: 12,
+        paddingTop: 15,
+        paddingBottom: 20,
     },
     mainTitleContainer: {
         marginVertical: 4,
@@ -19,14 +20,15 @@ export default StyleSheet.create({
         flexDirection: 'row',
     },
     titleText: {
-        fontWeight: '600',
-        fontSize: 14,
+        fontWeight: 'bold',
+        fontSize: 15,
         color: '#4A4A4A',
         flex: 1,
         marginBottom: 4,
     },
     mainInnerContainer: {
         flexDirection: 'row',
+        // alignItems: 'flex-start'
         // padding: 6,
     },
     tags: {
@@ -46,7 +48,7 @@ export default StyleSheet.create({
     },
     contentContainer: {
         flex: 1,
-        marginBottom: 6
+        // marginBottom: 6
     },
     contentText: {
         justifyContent: 'flex-start',
@@ -56,7 +58,7 @@ export default StyleSheet.create({
     },
 
     footContainer: {
-        // alignSelf: 'stretch',
+        alignItems: 'flex-end',
         flexDirection: 'row'
     },
     footerLeft: {
@@ -69,12 +71,17 @@ export default StyleSheet.create({
     },
     priceText: {
         fontSize: 14,
-        fontWeight: '600',
-        color: '#4A4A4A'
+        // fontWeight: '600',
+        color: '#848484'
+    },
+    price: {
+        fontSize: 17,
+        color: '#ea5502',
+        fontWeight: 'bold'
     },
     countText: {
-        marginRight: 8,
-        color: '#4A4A4A',
+        marginRight: 10,
+        color: '#848484',
         fontSize: 13
     },
     stateText: {

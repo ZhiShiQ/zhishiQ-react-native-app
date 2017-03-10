@@ -34,6 +34,7 @@ export default StyleSheet.create({
     tip: {
         fontSize: 12,
         color: '#848484',
-        fontWeight: 'normal'
+        fontWeight: 'normal',
+        marginTop: 3,
     }
 });

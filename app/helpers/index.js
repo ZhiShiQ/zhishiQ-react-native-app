@@ -14,11 +14,11 @@ export const uint = () => {
  * @param text
  * @returns {{showText: string, hideText: *}}
  */
-export const splitText = (text) => {
+export const splitText = (text, limit=50) => {
     let showText = '', hideText = '';
     Array.from(text).some((char, i) => {
         if (char === '\n') {
-            if (showText.length >= 50) {
+            if (showText.length >= limit) {
                 hideText = text.slice(i+1);
                 return true;
             }
