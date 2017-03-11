@@ -10,7 +10,7 @@ import {
     StyleSheet,
     ListView,
     ScrollView,
-    Button
+    Button,
 } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import Collapsible from 'react-native-collapsible';
@@ -24,9 +24,11 @@ import SubMenu from '../../components/SubMenu';
 import ScrollTab from '../../components/ScrollTab';
 import BottomBtns from '../../components/BottomBtns';
 import CollapsibleIntro from '../../components/CollapsibleIntro';
+import CollapsibleService from '../../components/CollapsibleService';
 import Comments from '../../components/Comments';
 import CommentStar from '../../components/CommentStar';
 import Hr from '../../components/Hr';
+import Experience from '../../components/Experience';
 
 
 EXPEND_HEIGHT = 250;
@@ -107,6 +109,9 @@ class AbroadExpertDetailPage extends Component {
                         tabBarStyle={{height: 40}}
                     >
                         <View tabLabel="导师详情">
+                            {this.sep()}
+                            {this.topic}
+                            {this.sep()}
                             <CollapsibleIntro
                                 title={"自我介绍"}
                                 showTexts={introObj.showText}
@@ -118,11 +123,14 @@ class AbroadExpertDetailPage extends Component {
                             {this.sep()}
                             {this.experience}
                             {this.sep()}
-                            {this.sep()}
-                            {this.sep()}
-                            {this.sep()}
+                            {this.honor}
+                            {this.sep(true)}
+                            {this.sep(true)}
+                            {this.sep(true)}
+                            {this.sep(true)}
                         </View>
                         <View tabLabel="用户评价">
+                            {this.sep()}
                             {this.comments}
                         </View>
                     </ScrollTab>
@@ -134,13 +142,55 @@ class AbroadExpertDetailPage extends Component {
         )
     }
 
+    get honor() {
+        return (
+            <CollapsibleIntro title={"获奖 & 荣誉"}>
+                <Experience style={{paddingTop: 0}}
+                    thumbnail={null} title={'MCM Award M'}
+                    noPoint
+                    origination={'MCM'} words={['April 2012']}/>
+            </CollapsibleIntro>
+        )
+    }
+
+    get topic() {
+        const items = [{
+            name: '英国G5名校申请指导',
+            price: 319,
+        }, {
+            name: '单项留学文书服务',
+            price: 319,
+            detail: {
+                tags: ['其他'],
+                contents: [
+                    '课程简述: Data Science, Business Analysis, Information Systems 留学申请，包括转专业申请',
+                    '适用用户: Data Science, Business Analysis, Information Systems 留学申请，包括转专业申请者',
+                    'Data Science, Business Analysis, Information Systems 留学申请，包括转专业申请者',
+                ]
+            }
+        }];
+
+        return (
+            <CollapsibleIntro title={"套餐类型"} style={{paddingBottom: 0}}>
+                <View style={{marginHorizontal: -15}}>
+                    {items.map((item, i) => this._renderService(item, i))}
+                </View>
+            </CollapsibleIntro>
+        )
+    }
+
+    _renderService(item, i) {
+        return (
+            <CollapsibleService {...item} key={i} />
+        )
+    }
+
     get comments() {
         const {store: {abroad_expert_detail}, actions} = this.props
         const {comment: {comments}} = abroad_expert_detail;
 
         return (
             <View>
-                {this.sep()}
                 <CommentStar
                     collapsed={true}
                     levels={[100, 7.8, 0.5, .4, 0]}
@@ -185,23 +235,77 @@ class AbroadExpertDetailPage extends Component {
         const {store: {abroad_expert_detail}, actions} = this.props
         const {base, detail: {experiences}} = abroad_expert_detail;
 
+        const items = [{
+            title: "Global Health Economics and Outcomes Research Consultant",
+            origination: 'Amgen, Inc.',
+            date_from: '2007-08',
+            thumbnail: {},
+            date_to: '2015-05',
+            words: [
+                'Designed and managed health economic research studies (e.g., budget impact, cost per response, cost-effectiveness, disease burden, secondary claims, patient-reported outcomes and instrument development, treatment patterns, etc.)',
+                'Presented findings at scientific and professional meetings (9 published/presen',
+                'Prepared, reviewed, and/or edited study protocols, manuscripts, and abstracts for department or Internal Peer Review Group'
+            ]
+        }, {
+            title: "Global Health Economics and Outcomes Research Consultant",
+            origination: 'Amgen, Inc.',
+            date_from: '2007-08',
+            date_to: '2015-05',
+            words: [
+                'Designed and managed health economic research studies (e.g., budget impact, cost per response, cost-effectiveness, disease burden, secondary claims, patient-reported outcomes and instrument development, treatment patterns, etc.)',
+                'Presented findings at scientific and professional meetings (9 published/presen',
+                'Prepared, reviewed, and/or edited study protocols, manuscripts, and abstracts for department or Internal Peer Review Group'
+            ]
+        }]
+
         return (
-            <View style={[sty.container, {paddingVertical: 15}]}>
-                {this.getHead("经历")}
-            </View>
+            <CollapsibleIntro
+                title={"行家经历"}
+                hideComponent={
+                    <ListView
+                        renderHeader={()=>this._renderExperienceSep(1, [])}
+                        dataSource={
+                            new ListView.DataSource({
+                                rowHasChanged: (r1, r2) => !Map(r1).equals(Map(r2))
+                            }).cloneWithRows(items)
+                        }
+                        renderRow={(data, s, i) => this._renderExperience(data, i, items)}
+                        renderSeparator={(a, i) => this._renderExperienceSep(i, items)}
+                        renderScrollComponent={(p)=><View {...p}/>}
+                    />
+                }
+            >
+                {this._renderExperience({...items[0], style: {paddingTop: 0}}, 0)}
+            </CollapsibleIntro>
+        )
+    }
+
+    _renderExperienceSep(i, a) {
+        if (i!=a.length-1)
+            return (
+                <View style={{backgroundColor: '#e5e5e5', height: .5, alignSelf: 'stretch'}}></View>
+            )
+    }
+
+    _renderExperience(data, i, a) {
+        return (
+            <Experience {...data} key={i} />
         )
     }
 
     get educ() {
         const {store: {abroad_expert_detail}, actions} = this.props
         const {base, detail: {educations}} = abroad_expert_detail;
+        educations[0].style = {paddingTop: 0};
         return (
-            <View style={[sty.container, {paddingHorizontal: 6, paddingTop: 15}]}>
-                <View style={{paddingHorizontal: 9}}>{this.getHead("教育")}</View>
-                <Educations
-                    noScroll
-                    items={educations}
-                />
+            <View style={[]}>
+                <CollapsibleIntro title={"教育背景"}>
+                    <Educations
+                        noScroll
+                        items={educations}
+                    />
+                </CollapsibleIntro>
+
             </View>
         )
     }

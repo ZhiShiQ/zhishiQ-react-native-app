@@ -95,11 +95,10 @@ class Collections extends Component {
         const {items} = this.props;
         if (i != items.length-1) {
             return (
-                <View>
-                    <Hr marginTop={0}
-                        marginBottom={0}
-                    />
-                </View>
+                <Hr marginTop={0}
+                    marginBottom={0}
+                    color={'#e5e5e5'}
+                />
             )
         }
     }

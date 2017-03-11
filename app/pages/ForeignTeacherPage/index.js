@@ -23,6 +23,8 @@ import DropDown from '../../components/DropDown';
 import CustomDropDown from '../../components/CustomDropDown';
 import CirImage from '../../components/CirImage';
 import ForeignTeacherItem from '../../components/ForeignTeacherItem';
+import Hr from '../../components/Hr';
+import HomeItem from '../../components/HomeItem';
 
 
 @autobind
@@ -69,27 +71,42 @@ class ForeignTeacherPage extends Component {
         return (
             <View style={{flex: 1}}>
                 <ListView
-                    contentContainerStyle={{marginTop: 33}}
+                    contentContainerStyle={{marginTop: 33, backgroundColor: '#fff', paddingHorizontal: 15}}
                     dataSource={
                         new ListView.DataSource({
                             rowHasChanged: (r1, r2) => !Map(r1).equals(Map(r2))
                         }).cloneWithRows(list)
                     }
                     renderRow={this._renderRow}
-                    renderSeparator={this._renderSeparator}
+                    renderSeparator={(s, i) => this._renderSeparator(i ,list)}
                 />
                 {this.subMenu}
             </View>
         )
     }
 
-    _renderSeparator() {
-        return <View style={{height: 10}}></View>
+    _renderSeparator(i, a) {
+        if (i != a.length - 1)
+            return <Hr marginBottom={0} color="#e5e5e5"/>
+    }
+
+    _renderRow2(data, s, i) {
+        const {actions} = this.props;
+        return <ForeignTeacherItem
+            onPress={() => {
+                const newData = {...data, avatar: data.thumbnail, name: data.title};
+                delete newData.thumbnail;
+                delete newData.title;
+                actions.setForeignTeacherDetailBase(newData);
+                Actions.foreignTeacherDetail();
+            }} {...data} key={i}/>
     }
 
     _renderRow(data, s, i) {
         const {actions} = this.props;
-        return <ForeignTeacherItem
+        data.bottomValues = [data.rate, data.appointNum]
+
+        return <HomeItem
             onPress={() => {
                 const newData = {...data, avatar: data.thumbnail, name: data.title};
                 delete newData.thumbnail;

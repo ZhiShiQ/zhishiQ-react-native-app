@@ -15,7 +15,7 @@ import {
 import * as Animatable from 'react-native-animatable';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-import sty, {IMGSIZE, BGCLR} from './style';
+import sty, {IMGSIZE, SELF_BGCLR, OTHER_BGCLR} from './style';
 import CirImage from '../CirImage';
 
 @autobind
@@ -63,7 +63,7 @@ class ChatMessage extends Component {
                         left: -6.5,
                         top: IMGSIZE/2-10,
                         position: 'absolute'
-                    }} name="caret-left" size={20} color={BGCLR} />
+                    }} name="caret-left" size={20} color={OTHER_BGCLR} />
                     <Text style={sty.otherContent}>
                         {content}
                     </Text>
@@ -83,7 +83,7 @@ class ChatMessage extends Component {
                         right: -6.5,
                         top: IMGSIZE/2-10,
                         position: 'absolute'
-                    }} name="caret-right" size={20} color={BGCLR} />
+                    }} name="caret-right" size={20} color={SELF_BGCLR} />
                     <Text style={sty.selfContent}>
                         内容是什么内容
                     </Text>

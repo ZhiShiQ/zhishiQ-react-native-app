@@ -36,18 +36,34 @@ class SubMenu extends Component {
         title: PropTypes.string,
         onPress: PropTypes.func,
         active: PropTypes.bool,
+        activeStyle: PropTypes.object,
+        textActive: PropTypes.bool,
         style: PropTypes.object
     }
     render() {
-        const {title, onPress, active, style} = this.props
+        const {title, onPress, active, activeStyle, textActive, style} = this.props
 
         return (
-            <TouchableHighlight
-                style={[sty.rowContainer, active ? sty.active : {}, style]}
-                onPress={onPress}
-            >
-                    <Text style={sty.rowText}>{title}</Text>
-            </TouchableHighlight>
+            <View>
+            { !textActive
+                ? <TouchableOpacity
+                    style={[sty.rowContainer, active && sty.active, active && !textActive && activeStyle, style]}
+                    onPress={onPress}
+                >
+                        <Text style={[sty.rowText]}>{title}</Text>
+                </TouchableOpacity>
+                : <TouchableOpacity
+                    style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}
+                    onPress={onPress}
+                >
+                        <View style={[{ paddingVertical: 10, alignItems: 'center', justifyContent: 'center'},
+                            sty.rowContainer, active && sty.active
+                        ]}>
+                            <Text style={sty.rowText}>{title}</Text>
+                        </View>
+                </TouchableOpacity>
+            }
+            </View>
         )
     }
 }

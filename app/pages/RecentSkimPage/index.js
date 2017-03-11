@@ -16,6 +16,7 @@ import {
 import sty from './style';
 
 import Collections from '../../components/Collections'
+import HomeItems from '../../components/HomeItems'
 
 @autobind
 class RecentSkimPage extends Component {
@@ -39,9 +40,8 @@ class RecentSkimPage extends Component {
 
         return (
             <View style={sty.main}>
-                <Collections
-                    disableSwipe={true}
-                    items={items.map(x => ({...x, onPress: () => alert(x.title)}))}
+                <HomeItems
+                    items={items.map(x => ({...x, style: {paddingHorizontal: 15}, bottomValues: [x.numerator, x.appointNum], onPress: () => alert(x.title)}))}
                 />
             </View>
         )

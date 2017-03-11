@@ -55,19 +55,21 @@ class HomeItem extends Component {
         title: PropTypes.string,
         tags: PropTypes.array,
         thumbnail: PropTypes.object,
+        style: PropTypes.object,
         content: PropTypes.string,
         bottomKeys: PropTypes.array,
         bottomValues: PropTypes.array,
+        price: PropTypes.number,
         onPress: PropTypes.func
     }
 
     render() {
-        const {title, thumbnail, tags, onPress, content, bottomKeys, bottomValues} = this.props
+        const {title, thumbnail, style, price, tags, onPress, content, bottomKeys, bottomValues} = this.props
 
         return (
             <TouchableOpacity
                 onPress={onPress}
-                style={sty.container}
+                style={[sty.container, price!=null && {paddingBottom: 20}, style]}
             >
                 <View style={sty.main}>
                     <CirImage style={{
@@ -75,7 +77,7 @@ class HomeItem extends Component {
                     }} source={thumbnail} size={50}/>
                     <View style={{flex: 1, marginTop: 4}}>
                         <Text style={sty.title}>{title}</Text>
-                        <TextWithBgs
+                        {tags && <TextWithBgs
                             style={{marginBottom: 6}}
                             bgColor={"#fff"}
                             eachStyle={{
@@ -86,13 +88,24 @@ class HomeItem extends Component {
                                 borderWidth: .5,
                                 borderRadius: 2
                             }}
-                            items={tags}/>
+                            items={tags}/>}
                         <Text style={sty.content}>{content}</Text>
-                        <Text style={sty.bottomTextContainer}>
-                            {bottomKeys.map((k, i) =>
-                                <Text style={sty.bottomText}>{k} {bottomValues[i]}   </Text>
-                            )}
-                        </Text>
+                        <View style={{flexDirection: 'row', alignItems: 'flex-end'}}>
+                            <Text
+                                style={[sty.bottomTextContainer, {
+                                    flex: 1
+                                }]}>
+                                {bottomKeys.map((k, i) =>
+                                    <Text style={sty.bottomText}>{k} {bottomValues[i]}   </Text>
+                                )}
+                            </Text>
+                            {price!=null && <Text style={[{
+                                flex: 0,
+                            }, sty.bottomTextContainer]}>
+                                <Text style={{fontWeight: 'bold', fontSize: 17, color: '#ea5502'}}>{price}</Text>
+                                <Text> 起</Text>
+                            </Text>}
+                        </View>
                     </View>
                 </View>
             </TouchableOpacity>

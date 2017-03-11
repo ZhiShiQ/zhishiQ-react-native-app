@@ -23,5 +23,9 @@ export default StyleSheet.create({
     active: {
         color: "#EA5502",
         borderBottomColor: '#EA5502'
+    },
+    textActive: {
+        borderBottomWidth: 2,
+        borderBottomColor: '#EA5502'
     }
 });

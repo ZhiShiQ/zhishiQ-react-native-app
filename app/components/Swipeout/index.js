@@ -51,7 +51,7 @@ class Swipeout extends Component {
                         style={[sty.btn, sty.delBtn, swipeBlockStyle]}
                         onPress={onRemove}
                     >
-                        <Text>删除</Text>
+                        <Text style={{color: '#fff', fontSize: 16}}>删除</Text>
                     </TouchableOpacity>
                 ]}
                 {...rest}

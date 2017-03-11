@@ -8,7 +8,8 @@ export default StyleSheet.create({
         justifyContent: 'center',
     },
     mainContainer: {
-        paddingVertical: 6,
+        paddingBottom: 14,
+        paddingTop: 14,
     },
     mainTitleContainer: {
         marginVertical: 4,
@@ -23,7 +24,7 @@ export default StyleSheet.create({
     },
     mainInnerContainer: {
         flexDirection: 'row',
-        padding: 6,
+        // padding: 6,
     },
     imageContainer: {
         marginRight: 6,
@@ -46,8 +47,8 @@ export default StyleSheet.create({
 
     thrText: {
         flex: 1,
-        color: '#4a4a4a',
-        fontSize: 14,
+        color: '#848484',
+        fontSize: 13.5,
     },
     secText: {
         flex: 1,

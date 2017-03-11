@@ -12,13 +12,12 @@ export default StyleSheet.create({
         alignItems: 'center',
     },
     btn: {
-        width: 75,
+        width: SWIPE_BLOCK_WIDTH,
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#F7F700'
     },
     delBtn: {
-        backgroundColor: '#f5f5f5'
+        backgroundColor: '#db4949'
     }
 });

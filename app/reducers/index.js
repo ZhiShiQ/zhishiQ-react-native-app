@@ -16,7 +16,6 @@ export default combineReducers({
     my_total_order: require('./my_total_order').default,
     basic_info: require('./basic_info').default,
     abroad_intention: require('./abroad_intention').default,
-    abroad_expert: require('./abroad_expert').default,
     entry: require('./entry').default,
     reset_pwd_by_phone: require('./reset_pwd_by_phone').default,
     reset_pwd_by_mail: require('./reset_pwd_by_mail').default,

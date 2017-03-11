@@ -22,11 +22,11 @@ export default StyleSheet.create({
         alignSelf: 'stretch',
     },
     view: {
-        paddingVertical: 15,
+        // paddingVertical: 12,
     },
     titleText: {
         paddingVertical: 12,
-        // fontSize: 15,
+        fontSize: 15,
         textAlign: 'center'
     }
 });

@@ -5,19 +5,23 @@ import {
 
 const {height, width} = Dimensions.get('window');
 export const IMGSIZE = 40;
-export const BGCLR = "#D8D8D8";
+export const SELF_BGCLR = "#fc6d34";
+export const OTHER_BGCLR = "#fff";
 
 export default StyleSheet.create({
     message: {
         marginBottom: 15
+    },
+    main: {
+
     },
     otherContentContainer: {
         marginLeft: 12,
         maxWidth: width-(2*IMGSIZE)-50,
     },
     otherContent: {
-        backgroundColor: BGCLR,
-        borderRadius: 8,
+        backgroundColor: OTHER_BGCLR,
+        borderRadius: 5,
         // borderColor: '#fff',
         overflow: 'hidden',
 
@@ -31,15 +35,13 @@ export default StyleSheet.create({
         maxWidth: width-(2*IMGSIZE)-50,
     },
     selfContent: {
-        backgroundColor: BGCLR,
-        borderRadius: 8,
-        // borderColor: '#fff',
+        backgroundColor: SELF_BGCLR,
+        borderRadius: 5,
         overflow: 'hidden',
 
-        // textAlign: 'right',
         paddingHorizontal: 8,
         paddingVertical: 12,
         fontSize: 15,
-        color: '#4A4A4A',
+        color: '#fff',
     }
 });

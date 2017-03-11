@@ -73,15 +73,13 @@ class Education extends Component {
         } = this.props;
         const Touchable = TouchableHighlight;
         return (
-            <TouchableOpacity onPress={onPress} style={[sty.main, style]}>
-                <View style={sty.mainContainer}>
-                    <View style={sty.mainInnerContainer}>
-                        <View style={sty.imageContainer}><Image style={sty.image} source={thumbnail} /></View>
-                        <View style={sty.contentContainer}>
-                            <Text style={sty.titleText}>{title}</Text>
-                            <Text style={sty.secText}>{status}</Text>
-                            <Text style={sty.thrText}>{date_from+" ~ "+date_to}</Text>
-                        </View>
+            <TouchableOpacity onPress={onPress} style={[sty.main, sty.mainContainer, style]}>
+                <View style={sty.mainInnerContainer}>
+                    <View style={sty.imageContainer}><Image style={sty.image} source={thumbnail} /></View>
+                    <View style={sty.contentContainer}>
+                        <Text style={sty.titleText}>{title}</Text>
+                        <Text style={sty.secText}>{status}</Text>
+                        <Text style={sty.thrText}>{date_from+" ~ "+date_to}</Text>
                     </View>
                 </View>
             </TouchableOpacity>

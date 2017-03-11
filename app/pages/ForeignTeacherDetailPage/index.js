@@ -30,6 +30,8 @@ import BottomBtns from '../../components/BottomBtns';
 import Comments from '../../components/Comments';
 import CommentStar from '../../components/CommentStar';
 import Hr from '../../components/Hr';
+import Experience from '../../components/Experience';
+import CollapsibleService from '../../components/CollapsibleService';
 
 @autobind
 class ForeignTeacherDetailPage extends Component {
@@ -114,7 +116,8 @@ class ForeignTeacherDetailPage extends Component {
             name: '单项留学文书服务',
             rSubText: '最低',
             price: 319,
-            detail: {
+            onBtnPress: () => alert(1),
+            table: {
                 head: ['服务等级', '300单词以下', '超出300单词'],
                 body: [
                     ['语言润色', '￥192', '￥0.638 / 单词'],
@@ -123,7 +126,7 @@ class ForeignTeacherDetailPage extends Component {
                 ]
             }
         }, {
-            name: '单项留学文书服务',
+            name: 'Data Science, Business Analysis Information Systems 留学申请',
             price: 319
         }, {
             name: '单项留学文书服务',
@@ -134,7 +137,7 @@ class ForeignTeacherDetailPage extends Component {
         }];
 
         return (
-            <CollapsibleIntro title={"套餐类型"}>
+            <CollapsibleIntro title={"套餐类型"} style={{paddingBottom: 0}}>
                 <View style={{marginHorizontal: -15}}>
                     {items.map((item, i) => this._renderService(item, i))}
                 </View>
@@ -142,82 +145,9 @@ class ForeignTeacherDetailPage extends Component {
         )
     }
 
-    _renderService({name, rSubText, price, detail}, i) {
+    _renderService(data, i) {
         return (
-            <CollapsibleItem
-                key={i}
-                style={{
-                    backgroundColor: '#fff', borderTopWidth: .5, borderColor: '#e5e5e5'
-                }}
-                control={
-                    <View
-                        style={{
-                            flexDirection: 'row', alignItems: 'center', padding: 15, paddingRight: 0,
-                        }}
-                    >
-                        <Text style={{fontSize: 15, color: '#4a4a4a'}}>{name}</Text>
-                        <View style={{flexDirection: 'row', flex: 1, alignItems: 'center', justifyContent: 'flex-end'}}>
-                            <Text style={{color: '#a1a1a1', fontSize: 12}}>{rSubText}</Text>
-                            <Text style={{marginLeft: 4, color: '#ea5502', fontSize: 15}}>¥{price}</Text>
-                        </View>
-                    </View>
-                }
-            >
-                <View style={{
-                    backgroundColor: '#fbfbfb',
-                    paddingHorizontal: 15,
-                    borderTopWidth: .5,
-                    borderColor: '#e5e5e5'
-                }}>
-                    {detail &&
-                    <View>
-                        <View style={{
-                            flexDirection: 'row',
-                            alignItems: 'center',
-                            borderBottomWidth: .5,
-                            borderBottomColor: '#e5e5e5'
-                        }}>
-                            {detail.head.map((x, i, a) =>
-                                <View key={i} style={{flex: 1, paddingVertical: 12,}}>
-                                    <Text style={[{
-                                        color: '#848484',
-                                        fontSize: 13.5
-                                    }, i == a.length - 1 ? {textAlign: 'right'} : {}]}>{x}</Text>
-                                </View>
-                            )}
-                        </View>
-                        {detail.body.map((row, i, a) =>
-                            <View key={i} style={[{
-                                flexDirection: 'row',
-                                alignItems: 'center'
-                            }, i != a.length - 1 ? {borderBottomWidth: .5, borderBottomColor: '#e5e5e5'} : {}]}>
-                                {row.map((x, i, a) =>
-                                    <View key={i} style={[{flex: 1, paddingVertical: 12}]}>
-                                        <Text style={[{
-                                            fontSize: 13.5,
-                                            color: i == 0 ? '#4a4a4a' : '#ea5502'
-                                        }, i == a.length - 1 ? {textAlign: 'right'} : {}]}>{x}</Text>
-                                    </View>
-                                )}
-                            </View>
-                        )}
-                        <View>
-                            <TouchableOpacity
-                                onPress={() => {
-                                }}
-                                style={{
-                                    paddingVertical: 10, paddingHorizontal: 20,
-                                    borderRadius: 4, marginBottom: 10,
-                                    backgroundColor: '#ea5502', alignSelf: 'center'
-                                }}
-                            >
-                                <Text style={{color: '#fff', fontSize: 13}}>立即预约</Text>
-                            </TouchableOpacity>
-                        </View>
-                    </View>
-                    }
-                </View>
-            </CollapsibleItem>
+            <CollapsibleService key={i} {...data} />
         )
     }
 
@@ -318,23 +248,9 @@ class ForeignTeacherDetailPage extends Component {
             )
     }
 
-    _renderExperience({title, origination, date_from, date_to, words = []}, i, a) {
+    _renderExperience(data, i, a) {
         return (
-            <View key={i} style={{paddingVertical: 15, justifyContent: 'flex-start'}}>
-                <Image style={{width: 40, height: 40, borderRadius: 5, backgroundColor: '#ccc'}}/>
-                <Text style={{
-                    marginVertical: 3,
-                    fontSize: 14,
-                    lineHeight: 18,
-                    fontWeight: 'bold',
-                    color: '#4a4a4a'
-                }}>{title}</Text>
-                <Text style={{color: '#4a4a4a', marginBottom: 8}}>{origination}｜{date_from} ~ {date_to}</Text>
-                {words.map((w, i, a) =>
-                    <Text style={{color: '#848484', lineHeight: 17, fontSize: 14}} key={i}>• {w}</Text>
-                )}
-            </View>
-
+            <Experience {...data} key={i} />
         )
     }
 
@@ -365,7 +281,7 @@ class ForeignTeacherDetailPage extends Component {
         }
         return (
             <View>
-                {this.sep()}
+                {/*{this.sep()}*/}
                 {/*<HrFlexLayout style={{backgroundColor: '#fff', justifyContent: 'space-around'}}>*/}
                 {/*<View style={s.item}>*/}
                 {/*<View><Text style={s.text}>{4.9}</Text></View>*/}

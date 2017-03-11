@@ -10,26 +10,25 @@ const initialState = {
         tags: [
             'ABC', 'XXX',' IKH', 'XSW'
         ],
+        content: '10分钟免费墨尔本大学行前指导 Free 10-minute guidance for new unimelb students',
         numerator: 4.5,
-        deNumerator: 5,
+        appointNum: 200,
         thumbnail: {},
-        serviceTimes: 1000
     }, {
         title: '课程',
         content: '10分钟免费墨尔本大学行前指导 Free 10-minute guidance for new unimelb students',
         numerator: 4.5,
-        deNumerator: 5,
         thumbnail: {},
-        serviceTimes: 1000
+        appointNum: 200,
     }, {
         title: 'Abby R',
         tags: [
             'ABC', 'XXX',' IKH', 'XSW'
         ],
+        content: '10分钟免费墨尔本大学行前指导 Free 10-minute guidance for new unimelb students',
         numerator: 4.5,
-        deNumerator: 5,
         thumbnail: {},
-        serviceTimes: 1000
+        appointNum: 200,
     }]
 };
 

@@ -16,6 +16,7 @@ import * as Animatable from 'react-native-animatable';
 
 import sty from './style';
 import HomeItem from '../HomeItem';
+import Swipeout from '../Swipeout';
 import Hr from '../Hr';
 
 @autobind
@@ -37,10 +38,12 @@ class HomeItems extends Component {
     static propTypes = {
         style: PropTypes.object,
         items: PropTypes.array,
-        noScroll: PropTypes.bool
+        noScroll: PropTypes.bool,
+        swipout: PropTypes.bool,
+        bottomSep: PropTypes.bool
     }
     render() {
-        const {style, items, noScroll, ...rest} = this.props
+        const {style, swipout, items, noScroll, ...rest} = this.props
 
         return (
             <ListView
@@ -59,11 +62,21 @@ class HomeItems extends Component {
     }
 
     _renderSeparator(a, i) {
-        if (i != this.props.items.length-1)
+        const {bottomSep} = this.props;
+        if (i != this.props.items.length-1 || bottomSep)
             return <Hr color="#e5e5e5" marginBottom={0}></Hr>
     }
-    _renderRow(data, s, i) {
-        return <HomeItem key={i} {...data} />
+    _renderRow({onRemove, ...data}, s, i) {
+        const {swipout} = this.props;
+        if (!swipout)
+            return <HomeItem key={i} {...data} />
+        else {
+            return (
+                <Swipeout onRemove={onRemove} >
+                    <HomeItem key={i} {...data} />
+                </Swipeout>
+            )
+        }
     }
 }
 

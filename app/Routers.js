@@ -395,13 +395,13 @@ class Routers extends React.Component {
                                    title="服务条款"
                             />
                         </Scene>
-                        <Scene key="tab_cart" component={conn(CartPage)} title="购物车"
+                        <Scene backButtonImage={backIcon} key="tab_cart" component={conn(CartPage)} title="购物车"
                                navigationBarStyle={styles.navigationBarStyle}
                                onRight={() => alert()}
                                rightTitle="编辑"
                                iconName={"cart"}
                                icon={TabIcon}/>
-                        <Scene key="tab_mine_main" title="我的"
+                        <Scene backButtonImage={backIcon} key="tab_mine_main" title="我的"
                                iconName={"mine"}
                                navigationBarStyle={styles.navigationBarStyle}
                                icon={TabIcon}>

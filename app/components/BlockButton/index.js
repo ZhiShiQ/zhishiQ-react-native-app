@@ -57,7 +57,7 @@ class BlockButton extends Component {
                     style={[!full?sty.main:sty.full, {backgroundColor}, disabled&&disabledStyle]}
                 >
                     <View style={sty.view}>
-                        <Text style={[sty.titleText, {color}, full&&{paddingVertical: 0}]}>{title}</Text>
+                        <Text style={[sty.titleText, {color}, full&&{paddingVertical: 15}]}>{title}</Text>
                     </View>
                 </Container>
         )

@@ -16,7 +16,8 @@ export default StyleSheet.create({
     },
     chats: {
         // flex: 1,
-        padding: PADDING_SIZE,
+        paddingVertical: PADDING_SIZE,
+        paddingHorizontal: PADDING_SIZE,
     },
     sender: {
         flex: 0,

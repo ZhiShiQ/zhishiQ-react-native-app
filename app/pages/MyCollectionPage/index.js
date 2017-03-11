@@ -20,6 +20,7 @@ import sty from './style';
 import SubMenu from '../../components/SubMenu';
 import Collections from '../../components/Collections';
 import ScrollTab from '../../components/ScrollTab';
+import HomeItems from '../../components/HomeItems';
 
 @autobind
 class MyCollectionPage extends Component {
@@ -53,7 +54,7 @@ class MyCollectionPage extends Component {
     state = {}
     static propTypes = {}
 
-    renderOld() {
+    render() {
         const {
             store: {
                 my_collections: {activeIndex}
@@ -63,12 +64,14 @@ class MyCollectionPage extends Component {
         return (
             <View style={sty.main}>
                 {this.menu}
+                <View style={{marginTop: 34, flex: 1}}>
                 {activeIndex ==0 && this.renderFirstItems()}
                 {activeIndex ==1 && this.renderSecondItems()}
+                </View>
             </View>
         )
     }
-    render() {
+    render2() {
         const {
             store: {
                 my_collections: {activeIndex}
@@ -81,8 +84,8 @@ class MyCollectionPage extends Component {
                 <ScrollTab
                     tabBarStyle={{height: 40}}
                     tabBarTextStyle={{fontSize: 15}}
-                    page={activeIndex}
-                    onChangeTab={({i}) => actions.setMyActiveCollectionTab(+i)}
+                    initialPage={activeIndex}
+                    /*onChangeTab={({i}) => actions.setMyActiveCollectionTab(+i)}*/
                 >
                     <View style={{flex: 1}} tabLabel="收藏的顾问">
                         {this.renderFirstItems()}
@@ -105,10 +108,10 @@ class MyCollectionPage extends Component {
         return (
             <View style={sty.menus}>
                 <View style={sty.submenu}>
-                    <SubMenu title="收藏的顾问" active={activeIndex==0} onPress={() => actions.setMyActiveCollectionTab(0)}/>
+                    <SubMenu textActive title="收藏的顾问" active={activeIndex==0} onPress={() => actions.setMyActiveCollectionTab(0)}/>
                 </View>
                 <View style={sty.submenu}>
-                    <SubMenu title="收藏的服务" active={activeIndex==1} onPress={() => actions.setMyActiveCollectionTab(1)}/>
+                    <SubMenu textActive title="收藏的服务" active={activeIndex==1} onPress={() => {actions.setMyActiveCollectionTab(1)}}/>
                 </View>
             </View>
         )
@@ -116,60 +119,45 @@ class MyCollectionPage extends Component {
 
     renderSecondItems() {
         return (
-            <Collections
-                /*style={{marginTop: 33}}*/
+            <HomeItems
+                swipout
+                bottomSep
+                style={{backgroundColor: '#fff'}}
                 items={[{
                     onPress: alert,
                     onRemove: alert,
                     thumbnail: null,
                     title: 'Abby R',
-                    numerator: 4.9,
-                    deNumerator: 5,
-                    serviceTimes: 1666,
-                    content: ''
+                    style: {paddingHorizontal: 15},
+                    bottomValues: [4.9, 1666],
+                    content: '由留学行家、外籍文书导师、面试导师、签证导师和辅导员组成的5V1导师团队，为您提...'
                 }, {
                     onPress: alert,
                     onRemove: alert,
                     thumbnail: null,
                     title: 'Abby R',
-                    numerator: 4.9,
-                    deNumerator: 5,
-                    serviceTimes: 1666,
-                    content: '一站式申请'
-                }, {
-                    onPress: alert,
-                    onRemove: alert,
-                    thumbnail: null,
-                    title: 'Abby R',
-                    numerator: 4.9,
-                    deNumerator: 5,
-                    serviceTimes: 1666,
-                }, {
-                    onPress: alert,
-                    onRemove: alert,
-                    thumbnail: null,
-                    title: 'Abby R',
-                    numerator: 4.9,
-                    deNumerator: 5,
-                    serviceTimes: 1666,
-                    content: 'xxxxxxxxx'
-                }]}
+                    bottomValues: [4.9, 1666],
+                    style: {paddingHorizontal: 15},
+                    content: '由留学行家、外籍文书导师、面试导师、签证导师和辅导员组成的5V1导师团队，为您提...'
+                }, ]}
             />
         )
     }
 
     renderFirstItems() {
         return (
-            <Collections
-                /*style={{marginTop: 33}}*/
+            <HomeItems
+                swipout
+                bottomSep
+                style={{backgroundColor: '#fff'}}
                 items={[{
+                    style: {paddingHorizontal: 15},
                     onPress: alert,
                     onRemove: alert,
                     thumbnail: null,
                     title: 'Abby R',
-                    numerator: 4.9,
-                    deNumerator: 5,
-                    serviceTimes: 1666,
+                    bottomValues: [4.9, 599],
+                    content: '伦敦艺术大学面试招生官',
                     tags: [{
                         title: '一站式申请',
                         onPress: alert
@@ -181,71 +169,24 @@ class MyCollectionPage extends Component {
                         onPress: alert
                     }]
                 }, {
+                    style: {paddingHorizontal: 15},
                     onPress: alert,
                     onRemove: alert,
                     thumbnail: null,
                     title: 'Abby R',
-                    numerator: 4.9,
-                    deNumerator: 5,
-                    serviceTimes: 1666,
-                    tags: [
-                        '一站式申请',
-                        '全套文书导师',
-                        '文书导师'
-                    ]
-                }, {
-                    onPress: alert,
-                    onRemove: alert,
-                    thumbnail: null,
-                    title: 'Abby R',
-                    numerator: 4.9,
-                    deNumerator: 5,
-                    serviceTimes: 1666,
-                    tags: [
-                        '一站式申请',
-                        '全套文书导师',
-                        '文书导师'
-                    ]
-                }, {
-                    onPress: alert,
-                    onRemove: alert,
-                    thumbnail: null,
-                    title: 'Abby R',
-                    numerator: 4.9,
-                    deNumerator: 5,
-                    serviceTimes: 1666,
-                    tags: [
-                        '一站式申请',
-                        '全套文书导师',
-                        '文书导师'
-                    ]
-                }, {
-                    onPress: alert,
-                    onRemove: alert,
-                    thumbnail: null,
-                    title: 'Abby R',
-                    numerator: 4.9,
-                    deNumerator: 5,
-                    serviceTimes: 1666,
-                    tags: [
-                        '一站式申请',
-                        '全套文书导师',
-                        '文书导师'
-                    ]
-                }, {
-                    onPress: alert,
-                    onRemove: alert,
-                    thumbnail: null,
-                    title: 'Abby R',
-                    numerator: 4.9,
-                    deNumerator: 5,
-                    serviceTimes: 1666,
-                    tags: [
-                        '一站式申请',
-                        '全套文书导师',
-                        '文书导师'
-                    ]
-                }]}
+                    content: '伦敦艺术大学面试招生官',
+                    bottomValues: [4.9, 599],
+                    tags: [{
+                        title: '一站式申请',
+                        onPress: alert
+                    }, {
+                        title: '全套文书导师',
+                        onPress: alert
+                    }, {
+                        title: '文书导师',
+                        onPress: alert
+                    }]
+                }, ]}
             />
         )
     }

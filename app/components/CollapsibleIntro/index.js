@@ -92,7 +92,7 @@ class CollapsibleIntro extends Component {
                 <Text style={textStyle}>
                 {showTexts.map((t, i) =>
                     <Text key={i} style={{color: '#848484', marginBottom: 10, lineHeight: 17}}>
-                        {t}
+                        {t+((i==showTexts.length-1 && !!t && hideTexts && hideTexts.length)?'...':'')}
                     </Text>
                 )}
                 </Text>

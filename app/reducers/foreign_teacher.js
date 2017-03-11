@@ -54,23 +54,19 @@ const initialState = {
     list: [{
         thumbnail: {},
         title: "Ssssss",
-        tags: ["1", "b", "x"],
-        brief: "~ 2015/12 Texarkana Gazette | assistant city editor…",
-        experience: "~ 2015/12 Texarkana Gazette | assistant city editor…",
-        clients: 994,
+        tags: ["文书导师", "全套文书导师", "一站式申请"],
+        content: "~ 2015/12 Texarkana Gazette | assistant city editor…",
+        appointNum: 994,
         rate: 4.9,
-        reviews: 141,
-        dollar: 25.08
+        price: 25.08
     }, {
         thumbnail: {},
         title: "Ssssss",
-        tags: ["1", "b", "x"],
-        experience: "~ 2015/12 Texarkana Gazette | assistant city editor…",
-        education: "~ 2015/12 Texarkana Gazette | assistant city editor…",
-        clients: 994,
+        tags: ["文书导师", "全套文书导师", "一站式申请"],
+        content: "~ 2015/12 Texarkana Gazette | assistant city editor…",
+        appointNum: 994,
         rate: 4.9,
-        reviews: 141,
-        dollar: 25.08
+        price: 25.08
     }]
 };
 
