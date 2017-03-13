@@ -66,14 +66,14 @@ class HomeItems extends Component {
         if (i != this.props.items.length-1 || bottomSep)
             return <Hr color="#e5e5e5" marginBottom={0}></Hr>
     }
-    _renderRow({onRemove, ...data}, s, i) {
+    _renderRow({onRemove, key, ...data}, s, i) {
         const {swipout} = this.props;
         if (!swipout)
-            return <HomeItem key={i} {...data} />
+            return <HomeItem key={key || i} {...data} />
         else {
             return (
-                <Swipeout onRemove={onRemove} >
-                    <HomeItem key={i} {...data} />
+                <Swipeout onRemove={onRemove} key={key || i} >
+                    <HomeItem {...data} />
                 </Swipeout>
             )
         }

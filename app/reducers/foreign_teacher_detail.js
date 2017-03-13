@@ -5,7 +5,9 @@ import {Map, List, Set, fromJS} from 'immutable';
 import * as $ from '../constant';
 
 const initialState = {
-    isFetching: false,
+    isFetching: true,
+    isCommentFetching: true,
+    isCommentFirst: true,
 
     base: {
         avatar: {uri: ""},
@@ -18,27 +20,20 @@ const initialState = {
     },
 
     detail: {
-        intro: ["I am a public health, pharmaceutical, health economics, and outcomes researcher based in Los Angeles, California with many years of experience mentoring students applying to undergraduate and graduate programs (incluing reviewing and editing numerous applications and personal essays). Additionally, I have many years of experience in writing and editing of scientific journal articles and health policy briefs. My goals are to help you present yourself in the best light possible and to help you succeed in your academic and career aspirations."].join('\n'),
-        selfIntro: "Greetings!\n\nI am a public health, pharmaceutical, health economics, and outcomes researcher based in Los Angeles, California. I fairly recently graduated with a PhD from the University of California, Los Angeles (UCLA) Fielding School of Public Health, so I have recent personal history in the hard work that goes into crafting a competitive personal statement, resume/CV, or application essay. I have many years of experience in mentoring students applying to undergraduate and graduate programs in the United States. This experience includes reviewing and editing applications and personal essays for undergraduate and graduate programs. My goal is to make sure that your passion and achievements really shine in your essay or resume/CV and that your application is attractive and competitive to the application committee.",
         educations: [{
-            title: "ESSEC Business School",
-            status: "Master Finance",
-            date_from: "2016-09",
-            date_to: "2017-07",
-            thumbnail: {}
-        }, {
-            title: "ESSEC Business School",
-            status: "Master Finance",
-            date_from: "2016-09",
-            date_to: "2017-07",
-            thumbnail: {}
+            school_name: "ESSEC Business School",
+            degree: "Master",
+            major: "IT",
+            from_date: "2016-09",
+            to_date: "2017-07",
+            description: "",
+            thumbnail: ""
         }],
         experiences: [
 
-        ]
-    },
+        ],
 
-    service: {
+        services: []
 
     },
 
@@ -46,6 +41,8 @@ const initialState = {
         total: 113,
         average: 4.9,
         levels: ['89.6%', '7.8%', '2.5%', '0%'],
+        hasMore: true,
+        currentPage: 1,
         comments: [{
             title: '刘泽方 Zephyr Lewis',
             tags: ['会计、审计、金融管理', '留学文书润色 VIP文书辅导'],
@@ -71,8 +68,30 @@ export default function (state=initialState, action) {
     let newState = {...state};
     const {type, ...rest} = action;
     switch (type) {
+        case $.FOREIGN_TEACHER_DETAIL_FETCHING_SET:
+            return fromJS(newState).set('isFetching', rest.fetching).toJS();
+        case $.FOREIGN_TEACHER_DETAIL_COMMENT_FETCHING_SET:
+            return fromJS(newState).set('isCommentFetching', rest.fetching).toJS();
+        case $.FOREIGN_TEACHER_DETAIL_COMMENT_AVERAGE_SET:
+            return fromJS(newState).setIn(['comment', 'average'], rest.average).toJS();
+        case $.FOREIGN_TEACHER_DETAIL_COMMENT_LEVELS_SET:
+            return fromJS(newState).setIn(['comment', 'levels'], rest.list).toJS();
+        case $.FOREIGN_TEACHER_DETAIL_COMMENTS_SET:
+            return fromJS(newState).setIn(['comment', 'comments'], rest.list).toJS();
+        case $.FOREIGN_TEACHER_DETAIL_COMMENT_HASMORE_SET:
+            return fromJS(newState).setIn(['comment', 'hasMore'], rest.hasmore).toJS();
+        case $.FOREIGN_TEACHER_DETAIL_COMMENT_CURR_SET:
+            return fromJS(newState).setIn(['comment', 'currentPage'], rest.current).toJS();
         case $.FOREIGN_TEACHER_DETAIL_BASE_SET:
             return fromJS(newState).set('base', rest.base).toJS();
+        case $.FOREIGN_TEACHER_DETAIL_EDUC_SET:
+            return fromJS(newState).setIn(['detail', 'educations'], rest.list).toJS();
+        case $.FOREIGN_TEACHER_DETAIL_EXPERIENCE_SET:
+            return fromJS(newState).setIn(['detail', 'experiences'], rest.list).toJS();
+        case $.FOREIGN_TEACHER_DETAIL_SERVICES_SET:
+            return fromJS(newState).setIn(['detail', 'services'], rest.list).toJS();
+        case $.FOREIGN_TEACHER_DETAIL_COMMENT_FIRST_SET:
+            return fromJS(newState).set('isCommentFirst', rest.first).toJS();
         default:
             return newState;
     }

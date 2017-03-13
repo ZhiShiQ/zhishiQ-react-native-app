@@ -1,11 +1,21 @@
 /**
  * Created by moyu on 2017/2/26.
  */
-import {Map, List, Set} from 'immutable';
+import {Map, List, Set, fromJS} from 'immutable';
 import * as $ from '../constant';
 
 const initialState = {
     isFetching: false,
+    isCommentFetching: false,
+    firstMount: true,
+    currentPage: 1,
+    totalPage: 10,
+    hasMore: true,
+
+    filters: {
+        prices: [],
+        domains: []
+    },
 
     filterZone: [{
         title: "地区1"
@@ -51,29 +61,30 @@ const initialState = {
         title: "BBBB"
     }],
 
-    list: [{
-        thumbnail: {},
-        title: "Ssssss",
-        tags: ["文书导师", "全套文书导师", "一站式申请"],
-        content: "~ 2015/12 Texarkana Gazette | assistant city editor…",
-        appointNum: 994,
-        rate: 4.9,
-        price: 25.08
-    }, {
-        thumbnail: {},
-        title: "Ssssss",
-        tags: ["文书导师", "全套文书导师", "一站式申请"],
-        content: "~ 2015/12 Texarkana Gazette | assistant city editor…",
-        appointNum: 994,
-        rate: 4.9,
-        price: 25.08
-    }]
+
+    list: []
 };
 
 export default function (state=initialState, action) {
     let newState = {...state};
     const {type, ...rest} = action;
     switch (type) {
+        case $.FOREIGN_TEACHER_FETCHING_SET:
+            return {...newState, isFetching: rest.fetching};
+        case $.FOREIGN_TEACHER_DETAIL_COMMENT_FETCHING_SET:
+            return {...newState, isCommentFetching: rest.fetching};
+        case $.FOREIGN_TEACHER_HAS_MORE_SET:
+            return {...newState, hasMore: rest.hasMore};
+        case $.FOREIGN_TEACHER_FIRST_SET:
+            return {...newState, firstMount: rest.first};
+        case $.FOREIGN_TEACHER_CURRENT_SET:
+            return {...newState, currentPage: rest.current};
+        case $.FOREIGN_TEACHER_FILTER_SET:
+            return {...newState, filters: rest.filters};
+        case $.FOREIGN_TEACHER_LIST_SET:
+            return {...newState, list: rest.list};
+        case $.FOREIGN_TEACHER_LIST_APPEND:
+            return {...newState, list: fromJS(newState.list).push(...rest.list).toJS()};
         default:
             return newState;
     }

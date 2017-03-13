@@ -39,13 +39,18 @@ class Experience extends Component {
         origination: PropTypes.string,
         date_from: PropTypes.string,
         date_to: PropTypes.string,
-        words: PropTypes.array,
+        words: PropTypes.oneOfType(PropTypes.array, PropTypes.string),
         thumbnail: PropTypes.object,
         style: PropTypes.object,
         noPoint: PropTypes.bool
     }
     render() {
-        const {title, origination, noPoint, thumbnail, date_from, date_to, style, words = []} = this.props
+        let {title, origination, noPoint, thumbnail, date_from, date_to, style, words = []} = this.props;
+        if (!Array.isArray(words)) {
+            words = [words];
+            noPoint = true;
+        }
+
 
         return (
             <View style={[{paddingVertical: 15, justifyContent: 'flex-start'}, style]}>
@@ -58,7 +63,8 @@ class Experience extends Component {
                     color: '#4a4a4a'
                 }}>{title}</Text>
                 <Text style={{color: '#4a4a4a', marginBottom: 8}}>
-                    {origination}{date_from&&date_to ? ('｜'+date_from+' ~ '+date_to) : ''}
+                    {origination ? origination+'｜': ''}
+                    {date_from}{date_to ? (' ~ '+date_to) : ''}
                 </Text>
                 {words.map((w, i, a) =>
                     <Text style={{color: '#848484', lineHeight: 17, fontSize: 14}} key={i}>

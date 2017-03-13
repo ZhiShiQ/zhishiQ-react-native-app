@@ -313,7 +313,7 @@ class Routers extends React.Component {
 
                 <Scene key="resetPwdByPhone" component={conn(ResetPwdByPhonePage)} title={'重置密码'}/>
                 <Scene key="resetPwdByMail" component={conn(ResetPwdByMailPage)} title={'重置密码'}/>
-                <Scene key="tabbar" component={conn(NavigationDrawer)}>
+                <Scene initial key="tabbar" component={conn(NavigationDrawer)}>
                     <Scene
                         initial
                         key="tab_main"

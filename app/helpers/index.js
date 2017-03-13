@@ -14,8 +14,14 @@ export const uint = () => {
  * @param text
  * @returns {{showText: string, hideText: *}}
  */
-export const splitText = (text, limit=50) => {
+export const splitText = (text='', limit=50) => {
     let showText = '', hideText = '';
+    if (typeof text === 'string') {
+        return {
+            showText: text.substr(0, limit),
+            hideTExt: text.slice(limit)
+        }
+    }
     Array.from(text).some((char, i) => {
         if (char === '\n') {
             if (showText.length >= limit) {
@@ -33,6 +39,19 @@ export const splitText = (text, limit=50) => {
 }
 
 export const reducerHelper = ReducerHelper;
+export const _debugger = (obj) => {
+    const __DEBUG__ = true;
+    if (!__DEBUG__) {
+        return;
+    }
+    if (obj instanceof Error) {
+        alert(obj.message+'\n'+obj.stack);
+    } else if (typeof obj === 'string') {
+        alert(obj);
+    } else {
+        alert(JSON.stringify(obj));
+    }
+};
 
 
 

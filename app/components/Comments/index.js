@@ -45,7 +45,7 @@ class Comments extends Component {
         return (
             <ListView
                 renderScrollComponent={noScroll?(p) => <View {...p}/>:ListView.defaultProps.renderScrollComponent}
-                contentContainerStyle={[sty.main, style]}
+                contentContainerStyle={[style]}
                 renderRow={this._renderRow}
                 renderSeparator={this._renderSeparator}
                 dataSource={

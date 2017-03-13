@@ -29,8 +29,31 @@ export const SET_RESET_PWD_BY_PHONE = uint();
 export const SET_RESET_PWD_BY_MAIL = uint();
 /* end of entry's logic related */
 
+/* start of foreign_teacher's logic related */
+export const FOREIGN_TEACHER_FETCHING_SET = uint();
+export const FOREIGN_TEACHER_CURRENT_SET = uint();
+export const FOREIGN_TEACHER_HAS_MORE_SET = uint();
+export const FOREIGN_TEACHER_LIST_SET = uint();
+export const FOREIGN_TEACHER_FILTER_SET = uint();
+export const FOREIGN_TEACHER_FIRST_SET = uint();
+export const FOREIGN_TEACHER_LIST_APPEND = uint();
+/* end of foreign_teacher's logic related */
+
+
 /* start of foreign_teacher_detail's logic related */
+export const FOREIGN_TEACHER_DETAIL_FETCHING_SET = uint();
+export const FOREIGN_TEACHER_DETAIL_SERVICES_SET = uint();
 export const FOREIGN_TEACHER_DETAIL_BASE_SET = uint();
+export const FOREIGN_TEACHER_DETAIL_EDUC_SET = uint();
+export const FOREIGN_TEACHER_DETAIL_EXPERIENCE_SET = uint();
+
+export const FOREIGN_TEACHER_DETAIL_COMMENT_FETCHING_SET = uint();
+export const FOREIGN_TEACHER_DETAIL_COMMENT_FIRST_SET = uint();
+export const FOREIGN_TEACHER_DETAIL_COMMENT_LEVELS_SET = uint();
+export const FOREIGN_TEACHER_DETAIL_COMMENTS_SET = uint();
+export const FOREIGN_TEACHER_DETAIL_COMMENT_HASMORE_SET = uint();
+export const FOREIGN_TEACHER_DETAIL_COMMENT_AVERAGE_SET = uint();
+export const FOREIGN_TEACHER_DETAIL_COMMENT_CURR_SET = uint();
 /* end of foreign_teacher_detail's logic related */
 
 /* start of abroad_expert_detail's logic related */
@@ -45,6 +68,10 @@ export const SET_MY_ACTIVE_TOTAL_ORDER_TITLE_INDEX = uint();
 
 /* start of my collections' logic related */
 export const SET_MY_ACTIVE_COLLECTION_TAB = uint();
+export const MY_COLLECTION_PEOPLE_REMOVE_BY_INDEX = uint();
+export const MY_COLLECTION_SERVICES_REMOVE_BY_INDEX = uint();
+export const MY_COLLECTION_SERVICES_SET = uint();
+export const MY_COLLECTION_PEOPLE_SET = uint();
 
 /* end of my collections' logic related */
 

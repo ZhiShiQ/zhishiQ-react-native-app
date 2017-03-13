@@ -118,75 +118,36 @@ class MyCollectionPage extends Component {
     }
 
     renderSecondItems() {
+        const {store: {my_collections: {services}}, actions} = this.props;
+
         return (
             <HomeItems
                 swipout
                 bottomSep
                 style={{backgroundColor: '#fff'}}
-                items={[{
-                    onPress: alert,
-                    onRemove: alert,
-                    thumbnail: null,
-                    title: 'Abby R',
-                    style: {paddingHorizontal: 15},
-                    bottomValues: [4.9, 1666],
-                    content: '由留学行家、外籍文书导师、面试导师、签证导师和辅导员组成的5V1导师团队，为您提...'
-                }, {
-                    onPress: alert,
-                    onRemove: alert,
-                    thumbnail: null,
-                    title: 'Abby R',
-                    bottomValues: [4.9, 1666],
-                    style: {paddingHorizontal: 15},
-                    content: '由留学行家、外籍文书导师、面试导师、签证导师和辅导员组成的5V1导师团队，为您提...'
-                }, ]}
+                items={services.map(({avatar, name, content, appointNum, rate, ...rest}, i) => ({
+                    ...rest, key: name,
+                    content, thumbnail: {uri: avatar}, title: name, bottomValues: [rate, appointNum],
+                    onPress: alert, onRemove: () => actions.delMyCollectionServiceByIndex(i), style: {paddingHorizontal: 15},
+                }))}
             />
         )
     }
 
     renderFirstItems() {
+        const {store: {my_collections: {people}}, actions} = this.props;
         return (
             <HomeItems
                 swipout
                 bottomSep
                 style={{backgroundColor: '#fff'}}
-                items={[{
-                    style: {paddingHorizontal: 15},
-                    onPress: alert,
-                    onRemove: alert,
-                    thumbnail: null,
-                    title: 'Abby R',
-                    bottomValues: [4.9, 599],
-                    content: '伦敦艺术大学面试招生官',
-                    tags: [{
-                        title: '一站式申请',
-                        onPress: alert
-                    }, {
-                        title: '全套文书导师',
-                        onPress: alert
-                    }, {
-                        title: '文书导师',
-                        onPress: alert
-                    }]
-                }, {
-                    style: {paddingHorizontal: 15},
-                    onPress: alert,
-                    onRemove: alert,
-                    thumbnail: null,
-                    title: 'Abby R',
-                    content: '伦敦艺术大学面试招生官',
-                    bottomValues: [4.9, 599],
-                    tags: [{
-                        title: '一站式申请',
-                        onPress: alert
-                    }, {
-                        title: '全套文书导师',
-                        onPress: alert
-                    }, {
-                        title: '文书导师',
-                        onPress: alert
-                    }]
-                }, ]}
+                items={people.map(({rate, appointNum, name, avatar, content, tags, ...rest}, i) => ({
+                    ...rest, content, key: name,
+                    title: name, thumbnail: {uri: avatar},
+                    bottomValues: [rate, appointNum],
+                    onPress: null, onRemove: () => actions.delMyCollectionPeopleByIndex(i), style: {paddingHorizontal: 15},
+                    tags
+                }))}
             />
         )
     }

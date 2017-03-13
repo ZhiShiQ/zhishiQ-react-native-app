@@ -8,6 +8,7 @@ import {
     TouchableOpacity,
     TouchableWithoutFeedback,
     StyleSheet,
+    RefreshControl,
     Dimensions,
     ListView,
     ScrollView,
@@ -25,6 +26,7 @@ import CirImage from '../../components/CirImage';
 import ForeignTeacherItem from '../../components/ForeignTeacherItem';
 import Hr from '../../components/Hr';
 import HomeItem from '../../components/HomeItem';
+import Loading from '../../components/Loading';
 
 
 @autobind
@@ -34,6 +36,10 @@ class ForeignTeacherPage extends Component {
     }
 
     componentWillMount() {
+        const {store: {foreign_teacher: {list, isFetching, firstMount}}, actions} = this.props;
+        if (!isFetching && firstMount) {
+            actions.fetchForeignTeacher();
+        }
     }
 
     componentDidMount() {
@@ -56,22 +62,23 @@ class ForeignTeacherPage extends Component {
     }
 
     static defaultProps = {}
-    state = {}
+    state = {
+        refreshing: true
+    }
     static propTypes = {}
 
     render() {
-        const {
-            store: {
-                foreign_teacher: {
-                    list
-                }
-            }, actions
-        } = this.props
+        const {store: {foreign_teacher: {list, isFetching, firstMount, hasMore}}, actions} = this.props;
+
+        if (isFetching && firstMount) {
+            return <Loading />
+        }
 
         return (
             <View style={{flex: 1}}>
+                <View style={{height: 33}}/>
                 <ListView
-                    contentContainerStyle={{marginTop: 33, backgroundColor: '#fff', paddingHorizontal: 15}}
+                    contentContainerStyle={{backgroundColor: '#fff', paddingHorizontal: 15}}
                     dataSource={
                         new ListView.DataSource({
                             rowHasChanged: (r1, r2) => !Map(r1).equals(Map(r2))
@@ -79,10 +86,35 @@ class ForeignTeacherPage extends Component {
                     }
                     renderRow={this._renderRow}
                     renderSeparator={(s, i) => this._renderSeparator(i ,list)}
+                    onEndReachedThreshold={100}
+                    onEndReached={this._onEndReached}
+                    pageSize={14}
+                    /*refreshControl={
+                        <RefreshControl
+                            refreshing={isFetching}
+                            onRefresh={this._onRefresh}
+                            tintColor="#ff0000"
+                            style={{}}
+                        />
+                    }*/
+                    renderFooter={() => {
+                        if (isFetching) {
+                            return hasMore ? <Loading /> : <View style={{marginVertical: 20, alignItems: 'center'}}><Text>没有更多了</Text></View>
+                        }
+                    }}
                 />
                 {this.subMenu}
             </View>
         )
+    }
+    _onRefresh() {
+        const {store: {foreign_teacher: {list, isFetching, hasMore, currentPage}}, actions} = this.props;
+        // actions.fetchForeignTeacher(currentPage+1);
+    }
+
+    _onEndReached(evt) {
+        const {store: {foreign_teacher: {list, isFetching, hasMore, currentPage}}, actions} = this.props;
+        !isFetching && actions.fetchForeignTeacher(currentPage+1);
     }
 
     _renderSeparator(i, a) {
@@ -97,34 +129,34 @@ class ForeignTeacherPage extends Component {
                 const newData = {...data, avatar: data.thumbnail, name: data.title};
                 delete newData.thumbnail;
                 delete newData.title;
+                newData.clients = data.client_count;
+                newData.rate = data.average_rate;
+                newData.content = data.brief;
+                newData.reviews = data.review_count;
                 actions.setForeignTeacherDetailBase(newData);
                 Actions.foreignTeacherDetail();
             }} {...data} key={i}/>
     }
 
-    _renderRow(data, s, i) {
+    _renderRow({experiences, educations, ...data}, s, i) {
         const {actions} = this.props;
-        data.bottomValues = [data.rate, data.appointNum]
 
         return <HomeItem
             onPress={() => {
                 const newData = {...data, avatar: data.thumbnail, name: data.title};
                 delete newData.thumbnail;
                 delete newData.title;
+                newData.content = data.brief;
                 actions.setForeignTeacherDetailBase(newData);
+                // actions.setForeignTeacherDetailExperiences(experiences);
+                // actions.setForeignTeacherDetailEducations(educations);
                 Actions.foreignTeacherDetail();
-            }} {...data} key={i}/>
+            }} {...data} key={data.id}/>
     }
 
 
     get computeFilterPro() {
-        const {
-            store: {
-                foreign_teacher: {
-                    filterZone, filterPro
-                }
-            }, actions
-        } = this.props;
+        const {store: {foreign_teacher: {filterZone, filterPro}}, actions} = this.props;
 
 
         return filterPro.map((pro, i) => {
@@ -139,22 +171,14 @@ class ForeignTeacherPage extends Component {
 
     get computeFilterZone() {
         const {
-            store: {
-                foreign_teacher: {
-                    filterZone, filterPro
-                }
-            }, actions
+            store: {foreign_teacher: {filterZone, filterPro}}, actions
         } = this.props;
         return filterZone;
     }
 
     get subMenu() {
         const {
-            store: {
-                foreign_teacher: {
-                    filterZone, filterPro
-                }
-            }, actions
+            store: {foreign_teacher: {filterZone, filterPro}}, actions
         } = this.props;
         return (
             <View style={sty.menu}>

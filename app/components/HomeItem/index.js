@@ -81,12 +81,13 @@ class HomeItem extends Component {
                             style={{marginBottom: 6}}
                             bgColor={"#fff"}
                             eachStyle={{
-                                fontSize: 12.5,
+                                fontSize: 12,
                                 paddingVertical: 1,
-                                paddingHorizontal: 2,
+                                paddingHorizontal: 1,
                                 borderColor: '#979797',
                                 borderWidth: .5,
-                                borderRadius: 2
+                                borderRadius: 2,
+                                marginBottom: 2,
                             }}
                             items={tags}/>}
                         <Text style={sty.content}>{content}</Text>

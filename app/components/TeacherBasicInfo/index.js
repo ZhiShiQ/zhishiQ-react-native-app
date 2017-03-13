@@ -81,6 +81,7 @@ class TeacherBasicInfo extends Component {
                     >
                     </CollapsibleIntro>}
                 <TextWithBgs
+                    align="center"
                     items={tags}
                     eachStyle={{borderRadius: 2, paddingVertical: .5, fontSize: 12}}
                     bgColor="#FFF"

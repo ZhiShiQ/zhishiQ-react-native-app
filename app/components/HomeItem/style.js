@@ -20,7 +20,7 @@ export default StyleSheet.create({
         marginBottom: 6,
     },
     content: {
-        marginTop: 4,
+        marginTop: 2,
         fontSize: 13.5,
         color: '#848484',
         marginBottom: 10,

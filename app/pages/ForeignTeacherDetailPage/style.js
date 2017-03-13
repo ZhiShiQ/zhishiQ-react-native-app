@@ -4,7 +4,6 @@ import {
 
 export default StyleSheet.create({
     main: {
-        // flex: 1,
         // justifyContent: 'center',
         // alignItems: 'center',
         justifyContent: 'center',

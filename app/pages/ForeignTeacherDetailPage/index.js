@@ -24,6 +24,7 @@ import ScrollTab from '../../components/ScrollTab';
 import CollapsibleIntro from '../../components/CollapsibleIntro';
 import CollapsibleItem from '../../components/CollapsibleItem';
 import HrFlexLayout from '../../components/HrFlexLayout';
+import Loading from '../../components/Loading';
 import LinkItem from '../../components/LinkItem';
 import Educations from '../../components/Educations';
 import BottomBtns from '../../components/BottomBtns';
@@ -40,6 +41,12 @@ class ForeignTeacherDetailPage extends Component {
     }
 
     componentWillMount() {
+        const {
+            store: {
+                foreign_teacher_detail: {isFetching, base: {avatar, id, name, content, tags, clients, rate, reviews}, detail, service, comment}
+            }, actions
+        } = this.props;
+        actions.fetchForeignTeacherDetail(id);
     }
 
     componentDidMount() {
@@ -64,59 +71,88 @@ class ForeignTeacherDetailPage extends Component {
     static defaultProps = {}
     state = {
         starCollapsed: true,
+        enableScrollViewScroll: true
     };
     static propTypes = {}
+
+    _activeTab = 0
 
     render() {
         const {
             store: {
                 foreign_teacher_detail: {
-                    isFetching, base: {avatar, name, brief, tags, clients, rate, reviews}, detail, service, comment
-                }
+                    isFetching, isCommentFetching, isCommentFirst, base: {id, avatar, name, content, tags, clients, rate, reviews},
+                    detail, comment: {currentPage, hasMore}}
             }, actions
         } = this.props;
 
         return (
             <View>
-                <ScrollView contentContainerStyle={[sty.main, {paddingBottom: 45}]}>
-                    <TeacherBasicInfo
-                        style={{alignItems: 'center'}}
-                        tags={tags}
-                        name={name}
-                        content={brief}
-                        listKeys={["Clients", "Rate", "Reviews"]}
-                        listValues={[clients, rate, reviews]}
-                    />
-                    <Hr marginBottom={0} color={'#e5e5e5'}/>
-                    <ScrollTab
-                        /*onChangeTab={({i}) => actions.setEntryActiveIndex(a[+i])}*/
-                        tabContainerStyle={{flex: 1, alignItems: 'center'}}
-                        tabBarTextStyle={{fontSize: 15, fontWeight: 'normal'}}
-                        tabBarStyle={{height: 40}}
-                        initialPage={0}
-                    >
-                        <View tabLabel="导师详情">
-                            {this.sep()}
-                            {this.intro}
-                        </View>
-                        <View tabLabel={"用户评价"}>
-                            {this.sep()}
-                            {this.comments}
-                        </View>
-                    </ScrollTab>
+                <ScrollView
+                    contentContainerStyle={[sty.main, {paddingBottom: 45}]}
+                >
+                {this.header}
+                <ScrollTab
+                    onChangeTab={({i}) => {
+                        this._activeTab = +i;
+                        i == 1 && actions.fetchForeignTeacherCommentDetail(id, null, {setFirst: true});
+                    }}
+                    tabContainerStyle={{flex: 1, alignItems: 'center'}}
+                    tabBarTextStyle={{fontSize: 15, fontWeight: 'normal'}}
+                    tabBarStyle={{height: 40}}
+                    initialPage={0}
+                >
+                    <View tabLabel="导师详情">
+
+                        {this.sep()}
+                        {isFetching ? <Loading style={{flex: 1}}/> : this.intro}
+                    </View>
+                    <View tabLabel={"用户评价"}>
+                        {this.sep()}
+                        {isCommentFetching && isCommentFirst ? <Loading style={{flex: 1}}/> : this.comments}
+                        {isCommentFetching && isCommentFirst ? null : this.commentList}
+                    </View>
+                </ScrollTab>
                 </ScrollView>
-                {this.fixBottom}
+                {isFetching ? null: this.fixBottom}
+            </View>
+        )
+    }
+
+    get header() {
+        const {
+            store: {
+                foreign_teacher_detail: {
+                    isFetching, isCommentFetching, isCommentFirst, base: {id, avatar, name, content, tags, clients, rate, reviews},
+                    detail, comment: {currentPage, hasMore}}
+            }, actions
+        } = this.props;
+        return (
+            <View style={{flex: 1}}>
+            <TeacherBasicInfo
+                style={{alignItems: 'center'}}
+                tags={tags}
+                name={name}
+                content={content}
+                thumbnail={avatar}
+                listKeys={["Clients", "Rate", "Reviews"]}
+                listValues={[clients, rate, reviews]}
+            />
+            <Hr marginBottom={0} color={'#e5e5e5'}/>
             </View>
         )
     }
 
 
     get packageService() {
-        const items = [{
-            name: '单项留学文书服务',
-            rSubText: '最低',
-            price: 319,
-            onBtnPress: () => alert(1),
+        const {
+            store: {
+                foreign_teacher_detail: {base: {id}, detail: { intro='', selfIntro='', educations, experiences, services}}}, actions
+        } = this.props;
+
+        const items = services.map(({...r}) => ({
+            ...r, rSubText: '最低',
+            price: 319, onBtnPress: () => alert(1),
             table: {
                 head: ['服务等级', '300单词以下', '超出300单词'],
                 body: [
@@ -125,16 +161,7 @@ class ForeignTeacherDetailPage extends Component {
                     ['语言润色', '￥192', '￥0.638 / 单词']
                 ]
             }
-        }, {
-            name: 'Data Science, Business Analysis Information Systems 留学申请',
-            price: 319
-        }, {
-            name: '单项留学文书服务',
-            price: 319
-        }, {
-            name: '单项留学文书服务',
-            price: 319
-        }];
+        }));
 
         return (
             <CollapsibleIntro title={"套餐类型"} style={{paddingBottom: 0}}>
@@ -154,10 +181,7 @@ class ForeignTeacherDetailPage extends Component {
     get intro() {
         const {
             store: {
-                foreign_teacher_detail: {
-                    detail: {intro, selfIntro, educations, experiences}
-                }
-            }, actions
+                foreign_teacher_detail: {detail: {intro='', selfIntro='', educations, experiences, services}}}, actions
         } = this.props;
         const selfIntroObj = splitText(selfIntro);
         return (
@@ -177,7 +201,9 @@ class ForeignTeacherDetailPage extends Component {
                     <Educations
                         noScroll
                         style={{alignItems: 'stretch'}}
-                        items={educations}
+                        items={educations.map(({school_name, degree, major, from_date, to_date, school_logo, ...rest}) =>
+                            ({title: school_name, thumbnail: {uri: school_logo}, status: degree+(degree?' ':'')+major, date_from: from_date, date_to: to_date, ...rest}))
+                        }
                     />
                 </CollapsibleIntro>
                 {this.sep()}
@@ -197,27 +223,12 @@ class ForeignTeacherDetailPage extends Component {
     }
 
     get teacherExperience() {
-        const items = [{
-            title: "Global Health Economics and Outcomes Research Consultant",
-            origination: 'Amgen, Inc.',
-            date_from: '2007-08',
-            date_to: '2015-05',
-            words: [
-                'Designed and managed health economic research studies (e.g., budget impact, cost per response, cost-effectiveness, disease burden, secondary claims, patient-reported outcomes and instrument development, treatment patterns, etc.)',
-                'Presented findings at scientific and professional meetings (9 published/presen',
-                'Prepared, reviewed, and/or edited study protocols, manuscripts, and abstracts for department or Internal Peer Review Group'
-            ]
-        }, {
-            title: "Global Health Economics and Outcomes Research Consultant",
-            origination: 'Amgen, Inc.',
-            date_from: '2007-08',
-            date_to: '2015-05',
-            words: [
-                'Designed and managed health economic research studies (e.g., budget impact, cost per response, cost-effectiveness, disease burden, secondary claims, patient-reported outcomes and instrument development, treatment patterns, etc.)',
-                'Presented findings at scientific and professional meetings (9 published/presen',
-                'Prepared, reviewed, and/or edited study protocols, manuscripts, and abstracts for department or Internal Peer Review Group'
-            ]
-        }]
+        const {store: {foreign_teacher_detail: {detail: {experiences}}}} = this.props;
+        const items = experiences.map(({organization_name, organization_logo, from_date, to_date, description, ...rest}) => ({
+            words: description, date_from: from_date, date_to: to_date,
+            organization: organization_name, ...rest,
+            thumbnail: {uri: organization_logo}
+        }));
 
         return (
             <CollapsibleIntro
@@ -258,8 +269,9 @@ class ForeignTeacherDetailPage extends Component {
         const {
             store: {
                 foreign_teacher_detail: {
-                    isFetching, detail, service,
-                    comment: {total, average, levels, comments}
+                    isFetching, isCommentFirst, isCommentFetching,
+                    comment: {total, hasMore, average, levels, comments, currentPage},
+                    base: {id}
                 }
             }, actions
         } = this.props;
@@ -281,50 +293,52 @@ class ForeignTeacherDetailPage extends Component {
         }
         return (
             <View>
-                {/*{this.sep()}*/}
-                {/*<HrFlexLayout style={{backgroundColor: '#fff', justifyContent: 'space-around'}}>*/}
-                {/*<View style={s.item}>*/}
-                {/*<View><Text style={s.text}>{4.9}</Text></View>*/}
-                {/*<View><Text style={s.tip}>均分</Text></View>*/}
-                {/*</View>*/}
-                {/*<View style={s.item}>*/}
-                {/*<View><Text style={s.text}>{levels[0]}</Text></View>*/}
-                {/*<View><Text style={s.tip}>5星</Text></View>*/}
-                {/*</View>*/}
-                {/*<View style={s.item}>*/}
-                {/*<View><Text style={s.text}>{levels[1]}</Text></View>*/}
-                {/*<View><Text style={s.tip}>4星</Text></View>*/}
-                {/*</View>*/}
-                {/*<View style={s.item}>*/}
-                {/*<View><Text style={s.text}>{levels[2]}</Text></View>*/}
-                {/*<View><Text style={s.tip}>3星</Text></View>*/}
-                {/*</View>*/}
-                {/*<View style={s.item}>*/}
-                {/*<View><Text style={s.text}>{levels[3]}</Text></View>*/}
-                {/*<View><Text style={s.tip}>1-2星</Text></View>*/}
-                {/*</View>*/}
-                {/*</HrFlexLayout>*/}
                 <CommentStar
                     collapsed={true}
-                    levels={[100, 7.8, 0.5, .4, 0]}
+                    levels={levels}
                     speed={5}
                     quality={3.5}
                     pro={4}
                     manner={1}
                     commentNum={259}
-                    rate={4}
+                    rate={average}
                 />
                 {this.sep(true, {height: 1})}
-                <Comments
-                    noScroll
-                    items={comments}
-                />
             </View>
         )
     }
 
+    get commentList() {
+        const {
+            store: {
+                foreign_teacher_detail: {
+                    isFetching, isCommentFirst, isCommentFetching,
+                    comment: {total, hasMore, average, levels, comments, currentPage},
+                    base: {id}
+                }
+            }, actions
+        } = this.props;
+
+        return (
+            <Comments
+                noScroll
+                ref="myList"
+                items={comments}
+                onEndReachedThreshold={100}
+                onEndReached={(evt) => {
+                    !isCommentFetching && actions.fetchForeignTeacherCommentDetail(id, +currentPage+1)
+                }}
+                renderFooter={() => {
+                    if (isCommentFetching) {
+                        return hasMore ? <Loading /> : <View style={{marginVertical: 20, alignItems: 'center'}}><Text>没有更多了</Text></View>
+                    }
+                }}
+            />
+        )
+    }
+
     get fixBottom() {
-        const {actions} = this.props;
+        const {actions, store} = this.props;
         return (
             <BottomBtns
                 lefts={[{
