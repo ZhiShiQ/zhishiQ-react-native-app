@@ -42,7 +42,7 @@ class TextWithBgs extends Component {
         color: PropTypes.string,
         borderColor: PropTypes.string,
         items: PropTypes.array,
-        eachStyle: PropTypes.object
+        eachStyle: PropTypes.object,
     }
     render() {
         const {style, items, eachStyle, bgColor, color, borderColor} = this.props
@@ -54,11 +54,12 @@ class TextWithBgs extends Component {
                             key={i}
                             title={typeof item === 'string' ? item : item.title}
                             onPress={item.onPress}
-                            bgColor={bgColor}
-                            color={color}
+                            bgColor={item.bgColor || bgColor}
+                            color={item.color || color}
                             style={[
                                 {borderColor, borderWidth: StyleSheet.hairlineWidth}, eachStyle,
-                                (i==items.length-1)?{marginRight: 0}:{}
+                                (i==items.length-1)?{marginRight: 0}:{},
+                                item.style
                             ]}
                         />
                     )

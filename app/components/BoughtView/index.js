@@ -15,6 +15,7 @@ import {
 import Button from 'react-native-button';
 import sty from './style';
 import Hr from  '../Hr';
+import CirImage from  '../CirImage';
 
 @autobind
 class BoughtView extends Component {
@@ -58,7 +59,7 @@ class BoughtView extends Component {
         onPress: React.PropTypes.func,
         title: React.PropTypes.string.isRequired,
         thumbnail: React.PropTypes.object,
-        state: React.PropTypes.string,
+        state: React.PropTypes.oneOf("ing", "wait"),
         prompt: React.PropTypes.string,
         content: React.PropTypes.string,
         price: React.PropTypes.number,
@@ -72,38 +73,48 @@ class BoughtView extends Component {
     render() {
         const {onPress, style, btnTitle, onBtnPress, btnDisabled, title, thumbnail, prompt, state, content, price, disCount} = this.props
         const Touchable = btnDisabled ? TouchableWithoutFeedback : TouchableHighlight;
+        const stateMap = {
+            'ing': ["进行中", "服务进行中"], 'wait': ["待反馈", "提交反馈"]
+        };
+
         return (
             <TouchableOpacity onPress={onPress} style={[sty.main, style]}>
                 <View style={sty.mainContainer}>
                     <View style={sty.mainTitleContainer}>
                         <Text style={sty.titleText}>{title}</Text>
-                        <Text style={sty.stateText}>{state}</Text>
+                        <Text style={[sty.stateText, state === 'wait' && {color: '#ea5502'}]}>{ stateMap[state][0] }</Text>
                     </View>
                     <View style={sty.mainInnerContainer}>
-                        <View style={sty.imageContainer}><Image style={sty.image} source={thumbnail} /></View>
+                        <View style={sty.imageContainer}><CirImage style={sty.image} size={50} source={thumbnail} /></View>
                         <View style={sty.contentContainer}>
                             <Text style={sty.contentText}>{content}</Text>
                         </View>
                     </View>
-                    <Hr/>
                     <View style={sty.footContainer}>
                         <View style={sty.footerLeft}>
                             <Text style={sty.promptText}>{prompt}</Text>
                         </View>
                         <View style={sty.footerRight}>
-                            <Text style={sty.countText}>已优惠¥{disCount}</Text>
+                            {disCount && <Text style={sty.countText}>已优惠¥{disCount}</Text>}
                         </View>
                         <View style={sty.footerRight}>
-                            <Text style={sty.priceText}>¥{price}</Text>
+                            <Text style={sty.priceText}>实付：¥{price}</Text>
                         </View>
                     </View>
-                    <Hr/>
+                    <Hr color={'#e5e5e5'} marginBottom={4} style={{marginHorizontal: 15}}/>
                     <View style={sty.bottomContainer}>
                     <Touchable
                         diabled={btnDisabled}
-                        onPress={btnDisabled?null:onPress} >
-                        <View>
-                            <Text style={sty.btnText}>{btnTitle}</Text>
+                        onPress={btnDisabled?null:onBtnPress} >
+                        <View style={[
+                            {borderRadius: 3, paddingVertical: 6, paddingHorizontal: 10, backgroundColor: '#fff'},
+                            state === 'ing' && {borderWidth: 1, borderColor: '#848484'},
+                            state === 'wait' && {backgroundColor: '#fc6d34'},
+                        ]}>
+                            <Text style={[sty.btnText,
+                                state === 'ing' && {color: '#848484'},
+                                state === 'wait' && {color: '#fff'}
+                            ]}>{stateMap[state][1]}</Text>
                         </View>
                     </Touchable>
                     </View>

@@ -13,21 +13,23 @@ export default StyleSheet.create({
     },
     mainTitleContainer: {
         marginVertical: 4,
-        paddingHorizontal: 6,
+        paddingHorizontal: 15,
         flexDirection: 'row'
     },
     titleText: {
         fontWeight: '600',
-        fontSize: 14,
+        fontSize: 16,
         color: '#4A4A4A',
         flex: 1,
+
     },
     mainInnerContainer: {
         // flex: 2,
         // minHeight: 70,
         flexDirection: 'row',
         padding: 6,
-        backgroundColor: '#F7F7F7'
+        paddingHorizontal: 15,
+        backgroundColor: '#f7f7f7'
     },
     imageContainer: {
         marginRight: 6,
@@ -39,6 +41,7 @@ export default StyleSheet.create({
     },
     contentContainer: {
         // flex: 1
+        marginTop: 4,
     },
     contentText: {
         justifyContent: 'flex-start',
@@ -48,22 +51,25 @@ export default StyleSheet.create({
     },
     footContainer: {
         // flex: 2,
+        marginVertical: 7,
+        paddingHorizontal: 15,
         flexDirection: 'row'
     },
     footerLeft: {
         flex: 1
     },
     promptText: {
-        fontSize: 12.6,
-        color: '#4A4A4A',
+        fontSize: 13.6,
+        color: '#848484',
     },
     priceText: {
-        fontWeight: '600',
+        fontWeight: 'bold',
         fontSize: 14,
         color: '#4A4A4A'
     },
     countText: {
-
+        color: '#848484',
+        fontSize: 13.6
     },
     stateText: {
         flex: 1,
@@ -71,12 +77,15 @@ export default StyleSheet.create({
     },
     footerRight: {
         // flex: 1,
-        marginRight: 10
+        marginLeft: 10
     },
     bottomContainer: {
+        paddingHorizontal: 15,
+        marginVertical: 3,
+        marginBottom: 1,
         alignItems: 'flex-end'
     },
     btnText: {
-        // backgroundColor: 'blue'
+        fontSize: 12.4,
     }
 });

@@ -17,6 +17,7 @@ import sty from './style';
 import HorizontalMenu from '../../components/HorizontalMenu'
 import ScrollTab from '../../components/ScrollTab';
 import BoughtViews from '../../components/BoughtViews';
+import {sep} from '../../helpers';
 import ModalDropdown from 'react-native-modal-dropdown';
 
 @autobind
@@ -60,17 +61,17 @@ class TotalOrderPage extends Component {
         ],
         boughtList: [{
             title: 'sds', active: true, thumbnail: {},
-            state: '进行中', prompt: '2016-09-12', disCount: 300,
-            price: 99999, btnText: '服务进行中',
+            state: 'ing', prompt: '2016-09-12', disCount: 300,
+            price: 99999,
             content: 'CONTENT',
             onPress: null, onBtnPress: null, btnDisabled: true
         }, {
             title: 'sds', active: true, thumbnail: {},
-            state: '进行中', prompt: '2016-09-12', disCount: 300,
+            state: 'ing', prompt: '2016-09-12', disCount: 300,
             price: 99999, content: 'CONTENT'
         }, {
             title: 'sds', active: true, thumbnail: {},
-            state: '进行中', prompt: '2016-09-12', disCount: 300,
+            state: 'wait', prompt: '2016-09-12', disCount: 300,
             price: 99999, content: 'CONTENT'
         }]
     }
@@ -80,16 +81,18 @@ class TotalOrderPage extends Component {
     render() {
         const {store, menus, boughtList} = this.props;
         return (
-            <View sty={sty.main}>
+            /*<View sty={sty.main}>*/
                 <ScrollTab
-                    style={{flex: 0}}
+                    style={{flex: 1}}
                     page={0}
-                    tabContainerStyle={{flexWrap: 'wrap'}}
+                    /*tabContainerStyle={{flexWrap: 'wrap'}}*/
                     tabBarStyle={{height: 33}}
                     tabBarTextStyle={{fontSize: 13}}
                 >
-                    <View tabLabel="全部" style={{flex: 0}}>
-                        <BoughtViews items={boughtList}/>
+                    <View style={{flex: 1}} tabLabel="全部">
+                        <BoughtViews
+                            renderHeader={() => sep()}
+                            items={boughtList} />
                     </View>
                     <View tabLabel="待付款"></View>
                     <View tabLabel="待开始"></View>
@@ -99,7 +102,7 @@ class TotalOrderPage extends Component {
                     <View tabLabel="待评价"></View>
                     <View tabLabel="已取消"></View>
                 </ScrollTab>
-            </View>
+            /*</View>*/
         )
     }
 }

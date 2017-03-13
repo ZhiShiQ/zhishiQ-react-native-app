@@ -88,11 +88,12 @@ class OrderConfirmPage extends Component {
     }
 
     _getBottomBtnsProps() {
-        const {params: {type}} = this.props;
+        const {params: {type}, actions} = this.props;
         switch (type) {
             case 'buy':
                 return {mainText: "去付款", onMainPress: () => {
-                    Actions.tab_cart({type: ActionConst.JUMP});
+                    // Actions.tab_cart({type: ActionConst.JUMP});
+                    actions.simplePayModalOpen();
                     const {what: {value}} = this.refs;
                 }}
             case 'cart':

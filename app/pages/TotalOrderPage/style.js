@@ -4,9 +4,9 @@ import {
 
 export default StyleSheet.create({
     main: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
+        flex: 0,
+        // alignSelf: 'stretch',
+        // alignItems: 'center',
         backgroundColor: '#F7F7F7'
     }
 });

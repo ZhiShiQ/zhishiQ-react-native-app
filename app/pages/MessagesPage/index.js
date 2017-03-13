@@ -45,7 +45,7 @@ class MessagesPage extends Component {
             name: 'Ethan Andrews',
             avatar: {},
             active: true,
-            onPress: () => Actions.chat()
+            onPress: () => Actions.chat({params: {name: 'Ethan Andrews'}})
         }];
 
         return (
@@ -84,7 +84,7 @@ class MessagesPage extends Component {
                             }}></View>
                         }
                     </View>
-                    <View>
+                    <View style={{flex: 1}}>
                         <View style={{marginBottom: 6, flexDirection: 'row', alignItems: 'center'}}>
                             <Text style={{color: '#4a4a4a', fontSize: 16, flex: 1}}>{name}</Text>
                             <Text style={{color: '#848484', fontSize: 12, flex: 0}}>{time}</Text>

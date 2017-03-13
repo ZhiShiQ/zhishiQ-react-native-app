@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 
 import sty from './style';
-
+import {sep} from '../../helpers';
 import BoughtView from '../BoughtView';
 
 @autobind
@@ -38,9 +38,10 @@ class BoughtViews extends Component {
         style: React.PropTypes.object
     }
     render() {
-        const {items, style} = this.props
+        const {items, style, ...rest} = this.props
         return (
             <ListView
+                style={style}
                 renderRow={this._renderRow}
                 contentContainerStyle={[sty.main, style]}
                 dataSource={
@@ -48,12 +49,14 @@ class BoughtViews extends Component {
                         rowHasChanged: (r1, r2)=>!Map(r1).equals(Map(r2)),
                     }).cloneWithRows(items)
                 }
+                renderSeparator={(s, i) => i==items.length-1?null:sep()}
+                {...rest}
             />
         )
     }
     _renderRow(data, sectionId, rowId) {
         return (
-            <BoughtView key={rowId} {...data} style={rowId!=0?{marginTop: 20}:{}} />
+            <BoughtView key={rowId} {...data} />
         )
     }
 }

@@ -9,9 +9,11 @@ export const WX_COLORFUL = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEIAAA
 
 import React, {Component, PropTypes} from 'react';
 import Entypo from 'react-native-vector-icons/Entypo';
+import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 export const downIcon = <Entypo size={18} color="#c4c4c4" name="chevron-down" />;
 export const upIcon = <Entypo size={18} color="#c4c4c4" name="chevron-up" />;
 export const starIcon = <FontAwesome size={18} color="#fc6d34" name="star" />;
 export const shareIcon = <Entypo size={24} color="#4a4a4a" name="share" />;
+export const searchIcon = <EvilIcons size={30} color="#4a4a4a" name="search" />;

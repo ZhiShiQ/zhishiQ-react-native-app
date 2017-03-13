@@ -26,14 +26,18 @@ class ChatPage extends Component {
       super(props)
     }
     componentWillMount() {}
-    componentDidMount() {}
+    componentDidMount() {
+        // this.refs.listView.scrollToEnd({animated: false})
+        setTimeout(() => this.refs.listView.scrollToEnd({animated: false}), 0);
+    }
     componentWillReceiveProps(newProps) {}
     shouldComponentUpdate(newProps, newState, newContext) {
       return !Map(this.props).equals(Map(newProps))
     }
     componentWillUpdate(newProps, newState, newContext) {}
     componentDidUpdate(oldProps, oldState, oldContext) {}
-    componentWillUnmount() {}
+    componentWillUnmount() {
+    }
     static defaultProps = {}
     state = {}
     static propTypes = {};
@@ -43,12 +47,27 @@ class ChatPage extends Component {
         return (
             <View style={sty.main}>
                 <ListView
+                    ref="listView"
+                    pageSize={10}
+                    initialListSize={20}
                     contentContainerStyle={sty.chats}
                     renderRow={this._renderRow}
                     dataSource={
                         new ListView.DataSource({
                             rowHasChanged: (r1, r2) => !Map(r1).equals(Map(r2))
                         }).cloneWithRows([{
+                            content: "内容是什么内容是什么内容是什么内容内容...",
+                            type: 'other'
+                        }, {
+                            content: "内容是什么内容是什么内容是什么内容内容...",
+                            type: 'other'
+                        }, {
+                            content: "内容是什么内容是什么内容是什么内容内容...",
+                            type: 'other'
+                        }, {
+                            content: "内容是什么内容是什么内容是什么内容内容...",
+                            type: 'other'
+                        }, {
                             content: "内容是什么内容是什么内容是什么内容内容...",
                             type: 'other'
                         }, {

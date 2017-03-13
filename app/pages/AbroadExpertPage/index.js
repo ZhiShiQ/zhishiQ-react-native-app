@@ -26,6 +26,8 @@ import CustomDropDown from '../../components/CustomDropDown';
 import RightHalfMenu from '../../components/RightHalfMenu';
 import Services from '../../components/Services';
 import LinkItems from '../../components/LinkItems';
+import CollapsibleItem from '../../components/CollapsibleItem';
+import TextWithBgs from '../../components/TextWithBgs';
 
 const AnimatableLinkItems = Animatable.createAnimatableComponent(LinkItems)
 
@@ -72,7 +74,7 @@ class AbroadExpertPage extends Component {
 
         return (
             <View style={sty.main}>
-                <View style={{marginTop: 33}}></View>
+                <View style={{marginTop: 33+35.5}}></View>
                 <Services
                     items={list.map(x=>({...x, onPress: () =>{
 
@@ -80,6 +82,34 @@ class AbroadExpertPage extends Component {
                     } }))}
                 />
                 {this.subMenu}
+            </View>
+        )
+    }
+
+    get collapsible() {
+        return (
+            <View style={{
+                position: 'absolute', top: 33, left: 0, right: 0
+            }}>
+                <CollapsibleItem
+                    style={{backgroundColor: '#fff', borderBottomWidth: StyleSheet.hairlineWidth, borderColor: '#e5e5e5'}}
+                    control={
+                    <TextWithBgs
+                        style={{paddingHorizontal: 15, paddingVertical: 8,}}
+                        items={[{title: "所有", color: '#fff', style: {borderColor: 'transparent'}, bgColor: '#fc6d34'}, "备考", "背景提升", "选校", "网申"]}
+                        bgColor={'#fff'}
+                        color={'#4a4a4a'}
+                        eachStyle={{borderRadius: 3, borderWidth: StyleSheet.hairlineWidth, borderColor: '#979797', overflow: 'hidden'}}
+                    />
+                }>
+                    <TextWithBgs
+                        style={{paddingHorizontal: 15, paddingVertical: 8, backgroundColor: '#fff'}}
+                        items={[{title: "所有", color: '#fff', style: {borderColor: 'transparent'}, bgColor: '#fc6d34'}, "备考", "背景提升", "选校", "网申"]}
+                        bgColor={'#fff'}
+                        color={'#4a4a4a'}
+                        eachStyle={{borderRadius: 3, borderWidth: StyleSheet.hairlineWidth, borderColor: '#979797', overflow: 'hidden'}}
+                    />
+                </CollapsibleItem>
             </View>
         )
     }
@@ -184,12 +214,12 @@ class AbroadExpertPage extends Component {
             }, actions
         } = this.props;
         const {showRightMenu} = this.state;
+        const n = 4;
+
         return (
             <View style={sty.menu}>
 
-                {/*<DropDown*/}
-                    {/*height={deviceHeight*.45}*/}
-                    {/*options={this.computeFilterZone} title="地区"/>*/}
+                {this.collapsible}
 
                 <CustomDropDown
                     ref="submenu1"
@@ -197,7 +227,7 @@ class AbroadExpertPage extends Component {
                     dynamicTitle={false}
                     autoHidden
                     textStyle={sty.title}
-                    getModalStyle={(layout) => ({right: -layout.width, left: 0})}
+                    getModalStyle={(layout) => ({right: -(n-1)*layout.width, left: 0})}
                     onPress={(show) => {this.hideMenus(["submenu1"])}}
                     title={"地区"}
                     selectedStyle={{}}
@@ -210,8 +240,31 @@ class AbroadExpertPage extends Component {
                     dynamicTitle={false}
                     textStyle={sty.title}
                     onPress={(show) => {this.hideMenus(["submenu2"])}}
-                    getModalStyle={(layout) => ({left: -layout.width, right: 0, height: deviceHeight-(layout.y+layout.height)})}
+                    getModalStyle={(layout) => ({left: -layout.width, right: -(n-2)*layout.width, height: deviceHeight-(layout.y+layout.height)})}
                     title={"专业"}
+                    items={this.computeFilterPro}
+                />
+
+
+                <CustomDropDown
+                    ref="submenu2"
+                    showIcon={false}
+                    dynamicTitle={false}
+                    textStyle={sty.title}
+                    onPress={(show) => {this.hideMenus(["submenu2"])}}
+                    getModalStyle={(layout) => ({left: -(n-2)*layout.width, right: -(n-1)*layout.width, height: deviceHeight-(layout.y+layout.height)})}
+                    title={"学位"}
+                    items={this.computeFilterPro}
+                />
+
+                <CustomDropDown
+                    ref="submenu2"
+                    showIcon={false}
+                    dynamicTitle={false}
+                    textStyle={sty.title}
+                    onPress={(show) => {this.hideMenus(["submenu2"])}}
+                    getModalStyle={(layout) => ({left: -(n-1)*layout.width, right: -n*layout.width, height: deviceHeight-(layout.y+layout.height)})}
+                    title={"排序"}
                     items={this.computeFilterPro}
                 />
 

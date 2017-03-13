@@ -76,7 +76,7 @@ import Hr from './components/Hr';
 import BlockButton from './components/BlockButton';
 import EvilIcon from 'react-native-vector-icons/EvilIcons'
 import * as $ from './constant';
-import {BACK_ICON, shareIcon} from './helpers/resource';
+import {BACK_ICON, shareIcon, searchIcon} from './helpers/resource';
 
 const MapStateToProps = (state) => ({store: state})
 const MapDispatchToProps = (dispatch) => ({
@@ -309,11 +309,11 @@ class Routers extends React.Component {
         const backIcon = {uri: BACK_ICON};
         return (
             <Scene key="Root" backButtonImage={backIcon} navigationBarStyle={styles.navigationBarStyle}>
-                <Scene hideTabBar key="entry" component={conn(EntryPage)} title={TITLE}/>
+                <Scene initial hideTabBar key="entry" component={conn(EntryPage)} title={TITLE}/>
 
                 <Scene key="resetPwdByPhone" component={conn(ResetPwdByPhonePage)} title={'重置密码'}/>
                 <Scene key="resetPwdByMail" component={conn(ResetPwdByMailPage)} title={'重置密码'}/>
-                <Scene initial key="tabbar" component={conn(NavigationDrawer)}>
+                <Scene key="tabbar" component={conn(NavigationDrawer)}>
                     <Scene
                         initial
                         key="tab_main"
@@ -361,6 +361,7 @@ class Routers extends React.Component {
                                    type={ActionConst.PUSH_OR_POP}
                                    title="留学行家咨询"
                                    rightTitle="搜索"
+                                   getRightTitle={() => searchIcon}
                                    onRight={() => alert()}/>
                             <Scene key="abroadExpertDetail" component={conn(AbroadExpertDetailPage)}
                                    hideTabBar
@@ -373,6 +374,7 @@ class Routers extends React.Component {
                                    hideTabBar
                                    title="外籍文书顾问"
                                    rightTitle="搜索"
+                                   getRightTitle={() => searchIcon}
                                    onRight={() => alert()}
                                    backTitle=""/>
 
@@ -517,6 +519,8 @@ class Routers extends React.Component {
                             <Scene key="recentSkim"
                                    title="最近浏览"
                                    backTitle=""
+                                   rightTitle="清空"
+                                   onRight={() => {}}
                                    hideTabBar
                                    component={conn(RecentSkimPage)}
                             />
@@ -537,7 +541,7 @@ class Routers extends React.Component {
                 <Scene key="chat" component={conn(ChatPage)}
                        hideTabBar
                        type={ActionConst.PUSH_OR_POP}
-                       title="消息"
+                       getTitle={({params}) => (params ? params.name : '')}
                 />
 
 

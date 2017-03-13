@@ -55,6 +55,7 @@ class ReduxTitleDropdown extends Component {
         }))
 
         return <TitleDropdown
+            showTitleIcon
             ref="drop"
             style={{width: 200}}
             title={list[titleIndex].title}

@@ -33,3 +33,18 @@ export const splitText = (text, limit=50) => {
 }
 
 export const reducerHelper = ReducerHelper;
+
+
+
+
+import React from 'react';
+import {View, StyleSheet} from 'react-native';
+
+export const sep = (noBorder, style) => {
+    return <View style={[{
+        height: 10,
+        borderTopWidth: StyleSheet.hairlineWidth,
+        borderBottomWidth: StyleSheet.hairlineWidth,
+        borderColor: '#e5e5e5'
+    }, noBorder ? {borderColor: 'transparent'} : {}, style]}></View>
+}

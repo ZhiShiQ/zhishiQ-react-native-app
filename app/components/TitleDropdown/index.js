@@ -17,6 +17,7 @@ import ModalDropdown from 'react-native-modal-dropdown';
 import Icon from 'react-native-vector-icons/FontAwesome';
 const {height: deviceHeight, width: deviceWidth} = Dimensions.get('window');
 import {PADDING_SIZE, NAV_BAR_HEIGHT} from '../../constant';
+import {upIcon, downIcon} from '../../helpers/resource';
 
 import sty from './style';
 
@@ -34,7 +35,7 @@ class TitleDropdown extends Component {
     componentDidMount() {}
     componentWillReceiveProps(newProps) {}
     shouldComponentUpdate(newProps, newState, newContext) {
-      return !Map(this.props).equals(Map(newProps))
+      return !Map(this.props).equals(Map(newProps)) || !Map(this.state).equals(Map(newState))
     }
     componentWillUpdate(newProps, newState, newContext) {}
     componentDidUpdate(oldProps, oldState, oldContext) {}
@@ -42,7 +43,9 @@ class TitleDropdown extends Component {
     static defaultProps = {
         showTitleIcon: false
     }
-    state = {}
+    state = {
+        show: false
+    };
     static propTypes = {
         options: PropTypes.array.isRequired,
         title: PropTypes.string.isRequired,
@@ -59,6 +62,7 @@ class TitleDropdown extends Component {
     }
     render() {
         const {options, title, showTitleIcon, onSelect, style, selectedIndex, ...rest} = this.props
+        const {show} = this.state;
         return (
             <ModalDropdown
                 ref={r => this.dropdown = r}
@@ -73,13 +77,18 @@ class TitleDropdown extends Component {
                 }
                 textStyle={sty.title}
                 defaultIndex={selectedIndex}
+                onDropdownWillShow={() => this.setState({show: true})}
+                onDropdownWillHide={() => this.setState({show: false})}
                 {...rest}
                 defaultValue={title}
             >
                 <View>
                 <Text style={[sty.title, {textAlign: 'center'}]}>
                     {title+(showTitleIcon?" ":"")}
-                    {showTitleIcon && <Icon name="check" size={12}/>}
+                    {(showTitleIcon && show)
+                        ? upIcon
+                        : downIcon
+                    }
                 </Text>
                 </View>
             </ModalDropdown>
