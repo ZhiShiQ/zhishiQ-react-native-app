@@ -101,13 +101,10 @@ class ForeignTeacherDetailPage extends Component {
                     scrollEventThrottle={100}
                     onScroll={({nativeEvent}) => {
                         if (this._activeTab == 1 && this.isCloseToBottom(nativeEvent)) {
-                            // this.setState({scrollEnable: false});
-
                             if (!isCommentFetching) {
                                 actions.fetchForeignTeacherCommentDetail(id, +currentPage+1);
                             }
                         } else if (this._activeTab == 1) {
-                            // this.setState({scrollEnable: true})
                         }
                     }}
                     contentContainerStyle={[sty.main, {paddingBottom: 45}]}
@@ -231,9 +228,7 @@ class ForeignTeacherDetailPage extends Component {
                     <Educations
                         noScroll
                         style={{alignItems: 'stretch'}}
-                        items={educations.map(({school_name, degree, major, from_date, to_date, school_logo, ...rest}) =>
-                            ({title: school_name, thumbnail: {uri: school_logo}, status: degree+(degree?' ':'')+major, date_from: from_date, date_to: to_date, ...rest}))
-                        }
+                        items={educations}
                     />
                 </CollapsibleIntro>
                 {this.sep()}
@@ -254,11 +249,7 @@ class ForeignTeacherDetailPage extends Component {
 
     get teacherExperience() {
         const {store: {foreign_teacher_detail: {detail: {experiences}}}} = this.props;
-        const items = experiences.map(({organization_name, organization_logo, from_date, to_date, description, ...rest}) => ({
-            words: description, date_from: from_date, date_to: to_date,
-            organization: organization_name, ...rest,
-            thumbnail: {uri: organization_logo}
-        }));
+        const items = experiences;
 
         return (
             <CollapsibleIntro

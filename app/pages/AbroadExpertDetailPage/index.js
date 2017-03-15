@@ -29,6 +29,7 @@ import Comments from '../../components/Comments';
 import CommentStar from '../../components/CommentStar';
 import Hr from '../../components/Hr';
 import Experience from '../../components/Experience';
+import Loading from '../../components/Loading';
 
 
 EXPEND_HEIGHT = 250;
@@ -40,6 +41,12 @@ class AbroadExpertDetailPage extends Component {
     }
 
     componentWillMount() {
+        const {
+            store: {
+                abroad_expert_detail: {isFetching, base: {avatar, id, name, content, tags, clients, rate, reviews}, detail, service, comment}
+            }, actions
+        } = this.props;
+        actions.fetchAbroadExpertDetail(id);
     }
 
     componentDidMount() {
@@ -53,22 +60,6 @@ class AbroadExpertDetailPage extends Component {
     }
 
     componentWillUpdate(newProps, newState, newContext) {
-        const animate = (height) => {
-            if (newState.expended)
-                this.refs.expend.transitionTo({height: height})
-            else
-                this.refs.expend.transitionTo({height: 10})
-        }
-
-        /* if (newState.expended !== this.state.expended) {
-         if (this.refs.expend.measure) {
-         this.refs.expend.measure((ox, oy, width, height, px, py) => {
-         animate(height);
-         })
-         } else {
-         animate(EXPEND_HEIGHT);
-         }
-         } */
     }
 
     componentDidUpdate(oldProps, oldState, oldContext) {
@@ -76,68 +67,130 @@ class AbroadExpertDetailPage extends Component {
     }
 
     componentWillUnmount() {
+        const {actions} = this.props;
+        actions.setForeignTeacherDetailCommentFirst(true);
     }
 
     static defaultProps = {}
     state = {
-        expended: false
+        starCollapsed: true,
+        scrollEnable: true
     }
     static propTypes = {}
+    _activeTab = 0;
+
+    isCloseToBottom = ({layoutMeasurement, contentOffset, contentSize}) => {
+        const paddingToBottom = 60;
+        return layoutMeasurement.height + contentOffset.y >=
+            contentSize.height - paddingToBottom;
+    };
 
     render() {
-        const {store: {abroad_expert_detail}, actions} = this.props
-        const {base, detail} = abroad_expert_detail;
-        const introObj = splitText(detail.intro);
+        const {
+            store: {
+                abroad_expert_detail: {
+                    isFetching, isCommentFetching, isCommentFirst, base: {id, avatar, name, content, tags, clients, rate, reviews},
+                    detail, comment: {currentPage, hasMore}}
+            }, actions
+        } = this.props;
         return (
             <View>
-                <ScrollView contentContainerStyle={[sty.main, {paddingBottom: 45}]}>
-                    <TeacherBasicInfo
-                        contentCollapsible={true}
-                        thumbnail={base.avatar}
-                        tags={base.tags}
-                        name={base.name}
-                        content={base.content}
-                        appointNum={base.appointNum}
-                        average={base.average}
-                        commentNum={base.commentNum}
-                    />
-                    <Hr marginBottom={0} color={'#e5e5e5'}/>
+                <ScrollView
+                    scrollEnable={this.state.scrollEnable}
+                    scrollEventThrottle={100}
+                    onScroll={({nativeEvent}) => {
+                        if (this._activeTab == 1 && this.isCloseToBottom(nativeEvent)) {
+                            if (!isCommentFetching) {
+                                actions.fetchAbroadExpertCommentDetail(id, +currentPage+1);
+                            }
+                        } else if (this._activeTab == 1) {
+                        }
+                    }}
+                    contentContainerStyle={[sty.main, {paddingBottom: 45}]}
+                >
+                    {this.header}
                     <ScrollTab
-                        /*onChangeTab={({i}) => actions.setEntryActiveIndex(a[+i])}*/
+                        onChangeTab={({i}) => {
+                            this._activeTab = +i;
+                            i == 1 && isCommentFirst && actions.fetchAbroadExpertCommentDetail(id);
+                        }}
                         tabContainerStyle={{flex: 1, alignItems: 'center'}}
-                        tabBarTextStyle={{fontSize: 14}}
+                        tabBarTextStyle={{fontSize: 15, fontWeight: 'normal'}}
                         tabBarStyle={{height: 40}}
+                        initialPage={0}
                     >
                         <View tabLabel="导师详情">
-                            {this.sep()}
-                            {this.topic}
-                            {this.sep()}
-                            <CollapsibleIntro
-                                title={"自我介绍"}
-                                showTexts={introObj.showText}
-                                hideTexts={introObj.hideText}
 
-                            />
-                            {this.sep()}
-                            {this.educ}
-                            {this.sep()}
-                            {this.experience}
-                            {this.sep()}
-                            {this.honor}
-                            {this.sep(true)}
-                            {this.sep(true)}
-                            {this.sep(true)}
-                            {this.sep(true)}
+                            {isFetching ? <Loading style={{flex: 1}}/> :
+                                <View>
+                                    {this.sep()}
+                                    {this.intro}
+                                </View>
+                            }
                         </View>
-                        <View tabLabel="用户评价">
-                            {this.sep()}
-                            {this.comments}
+                        <View tabLabel={"用户评价"}>
+                            {isCommentFetching && isCommentFirst ? <Loading style={{flex: 1}}/> :
+                                <View>
+                                    {this.sep()}
+                                    {this.comments}
+                                    {this.commentList}
+                                </View>
+                            }
                         </View>
                     </ScrollTab>
-
-
                 </ScrollView>
-                {this.fixBottom}
+                {isFetching ? null: this.fixBottom}
+            </View>
+        )
+    }
+
+    get intro() {
+        const {
+            store: {
+                abroad_expert_detail: {detail: {summary, description, educations, experiences, services}}
+            }, actions
+        } = this.props;
+        const selfIntroObj = splitText(description);
+
+        return (
+            <View>
+                {this.topic}
+                {this.sep()}
+                <CollapsibleIntro
+                    title={"自我介绍"}
+                    showTexts={selfIntroObj.showText}
+                    hideTexts={selfIntroObj.hideText}
+                />
+                {this.sep()}
+                {this.educ}
+                {this.sep()}
+                {this.experience}
+                {this.sep()}
+                {this.honor}
+            </View>
+        )
+    }
+
+    get header() {
+        const {
+            store: {
+                abroad_expert_detail: {
+                    isFetching, isCommentFetching, isCommentFirst, base: {id, avatar, name, content, tags, clients, rate, reviews, listKeys},
+                    detail, comment: {currentPage, hasMore}}
+            }, actions
+        } = this.props;
+        return (
+            <View style={{flex: 1}}>
+                <TeacherBasicInfo
+                    style={{alignItems: 'center'}}
+                    tags={tags}
+                    name={name}
+                    content={content}
+                    thumbnail={avatar}
+                    listKeys={listKeys || ["Clients", "Rate", "Reviews"]}
+                    listValues={[clients, rate, reviews]}
+                />
+                <Hr marginBottom={0} color={'#e5e5e5'}/>
             </View>
         )
     }
@@ -154,21 +207,12 @@ class AbroadExpertDetailPage extends Component {
     }
 
     get topic() {
-        const items = [{
-            name: '英国G5名校申请指导',
-            price: 319,
-        }, {
-            name: '单项留学文书服务',
-            price: 319,
-            detail: {
-                tags: ['其他'],
-                contents: [
-                    '课程简述: Data Science, Business Analysis, Information Systems 留学申请，包括转专业申请',
-                    '适用用户: Data Science, Business Analysis, Information Systems 留学申请，包括转专业申请者',
-                    'Data Science, Business Analysis, Information Systems 留学申请，包括转专业申请者',
-                ]
-            }
-        }];
+        const {
+            store: {
+                abroad_expert_detail: {detail: {summary, description, educations, experiences, services}}
+            }, actions
+        } = this.props;
+        const items = services;
 
         return (
             <CollapsibleIntro title={"套餐类型"} style={{paddingBottom: 0}}>
@@ -235,28 +279,7 @@ class AbroadExpertDetailPage extends Component {
         const {store: {abroad_expert_detail}, actions} = this.props
         const {base, detail: {experiences}} = abroad_expert_detail;
 
-        const items = [{
-            title: "Global Health Economics and Outcomes Research Consultant",
-            origination: 'Amgen, Inc.',
-            date_from: '2007-08',
-            thumbnail: {},
-            date_to: '2015-05',
-            words: [
-                'Designed and managed health economic research studies (e.g., budget impact, cost per response, cost-effectiveness, disease burden, secondary claims, patient-reported outcomes and instrument development, treatment patterns, etc.)',
-                'Presented findings at scientific and professional meetings (9 published/presen',
-                'Prepared, reviewed, and/or edited study protocols, manuscripts, and abstracts for department or Internal Peer Review Group'
-            ]
-        }, {
-            title: "Global Health Economics and Outcomes Research Consultant",
-            origination: 'Amgen, Inc.',
-            date_from: '2007-08',
-            date_to: '2015-05',
-            words: [
-                'Designed and managed health economic research studies (e.g., budget impact, cost per response, cost-effectiveness, disease burden, secondary claims, patient-reported outcomes and instrument development, treatment patterns, etc.)',
-                'Presented findings at scientific and professional meetings (9 published/presen',
-                'Prepared, reviewed, and/or edited study protocols, manuscripts, and abstracts for department or Internal Peer Review Group'
-            ]
-        }]
+        const items = experiences;
 
         return (
             <CollapsibleIntro

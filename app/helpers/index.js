@@ -44,12 +44,13 @@ export const _debugger = (obj) => {
     if (!__DEBUG__) {
         return;
     }
+    const prefix = "[ERROR]: ";
     if (obj instanceof Error) {
-        alert(obj.message+'\n'+obj.stack);
+        alert(prefix+obj.message+'\n'+obj.stack);
     } else if (typeof obj === 'string') {
-        alert(obj);
+        alert(prefix+obj);
     } else {
-        alert(JSON.stringify(obj));
+        alert(prefix+JSON.stringify(obj));
     }
 };
 

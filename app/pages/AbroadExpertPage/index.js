@@ -76,7 +76,9 @@ class AbroadExpertPage extends Component {
     pageSize = 15;
 
     render() {
-        const {store: {abroad_expert: {list, isFetching, firstMount, hasMore}}, actions} = this.props;
+        const {store: {abroad_expert: {
+            list, isFetching, firstMount, hasMore
+        }}, actions} = this.props;
         const NoMore = <View style={{marginVertical: 20, alignItems: 'center'}}><Text>没有更多了</Text></View>;
 
         return (
@@ -85,8 +87,16 @@ class AbroadExpertPage extends Component {
                 {isFetching && (firstMount || !hasMore)
                     ? <Loading />
                     : hasMore ? <Services
-                            items={list.map(x => ({
-                                ...x, onPress: () => {
+                            items={list.map(data => ({
+                                ...data, onPress: () => {
+                                    const newData = {...data, avatar: data.thumbnail, name: data.title};
+                                    delete newData.thumbnail;
+                                    delete newData.title;
+                                    delete newData.intro;
+                                    newData.content = data.intro;
+                                    newData.rate = data.mark;
+                                    newData.reviews = data.appointNum;
+                                    actions.setAbroadExpertDetailBase(newData);
                                     Actions.abroadExpertDetail();
                                 }
                             }))}

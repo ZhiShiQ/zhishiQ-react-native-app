@@ -19,8 +19,8 @@ export const fetchForeignTeacherDetail = (id) => {
                     alert(o.message);
                 } else {
                     emit([
-                        setForeignTeacherDetailExperiences(o.experiences),
-                        setForeignTeacherDetailEducations(o.educations),
+                        setForeignTeacherDetailExperiences(o.experiences.map(mapExperience)),
+                        setForeignTeacherDetailEducations(o.educations.map(mapEduc)),
                         setForeignTeacherDetailSummary(o.summary),
                         setForeignTeacherDetailDescription(o.description),
                         setForeignTeacherDetailServices(o.services)
@@ -76,6 +76,15 @@ export const fetchForeignTeacherCommentDetail = (id, page=1, opts={}) => {
             })
     }
 }
+
+const mapExperience = ({organization_name, organization_logo, from_date, to_date, description, ...rest}) => ({
+    ...rest, words: description, date_from: from_date, date_to: to_date,
+    organization: organization_name,
+    thumbnail: {uri: organization_logo}
+})
+
+const mapEduc = ({school_name, degree, major, from_date, to_date, school_logo, ...rest}) =>
+    ({title: school_name, thumbnail: {uri: school_logo}, status: degree+(degree?' ':'')+major, date_from: from_date, date_to: to_date, ...rest})
 
 const statistics2Levels = (statistics) => {
     const statis = statistics;

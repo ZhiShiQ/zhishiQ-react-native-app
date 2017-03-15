@@ -48,6 +48,23 @@ export const ABROAD_EXPERT_LIST_SET = uint();
 export const ABROAD_EXPERT_FILTER_SET = uint();
 export const ABROAD_EXPERT_FIRST_SET = uint();
 export const ABROAD_EXPERT_LIST_APPEND = uint();
+
+export const ABROAD_EXPERT_DETAIL_FETCHING_SET = uint();
+export const ABROAD_EXPERT_DETAIL_SERVICES_SET = uint();
+export const ABROAD_EXPERT_DETAIL_EDUC_SET = uint();
+export const ABROAD_EXPERT_DETAIL_SUMMARY_SET = uint();
+export const ABROAD_EXPERT_DETAIL_DESCRIPTION_SET = uint();
+export const ABROAD_EXPERT_DETAIL_EXPERIENCE_SET = uint();
+
+export const ABROAD_EXPERT_DETAIL_COMMENT_FETCHING_SET = uint();
+export const ABROAD_EXPERT_DETAIL_COMMENT_FIRST_SET = uint();
+export const ABROAD_EXPERT_DETAIL_COMMENT_LEVELS_SET = uint();
+export const ABROAD_EXPERT_DETAIL_COMMENT_TOTAL_SET = uint();
+export const ABROAD_EXPERT_DETAIL_COMMENTS_SET = uint();
+export const ABROAD_EXPERT_DETAIL_COMMENT_SUMMARY_SET = uint();
+export const ABROAD_EXPERT_DETAIL_COMMENT_HASMORE_SET = uint();
+export const ABROAD_EXPERT_DETAIL_COMMENT_AVERAGE_SET = uint();
+export const ABROAD_EXPERT_DETAIL_COMMENT_CURR_SET = uint();
 /* end of abroad_expert's logic related */
 
 
