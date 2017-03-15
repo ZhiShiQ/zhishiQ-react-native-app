@@ -53,6 +53,12 @@ class EntryPage extends Component {
     }
 
     componentWillUnmount() {
+        const {store: {entry: {login, activeIndex}}, actions} = this.props;
+        actions.setEntryLoginUser('');
+        actions.setEntryLoginPwd('');
+        actions.setEntryRegPhone('');
+        actions.setEntryRegVerify('');
+        actions.setEntryRegPwd('');
     }
 
     static defaultProps = {}
@@ -135,7 +141,9 @@ class EntryPage extends Component {
                     inputProps: {
                         defaultValue: login.pwd,
                         placeholder: "请输入密码",
+                        secureTextEntry: true,
                         placeholderTextColor: "",
+                        onSubmitEditing: this._onSignIn,
                         onChangeText: (text) => actions.setEntryLoginPwd(text)
                     }
                 }]}
@@ -143,9 +151,7 @@ class EntryPage extends Component {
                     <View style={{marginTop: 28}}>
                         <BlockButton
                             title={" 登录 "}
-                            onPress={() => {
-                                Actions.tabbar({type: "replace"});
-                            }}
+                            onPress={this._onSignIn}
                         />
                     </View>
                 }
@@ -153,6 +159,19 @@ class EntryPage extends Component {
                 {this.social}
             </View>
         )
+    }
+
+    _onSignIn() {
+        const {store: {entry: {login, activeIndex}}, actions} = this.props;
+        Actions.tabbar({type: "replace"})
+        actions.fetchSignIn()
+            .then(f => f && Actions.tabbar({type: "replace"}));
+    }
+
+    _onSignUp() {
+        const {store: {entry: {login, activeIndex}}, actions} = this.props;
+        actions.fetchSignIn()
+            .then(f => f && Actions.tabbar({type: "replace"}));
     }
 
     get regPage() {
@@ -183,6 +202,10 @@ class EntryPage extends Component {
                     label: "密码",
                     inputProps: {
                         defaultValue: reg.pwd,
+                        secureTextEntry: true,
+                        onSubmitEditing: () => {
+
+                        },
                         placeholder: "设置您的密码",
                         placeholderTextColor: "",
                         onChangeText: (text) => actions.setEntryRegPwd(text)
@@ -204,6 +227,7 @@ class EntryPage extends Component {
                         />
                         <BlockButton
                             title={" 注册 "}
+                            onPress={this._onSignUp}
                         />
                     </View>
                 }

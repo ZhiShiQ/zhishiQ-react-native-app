@@ -77,8 +77,8 @@ class CommentStar extends Component {
     render() {
         const {levels, speed, pro, manner, quality, rate, commentNum} = this.props;
         const {collapsed, mainStarLayout} = this.state;
-        const keys = ["服务质量", "服务态度", "专业程度", "响应速度"];
-        const vals = [quality, manner, pro, speed];
+        const keys = [/*"服务质量", */"服务态度", "专业程度", "响应速度"];
+        const vals = [/*Number(quality).toFixed(1), */Number(manner).toFixed(1), Number(pro).toFixed(1), Number(speed).toFixed(1)];
         return (
             <CollapsibleItem
                 ref="collapsible"

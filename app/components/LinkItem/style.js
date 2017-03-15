@@ -31,7 +31,7 @@ export default StyleSheet.create({
         marginLeft: 6
     },
     rightText: {
-
+        color: '#4a4a4a'
     },
     hr: {
         marginBottom: 0,

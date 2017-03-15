@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import {Map} from 'immutable';
 import autobind from 'autobind-decorator';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+
 import {
     Text,
     View,
@@ -13,7 +15,7 @@ import {
 } from 'react-native';
 
 import sty from './style';
-import Hr from '../../components/Hr'
+import Hr from '../../components/Hr';
 
 @autobind
 class LinkItem extends Component {
@@ -35,7 +37,8 @@ class LinkItem extends Component {
         showBorder: '',
         showIcon: true,
         iconName: "angle-right",
-        iconSize: 16,
+        iconSize: 14,
+        iconColor: "#C4C4C4"
     };
     state = {};
     static propTypes = {
@@ -45,6 +48,8 @@ class LinkItem extends Component {
         borderColor: React.PropTypes.string,
         style: React.PropTypes.object,
         leftStyle: React.PropTypes.object,
+        leftTextStyle: React.PropTypes.object,
+        rightStyle: React.PropTypes.object,
         rightTextStyle: React.PropTypes.object,
         onPress: React.PropTypes.func,
         leftComponent: React.PropTypes.element,
@@ -52,10 +57,11 @@ class LinkItem extends Component {
         showIcon: React.PropTypes.bool,
         emphasize: React.PropTypes.bool,
         iconName: React.PropTypes.string,
+        iconColor: React.PropTypes.string,
         iconSize: React.PropTypes.number
     };
     render() {
-        const {style, leftText, emphasize, iconSize, leftStyle, rightTextStyle, leftComponent, rightComponent, showIcon, onPress, rightText, iconName, showBorder, borderColor} = this.props
+        const {style, leftText, emphasize, iconSize, rightStyle, leftTextStyle, leftStyle, rightTextStyle, leftComponent, rightComponent, showIcon, onPress, rightText, iconName, showBorder, borderColor} = this.props
         return (
             <View style={style}>
                 {
@@ -70,12 +76,14 @@ class LinkItem extends Component {
                     <View style={sty.container}>
                         <View style={[sty.left, leftComponent?{flex: 5}:{}, leftStyle]}>
                             {leftComponent}
-                            {!leftComponent && <Text>{leftText}</Text>}
+                            {!leftComponent && <Text style={[{color: '#4a4a4a'}, leftTextStyle]}>{leftText}</Text>}
                         </View>
-                        <View style={sty.right}>
+                        <View style={[sty.right, rightStyle]}>
                             {rightComponent}
                             {!rightComponent  && <Text style={[sty.rightText, rightTextStyle]}>{rightText}</Text>}
-                            {showIcon && <Icon style={sty.rightIcon} name={iconName} size={iconSize} color="#C4C4C4" />}
+                            {showIcon &&
+                                this.icon
+                            }
                         </View>
                     </View>
                 </TouchableHighlight>
@@ -85,6 +93,14 @@ class LinkItem extends Component {
                 }
             </View>
         )
+    }
+
+    get icon() {
+        const {style, leftText, emphasize, iconSize, rightStyle, leftStyle, rightTextStyle, iconColor, leftComponent, rightComponent, showIcon, onPress, rightText, iconName, showBorder, borderColor} = this.props;
+        if (iconName === 'check') {
+            return <MaterialCommunityIcon style={sty.rightIcon} name={iconName} size={iconSize} color={iconColor} />
+        }
+        return <Icon style={sty.rightIcon} name={iconName} size={iconSize} color={iconColor} />
     }
 }
 

@@ -4,6 +4,12 @@
 
 const HOST = "http://api.lb.dev.mydocumate.com/v1/";
 
+export const signInURL = HOST + "account/sign-in";
+
 export const foreignTeacherURL = HOST + "editor/index";
 export const foreignTeacherDetailURL = HOST + "editor/view";
 export const foreignTeacherDetailCommentURL = HOST + "editor/reviews-of-advisor";
+
+export const abroadExpertURL = HOST + "course/index";
+export const abroadExpertDetailURL = HOST + "editor/view";
+export const abroadExpertDetailCommentURL = HOST + "editor/reviews-of-advisor";

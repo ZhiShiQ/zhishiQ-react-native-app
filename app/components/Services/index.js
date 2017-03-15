@@ -55,7 +55,6 @@ class Services extends Component {
          */
         return (
             <ListView
-                renderHeader={() => null}
                 contentContainerStyle={[style]}
                 dataSource={
                     new ListView.DataSource({
@@ -64,17 +63,14 @@ class Services extends Component {
                 }
                 renderRow={this._renderRow}
                 renderSeparator={this._renderSeparator}
-                pageSize={8}
-                initialListSize={8}
-                scrollRenderAheadDistance={60}
-                refreshControl={
+                /*refreshControl={
                     <RefreshControl
                         refreshing={this.state.refreshing}
                         onRefresh={this._onRefresh}
                         tintColor="#ff0000"
                         style={{}}
                     />
-                }
+                }*/
                 onEndReachedThreshold={100}
                 {...rest}
             />

@@ -13,6 +13,8 @@ import {
     Button
 } from 'react-native';
 import * as Animatable from 'react-native-animatable';
+// import HTML from 'react-native-fence-html';
+
 import Collapsible from 'react-native-collapsible';
 import EvilIcon from 'react-native-vector-icons/EvilIcons'
 import Entypo from 'react-native-vector-icons/EvilIcons'
@@ -91,8 +93,17 @@ class CollapsibleIntro extends Component {
             <View style={{backgroundColor: '#fff'}}>
                 <Text style={textStyle}>
                 {showTexts.map((t, i) =>
+                    /*<HTML
+                        htmlStyles={{
+                            '*': {color: '#848484', marginBottom: 10, lineHeight: 17}
+                        }}
+                        html={t+((i==showTexts.length-1 && !!t && hideTexts && hideTexts.length)
+                            ?(!expended?'...':''):'')}
+                        onLinkPress={(evt, href) => alert(href)}
+                    />*/
                     <Text key={i} style={{color: '#848484', marginBottom: 10, lineHeight: 17}}>
-                        {t+((i==showTexts.length-1 && !!t && hideTexts && hideTexts.length)?'...':'')}
+                        {t+((i==showTexts.length-1 && !!t && hideTexts && hideTexts.length)
+                            ?(!expended?'...':''):'')}
                     </Text>
                 )}
                 </Text>

@@ -71,16 +71,18 @@ class CustomDropDown extends Component {
     }
 
     componentDidUpdate(oldProps, oldState, oldContext) {
-        const {onHidden, onShow, duration} = this.props;
+        const {onHidden, onShow, duration, onShowOrHide} = this.props;
         if (this.state.showDropdown != oldState.showDropdown) {
 
             if (this.state.showDropdown) {
                 this.setState({__noModal: false});
                 onShow && onShow();
+                onShowOrHide && onShowOrHide(true);
             } else {
                 setTimeout(() => {
                     this.setState({__noModal: true}, () => {
                         onHidden && onHidden();
+                        onShowOrHide && onShowOrHide(false);
                     });
                 }, duration>>1)
             }
@@ -98,11 +100,12 @@ class CustomDropDown extends Component {
         icon: <Icon name="caret-down" size={12}/>,
         showIcon: true,
         duration: DURATION,
+        selectedIndex: 0,
         hideBackground: false
     }
     state = {
         title: "",
-        selectedIndex: -1,
+        selectedIndex: 0,
         showDropdown: false,
     }
     static propTypes = {
@@ -124,6 +127,7 @@ class CustomDropDown extends Component {
         onHidden: PropTypes.func,
         zIndex: PropTypes.number,
         onShow: PropTypes.func,
+        onShowOrHide: PropTypes.func,
         duration: PropTypes.number,
         hideBackground: PropTypes.bool,
     }
@@ -175,22 +179,21 @@ class CustomDropDown extends Component {
         const {onPress, ...rest} = data;
         const {selectedStyle, itemTextKey, autoHidden, showIcon} = this.props;
         const {selectedIndex} = this.state;
-
         if (React.isValidElement(data)) {
             return (
-                <View>
+                <View key={i}>
                     {data}
                 </View>
             )
         }
-
         return (
             <LinkItem
+                key={i}
+                rightStyle={{flex: 0}}
                 style={selectedIndex == i ? selectedStyle : {}}
                 onPress={() => {
-                    onPress && onPress(rest, i);
                     this._itemPress(rest, i);
-
+                    onPress && onPress(rest, i);
                 }}
                 leftText={rest[itemTextKey]}
                 showIcon={showIcon && selectedIndex == i}
@@ -225,10 +228,19 @@ class CustomDropDown extends Component {
                   onLayout={(e) => this._btnLayout = e.nativeEvent.layout}
             >
                 <TouchableOpacity
-                    style={[sty.main, style]}
+                    style={[sty.main, {flexDirection: 'row',
+                        paddingHorizontal: 4, paddingTop: 6,
+                        paddingBottom: 10, flex: 0,
+                        justifyContent: 'center', alignItems: 'center'
+                    }, style]}
                     onPress={this._btnPress}>
-                        <Text style={[sty.text, textStyle]}>
-                            {title+(icon?' ':'')}
+                        <Text
+                            numberOfLines={1}
+                            ellipsizeMode={'tail'}
+                            style={[sty.text, {paddingLeft: 4, }, textStyle]}>
+                            {title+''+(icon?' ':'')}
+                        </Text>
+                        <Text style={textStyle}>
                             {icon}
                         </Text>
                 </TouchableOpacity>

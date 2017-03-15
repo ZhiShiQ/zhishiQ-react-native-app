@@ -72,10 +72,11 @@ class Comment extends Component {
                     <View>
                         <Text style={sty.name}>{title}</Text>
                         <TextWithBgs
+                            scrollEnabled={false}
                             style={{maxWidth: width-46-15-10, marginRight: 20, flex: 0}}
                             items={tags} bgColor={"#fff"}
                             eachStyle={{
-                                marginTop: 4,
+                                marginTop: 2,
                                 borderRadius: 3,
                                 borderWidth: .8,
                                 borderColor: '#ccc',

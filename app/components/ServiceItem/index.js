@@ -61,7 +61,7 @@ class ServiceItem extends Component {
         thumbnail: React.PropTypes.object,
         style: React.PropTypes.object,
         tags: React.PropTypes.array,
-        points: React.PropTypes.array,
+        points: React.PropTypes.oneOfType(React.PropTypes.array, React.PropTypes.string),
         intro: React.PropTypes.string,
         price: React.PropTypes.number,
         mark: React.PropTypes.number,
@@ -70,10 +70,11 @@ class ServiceItem extends Component {
     }
 
     render() {
-        const {
+        let {
             onPress, style, title, thumbnail, price,
             tags, points, intro, mark, appointNum
         } = this.props;
+        points = Array.isArray(points) ? points.join("｜") : points;
         const Touchable = TouchableHighlight;
         return (
             <TouchableOpacity onPress={onPress} style={[sty.main, style]}>
@@ -93,7 +94,7 @@ class ServiceItem extends Component {
                                 />
                             </View>
                             {/*<Hr />*/}
-                            <Text style={{color: '#4a4a4a', marginBottom: 4, lineHeight: 17 }}>{points.join("｜")}</Text>
+                            <Text style={{color: '#4a4a4a', marginBottom: 4, lineHeight: 17 }}>{points}</Text>
                             <Text style={{color: '#848484', marginBottom: 4}}>{intro}</Text>
 
                             <View style={sty.footContainer}>

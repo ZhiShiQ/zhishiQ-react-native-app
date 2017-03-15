@@ -84,9 +84,10 @@ class TextWithBgs extends Component {
     }
 
     render() {
-        const {style, align, items, eachStyle, bgColor, color, borderColor} = this.props
+        const {style, align, items, eachStyle, bgColor, color, borderColor, ...rest} = this.props
         return (
             <ListView
+                {...rest}
                 contentContainerStyle={[{
                     justifyContent: align || 'flex-start',
                     flexDirection: 'row',

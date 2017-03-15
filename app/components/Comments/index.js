@@ -32,7 +32,9 @@ class Comments extends Component {
     componentWillUpdate(newProps, newState, newContext) {}
     componentDidUpdate(oldProps, oldState, oldContext) {}
     componentWillUnmount() {}
-    static defaultProps = {}
+    static defaultProps = {
+        noScroll: false
+    }
     state = {}
     static propTypes = {
         style: PropTypes.object,
@@ -41,10 +43,9 @@ class Comments extends Component {
     }
     render() {
         const {style, items, noScroll, ...rest} = this.props
-
         return (
             <ListView
-                renderScrollComponent={noScroll?(p) => <View {...p}/>:ListView.defaultProps.renderScrollComponent}
+                /*renderScrollComponent={noScroll?(p) => <View {...p}/>:ListView.defaultProps.renderScrollComponent}*/
                 contentContainerStyle={[style]}
                 renderRow={this._renderRow}
                 renderSeparator={this._renderSeparator}
@@ -53,6 +54,7 @@ class Comments extends Component {
                         rowHasChanged: (r1, r2) => !Map(r1).equals(Map(r2))
                     }).cloneWithRows(items)
                 }
+                scrollEnabled={!noScroll}
                 {...rest}
             />
         )

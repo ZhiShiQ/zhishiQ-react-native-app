@@ -19,7 +19,7 @@ export const splitText = (text='', limit=50) => {
     if (typeof text === 'string') {
         return {
             showText: text.substr(0, limit),
-            hideTExt: text.slice(limit)
+            hideText: text.slice(limit)
         }
     }
     Array.from(text).some((char, i) => {
@@ -66,4 +66,25 @@ export const sep = (noBorder, style) => {
         borderBottomWidth: StyleSheet.hairlineWidth,
         borderColor: '#e5e5e5'
     }, noBorder ? {borderColor: 'transparent'} : {}, style]}></View>
+}
+
+import {set, get, remove} from './storage';
+
+export async function setToken (token) {
+    return await set('@token', token);
+}
+export async function getToken () {
+    return await get('@token');
+}
+export async function removeToken (token) {
+    return await remove('@token');
+}
+export async function checkSigned () {
+    const t = await getToken();
+    return !!t;
+}
+export async function getTokenHeader() {
+    return {
+        authorization: await getToken()
+    };
 }

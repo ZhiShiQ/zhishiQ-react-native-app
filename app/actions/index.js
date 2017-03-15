@@ -15,4 +15,6 @@ export default {
     ...require('./reset_pwd_by_mail'),
     ...require('./foreign_teacher_detail'),
     ...require('./foreign_teacher'),
+    ...require('./abroad_expert_detail'),
+    ...require('./abroad_expert'),
 }

@@ -1,100 +1,111 @@
 /**
  * Created by moyu on 2017/2/26.
  */
-import {Map, List, Set} from 'immutable';
+import {Map, List, Set, fromJS} from 'immutable';
 import * as $ from '../constant';
 
 const initialState = {
+    isFetching: false,
+    firstMount: true,
+    currentPage: 1,
+    totalPage: 10,
+    hasMore: true,
 
-    list: [{
-        title: 'titile',
-        thumbnail: {},
-        tags: ["a", "b", "c", "d"],
-        points: ["a", "b", "c", "d"],
-        intro: "helllllll",
-        price: 12333,
-        mark: 4,
-        appointNum: 4
-    }, {
-        title: 'titile',
-        thumbnail: {},
-        tags: ["a", "b", "c", "d"],
-        points: ["a", "b", "c", "d"],
-        intro: "helllllll",
-        price: 12333,
-        mark: 4,
-        appointNum: 4
-    }, {
-        title: 'titile',
-        thumbnail: {},
-        tags: ["a", "b", "c", "d"],
-        points: ["a", "b", "c", "d"],
-        intro: "helllllll",
-        price: 12333,
-        mark: 4,
-        appointNum: 4
-    }, {
-        title: 'titile',
-        thumbnail: {},
-        tags: ["a", "b", "c", "d"],
-        points: ["a", "b", "c", "d"],
-        intro: "helllllll",
-        price: 12333,
-        mark: 4,
-        appointNum: 4
-    }],
+    filters: {
+        nationSelectedIndex: 0,
 
-    filterZone: [{
-        title: "地区1"
-    }, {
-        title: "地区2"
-    }, {
-        title: "地区3"
-    }, {
-        title: "地区4"
-    }, {
-        title: "地区5"
-    }, {
-        title: "地区6"
-    }],
+        domainSelectedIndex: 0,
+        domainSubSelectedIndex: 0,
+
+        degreeSelectedIndex: 0,
+        sortSelectedIndex: 0,
+        waySelectedIndex: 0,
+
+        nationTitle: '地区',
+        domainTitle: '专业',
+        degreeTitle: '学位',
+        sortTitle: '排序',
 
 
-    filterPro: [{
-        val: "1-1",
-        title: "商学与管理",
-        categories: [{
-            val: "1-1-1",
-            title: "管理学"
+        orders: [{
+            title: "综合排序",
+            id: 'ranking_score'
         }, {
-            title: "金融学"
+            title: "评分最高",
+            id: 'review_rate'
         }, {
-            title: "会计学"
+            title: "服务次数最多",
+            id: 'service_count:desc'
         }, {
-            title: "金融工程"
+            title: '价格从高到低',
+            id: 'price:desc'
         }, {
-            title: "市场营销学"
+            title: '价格从低到高',
+            id: 'price:asc'
+        }],
+
+        // 专业
+        domains: [],
+        nations: [],
+        degrees: [],
+
+        ways: [{
+            id: -1,
+            title: '所有'
         }, {
-            title: "创业学"
+            id: 3,
+            title: '备考'
+        }, {
+            id: 6,
+            title: '背景提升',
+        }, {
+            id: 9,
+            title: '选校'
+        }, {
+            title: '网申',
+            id: 4
+        }, {
+            title: '面试',
+            id: 8
+        }, {
+            title: '签证',
+            id: 2
+        }, {
+            title: '求职',
+            id: 10
+        }, {
+            title: '生活',
+            id: 11
+        }, {
+            title: '其他',
+            id: 12
         }]
-    }, {
-        title: "BBBB"
-    }, {
-        title: "AAAA"
-    }, {
-        title: "BBBB"
-    }, {
-        title: "AAAA"
-    }, {
-        title: "BBBB"
-    }]
+    },
 
-
+    list: []
 };
 
 export default function (state=initialState, action) {
     let newState = {...state};
     const {type, ...rest} = action;
     switch (type) {
+        case $.ABROAD_EXPERT_FETCHING_SET:
+            return {...newState, isFetching: rest.fetching};
+        case $.ABROAD_EXPERT_HAS_MORE_SET:
+            return {...newState, hasMore: rest.hasMore};
+        case $.ABROAD_EXPERT_FIRST_SET:
+            return {...newState, firstMount: rest.first};
+        case $.ABROAD_EXPERT_CURRENT_SET:
+            return {...newState, currentPage: rest.current};
+        case $.ABROAD_EXPERT_FILTER_SET:
+            if (rest.filters)
+                return {...newState, filters: {...newState.filters, ...rest.filters}};
+            else
+                return {...newState, filters: {...newState.filters, ...rest}};
+        case $.ABROAD_EXPERT_LIST_SET:
+            return {...newState, list: rest.list};
+        case $.ABROAD_EXPERT_LIST_APPEND:
+            return {...newState, list: fromJS(newState.list).push(...rest.list).toJS()};
         default:
             return newState;
     }

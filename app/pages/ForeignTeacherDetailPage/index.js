@@ -66,16 +66,24 @@ class ForeignTeacherDetailPage extends Component {
     }
 
     componentWillUnmount() {
+        const {actions} = this.props;
+        actions.setForeignTeacherDetailCommentFirst(true);
     }
 
     static defaultProps = {}
     state = {
         starCollapsed: true,
-        enableScrollViewScroll: true
+        scrollEnable: true
     };
     static propTypes = {}
 
-    _activeTab = 0
+    _activeTab = 0;
+
+    isCloseToBottom = ({layoutMeasurement, contentOffset, contentSize}) => {
+        const paddingToBottom = 60;
+        return layoutMeasurement.height + contentOffset.y >=
+            contentSize.height - paddingToBottom;
+    };
 
     render() {
         const {
@@ -89,13 +97,26 @@ class ForeignTeacherDetailPage extends Component {
         return (
             <View>
                 <ScrollView
+                    scrollEnable={this.state.scrollEnable}
+                    scrollEventThrottle={100}
+                    onScroll={({nativeEvent}) => {
+                        if (this._activeTab == 1 && this.isCloseToBottom(nativeEvent)) {
+                            // this.setState({scrollEnable: false});
+
+                            if (!isCommentFetching) {
+                                actions.fetchForeignTeacherCommentDetail(id, +currentPage+1);
+                            }
+                        } else if (this._activeTab == 1) {
+                            // this.setState({scrollEnable: true})
+                        }
+                    }}
                     contentContainerStyle={[sty.main, {paddingBottom: 45}]}
                 >
                 {this.header}
                 <ScrollTab
                     onChangeTab={({i}) => {
                         this._activeTab = +i;
-                        i == 1 && actions.fetchForeignTeacherCommentDetail(id, null, {setFirst: true});
+                        i == 1 && isCommentFirst && actions.fetchForeignTeacherCommentDetail(id);
                     }}
                     tabContainerStyle={{flex: 1, alignItems: 'center'}}
                     tabBarTextStyle={{fontSize: 15, fontWeight: 'normal'}}
@@ -104,13 +125,21 @@ class ForeignTeacherDetailPage extends Component {
                 >
                     <View tabLabel="导师详情">
 
-                        {this.sep()}
-                        {isFetching ? <Loading style={{flex: 1}}/> : this.intro}
+                        {isFetching ? <Loading style={{flex: 1}}/> :
+                            <View>
+                                {this.sep()}
+                                {this.intro}
+                            </View>
+                        }
                     </View>
                     <View tabLabel={"用户评价"}>
-                        {this.sep()}
-                        {isCommentFetching && isCommentFirst ? <Loading style={{flex: 1}}/> : this.comments}
-                        {isCommentFetching && isCommentFirst ? null : this.commentList}
+                        {isCommentFetching && isCommentFirst ? <Loading style={{flex: 1}}/> :
+                            <View>
+                                {this.sep()}
+                                {this.comments}
+                                {this.commentList}
+                            </View>
+                        }
                     </View>
                 </ScrollTab>
                 </ScrollView>
@@ -181,15 +210,16 @@ class ForeignTeacherDetailPage extends Component {
     get intro() {
         const {
             store: {
-                foreign_teacher_detail: {detail: {intro='', selfIntro='', educations, experiences, services}}}, actions
+                foreign_teacher_detail: {detail: {intro='', selfIntro='', summary, description, educations, experiences, services}}
+            }, actions
         } = this.props;
-        const selfIntroObj = splitText(selfIntro);
+        const selfIntroObj = splitText(description);
         return (
             <View>
                 {this.packageService}
                 {this.sep()}
                 <CollapsibleIntro title={"个人简介"}
-                                  showTexts={intro}/>
+                                  showTexts={summary}/>
                 {this.sep()}
                 <CollapsibleIntro
                     title={"自我介绍"}
@@ -270,7 +300,7 @@ class ForeignTeacherDetailPage extends Component {
             store: {
                 foreign_teacher_detail: {
                     isFetching, isCommentFirst, isCommentFetching,
-                    comment: {total, hasMore, average, levels, comments, currentPage},
+                    comment: {total, hasMore, average, levels, summary, comments, currentPage},
                     base: {id}
                 }
             }, actions
@@ -296,11 +326,13 @@ class ForeignTeacherDetailPage extends Component {
                 <CommentStar
                     collapsed={true}
                     levels={levels}
-                    speed={5}
-                    quality={3.5}
-                    pro={4}
-                    manner={1}
-                    commentNum={259}
+
+                    speed={summary.timely}
+                    quality={summary.all}
+                    pro={summary.professional}
+                    manner={summary.attitude}
+
+                    commentNum={total}
                     rate={average}
                 />
                 {this.sep(true, {height: 1})}
@@ -319,6 +351,8 @@ class ForeignTeacherDetailPage extends Component {
             }, actions
         } = this.props;
 
+        // alert(comments.length);
+
         return (
             <Comments
                 noScroll
@@ -326,7 +360,7 @@ class ForeignTeacherDetailPage extends Component {
                 items={comments}
                 onEndReachedThreshold={100}
                 onEndReached={(evt) => {
-                    !isCommentFetching && actions.fetchForeignTeacherCommentDetail(id, +currentPage+1)
+                    // !isCommentFetching && actions.fetchForeignTeacherCommentDetail(id, +currentPage+1)
                 }}
                 renderFooter={() => {
                     if (isCommentFetching) {
