@@ -89,7 +89,7 @@ const mapFilters = ({prices, domains}) => ({
 
 const mapItem = ({avatar, brief, name, tags, client_count, review_count, average_rate, ...rest}, i) =>
     ({
-        ...rest, tags, title: name, content: brief/*.slice(0, 80)+'...'*/,
+        ...rest, tags, title: name, content: brief+'...'/*.slice(0, 80)+'...'*/,
         thumbnail: {uri: avatar}, brief,
         bottomValues: [average_rate, client_count],
         rate: average_rate, clients: client_count, reviews: review_count

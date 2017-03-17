@@ -90,12 +90,12 @@ class BoughtView extends Component {
                             <Text style={sty.contentText}>{content}</Text>
                         </View>
                     </View>
-                    <View style={sty.footContainer}>
+                    <View style={[sty.footContainer, {alignItems: 'flex-end'}]}>
                         <View style={sty.footerLeft}>
                             <Text style={sty.promptText}>{prompt}</Text>
                         </View>
                         <View style={sty.footerRight}>
-                            {disCount && <Text style={sty.countText}>已优惠¥{disCount}</Text>}
+                            {disCount && <Text style={[sty.countText, {}]}>已优惠¥{disCount}</Text>}
                         </View>
                         <View style={sty.footerRight}>
                             <Text style={sty.priceText}>实付：¥{price}</Text>

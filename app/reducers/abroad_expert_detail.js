@@ -76,6 +76,8 @@ export default function (state=initialState, action) {
             return fromJS(newState).setIn(['detail', 'summary'], rest.summary).toJS();
         case $.ABROAD_EXPERT_DETAIL_DESCRIPTION_SET:
             return fromJS(newState).setIn(['detail', 'description'], rest.description).toJS();
+        case $.ABROAD_EXPERT_DETAIL_AWARD_SET:
+            return fromJS(newState).setIn(['detail', 'awards'], rest.awards).toJS();
         case $.ABROAD_EXPERT_DETAIL_EDUC_SET:
             return fromJS(newState).setIn(['detail', 'educations'], rest.list).toJS();
         case $.ABROAD_EXPERT_DETAIL_EXPERIENCE_SET:

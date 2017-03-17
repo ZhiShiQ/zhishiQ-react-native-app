@@ -94,12 +94,14 @@ const mapFilters = ({degrees, nations, domains}) => {
     }
 };
 
-const mapItem = ({avatar, brief, advisor_name, name, tags, client_count, review_count, average_rate, ...rest}, i) =>
+const mapItem = ({advisor_avatar, advisor_brief, advisor_name, name, tags, advisor_client_count, advisor_review_count, advisor_average_rate, ...rest}, i) =>
     ({
-        ...rest, tags, title: name, content: brief/*.slice(0, 80)+'...'*/,
-        thumbnail: {uri: avatar}, brief, points: advisor_name,
-        mark: average_rate, clients: client_count, appointNum: review_count,
-        intro: brief
+        ...rest, tags, title: name, content: advisor_brief,
+        thumbnail: {uri: advisor_avatar}, brief: advisor_brief+'...', points: advisor_name,
+        mark: Number(advisor_average_rate).toFixed(1), appointNum: advisor_client_count,
+        intro: advisor_brief, advisor_name, review_count: advisor_review_count,
+        pointsAddon: rest.educations.length > 0
+            ? rest.educations[0].school_name+', '+rest.educations[0].major : null,
     });
 
 

@@ -75,12 +75,12 @@ class Education extends Component {
         return (
             <TouchableOpacity onPress={onPress} style={[sty.main, sty.mainContainer, style]}>
                 <View style={sty.mainInnerContainer}>
-                    <View style={sty.imageContainer}><Image style={sty.image} source={thumbnail} /></View>
-                    <View style={sty.contentContainer}>
+                    <View style={[sty.contentContainer, {flex: 1}]}>
                         <Text style={sty.titleText}>{title}</Text>
                         <Text style={sty.secText}>{status}</Text>
                         <Text style={sty.thrText}>{date_from+" ~ "+date_to}</Text>
                     </View>
+                    <View style={sty.imageContainer}><Image style={sty.image} source={thumbnail} /></View>
                 </View>
             </TouchableOpacity>
         )

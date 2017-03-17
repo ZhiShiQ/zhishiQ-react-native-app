@@ -1,7 +1,7 @@
 /**
  * Created by moyu on 2017/2/26.
  */
-import {Map, List, Set} from 'immutable';
+import {Map, List, Set, fromJS} from 'immutable';
 import * as $ from '../constant';
 
 const initialState = {
@@ -19,7 +19,8 @@ const initialState = {
             rightText: "¥21"
         }],
         index: 0,
-        name: "Nick Hu"
+        name: "Nick Hu",
+        thumbnail: {}
     }
 };
 
@@ -31,8 +32,8 @@ export default function (state=initialState, action) {
             return {...newState, openModal: rest.isOpen}
         case $.SET_COMMON_MODAL_TYPE:
             return {...newState, modalType: rest._type}
-        case $.ABROAD_EXPERT_FORM_SELECT:
-            return {...newState, abroadExpertForm: {...newState.abroadExpertForm, ...rest}}
+        case $.ABROAD_EXPERT_FORM_SET:
+            return {...newState, abroadExpertForm: {...newState.abroadExpertForm, ...rest}};
         default:
             return newState;
     }

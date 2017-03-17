@@ -37,7 +37,7 @@ export default StyleSheet.create({
         marginBottom: 6,
     },
     imageContainer: {
-        marginRight: 6,
+        marginRight: 9,
         alignItems: 'flex-end',
     },
     image: {

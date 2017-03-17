@@ -85,6 +85,11 @@ class TextWithBgs extends Component {
 
     render() {
         const {style, align, items, eachStyle, bgColor, color, borderColor, ...rest} = this.props
+
+        if (items==null || items.length === 0) {
+            return null;
+        }
+
         return (
             <ListView
                 scrollEnabled={false}

@@ -83,7 +83,7 @@ class HomeItem extends Component {
                             eachStyle={{
                                 fontSize: 12,
                                 paddingVertical: 1,
-                                paddingHorizontal: 1,
+                                paddingHorizontal: 2,
                                 borderColor: '#979797',
                                 borderWidth: .5,
                                 borderRadius: 2,

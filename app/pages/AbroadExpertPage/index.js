@@ -89,13 +89,14 @@ class AbroadExpertPage extends Component {
                     : hasMore ? <Services
                             items={list.map(data => ({
                                 ...data, onPress: () => {
-                                    const newData = {...data, avatar: data.thumbnail, name: data.title};
+                                    const newData = {...data, avatar: data.thumbnail, name: data.advisor_name};
                                     delete newData.thumbnail;
                                     delete newData.title;
                                     delete newData.intro;
                                     newData.content = data.intro;
+                                    newData.clients = data.appointNum;
                                     newData.rate = data.mark;
-                                    newData.reviews = data.appointNum;
+                                    newData.reviews = data.review_count;
                                     actions.setAbroadExpertDetailBase(newData);
                                     Actions.abroadExpertDetail();
                                 }
@@ -122,7 +123,7 @@ class AbroadExpertPage extends Component {
     }
 
     get collapsible() {
-        const {
+        let {
             store: {
                 abroad_expert: {
                     filters: {
@@ -142,6 +143,16 @@ class AbroadExpertPage extends Component {
             bgColor: '#fc6d34', ...rest
         });
         const showNum = 5;
+        const hideSelected = waySelectedIndex >= 5;
+        let showItems = ways.slice(0, showNum);
+        if (hideSelected && !expended) {
+            showItems = ways.slice(0, showNum-1);
+            showItems.push({
+                title: '...', type: 'comment', style: {borderWidth: 0, paddingHorizontal: 2}
+            });
+            showItems.push(ways[waySelectedIndex]);
+            waySelectedIndex = showItems.length-1;
+        }
         return (
             <View style={[{
                 position: 'absolute', top: 33, left: 0, right: 0,
@@ -156,11 +167,11 @@ class AbroadExpertPage extends Component {
                     }}
                     control={
                         <TextWithBgs
-                            style={{paddingHorizontal: 15, paddingTop: 8, paddingBottom: expended ? 6 : 8}}
-                            items={ways.slice(0, showNum).map((x, i) => (waySelectedIndex == i
+                            style={{paddingLeft: 15, paddingTop: 8, paddingBottom: expended ? 6 : 8}}
+                            items={showItems.map((x, i) => (waySelectedIndex == i
                                     ? activeItem(x.title)
                                     : {
-                                        ...x, onPress: () => {
+                                        ...x, onPress: x.type==='comment' ? null : () => {
                                             actions.setAbroadExpertFilterWaySelectedIndex(i)
                                             actions.fetchAbroadExpert(1, {resetList: true});
                                             this.refs.collapsible.collapse();
@@ -273,10 +284,10 @@ class AbroadExpertPage extends Component {
 
                 <CustomDropDown
                     ref="submenu1"
-                    showIcon={false}
+                    selectedIndex={nationSelectedIndex}
                     dynamicTitle={false}
                     textStyle={[sty.title, showRootMenu && tabIndex != 0 && {color: '#848484'}]}
-                    getModalStyle={(layout) => ({right: -(n - 1) * layout.width, left: 0})}
+                    getModalStyle={(layout) => ({right: -(n - 1) * layout.width, left: 0, height: deviceHeight - (this.refs.submenu2.btnLayout.height + NAV_BAR_HEIGHT +this.refs.submenu2.btnLayout.y),})}
                     onPress={(show) => {
                         this.hideMenus(["submenu1"])
                     }}
@@ -303,7 +314,7 @@ class AbroadExpertPage extends Component {
                         backgroundColor: '#fff',
                         left: -layout.width,
                         right: -(n - 2) * layout.width,
-                        height: deviceHeight - (layout.y + layout.height)
+                        height: deviceHeight - (this.refs.submenu2.btnLayout.height + NAV_BAR_HEIGHT +this.refs.submenu2.btnLayout.y)
                     })}
                     onPress={(show) => {
                         this.hideMenus(["submenu2"])
@@ -351,8 +362,8 @@ class AbroadExpertPage extends Component {
                     items={degrees && degrees.map((d, i) => ({
                         ...d, onPress: () => {
                             if (degreeSelectedIndex != i) {
-                                actions.setAbroadExpertFilterNationTitle(i != 0 ? d.title : "学位");
-                                actions.setAbroadExpertFilterNationSelectedIndex(i);
+                                actions.setAbroadExpertFilterDegreeTitle(i != 0 ? d.title : "学位");
+                                actions.setAbroadExpertFilterDegreeSelectedIndex(i);
                                 actions.fetchAbroadExpert(1, {resetList: true});
                             }
                         }

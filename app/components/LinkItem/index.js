@@ -38,7 +38,6 @@ class LinkItem extends Component {
         showIcon: true,
         iconName: "angle-right",
         iconSize: 14,
-        iconColor: "#C4C4C4"
     };
     state = {};
     static propTypes = {
@@ -98,9 +97,9 @@ class LinkItem extends Component {
     get icon() {
         const {style, leftText, emphasize, iconSize, rightStyle, leftStyle, rightTextStyle, iconColor, leftComponent, rightComponent, showIcon, onPress, rightText, iconName, showBorder, borderColor} = this.props;
         if (iconName === 'check') {
-            return <MaterialCommunityIcon style={sty.rightIcon} name={iconName} size={iconSize} color={iconColor} />
+            return <MaterialCommunityIcon style={sty.rightIcon} name={iconName} size={iconSize} color={iconColor || "#4a4a4a"} />
         }
-        return <Icon style={sty.rightIcon} name={iconName} size={iconSize} color={iconColor} />
+        return <Icon style={sty.rightIcon} name={iconName} size={iconSize} color={iconColor || "#C4C4C4"} />
     }
 }
 

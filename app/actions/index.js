@@ -17,4 +17,5 @@ export default {
     ...require('./foreign_teacher'),
     ...require('./abroad_expert_detail'),
     ...require('./abroad_expert'),
+    ...require('./order_confirm'),
 }

@@ -50,7 +50,9 @@ class ReduxTitleDropdown extends Component {
             title,
             onPress: (index, value) => {
                 actions.setMyActiveTotalOrderTitleIndex(index);
-                setTimeout(()=>this.refs.drop.hideDropDown(), 100)
+                setTimeout(()=>{
+                    this.refs.drop.hideDropDown();
+                }, 100)
             }
         }))
 

@@ -56,9 +56,11 @@ class TitleDropdown extends Component {
     }
     hideDropDown() {
         this.dropdown.hide();
+        this.setState({show: false});
     }
     showDropDown() {
         this.dropdown.show();
+        this.setState({show: true});
     }
     render() {
         const {options, title, showTitleIcon, onSelect, style, selectedIndex, ...rest} = this.props
@@ -67,7 +69,6 @@ class TitleDropdown extends Component {
             <ModalDropdown
                 ref={r => this.dropdown = r}
                 options={options}
-                onSelect={onSelect}
                 adjustFrame={(p) => ({...p, left: 0, top: NAV_BAR_HEIGHT})}
                 style={[sty.style, style]}
                 dropdownStyle={sty.dropdown}
@@ -78,7 +79,7 @@ class TitleDropdown extends Component {
                 textStyle={sty.title}
                 defaultIndex={selectedIndex}
                 onDropdownWillShow={() => this.setState({show: true})}
-                onDropdownWillHide={() => this.setState({show: false})}
+                onDropdownWillHide={() => {this.setState({show: false})}}
                 {...rest}
                 defaultValue={title}
             >

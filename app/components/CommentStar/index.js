@@ -79,6 +79,9 @@ class CommentStar extends Component {
         const {collapsed, mainStarLayout} = this.state;
         const keys = [/*"服务质量", */"服务态度", "专业程度", "响应速度"];
         const vals = [/*Number(quality).toFixed(1), */Number(manner).toFixed(1), Number(pro).toFixed(1), Number(speed).toFixed(1)];
+
+        const notAvailable = !manner && !quality && !pro && !speed;
+
         return (
             <CollapsibleItem
                 ref="collapsible"
@@ -124,7 +127,7 @@ class CommentStar extends Component {
                     </View>
                 }
             >
-                <View style={{padding: 15, backgroundColor: "#fbfbfb"}}>
+                {!notAvailable && <View style={{padding: 15, backgroundColor: "#fbfbfb"}}>
                     <View style={{
                         flex: 1,
                         flexDirection: 'row',
@@ -136,7 +139,7 @@ class CommentStar extends Component {
                             {levels.map((lev, i) => this._renderPercentage(lev, i))}
                         </View>
                     </View>
-                </View>
+                </View>}
             </CollapsibleItem>
         )
     }

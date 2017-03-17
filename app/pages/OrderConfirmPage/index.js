@@ -57,16 +57,18 @@ class OrderConfirmPage extends Component {
     static propTypes = {}
 
     render() {
-        const {actions, store, params: {type}} = this.props;
+        const {actions, store: {
+            order_confirm: {id, topic, skype, qq, price, want}
+        }, params: {type}} = this.props;
 
         return (
             <View style={sty.main}>
                 <ScrollView>
                     <LinkItem showIcon={false}
                               emphasize
-                              leftText={"主题咨询：加拿大留学生活学习"}
+                              leftText={"主题咨询："+topic}
                               leftStyle={{flex: 5}}
-                              rightTextStyle={{color: '#ea5502', fontWeight: '600'}} rightText={"￥21"}/>
+                              rightTextStyle={{color: '#ea5502', fontWeight: '600'}} rightText={"￥"+price}/>
                     <InputExtra ref="what" style={{marginTop: 16}} labelStyle={{width: 80}} label={"我想咨询"}
                                 inputProps={{placeholder: '输入想咨询的内容'}}/>
                     {this.pureText("别忘了先介绍一下自己，如教育背景、 GPA 、托福等")}

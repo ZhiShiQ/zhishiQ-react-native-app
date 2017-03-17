@@ -68,7 +68,7 @@ class AbroadExpertDetailPage extends Component {
 
     componentWillUnmount() {
         const {actions} = this.props;
-        actions.setForeignTeacherDetailCommentFirst(true);
+        actions.setAbroadExpertDetailCommentFirst(true);
     }
 
     static defaultProps = {}
@@ -187,7 +187,7 @@ class AbroadExpertDetailPage extends Component {
                     name={name}
                     content={content}
                     thumbnail={avatar}
-                    listKeys={listKeys || ["Clients", "Rate", "Reviews"]}
+                    listKeys={["服务用户", "平均评分", "用户评价"]}
                     listValues={[clients, rate, reviews]}
                 />
                 <Hr marginBottom={0} color={'#e5e5e5'}/>
@@ -196,12 +196,20 @@ class AbroadExpertDetailPage extends Component {
     }
 
     get honor() {
+        const {store: {abroad_expert_detail: {detail: {awards=[]}}}} = this.props;
+
         return (
             <CollapsibleIntro title={"获奖 & 荣誉"}>
-                <Experience style={{paddingTop: 0}}
-                    thumbnail={null} title={'MCM Award M'}
-                    noPoint
-                    origination={'MCM'} words={['April 2012']}/>
+                <ListView
+                    scrollEnabled={false}
+                    dataSource={
+                        new ListView.DataSource({
+                            rowHasChanged: (r1, r2) => !Map(r1).equals(Map(r2))
+                        }).cloneWithRows(awards)
+                    }
+                    renderRow={(data, s, i) => this._renderExperience({...data, thumbnail: null, noPoint: true, style: i==0?{paddingTop: 0}:{}}, i, awards)}
+                    renderSeparator={(a, i) => this._renderExperienceSep(i, awards)}
+                />
             </CollapsibleIntro>
         )
     }
@@ -231,31 +239,61 @@ class AbroadExpertDetailPage extends Component {
 
     get comments() {
         const {store: {abroad_expert_detail}, actions} = this.props
-        const {comment: {comments}} = abroad_expert_detail;
+        const {comment: {total, hasMore, average, levels, summary, comments, currentPage},} = abroad_expert_detail;
 
         return (
             <View>
                 <CommentStar
                     collapsed={true}
-                    levels={[100, 7.8, 0.5, .4, 0]}
-                    speed={5}
-                    quality={3.5}
-                    pro={4}
-                    manner={1}
-                    commentNum={259}
-                    rate={4}
+                    levels={levels}
+                    speed={summary.timely}
+                    quality={summary.all}
+                    pro={summary.professional}
+                    manner={summary.attitude}
+
+                    commentNum={total}
+                    rate={average}
                 />
                 {this.sep(true, {height: 1})}
-                <Comments
-                    noScroll
-                    items={comments}
-                />
             </View>
         )
     }
 
+    get commentList() {
+        const {
+            store: {
+                abroad_expert_detail: {
+                    isFetching, isCommentFirst, isCommentFetching,
+                    comment: {total, hasMore, average, levels, comments, currentPage},
+                    base: {id}
+                }
+            }, actions
+        } = this.props;
+
+        return (
+            <Comments
+                noScroll
+                ref="myList"
+                items={comments}
+                onEndReachedThreshold={100}
+                onEndReached={(evt) => {
+                    // !isCommentFetching && actions.fetchForeignTeacherCommentDetail(id, +currentPage+1)
+                }}
+                renderFooter={() => {
+                    if (isCommentFetching) {
+                        return hasMore ? <Loading /> : <View style={{marginVertical: 20, alignItems: 'center'}}><Text>没有更多了</Text></View>
+                    }
+                }}
+            />
+        )
+    }
+
     get fixBottom() {
-        const {actions} = this.props;
+        const {actions, store: {abroad_expert_detail: {base: {avatar, name}, detail: {services}}}} = this.props;
+        const mapService = ({price, name, ...r}, i) => ({
+            ...r, price, rightText: '¥'+price,
+            leftText: name
+        });
         return (
             <BottomBtns
                 lefts={[{
@@ -268,9 +306,19 @@ class AbroadExpertDetailPage extends Component {
                     onPress: null
                 }]}
                 subText="加入购物车"
-                onSubPress={() => actions.abroadExpertCartFormModalOpen()}
+                onSubPress={() => {
+                    actions.setAbroadExpertFormItems(services.map(mapService));
+                    actions.setAbroadExpertFormThumbnail(avatar);
+                    actions.setAbroadExpertFormName(name);
+                    actions.abroadExpertCartFormModalOpen();
+                }}
                 mainText={"立即预约"}
-                onMainPress={() => actions.abroadExpertBuyFormModalOpen()}
+                onMainPress={() => {
+                    actions.setAbroadExpertFormItems(services.map(mapService));
+                    actions.setAbroadExpertFormThumbnail(avatar);
+                    actions.setAbroadExpertFormName(name);
+                    actions.abroadExpertBuyFormModalOpen();
+                }}
             />
         )
     }
@@ -279,26 +327,31 @@ class AbroadExpertDetailPage extends Component {
         const {store: {abroad_expert_detail}, actions} = this.props
         const {base, detail: {experiences}} = abroad_expert_detail;
 
-        const items = experiences;
+        const first = experiences[0];
+        const items = experiences.slice(1);
+
+
+
+        const hideComponent = items.length > 0 ?
+                <ListView
+                    renderHeader={()=>this._renderExperienceSep(1, [])}
+                    dataSource={
+                        new ListView.DataSource({
+                            rowHasChanged: (r1, r2) => !Map(r1).equals(Map(r2))
+                        }).cloneWithRows(items)
+                    }
+                    renderRow={(data, s, i) => this._renderExperience(data, i, items)}
+                    renderSeparator={(a, i) => this._renderExperienceSep(i, items)}
+                    renderScrollComponent={(p)=><View {...p}/>}
+                />: null;
 
         return (
             <CollapsibleIntro
                 title={"行家经历"}
-                hideComponent={
-                    <ListView
-                        renderHeader={()=>this._renderExperienceSep(1, [])}
-                        dataSource={
-                            new ListView.DataSource({
-                                rowHasChanged: (r1, r2) => !Map(r1).equals(Map(r2))
-                            }).cloneWithRows(items)
-                        }
-                        renderRow={(data, s, i) => this._renderExperience(data, i, items)}
-                        renderSeparator={(a, i) => this._renderExperienceSep(i, items)}
-                        renderScrollComponent={(p)=><View {...p}/>}
-                    />
-                }
+                hideComponent={hideComponent}
             >
-                {this._renderExperience({...items[0], style: {paddingTop: 0}}, 0)}
+                {/*{<Text selectable>{base.id}</Text>}*/}
+                {this._renderExperience({...first, style: {paddingTop: 0}}, 0)}
             </CollapsibleIntro>
         )
     }

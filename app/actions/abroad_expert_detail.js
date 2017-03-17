@@ -18,11 +18,22 @@ export const fetchAbroadExpertDetail = (id) => {
                 if (o.success == false) {
                     alert(o.message)
                 } else {
+                    o.other_topics.unshift({
+                        id: o.id,
+                        name: o.name,
+                        target_client: o.target_client,
+                        brief_description: o.brief_description,
+                        description: o.description,
+                        advisor_id: o.advisor_id,
+                        tags: o.tags,
+                        price: o.price
+                    });
                     emit([
                         setAbroadExpertDetailExperiences(o.experiences.map(mapExperience)),
                         setAbroadExpertDetailEducations(o.educations.map(mapEduc)),
-                        setAbroadExpertDetailSummary(o.summary),
-                        setAbroadExpertDetailDescription(o.description),
+                        setAbroadExpertDetailAwards(o.awards.map(mapAward)),
+                        setAbroadExpertDetailSummary(o.advisor_summary),
+                        setAbroadExpertDetailDescription(o.advisor_description),
                         setAbroadExpertDetailServices(o.other_topics.map(mapTopic))
                     ]);
                 }
@@ -62,9 +73,9 @@ export const fetchAbroadExpertCommentDetail = (id, page=1, opts={}) => {
                         setAbroadExpertDetailCommentSummary(o.statistics.summary),
                         setAbroadExpertDetailCommentAverage(Number(o.averageRate).toFixed(1)),
                         (page<=1 || rest)
-                            ? setAbroadExpertDetailCommentList(o.reviews.map(mapComment))
+                            ? setAbroadExpertDetailCommentList(o.reviews.map((x, i) => mapComment(x, i, id)))
                             : setAbroadExpertDetailCommentList(
-                                o.reviews.map(mapComment), true
+                                o.reviews.map((x, i) => mapComment(x, i, id)), true
                             )
                     ]);
                 }
@@ -87,21 +98,26 @@ const statistics2Levels = (statistics) => {
     ]
 };
 
-const mapTopic = ({price, tags, ...r}, i) => ({
+const mapAward = ({name, issuer, winning_date, description}, i) => ({
+    title: name, description,
+    words: winning_date, origination: issuer
+})
+
+const mapTopic = ({price, tags, target_client, brief_description, description, ...r}, i) => ({
     ...r, rSubText: '最低',
-    price: price, onBtnPress: () => alert(1),
+    price, onBtnPress: () => alert(1),
     detail: {
         tags,
         contents: [
-            '课程简述: Data Science, Business Analysis, Information Systems 留学申请，包括转专业申请',
-            '适用用户: Data Science, Business Analysis, Information Systems 留学申请，包括转专业申请者',
-            'Data Science, Business Analysis, Information Systems 留学申请，包括转专业申请者',
+            '课程简述: '+brief_description,
+            '适用用户: '+target_client,
+            description,
         ]
     }
 })
 
 const mapExperience = ({organization_name, organization_logo, title, from_date, to_date, description, ...rest}) => ({
-    ...rest, words: description || title,
+    ...rest, words: description,
     title,
     date_from: from_date, date_to: to_date,
     organization: organization_name,
@@ -111,10 +127,10 @@ const mapExperience = ({organization_name, organization_logo, title, from_date, 
 const mapEduc = ({school_name, degree, major, from_date, to_date, school_logo, ...rest}) =>
     ({title: school_name, thumbnail: {uri: school_logo}, status: degree+(degree?' ':'')+major, date_from: from_date, date_to: to_date, ...rest})
 
-const mapComment = ({name, content, avatar, service_title, service_domain, created_at, ...rest}, i) => ({
+const mapComment = ({name, content, avatar, course_id, created_at, topic_name, ...rest}, i, id) => ({
     ...rest, title: name, comment: content, time: created_at,
-    thumbnail: {uri: avatar}, service_domain, service_title,
-    tags: [service_domain, service_title]
+    thumbnail: {uri: avatar}, topic_name,
+    tags: course_id == id ? [topic_name] : null
 })
 
 
@@ -134,4 +150,5 @@ export const setAbroadExpertDetailExperiences = (list) => _t($.ABROAD_EXPERT_DET
 export const setAbroadExpertDetailEducations = (list) => _t($.ABROAD_EXPERT_DETAIL_EDUC_SET, {list})
 export const setAbroadExpertDetailSummary = (summary) => _t($.ABROAD_EXPERT_DETAIL_SUMMARY_SET, {summary})
 export const setAbroadExpertDetailDescription = (description) => _t($.ABROAD_EXPERT_DETAIL_DESCRIPTION_SET, {description})
+export const setAbroadExpertDetailAwards = (awards) => _t($.ABROAD_EXPERT_DETAIL_AWARD_SET, {awards})
 export const setAbroadExpertDetailServices = (list) => _t($.ABROAD_EXPERT_DETAIL_SERVICES_SET, {list})

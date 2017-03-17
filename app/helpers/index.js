@@ -16,12 +16,14 @@ export const uint = () => {
  */
 export const splitText = (text='', limit=50) => {
     let showText = '', hideText = '';
-    if (typeof text === 'string') {
-        return {
-            showText: text.substr(0, limit),
-            hideText: text.slice(limit)
-        }
-    }
+    // if (typeof text === 'string') {
+    //     return {
+    //         showText: text.substr(0, limit),
+    //         hideText: text.slice(limit)
+    //     }
+    // }
+
+
     Array.from(text).some((char, i) => {
         if (char === '\n') {
             if (showText.length >= limit) {

@@ -17,7 +17,7 @@ export default StyleSheet.create({
         flexDirection: 'row',
     },
     titleText: {
-        fontWeight: '600',
+        fontWeight: '700',
         fontSize: 14,
         color: '#4A4A4A',
         flex: 1,
@@ -46,13 +46,14 @@ export default StyleSheet.create({
     },
 
     thrText: {
-        flex: 1,
+        // flex: 1,
         color: '#848484',
         fontSize: 13.5,
     },
     secText: {
+        marginVertical: 2,
         flex: 1,
-        color: '#848484',
+        color: '#4a4a4a',
         fontSize: 14,
     },
     footerRight: {

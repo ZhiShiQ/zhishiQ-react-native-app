@@ -21,6 +21,7 @@ import {
     Text,
     Dimensions,
     Button,
+    ListView,
     StyleSheet,
     TextInput,
     ScrollView,
@@ -156,7 +157,15 @@ class Routers extends React.Component {
 
 
     _mapModalProps() {
-        const {store: {common: {openModal, modalType}}, actions} = this.props;
+        const {
+            store: {
+                common: {
+                    openModal, modalType, abroadExpertForm: {
+                    items, index,
+                }
+                }
+            }, actions
+        } = this.props;
         switch (modalType) {
             case 'referer':
                 return {buttons: [{title: "已打开网址，点击扫描"}], height: 442};
@@ -169,6 +178,10 @@ class Routers extends React.Component {
                         title: "确定",
                         onPress: () => {
                             actions.setCommonModalIsOpen(false);
+                            const {id, leftText: name, price} = items[index];
+                            actions.setOrderConfirmTopic(name);
+                            actions.setOrderConfirmPrice(price);
+                            actions.setOrderConfirmId(id);
                             Actions.orderConfirm({params: {type: 'buy'}});
                         }
                     }], height: 440
@@ -181,12 +194,16 @@ class Routers extends React.Component {
                         backgroundColor: '#ffb12e',
                         onPress: () => {
                             actions.setCommonModalIsOpen(false);
+                            const {id, leftText: name, price} = items[index];
+                            actions.setOrderConfirmTopic(name);
+                            actions.setOrderConfirmPrice(price);
+                            actions.setOrderConfirmId(id);
                             Actions.orderConfirm({params: {type: 'cart'}});
                         }
                     }], height: 440
                 }
             case 'simplePay':
-                return {buttons: [], height: 300}
+                return {buttons: [], height: 320}
         }
     }
 
@@ -219,67 +236,76 @@ class Routers extends React.Component {
                 <Text style={{marginBottom: 8, marginTop: 35, fontSize: 17, fontWeight: 'bold', color: '#4a4a4a'}}>感谢您选择
                     芝士圈留学 的服务！</Text>
                 <Text style={{marginBottom: 13.5, fontSize: 12, color: '#a1a1a1'}}>PO号码：<Text selectable>PO12345</Text></Text>
-                <Text style={{marginBottom: 2, fontSize: 14, color: '#4a4a4a'}}>订单总价：</Text>
+                <Text style={{fontSize: 13, color: '#4a4a4a', marginBottom: 6}}>即将支付</Text>
                 <Text style={{marginBottom: 28.5, fontSize: 16, color: '#ea5502'}}>￥532.00 RMB</Text>
-                <Hr marginBottom={0} style={{alignSelf: 'stretch'}} borderColor={"#e5e5e5"}/>
-                <LinkItem onPress={null} showBorder={""} style={{paddingHorizontal: $.PADDING_SIZE, paddingVertical: 4}}
-                          leftComponent={<HrFlexLayout style={{alignItems: 'center'}}><CirImage style={{marginRight: 12}}
-                              size={32}/><Text>微信支付</Text></HrFlexLayout>} borderColor={"#e5e5e5"}/>
-                <Hr marginBottom={0} style={{alignSelf: 'stretch', marginHorizontal: $.PADDING_SIZE}}/>
-                <LinkItem onPress={null} showBorder={""} style={{paddingHorizontal: $.PADDING_SIZE, paddingVertical: 4}}
-                          leftComponent={<HrFlexLayout style={{alignItems: 'center'}}><CirImage style={{marginRight: 12}}
-                              size={32}/><Text>支付宝支付</Text></HrFlexLayout>}/>
-                <Hr marginBottom={0} style={{alignSelf: 'stretch', marginHorizontal: $.PADDING_SIZE}}/>
+                <Hr marginBottom={0} style={{alignSelf: 'stretch'}} color={"#e5e5e5"}/>
+                <LinkItem onPress={null} showBorder={null}
+                          style={{paddingHorizontal: $.PADDING_SIZE, paddingVertical: 4}}
+                          leftComponent={<HrFlexLayout style={{alignItems: 'center'}}><CirImage
+                              style={{marginRight: 12}}
+                              size={32}/><Text>微信支付</Text></HrFlexLayout>}
+                />
+                <Hr marginBottom={0} style={{alignSelf: 'stretch', marginHorizontal: $.PADDING_SIZE}}
+                    color={"#e5e5e5"}/>
+                <LinkItem onPress={null} showBorder={null}
+                          style={{paddingHorizontal: $.PADDING_SIZE, paddingVertical: 4}}
+                          leftComponent={<HrFlexLayout style={{alignItems: 'center'}}><CirImage
+                              style={{marginRight: 12}}
+                              size={32}/><Text>支付宝支付</Text></HrFlexLayout>}
+                />
+                <Hr marginBottom={0} color={'#e5e5e5'} style={{alignSelf: 'stretch', marginHorizontal: 0}}/>
+                <View style={{alignItems: 'center', marginTop: 10, marginHorizontal: $.PADDING_SIZE}}>
+                    <Text style={{color: '#a1a1a1', fontSize: 13, lineHeight: 17, textAlign: 'center'}}>遇到任何问题，您可以在“消息”中向主页妞咨询联系我们，或者拨打电话4009961931</Text>
+                </View>
             </View>
         )
     }
 
     get abroadExpertForm() {
         const {
-            store: {
-                common: {
-                    abroadExpertForm: {
-                        items, index, name
-                    }
-                }
-            }, actions
+            store: {common: {abroadExpertForm: {
+                        items, index, name, thumbnail
+                    }}}, actions
         } = this.props;
         return (
-            <View style={{marginTop: 20}}>
+            <View style={{marginTop: 20, flex: 1}}>
                 <View style={{alignItems: 'center'}}>
-                    <CirImage size={100} source={{}}/>
+                    <CirImage size={100} source={thumbnail}/>
                     <Text style={{fontSize: 18, fontWeight: '600', marginTop: 6}}>{name}</Text>
                 </View>
 
-                <ScrollView style={{marginTop: 20}}>
-                    {
-                        items.map((x, i) => (
-                            <TouchableHighlight
-                                style={{marginVertical: 6, marginHorizontal: 15, borderRadius: 6, overflow: 'hidden'}}
-                                onPress={() => {
-                                    actions.abroadExpertFormModalSelect(i);
-                                }}
-                            >
-                                <View style={[{
-                                    padding: 10
-                                }, i == index ? {backgroundColor: '#fc6d34'} : {
-                                        backgroundColor: '#fafafa',
-                                        borderWidth: StyleSheet.hairlineWidth,
-                                        borderColor: '#e5e5e5'
-                                    }]}>
-                                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                                        <View style={{flex: 1}}>
-                                            <Text style={[i == index ? {color: '#fff'} : {}]}>{x.leftText}</Text>
-                                        </View>
-                                        <View style={{flex: 0, marginLeft: 15}}>
-                                            <Text style={[i == index ? {color: '#fff'} : {}]}>{x.rightText}</Text>
-                                        </View>
-                                    </View>
-                                </View>
-                            </TouchableHighlight>)
-                        )
-                    }
-                </ScrollView>
+                <ListView style={{marginTop: 20, marginBottom: 54}}
+                          dataSource={
+                              new ListView.DataSource({
+                                  rowHasChanged: (r1, r2) => !Map(r1).equals(Map(r2))
+                              }).cloneWithRows(items)
+                          }
+                          renderRow={(x, s, i) =>
+                              <TouchableHighlight key={i}
+                                  style={{marginVertical: 6, marginHorizontal: 15, borderRadius: 6, overflow: 'hidden'}}
+                                  onPress={() => {
+                                      actions.setAbroadExpertFormIndex(i);
+                                  }}
+                              >
+                                  <View style={[{
+                                      padding: 10
+                                  }, i == index ? {backgroundColor: '#fc6d34'} : {
+                                          backgroundColor: '#fafafa',
+                                          borderWidth: StyleSheet.hairlineWidth,
+                                          borderColor: '#e5e5e5'
+                                      }]}>
+                                      <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                                          <View style={{flex: 1}}>
+                                              <Text style={[i == index ? {color: '#fff'} : {}]}>{x.leftText}</Text>
+                                          </View>
+                                          <View style={{flex: 0, marginLeft: 15}}>
+                                              <Text style={[i == index ? {color: '#fff'} : {}]}>{x.rightText}</Text>
+                                          </View>
+                                      </View>
+                                  </View>
+                              </TouchableHighlight>
+                          }
+                />
             </View>
         )
     }
@@ -347,7 +373,8 @@ class Routers extends React.Component {
                                 rightTitle="消息"
                             />
                         </Scene>
-                        <Scene backButtonImage={backIcon} key="tab_service_main" navigationBarStyle={styles.navigationBarStyle}
+                        <Scene backButtonImage={backIcon} key="tab_service_main"
+                               navigationBarStyle={styles.navigationBarStyle}
                                type={ActionConst.JUMP}
                                iconName={"service"}
                                title="服务" icon={TabIcon}>
@@ -520,7 +547,8 @@ class Routers extends React.Component {
                                    title="最近浏览"
                                    backTitle=""
                                    rightTitle="清空"
-                                   onRight={() => {}}
+                                   onRight={() => {
+                                   }}
                                    hideTabBar
                                    component={conn(RecentSkimPage)}
                             />

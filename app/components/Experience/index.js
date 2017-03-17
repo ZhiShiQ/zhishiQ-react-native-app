@@ -36,7 +36,7 @@ class Experience extends Component {
     state = {}
     static propTypes = {
         title: PropTypes.string,
-        origination: PropTypes.string,
+        organization: PropTypes.string,
         date_from: PropTypes.string,
         date_to: PropTypes.string,
         words: PropTypes.oneOfType(PropTypes.array, PropTypes.string),
@@ -45,30 +45,40 @@ class Experience extends Component {
         noPoint: PropTypes.bool
     }
     render() {
-        let {title, origination, noPoint, thumbnail, date_from, date_to, style, words = []} = this.props;
+        let {title, organization, noPoint, thumbnail, date_from, date_to, style, words = []} = this.props;
         if (!Array.isArray(words)) {
-            words = [words];
+            words = !!words ? [words] : null;
             noPoint = true;
         }
 
 
         return (
-            <View style={[{paddingVertical: 15, justifyContent: 'flex-start'}, style]}>
-                {thumbnail && <Image source={thumbnail} style={{width: 40, height: 40, borderRadius: 5, backgroundColor: '#ccc'}}/>}
-                <Text style={{
-                    marginVertical: 3,
-                    fontSize: 14,
-                    lineHeight: 18,
-                    fontWeight: 'bold',
-                    color: '#4a4a4a'
-                }}>{title}</Text>
-                <Text style={{color: '#4a4a4a', marginBottom: 8}}>
-                    {origination ? origination+'｜': ''}
-                    {date_from}{date_to ? (' ~ '+date_to) : ''}
-                </Text>
-                {words.map((w, i, a) =>
-                    <Text style={{color: '#848484', lineHeight: 17, fontSize: 14}} key={i}>
-                        {noPoint?'':'• '}{w}
+            <View style={[{paddingTop: 15, paddingBottom: 15, justifyContent: 'flex-start'}, style]}>
+                <View style={{flexDirection: 'row'}}>
+                    <View style={{flex: 1}}>
+                        {title && <Text style={{
+                            marginVertical: 3,
+                            fontSize: 14,
+                            lineHeight: 18,
+                            fontWeight: 'bold',
+                            color: '#4a4a4a'
+                        }}>{title}</Text>}
+
+                        {(organization || date_from) && <Text style={{color: '#4a4a4a', marginBottom: 8}}>
+                            {organization ? organization+(date_from?'｜':''): ''}
+                            {date_from}{date_to ? (' ~ '+date_to) : ''}
+                        </Text>}
+                    </View>
+                    {thumbnail &&
+                        <View style={{flex: 0, alignItems: 'flex-end', marginRight: 6,}}>
+                            <Image source={thumbnail} style={{width: 40, height: 40, borderRadius: 5, backgroundColor: '#fff'}}/>
+                        </View>
+                    }
+                </View>
+
+                {words && words.map((w, i, a) =>
+                    <Text style={{color: '#848484', lineHeight: 17, flex: 0, fontSize: 14}} key={i}>
+                        {noPoint?'':'• '}{w.trim()}
                     </Text>
                 )}
             </View>

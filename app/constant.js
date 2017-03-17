@@ -18,7 +18,7 @@ export const DURATION = 300;
 /* start of my common' logic related */
 export const SET_COMMON_MODAL_OPEN = uint();
 export const SET_COMMON_MODAL_TYPE = uint();
-export const ABROAD_EXPERT_FORM_SELECT = uint();
+export const ABROAD_EXPERT_FORM_SET = uint();
 /* end of my common' logic related */
 
 /* start of entry's logic related */
@@ -29,6 +29,11 @@ export const SET_ENTRY_LOGIN = uint();
 export const SET_RESET_PWD_BY_PHONE = uint();
 export const SET_RESET_PWD_BY_MAIL = uint();
 /* end of entry's logic related */
+
+/* start of order_confirm's logic related */
+export const ORDER_CONFIRM_ROOT_SET = uint();
+/* end of order_confirm's logic related */
+
 
 /* start of foreign_teacher's logic related */
 export const FOREIGN_TEACHER_FETCHING_SET = uint();
@@ -50,6 +55,7 @@ export const ABROAD_EXPERT_FIRST_SET = uint();
 export const ABROAD_EXPERT_LIST_APPEND = uint();
 
 export const ABROAD_EXPERT_DETAIL_FETCHING_SET = uint();
+export const ABROAD_EXPERT_DETAIL_AWARD_SET = uint();
 export const ABROAD_EXPERT_DETAIL_SERVICES_SET = uint();
 export const ABROAD_EXPERT_DETAIL_EDUC_SET = uint();
 export const ABROAD_EXPERT_DETAIL_SUMMARY_SET = uint();

@@ -297,21 +297,7 @@ class ForeignTeacherDetailPage extends Component {
             }, actions
         } = this.props;
         const {starCollapsed} = this.state;
-        const s = {
-            item: {
-                paddingVertical: 15,
-                alignItems: 'center'
-            },
-            tip: {
-                marginTop: 5,
-                fontSize: 12,
-                color: '#848484'
-            },
-            text: {
-                fontSize: 15,
-                color: '#4a4a4a'
-            }
-        }
+
         return (
             <View>
                 <CommentStar

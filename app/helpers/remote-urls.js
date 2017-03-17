@@ -12,4 +12,4 @@ export const foreignTeacherDetailCommentURL = HOST + "editor/reviews-of-advisor"
 
 export const abroadExpertURL = HOST + "course/index";
 export const abroadExpertDetailURL = HOST + "course/view";
-export const abroadExpertDetailCommentURL = HOST + "course/reviews-of-advisor";
+export const abroadExpertDetailCommentURL = HOST + "course/reviews-of-topic";

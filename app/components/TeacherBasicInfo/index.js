@@ -83,7 +83,7 @@ class TeacherBasicInfo extends Component {
                 <TextWithBgs
                     align="center"
                     items={tags}
-                    eachStyle={{borderRadius: 2, paddingVertical: .5, fontSize: 12}}
+                    eachStyle={{borderRadius: 2, paddingVertical: 1.5, paddingHorizontal: 3, fontSize: 12, marginTop: 2}}
                     bgColor="#FFF"
                     borderColor="#4a4a4a"
                 />

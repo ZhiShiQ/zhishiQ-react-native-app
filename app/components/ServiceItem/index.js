@@ -66,13 +66,13 @@ class ServiceItem extends Component {
         price: React.PropTypes.number,
         mark: React.PropTypes.number,
         appointNum: React.PropTypes.number,
-        // content: React.PropTypes.string
+        pointsAddon: React.PropTypes.string
     }
 
     render() {
         let {
             onPress, style, title, thumbnail, price,
-            tags, points, intro, mark, appointNum
+            tags, points, intro, mark, appointNum, pointsAddon
         } = this.props;
         points = Array.isArray(points) ? points.join("｜") : points;
         const Touchable = TouchableHighlight;
@@ -88,13 +88,16 @@ class ServiceItem extends Component {
                             <View style={sty.tags} >
                                 <TextWithBgs
                                     items={tags}
-                                    eachStyle={{borderRadius: 2, fontSize: 12, paddingVertical: 0}}
+                                    eachStyle={{borderRadius: 2, fontSize: 12, paddingVertical: 1.5, paddingHorizontal: 3}}
                                     bgColor="#FFF"
                                     borderColor="#979797"
                                 />
                             </View>
                             {/*<Hr />*/}
-                            <Text style={{color: '#4a4a4a', marginBottom: 4, lineHeight: 17 }}>{points}</Text>
+                            <Text style={{color: '#4a4a4a', marginBottom: 4, fontWeight: '600', lineHeight: 17 }}>
+                                {points}
+                                {pointsAddon && <Text style={{fontWeight: 'normal'}}>{'  '+pointsAddon}</Text>}
+                            </Text>
                             <Text style={{color: '#848484', marginBottom: 4}}>{intro}</Text>
 
                             <View style={sty.footContainer}>
