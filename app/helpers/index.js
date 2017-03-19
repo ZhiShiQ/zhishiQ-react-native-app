@@ -91,3 +91,16 @@ export async function getTokenHeader() {
         authorization: await getToken()
     };
 }
+
+/*TODO: safari browser => ios only*/
+import SafariView from 'react-native-safari-view';
+
+export const open = (url, opts={}) => (
+    SafariView.isAvailable()
+        .then(SafariView.show({
+            url,readerMode: false,...opts
+        }))
+        .catch(error => {
+            _debugger(error);
+        })
+)

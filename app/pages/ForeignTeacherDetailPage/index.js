@@ -177,16 +177,10 @@ class ForeignTeacherDetailPage extends Component {
         } = this.props;
 
         const items = services.map(({...r}) => ({
-            ...r, rSubText: '最低',
-            price: 319, onBtnPress: () => alert(1),
-            table: {
-                head: ['服务等级', '300单词以下', '超出300单词'],
-                body: [
-                    ['语言润色', '￥192', '￥0.638 / 单词'],
-                    ['语言润色', '￥192', '￥0.638 / 单词'],
-                    ['语言润色', '￥192', '￥0.638 / 单词']
-                ]
-            }
+            ...r, onBtnPress: () => {
+                this.initialModalForm();
+                actions.abroadExpertBuyFormModalOpen();
+            },
         }));
 
         return (
@@ -348,8 +342,21 @@ class ForeignTeacherDetailPage extends Component {
         )
     }
 
+    initialModalForm() {
+        const {actions, store: {
+            foreign_teacher_detail: {detail: {services}, base: {avatar, name}}
+        }} = this.props;
+        const mapService = ({price, name, ...r}, i) => ({
+            ...r, price, rightText: '¥'+price,
+            leftText: name
+        });
+        actions.setAbroadExpertFormItems(services.map(mapService));
+        actions.setAbroadExpertFormThumbnail(avatar);
+        actions.setAbroadExpertFormName(name);
+    }
+
     get fixBottom() {
-        const {actions, store} = this.props;
+        const {actions, store: {abroad_expert_detail: {base: {avatar, name}, detail: {services}}}} = this.props;
         return (
             <BottomBtns
                 lefts={[{
@@ -362,9 +369,15 @@ class ForeignTeacherDetailPage extends Component {
                     onPress: null
                 }]}
                 subText="加入购物车"
-                onSubPress={() => actions.abroadExpertCartFormModalOpen()}
+                onSubPress={() => {
+                    this.initialModalForm();
+                    actions.abroadExpertCartFormModalOpen();
+                }}
                 mainText={"立即预约"}
-                onMainPress={() => actions.abroadExpertBuyFormModalOpen()}
+                onMainPress={() => {
+                    this.initialModalForm();
+                    actions.abroadExpertBuyFormModalOpen();
+                }}
             />
         )
     }

@@ -23,7 +23,7 @@ export const fetchForeignTeacherDetail = (id) => {
                         setForeignTeacherDetailEducations(o.educations.map(mapEduc)),
                         setForeignTeacherDetailSummary(o.summary),
                         setForeignTeacherDetailDescription(o.description),
-                        setForeignTeacherDetailServices(o.services)
+                        setForeignTeacherDetailServices(o.services.map(mapService))
                     ]);
                 }
                 emit(setForeignTeacherDetailFetching(false));
@@ -34,6 +34,58 @@ export const fetchForeignTeacherDetail = (id) => {
             })
     }
 }
+
+export const mapService = (({slug, head, price, price_per_hour, ...r}, i) => {
+    const body = [], pre = "￥";
+    let min = 0;
+    if (slug === 'ServiceText_graduate') {
+        if (price.l1_base!=null && price.l1_word!=null) {
+            body.push(['语言润色', pre+price.l1_base, pre+price.l1_word])
+        }
+        if (price.l2_base!=null && price.l2_word!=null) {
+            body.push(['深度修改', pre+price.l2_base, pre+price.l2_word])
+        }
+        if (price.l3_base!=null && price.l3_word!=null) {
+            body.push(['VIP文书辅导', pre+price.l3_base, pre+price.l3_word])
+        }
+        min = Math.min(price.l1_base, price.l2_base, price.l3_base);
+    } else if (slug === 'ServiceTextAssess_standard') {
+        head = null;
+        body.push(['服务价格', pre+price]);
+        min = Math.min(price);
+    } else if (slug === 'ServiceTextPackage_normal') {
+        if (price.l2_u1!=null && price.l2_u2!= null && price.l2_u3!=null) {
+            body.push(['深度修改套餐', {
+                name: pre+price.l2_u1, align: 'center'
+            }, {
+                name: pre+price.l2_u2, align: 'center'
+            }, pre+price.l2_u3]);
+        }
+        if (price.l3_u1!=null && price.l3_u2!= null && price.l3_u3!=null) {
+            body.push(['VIP文书套餐',{
+                name: pre+price.l3_u1, align: 'center'
+            }, {
+                name: pre+price.l3_u2, align: 'center'
+            }, pre+price.l3_u3]);
+        }
+        head = head.map((name, i) => ({name, align: (i==1 || i==2) ? 'center' : null}))
+        min = Math.min(price.l2_u1, price.l3_u1);
+    } else if (slug === 'ServiceTalk_interview') {
+        head = null;
+        body.push(['服务价格', {
+            name: pre+price_per_hour,
+            append: ' / 60分钟'
+        }]);
+        min = Math.min(price_per_hour);
+    }
+    return {
+        ...r, price: min, rSubText: '最低',
+        table: {
+            head,
+            body
+        }
+    }
+});
 
 
 export const fetchForeignTeacherCommentDetail = (id, page=1, opts={}) => {

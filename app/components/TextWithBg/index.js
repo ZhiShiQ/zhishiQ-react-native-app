@@ -58,21 +58,33 @@ class TextWithBg extends Component {
     }
 
     render() {
-        const {title, style, onPress, bgColor, color, ...props} = this.props
-        return (
-            <TouchableWithoutFeedback
-                onPress={onPress}
+        const {title, style, onPress, bgColor, color, ...props} = this.props;
+        const Container = onPress ? TouchableWithoutFeedback : View;
+
+        const inner = (
+            <Text
+                {...props}
+                style={[sty.main, style, {color, backgroundColor: bgColor}]}
             >
-                <View style={{alignSelf: 'center', justifyContent: 'flex-end'}}>
-                    <Text
-                        {...props}
-                        style={[sty.main, style, {color, backgroundColor: bgColor}]}
-                    >
-                        {title}
-                    </Text>
-                </View>
-            </TouchableWithoutFeedback>
-        )
+                {title}
+            </Text>
+        );
+
+        if (onPress) {
+            return (
+                <TouchableWithoutFeedback
+                    onPress={onPress}
+                >
+                    <View style={{alignSelf: 'center', justifyContent: 'flex-end'}}>
+                        {inner}
+                    </View>
+                </TouchableWithoutFeedback>
+            )
+        } else {
+            return <View style={{alignSelf: 'center', justifyContent: 'flex-end'}}>
+                {inner}
+            </View>
+        }
     }
 }
 

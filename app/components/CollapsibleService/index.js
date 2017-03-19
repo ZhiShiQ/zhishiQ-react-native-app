@@ -94,28 +94,14 @@ class CollapsibleService extends Component {
                             borderBottomWidth: .5,
                             borderBottomColor: '#e5e5e5'
                         }}>
-                            {table.head.map((x, i, a) =>
-                                <View key={i} style={{flex: 1, paddingVertical: 12,}}>
-                                    <Text style={[{
-                                        color: '#848484',
-                                        fontSize: 13.5
-                                    }, i == a.length - 1 ? {textAlign: 'right'} : {}]}>{x}</Text>
-                                </View>
-                            )}
+                            {table.head && table.head.map((x, i, a) => this._renderCell(x, i, a, {color: '#848484'}))}
                         </View>
                         {table.body.map((row, i, a) =>
                             <View key={i} style={[{
                                 flexDirection: 'row',
                                 alignItems: 'center'
                             }, i != a.length - 1 ? {borderBottomWidth: .5, borderBottomColor: '#e5e5e5'} : {}]}>
-                                {row.map((x, i, a) =>
-                                    <View key={i} style={[{flex: 1, paddingVertical: 12}]}>
-                                        <Text style={[{
-                                            fontSize: 13.5,
-                                            color: i == 0 ? '#4a4a4a' : '#ea5502'
-                                        }, i == a.length - 1 ? {textAlign: 'right'} : {}]}>{x}</Text>
-                                    </View>
-                                )}
+                                {row.map(this._renderCell)}
                             </View>
                         )}
                     </View>
@@ -151,6 +137,20 @@ class CollapsibleService extends Component {
                     </View>
                 </View>
             </CollapsibleItem>
+        )
+    }
+
+    _renderCell (x, i, a, style) {
+        return (
+            <View key={i} style={[{flex: 1, paddingVertical: 12}]}>
+                <Text style={[{
+                    fontSize: 13.5,
+                    color: i == 0 ? '#4a4a4a' : '#ea5502'
+                }, style, i == a.length - 1 && {textAlign: 'right'}, x.align && {textAlign: x.align}]}>
+                    {x.name || x}
+                    {x.append && <Text style={{color: '#4a4a4a'}}>{x.append}</Text>}
+                </Text>
+            </View>
         )
     }
 }

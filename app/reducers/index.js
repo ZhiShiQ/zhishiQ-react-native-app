@@ -24,4 +24,5 @@ export default combineReducers({
     foreign_teacher: require('./foreign_teacher').default,
     abroad_expert: require('./abroad_expert').default,
     order_confirm: require('./order_confirm').default,
+    home: require('./home').default,
 })

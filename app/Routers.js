@@ -213,6 +213,7 @@ class Routers extends React.Component {
             <Modal
                 isOpen={openModal}
                 onClosed={() => actions.setCommonModalIsOpen(false)}
+                style={{backgroundColor: '#fff'}}
                 {...this._mapModalProps()}
             >
                 {
@@ -268,7 +269,7 @@ class Routers extends React.Component {
                     }}}, actions
         } = this.props;
         return (
-            <View style={{marginTop: 20, flex: 1}}>
+            <View style={{paddingTop: 20, flex: 1, backgroundColor: '#fff'}}>
                 <View style={{alignItems: 'center'}}>
                     <CirImage size={100} source={thumbnail}/>
                     <Text style={{fontSize: 18, fontWeight: '600', marginTop: 6}}>{name}</Text>
@@ -553,10 +554,7 @@ class Routers extends React.Component {
                                    component={conn(RecentSkimPage)}
                             />
                         </Scene>
-
                     </Scene>
-
-
                 </Scene>
 
 

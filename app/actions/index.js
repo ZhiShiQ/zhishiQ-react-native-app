@@ -18,4 +18,5 @@ export default {
     ...require('./abroad_expert_detail'),
     ...require('./abroad_expert'),
     ...require('./order_confirm'),
+    ...require('./home'),
 }

@@ -21,6 +21,11 @@ export const SET_COMMON_MODAL_TYPE = uint();
 export const ABROAD_EXPERT_FORM_SET = uint();
 /* end of my common' logic related */
 
+
+/* start of entry's home related */
+export const HOME_PAGE_SET = uint();
+/* end of entry's home related */
+
 /* start of entry's logic related */
 export const SET_ENTRY_ACTIVE_INDEX = uint();
 export const SET_ENTRY_REG = uint();

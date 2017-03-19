@@ -5,20 +5,26 @@ import {
     Text,
     Button,
     ScrollView,
+    ListView,
     View,
     Dimensions,
     StyleSheet,
     Image,
     TouchableWithoutFeedback,
     TouchableOpacity,
-    TouchableHighlight
+    TouchableHighlight,
+    RefreshControl
 } from 'react-native';
+import {Actions, ActionConst} from 'react-native-router-flux';
+
 const {height, width} = Dimensions.get('window');
 import sty from './style';
+import {open, sep} from '../../helpers'
 
 import Carousel from '../../components/Carousel';
 import HrFlexLayout from '../../components/HrFlexLayout';
 import HomeItems from '../../components/HomeItems';
+
 
 @autobind
 class HomePage extends Component {
@@ -52,16 +58,42 @@ class HomePage extends Component {
     state = {}
     static propTypes = {}
 
+    _onRefresh() {
+        const {actions} = this.props;
+        actions.fetchHomePage({refresh: true})
+    }
+
     render() {
-        const {...props} = this.props;
+        const {
+            actions, store: {
+            home: {
+                sliders, singlePicture
+            }
+        }
+        } = this.props;
         return (
-            <ScrollView contentContainerStyle={sty.main}>
+            <ScrollView
+                refreshControl={
+                    <RefreshControl
+                        refreshing={this.state.refreshing}
+                        onRefresh={this._onRefresh}
+                    />
+                }
+                contentContainerStyle={sty.main}
+            >
                 <Carousel
                     style={{justifyContent: 'center', alignSelf: 'center'}}
                 >
-                    <View style={{backgroundColor: '#BADA55'}}></View>
-                    <View style={{backgroundColor: 'red'}}></View>
-                    <View style={{backgroundColor: 'blue'}}></View>
+                    {sliders.map(({thumbnail, route, type}, i) => (
+                        <TouchableOpacity
+                            style={{backgroundColor: '#fff', alignItems: 'center', justifyContent: 'center'}}
+                            onPress={() => {
+                                this.routeHandle({route, type});
+                            }}
+                        >
+                            <Image resizeMode={'cover'} source={thumbnail}/>
+                        </TouchableOpacity>
+                    ))}
                 </Carousel>
                 {this.cirbtns}
                 {this.sep()}
@@ -71,7 +103,12 @@ class HomePage extends Component {
                 {this.sep()}
                 {this.hottopic}
                 {this.sep()}
-                <View style={{height: 120, backgroundColor: '#fff'}}></View>
+                <TouchableOpacity
+                    style={{height: 120, backgroundColor: '#fff'}}
+                    onPress={() => this.routeHandle(singlePicture)}
+                >
+                    <Image source={singlePicture.thumbnail} />
+                </TouchableOpacity>
                 {this.sep()}
                 {this.hotteacher}
             </ScrollView>
@@ -97,180 +134,136 @@ class HomePage extends Component {
     }
 
     get hotteacher() {
+        const {store: {home: {hotTeachers}}} = this.props;
         return (
             <View style={{padding: 15, backgroundColor: '#fff'}}>
-                {this.renderMoreHead('热门导师')}
+                {this.renderMoreHead('热门导师', () => {
+                    Actions.foreignTeacher();
+                })}
                 <HomeItems
-                    items={[{
-                        title: "艺术与设计类申请咨询（英国）",
-                        tags: ["其他", "选校", "生活", "无效退款"],
-                        content: "Viviney Wang  伦敦艺术大学, Service Experience Design and Innovation",
-                        bottomValues: [5, 30]
-                    }, {
-                        title: "艺术与设计类申请咨询（英国）",
-                        tags: ["其他", "选校", "生活", "无效退款"],
-                        content: "Viviney Wang  伦敦艺术大学, Service Experience Design and Innovation",
-                        bottomValues: [5, 30]
-                    }, {
-                        title: "艺术与设计类申请咨询（英国）",
-                        tags: ["其他", "选校", "生活", "无效退款"],
-                        content: "Viviney Wang  伦敦艺术大学, Service Experience Design and Innovation",
-                        bottomValues: [5, 30]
-                    }]}
+                    items={hotTeachers}
                 />
             </View>
         )
     }
 
     get hottopic() {
+        const {store: {home: {recommendTopics}}} = this.props;
         return (
             <View style={{padding: 15, backgroundColor: '#fff'}}>
-                {this.renderMoreHead('推荐话题')}
+                {this.renderMoreHead('推荐话题', () => {
+                    Actions.abroadExpert();
+                })}
                 <HomeItems
-                    items={[{
-                        title: "艺术与设计类申请咨询（英国）",
-                        tags: ["其他", "选校", "生活", "无效退款"],
-                        content: "Viviney Wang  伦敦艺术大学, Service Experience Design and Innovation",
-                        bottomValues: [5, 30]
-                    }, {
-                        title: "艺术与设计类申请咨询（英国）",
-                        tags: ["其他", "选校", "生活", "无效退款"],
-                        content: "Viviney Wang  伦敦艺术大学, Service Experience Design and Innovation",
-                        bottomValues: [5, 30]
-                    }, {
-                        title: "艺术与设计类申请咨询（英国）",
-                        tags: ["其他", "选校", "生活", "无效退款"],
-                        content: "Viviney Wang  伦敦艺术大学, Service Experience Design and Innovation",
-                        bottomValues: [5, 30]
-                    }]}
+                    items={recommendTopics}
                 />
             </View>
         )
     }
 
+    routeHandle({route, type}) {
+        if (type === 'url') {
+            open(route);
+        }
+    }
+
     get activity() {
+        const {actions, store: {home: {activities}}} = this.props;
         const imgHeight = 100;
         return (
-            <View style={{backgroundColor: '#fff', padding: 15}}>
+            <View style={{padding: 15, backgroundColor: '#fff'}}>
                 <Text
                     style={{fontWeight: 'bold', textAlign: 'center', marginBottom: 15, fontSize: 16, color: '#4a4a4a'}}>
                     热门活动
                 </Text>
-                <View
-                    style={{justifyContent: 'space-between', flexDirection: 'row'}}
-                >
-                    <Image style={{flex: 1, height: imgHeight, backgroundColor: '#ccc'}}/>
-                    <View style={{width: 10}}></View>
-                    <Image style={{flex: 1, height: imgHeight, backgroundColor: '#ccc'}}/>
-                </View>
-                {this.sep()}
-                <View
-                    style={{justifyContent: 'space-between', flexDirection: 'row'}}
-                >
-                    <Image style={{flex: 1, height: imgHeight, backgroundColor: '#ccc'}}/>
-                    <View style={{width: 10}}></View>
-                    <Image style={{flex: 1, height: imgHeight, backgroundColor: '#ccc'}}/>
-                </View>
+                <ListView
+                    scrollEnabled={false}
+                    dataSource={new ListView.DataSource({
+                        rowHasChanged: (r1, r2) => !Map(r1).equals(Map(r2))
+                    }).cloneWithRows(activities)}
+                    renderRow={(data, s, i) => (
+                        <ListView
+                            scrollEnabled={false}
+                            contentContainerStyle={{justifyContent: 'space-between', flexDirection: 'row'}}
+                            dataSource={new ListView.DataSource({
+                                rowHasChanged: (r1, r2) => !Map(r1).equals(Map(r2))
+                            }).cloneWithRows(data)}
+                            renderRow={(data) => (
+                                <TouchableOpacity
+                                    style={{flex: 1, height: imgHeight, backgroundColor: '#ccc'}}
+                                    onPress={() => this.routeHandle(data)}
+                                >
+                                    <Image source={data.thumbnail}/>
+                                </TouchableOpacity>
+                            )}
+                            renderSeparator={(s, i) => i != data.length - 1 &&
+                            <View style={{width: 10, flex: 0}}></View>}
+                        />
+                    )}
+                    renderSeparator={(s, i) => i != activities.length - 1 && this.sep(true)}
+                />
             </View>
         )
     }
 
     get horitems() {
-        return <View style={{
-            flexDirection: 'row', height: 125,
-            justifyContent: 'center',
-            alignItems: 'center', backgroundColor: '#fff'
-        }}>
-            <View style={{flex: 1, alignItems: 'center'}}>
-                <Text style={sty.horText}>外籍导师</Text>
-            </View>
-            <View style={{height: 50, width: 1, backgroundColor: '#e5e5e5'}}></View>
-            <View style={{flex: 1, alignItems: 'center'}}>
-                <Text style={sty.horText}>留学行家</Text>
-            </View>
-        </View>
+        const {store: {home: {subItems}}, actions} = this.props;
+        return (
+            <ListView
+                scrollEnabled={false}
+                contentContainerStyle={{
+                    paddingHorizontal: 15,
+                    flexDirection: 'row', height: 125,
+                    justifyContent: 'center',
+                    alignItems: 'center', backgroundColor: '#fff'
+                }}
+                dataSource={new ListView.DataSource({
+                    rowHasChanged: (r1, r2) => !Map(r1).equals(Map(r2))
+                }).cloneWithRows(subItems)}
+                renderRow={({name, thumbnail, type, route}) => (
+                    <TouchableOpacity
+                        style={{flex: 1, alignItems: 'center', paddingVertical: 15}}
+                        onPress={null}
+                    >
+                        <Image style={{flex: 1}} resizeMode={"cover"} source={thumbnail}/>
+                        <Text style={sty.horText}>{name}</Text>
+                    </TouchableOpacity>
+                )}
+                renderSeparator={(a, i) =>
+                i != subItems.length - 1 && <View style={{height: 60, width: 1, backgroundColor: '#e5e5e5'}}></View>
+                }
+            />
+        )
     }
 
-    sep() {
-        return <View style={{
-            height: 10,
-            borderTopWidth: StyleSheet.hairlineWidth,
-            borderBottomWidth: StyleSheet.hairlineWidth,
-            borderColor: '#e5e5e5'
-        }}></View>
+    sep(noBorder, style) {
+        return sep(noBorder, style)
     }
 
     get cirbtns() {
+        const {store: {home: {mainItems}}} = this.props;
         return (
-            <View style={{backgroundColor: '#fff', alignSelf: 'stretch', padding: 15}}>
-                <HrFlexLayout
-                    style={{
-                        marginBottom: 13,
-                        justifyContent: 'space-around',
-                        alignSelf: 'stretch',
-                        marginTop: 5
-                    }}
-                >
-                    <TouchableOpacity>
-                        <View>
-                            <View style={sty.rect}></View>
-                            <Text style={sty.text}>申请档案</Text>
-                        </View>
+            <ListView
+                contentContainerStyle={{
+                    justifyContent: 'space-between',
+                    flexDirection: 'row',
+                    flexWrap: 'wrap',
+                    backgroundColor: '#fff', paddingVertical: 15,
+                    paddingTop: 5, paddingHorizontal: 5
+                }}
+                dataSource={new ListView.DataSource({
+                    rowHasChanged: (r1, r2) => !Map(r1).equals(Map(r2))
+                }).cloneWithRows(mainItems)}
+                renderRow={({name, thumbnail, type, route}, i) => (
+                    <TouchableOpacity
+                        key={i}
+                        style={sty.container}
+                    >
+                        <View style={sty.rect}></View>
+                        <Text style={sty.text}>{name}</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity>
-                        <View>
-                            <View style={sty.rect}></View>
-                            <Text style={sty.text}>留学文书</Text>
-                        </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity>
-                        <View>
-                            <View style={sty.rect}></View>
-                            <Text style={sty.text}>一站式</Text>
-                        </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity>
-                        <View>
-                            <View style={sty.rect}></View>
-                            <Text style={sty.text}>国际快递</Text>
-                        </View>
-                    </TouchableOpacity>
-                </HrFlexLayout>
-
-                <HrFlexLayout
-                    style={{
-                        paddingTop: 0,
-                        justifyContent: 'space-around',
-                        alignSelf: 'stretch',
-                        marginBottom: 5
-                    }}
-                >
-                    <TouchableOpacity>
-                        <View>
-                            <View style={sty.rect}></View>
-                            <Text style={sty.text}>学术文章</Text>
-                        </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity>
-                        <View>
-                            <View style={sty.rect}></View>
-                            <Text style={sty.text}>模拟面试</Text>
-                        </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity>
-                        <View>
-                            <View style={sty.rect}></View>
-                            <Text style={sty.text}>留学资讯</Text>
-                        </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity>
-                        <View>
-                            <View style={sty.rect}></View>
-                            <Text style={sty.text}>天天特惠</Text>
-                        </View>
-                    </TouchableOpacity>
-                </HrFlexLayout>
-            </View>
+                )}
+            />
         )
     }
 }
