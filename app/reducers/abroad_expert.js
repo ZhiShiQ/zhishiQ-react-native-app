@@ -86,27 +86,27 @@ const initialState = {
 };
 
 export default function (state=initialState, action) {
-    let newState = {...state};
+    let newState = fromJS(state);
     const {type, ...rest} = action;
     switch (type) {
         case $.ABROAD_EXPERT_FETCHING_SET:
-            return {...newState, isFetching: rest.fetching};
+            return newState.set('isFetching', rest.fetching).toJS();
         case $.ABROAD_EXPERT_HAS_MORE_SET:
-            return {...newState, hasMore: rest.hasMore};
+            return newState.set('hasMore', rest.hasMore).toJS();
         case $.ABROAD_EXPERT_FIRST_SET:
-            return {...newState, firstMount: rest.first};
+            return newState.set('firstMount', rest.first).toJS();
         case $.ABROAD_EXPERT_CURRENT_SET:
-            return {...newState, currentPage: rest.current};
+            return newState.set('currentPage', rest.current).toJS();
         case $.ABROAD_EXPERT_FILTER_SET:
             if (rest.filters)
-                return {...newState, filters: {...newState.filters, ...rest.filters}};
+                return newState.mergeIn(['filters'], rest.filters).toJS();
             else
-                return {...newState, filters: {...newState.filters, ...rest}};
+                return newState.mergeIn(['filters'], rest).toJS();
         case $.ABROAD_EXPERT_LIST_SET:
-            return {...newState, list: rest.list};
+            return newState.set('list', rest.list).toJS();
         case $.ABROAD_EXPERT_LIST_APPEND:
-            return {...newState, list: fromJS(newState.list).push(...rest.list).toJS()};
+            return newState.update('list', list => List(list).concat(rest.list) ).toJS()
         default:
-            return newState;
+            return newState.toJS();
     }
 }

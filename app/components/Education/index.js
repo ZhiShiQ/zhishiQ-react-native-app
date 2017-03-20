@@ -71,9 +71,12 @@ class Education extends Component {
             onPress, style, title, thumbnail,
             status, date_from, date_to
         } = this.props;
-        const Touchable = TouchableHighlight;
+        const Touchable = onPress ? TouchableHighlight : View;
         return (
-            <TouchableOpacity onPress={onPress} style={[sty.main, sty.mainContainer, style]}>
+            <Touchable
+                onPress={onPress}
+                style={[sty.main, sty.mainContainer, style]}
+            >
                 <View style={sty.mainInnerContainer}>
                     <View style={[sty.contentContainer, {flex: 1}]}>
                         <Text style={sty.titleText}>{title}</Text>
@@ -82,7 +85,7 @@ class Education extends Component {
                     </View>
                     <View style={sty.imageContainer}><Image style={sty.image} source={thumbnail} /></View>
                 </View>
-            </TouchableOpacity>
+            </Touchable>
         )
     }
 }

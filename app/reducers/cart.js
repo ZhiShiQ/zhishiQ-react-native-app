@@ -28,16 +28,16 @@ const initialState = {
 };
 
 export default function (state=initialState, action) {
-    let newState = {...state};
+    let newState = fromJS(state);
     const {type, ...rest} = action;
     switch (type) {
         case $.SET_CART_ITEM_SELECTED_BY_INDEX:
-            return {...newState, items: fromJS(newState.items).setIn([rest.index, 'selected'], rest.selected).toJS()};
+            return newState.setIn(['items', rest.index, 'selected'], rest.selected).toJS();
         case $.DEL_CART_ITEM_BY_INDEX:
-            return {...newState, items: List(newState.items).remove(rest.index).toArray()}
+            return newState.removeIn(['items', rest.index]).toJS();
         case $.SET_ALL_CART_ITEM_SELECTED:
-            return {...newState, items: UpdateAllList(newState.items, 'selected', rest.selected)}
+            return newState.updateIn(['items'], list => List(list).map(x => Map(x).set('selected', rest.selected))).toJS();
         default:
-            return newState;
+            return newState.toJS();
     }
 }

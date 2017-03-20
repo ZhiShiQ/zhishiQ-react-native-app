@@ -84,6 +84,7 @@ class ForeignTeacherPage extends Component {
                 {isFetching && (firstMount || !hasMore)
                     ? <Loading />
                     : hasMore ? <ListView
+                        enableEmptySections
                         contentContainerStyle={{backgroundColor: '#fff', paddingHorizontal: 15}}
                         dataSource={
                             new ListView.DataSource({
@@ -128,7 +129,7 @@ class ForeignTeacherPage extends Component {
 
     _renderSeparator(i, a) {
         if (i != a.length - 1)
-            return <Hr marginBottom={0} color="#e5e5e5"/>
+            return <Hr key={i} marginBottom={0} color="#e5e5e5"/>
     }
 
     hideMenus(ignores=[]) {

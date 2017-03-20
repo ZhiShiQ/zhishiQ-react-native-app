@@ -5,8 +5,10 @@
 const HOST = "http://api.lb.dev.mydocumate.com/v1/";
 
 export const signInURL = HOST + "account/sign-in";
+export const signUpURL = HOST + "account/sign-up";
+export const getVerifyURL = HOST + "sms/send-verification-code-for-guest";
 
-export const homeURL = HOST + "anxx";
+export const homeURL = HOST + "frontend/index";
 
 export const foreignTeacherURL = HOST + "editor/index";
 export const foreignTeacherDetailURL = HOST + "editor/view";

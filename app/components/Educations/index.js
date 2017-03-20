@@ -51,7 +51,7 @@ class Collections extends Component {
     }
     state = {}
     static propTypes = {
-        ...ListView.propTypes,
+        // ...ListView.propTypes,
         items: PropTypes.array,
         style: PropTypes.object,
         noScroll: PropTypes.bool
@@ -76,7 +76,7 @@ class Collections extends Component {
         // } else {
             return (
                 <ListView
-                    renderScrollComponent={noScroll?(p) => <View {...p}></View>:ListView.defaultProps.renderScrollComponent}
+                    scrollEnabled={!noScroll}
                     contentContainerStyle={[style]}
                     dataSource={
                         new ListView.DataSource({
@@ -98,6 +98,7 @@ class Collections extends Component {
                 <Hr marginTop={0}
                     marginBottom={0}
                     color={'#e5e5e5'}
+                    key={i}
                 />
             )
         }

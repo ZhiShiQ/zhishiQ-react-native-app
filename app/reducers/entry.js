@@ -10,11 +10,17 @@ const initialState = {
         phone: '',
         verify: '',
         pwd: '',
-        src: ''
+        src: '',
+
+        isVerifySent: false,
+        leftSecond: 60,
+        isFetching: false
     },
     login: {
         user: "",
         pwd: '',
+
+        isFetching: false
     }
 };
 

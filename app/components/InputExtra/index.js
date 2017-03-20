@@ -73,6 +73,8 @@ class InputExtra extends Component {
             inputProps, labelStyle} = this.props;
         const {onChangeText, ...rest} = inputProps;
 
+        const Touchable = onRight? TouchableOpacity: View
+
         return (
             <View style={[sty.main, style]}>
                 {label && <Text style={[sty.label, labelStyle]}>{label}</Text>}
@@ -84,14 +86,14 @@ class InputExtra extends Component {
                     },
                     ...rest
                 })}
-                {rText && <TouchableOpacity
-                    style={sty.rBtn}
+                {rText && <Touchable
+                    style={[sty.rBtn, ]}
                     onPress={onRight}
                 >
                     <View>
-                        <Text style={sty.rText}>{rText}</Text>
+                        <Text style={[sty.rText, !onRight && {color: '#ccc'}]}>{rText}</Text>
                     </View>
-                </TouchableOpacity>}
+                </Touchable>}
             </View>
         )
     }

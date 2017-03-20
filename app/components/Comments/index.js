@@ -45,6 +45,7 @@ class Comments extends Component {
         const {style, items, noScroll, ...rest} = this.props
         return (
             <ListView
+                enableEmptySections
                 /*renderScrollComponent={noScroll?(p) => <View {...p}/>:ListView.defaultProps.renderScrollComponent}*/
                 contentContainerStyle={[style]}
                 renderRow={this._renderRow}
@@ -62,7 +63,7 @@ class Comments extends Component {
     _renderSeparator(a, i) {
         const {length} = this.props.items
         // if (i!=length-1)
-            return <View style={{
+            return <View key={i} style={{
                 height: 10,
             }}></View>
     }

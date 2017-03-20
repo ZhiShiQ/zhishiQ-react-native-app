@@ -95,7 +95,7 @@ class ForeignTeacherDetailPage extends Component {
         } = this.props;
 
         return (
-            <View>
+            <View style={{flex: 1}}>
                 <ScrollView
                     scrollEnable={this.state.scrollEnable}
                     scrollEventThrottle={100}
@@ -107,7 +107,7 @@ class ForeignTeacherDetailPage extends Component {
                         } else if (this._activeTab == 1) {
                         }
                     }}
-                    contentContainerStyle={[sty.main, {paddingBottom: 45}]}
+                    contentContainerStyle={[sty.main]}
                 >
                 {this.header}
                 <ScrollTab
@@ -176,10 +176,10 @@ class ForeignTeacherDetailPage extends Component {
                 foreign_teacher_detail: {base: {id}, detail: { intro='', selfIntro='', educations, experiences, services}}}, actions
         } = this.props;
 
-        const items = services.map(({...r}) => ({
+        const items = services.map(({...r}, i) => ({
             ...r, onBtnPress: () => {
                 this.initialModalForm();
-                actions.abroadExpertBuyFormModalOpen();
+                actions.abroadExpertBuyFormModalOpen(i);
             },
         }));
 
@@ -270,7 +270,7 @@ class ForeignTeacherDetailPage extends Component {
     _renderExperienceSep(i, a) {
         if (i!=a.length-1)
             return (
-                <View style={{backgroundColor: '#e5e5e5', height: .5, alignSelf: 'stretch'}}></View>
+                <View key={i} style={{backgroundColor: '#e5e5e5', height: .5, alignSelf: 'stretch'}}></View>
             )
     }
 

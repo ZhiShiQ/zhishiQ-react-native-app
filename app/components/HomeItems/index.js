@@ -47,6 +47,7 @@ class HomeItems extends Component {
 
         return (
             <ListView
+                enableEmptySections
                 renderScrollComponent={noScroll?(p) => <View {...p}/>:ListView.defaultProps.renderScrollComponent}
                 contentContainerStyle={[sty.main, style]}
                 renderRow={this._renderRow}
@@ -64,7 +65,7 @@ class HomeItems extends Component {
     _renderSeparator(a, i) {
         const {bottomSep} = this.props;
         if (i != this.props.items.length-1 || bottomSep)
-            return <Hr color="#e5e5e5" marginBottom={0}></Hr>
+            return <Hr key={i} color="#e5e5e5" marginBottom={0}></Hr>
     }
     _renderRow({onRemove, key, ...data}, s, i) {
         const {swipout} = this.props;

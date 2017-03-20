@@ -25,8 +25,8 @@ export default StyleSheet.create({
         width: rectSize,
         height: rectSize,
         // flex: 1,
-        borderRadius: rectSize/2,
-        backgroundColor: '#ccc',
+        // borderRadius: rectSize/2,
+        // backgroundColor: '#ccc',
     },
     text: {
         marginTop: 10,

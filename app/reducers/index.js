@@ -25,4 +25,5 @@ export default combineReducers({
     abroad_expert: require('./abroad_expert').default,
     order_confirm: require('./order_confirm').default,
     home: require('./home').default,
+    messages: require('./messages').default,
 })

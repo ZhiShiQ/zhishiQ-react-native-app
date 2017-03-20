@@ -52,8 +52,8 @@ class BottomBtns extends Component {
             <View
                 style={{
                     flexDirection: 'row',
-                    position: 'absolute',
-                    bottom: 0,
+                    // position: 'absolute',
+                    // bottom: 0,
                 }}
             >
                 {

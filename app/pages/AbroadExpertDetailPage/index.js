@@ -94,7 +94,7 @@ class AbroadExpertDetailPage extends Component {
             }, actions
         } = this.props;
         return (
-            <View>
+            <View style={{flex: 1}}>
                 <ScrollView
                     scrollEnable={this.state.scrollEnable}
                     scrollEventThrottle={100}
@@ -106,7 +106,7 @@ class AbroadExpertDetailPage extends Component {
                         } else if (this._activeTab == 1) {
                         }
                     }}
-                    contentContainerStyle={[sty.main, {paddingBottom: 45}]}
+                    contentContainerStyle={[sty.main]}
                 >
                     {this.header}
                     <ScrollTab

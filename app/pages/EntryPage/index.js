@@ -18,6 +18,7 @@ import {Actions} from 'react-native-router-flux';
 import * as Animatable from 'react-native-animatable';
 import sty from './style';
 import {QQ_COLORFUL, WB_COLORFUL, WX_COLORFUL, BACK_ICON} from '../../helpers/resource'
+import {checkSigned} from '../../helpers'
 
 import InputExtra from '../../components/InputExtra';
 import InputExtras from '../../components/InputExtras';
@@ -34,6 +35,8 @@ class EntryPage extends Component {
     }
 
     componentWillMount() {
+        checkSigned()
+            .then(f => f && Actions.tabbar({type: "replace"}));
     }
 
     componentDidMount() {
@@ -121,6 +124,7 @@ class EntryPage extends Component {
 
     get loginPage() {
         const {store: {entry: {login, activeIndex}}, actions} = this.props;
+        const {isFetching} = login;
         return (
             <View style={{flex: 1}}>
             <InputExtras
@@ -150,6 +154,7 @@ class EntryPage extends Component {
                 renderFooter={() =>
                     <View style={{marginTop: 28}}>
                         <BlockButton
+                            disabled={isFetching}
                             title={" 登录 "}
                             onPress={this._onSignIn}
                         />
@@ -163,30 +168,33 @@ class EntryPage extends Component {
 
     _onSignIn() {
         const {store: {entry: {login, activeIndex}}, actions} = this.props;
-        Actions.tabbar({type: "replace"})
         actions.fetchSignIn()
             .then(f => f && Actions.tabbar({type: "replace"}));
     }
 
     _onSignUp() {
         const {store: {entry: {login, activeIndex}}, actions} = this.props;
-        actions.fetchSignIn()
-            .then(f => f && Actions.tabbar({type: "replace"}));
+        actions.fetchSignUp()
+            // .then(f => f && Actions.tabbar({type: "replace"}));
     }
 
     get regPage() {
         const {store: {entry: {reg, activeIndex}}, actions} = this.props;
+        const {leftSecond, isVerifySent, isFetching} = reg;
         return (
             <InputExtras
                 renderHeader={() => <View style={sty.top}></View>}
                 ref="inputs"
                 items={[{
                     label: "＋86",
-                    rText: "发送验证码",
-                    onRight: null,
+                    rText: !isVerifySent?"发送验证码":"重新发送("+leftSecond+"s)",
+                    onRight: !isVerifySent? () => {
+                        actions.fetchVerify();
+                    } : null,
                     inputProps: {
                         defaultValue: reg.phone,
                         placeholder: "手机号码",
+                        keyboardType: "numeric",
                         placeholderTextColor: "",
                         onChangeText: (text) => actions.setEntryRegPhone(text)
                     }
@@ -227,6 +235,7 @@ class EntryPage extends Component {
                         />
                         <BlockButton
                             title={" 注册 "}
+                            disabled={isFetching}
                             onPress={this._onSignUp}
                         />
                     </View>

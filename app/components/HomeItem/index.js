@@ -97,7 +97,7 @@ class HomeItem extends Component {
                                     flex: 1
                                 }]}>
                                 {bottomKeys.map((k, i) =>
-                                    <Text style={sty.bottomText}>{k} {bottomValues[i]}   </Text>
+                                    <Text key={i} style={sty.bottomText}>{k} {bottomValues[i]}   </Text>
                                 )}
                             </Text>
                             {price!=null && <Text style={[{

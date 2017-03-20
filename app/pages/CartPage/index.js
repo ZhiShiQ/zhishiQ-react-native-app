@@ -83,13 +83,13 @@ class CartPage extends Component {
                         <Text style={style.save}>已节省：{saveSum}</Text>
                     </View>
                     <TouchableHighlight
-                        style={style.done}
-                        onPress={() => {
+                        style={[style.done, selectedNum>0&&{backgroundColor: '#fc6d34'}]}
+                        onPress={selectedNum > 0 ? () => {
                             actions.simplePayModalOpen();
-                        }}
+                        }: null}
                     >
                         <View>
-                            <Text style={style.doneText}>结算({selectedNum})</Text>
+                            <Text style={[style.doneText, selectedNum>0&&{color: '#fff'}]}>结算({selectedNum})</Text>
                         </View>
                     </TouchableHighlight>
                 </View>

@@ -54,3 +54,6 @@ fastlane/report.xml
 fastlane/Preview.html
 fastlane/screenshots
 /stream.js
+/jsonp.html
+/type.ts
+/type.js

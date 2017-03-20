@@ -29,7 +29,7 @@ export default StyleSheet.create({
     },
     rBtn: {
         flex: 0,
-        maxWidth: 100,
+        // maxWidth: 100,
         // paddingRight: 14,
     },
     rText: {

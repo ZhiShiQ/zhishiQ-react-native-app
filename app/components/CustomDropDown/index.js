@@ -114,7 +114,7 @@ class CustomDropDown extends Component {
         dynamicTitle: PropTypes.bool,
         selectedIndex: PropTypes.number,
         selectedStyle: PropTypes.object,
-        textStyle: PropTypes.object,
+        textStyle: PropTypes.oneOfType(PropTypes.object, PropTypes.array),
         itemTextKey: PropTypes.string,
         modalStyle: PropTypes.object,
         getModalStyle: PropTypes.func,

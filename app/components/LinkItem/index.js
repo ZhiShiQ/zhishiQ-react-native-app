@@ -41,9 +41,9 @@ class LinkItem extends Component {
     };
     state = {};
     static propTypes = {
-        leftText: React.PropTypes.string.isRequired,
+        leftText: React.PropTypes.string,
         rightText: React.PropTypes.string,
-        showBorder: React.PropTypes.oneOf(["top", "both", "bottom"]),
+        showBorder: React.PropTypes.oneOf(["top", "both", "bottom", null, '', false]),
         borderColor: React.PropTypes.string,
         style: React.PropTypes.object,
         leftStyle: React.PropTypes.object,

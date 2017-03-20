@@ -15,12 +15,12 @@ const initialState = {
 };
 
 export default function (state=initialState, action) {
-    let newState = {...state};
+    let newState = fromJS(state);
     const {type, ...rest} = action;
     switch (type) {
         case $.ORDER_CONFIRM_ROOT_SET:
-            return {...newState, ...rest}
+            return newState.merge(rest).toJS();
         default:
-            return newState;
+            return newState.toJS();
     }
 }

@@ -115,7 +115,6 @@ class CommentStar extends Component {
                                 fontWeight: "bold"
                             }}>{rate}</Text>
                             <View style={{
-                                textAlign: 'right',
                                 alignItems: 'center',
                                 flex: 1,
                                 justifyContent: 'flex-end',

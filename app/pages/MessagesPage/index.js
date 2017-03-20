@@ -38,15 +38,12 @@ class MessagesPage extends Component {
     state = {}
     static propTypes = {}
     render() {
-        const {...props} = this.props;
-        const items = [{
-            time: '12月20号12:12',
-            content: '内容是什么内容是什么内容是什么内容内容内容是什么内容是什么内容是什么内容内容内容是什么内容是什么内容是什么内容内容',
-            name: 'Ethan Andrews',
-            avatar: {},
-            active: true,
-            onPress: () => Actions.chat({params: {name: 'Ethan Andrews'}})
-        }];
+        const {store: {messages: {messages}}} = this.props;
+        const items = messages.map(x => ({
+            ...x,
+            onPress: () => Actions.chat({params: {name: x.name}})
+        }));
+
 
         return (
             <View style={{flex: 1}}>

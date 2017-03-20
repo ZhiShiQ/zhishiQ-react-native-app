@@ -41,7 +41,7 @@ export default function (state=initialState, action) {
     const {type, ...rest} = action;
     switch (type) {
         case $.SET_MY_ACTIVE_COLLECTION_TAB:
-            return {...newState, activeIndex: rest.index};
+            return fromJS(newState).update('activeIndex', rest.index).toJS();
         case $.MY_COLLECTION_PEOPLE_REMOVE_BY_INDEX:
             return fromJS(newState).removeIn(['people', rest.index]).toJS();
         case $.MY_COLLECTION_SERVICES_REMOVE_BY_INDEX:

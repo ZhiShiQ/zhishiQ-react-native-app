@@ -24,6 +24,7 @@ import {open, sep} from '../../helpers'
 import Carousel from '../../components/Carousel';
 import HrFlexLayout from '../../components/HrFlexLayout';
 import HomeItems from '../../components/HomeItems';
+import Loading from '../../components/Loading';
 
 
 @autobind
@@ -33,6 +34,8 @@ class HomePage extends Component {
     }
 
     componentWillMount() {
+        const {actions, store: {home: {isFirst}}} = this.props;
+        isFirst && actions.fetchHomePage({reset: true})
     }
 
     componentDidMount() {
@@ -55,7 +58,9 @@ class HomePage extends Component {
     }
 
     static defaultProps = {}
-    state = {}
+    state = {
+
+    }
     static propTypes = {}
 
     _onRefresh() {
@@ -67,7 +72,24 @@ class HomePage extends Component {
         const {
             actions, store: {
             home: {
-                sliders, singlePicture
+                sliders, singlePicture,
+                isRefreshing, isFirst, isFetching
+            }
+        }
+        } = this.props;
+        if (isFirst && isFetching) {
+            return <Loading />;
+        } else {
+            return this.renderMain();
+        }
+    }
+
+    renderMain () {
+        const {
+            actions, store: {
+            home: {
+                sliders, singlePicture,
+                isRefreshing
             }
         }
         } = this.props;
@@ -75,7 +97,7 @@ class HomePage extends Component {
             <ScrollView
                 refreshControl={
                     <RefreshControl
-                        refreshing={this.state.refreshing}
+                        refreshing={isRefreshing}
                         onRefresh={this._onRefresh}
                     />
                 }
@@ -85,13 +107,13 @@ class HomePage extends Component {
                     style={{justifyContent: 'center', alignSelf: 'center'}}
                 >
                     {sliders.map(({thumbnail, route, type}, i) => (
-                        <TouchableOpacity
+                        <TouchableOpacity key={i}
                             style={{backgroundColor: '#fff', alignItems: 'center', justifyContent: 'center'}}
                             onPress={() => {
                                 this.routeHandle({route, type});
                             }}
                         >
-                            <Image resizeMode={'cover'} source={thumbnail}/>
+                            <Image style={{alignSelf: 'stretch', flex: 1}} resizeMode={'center'} source={thumbnail}/>
                         </TouchableOpacity>
                     ))}
                 </Carousel>
@@ -107,7 +129,7 @@ class HomePage extends Component {
                     style={{height: 120, backgroundColor: '#fff'}}
                     onPress={() => this.routeHandle(singlePicture)}
                 >
-                    <Image source={singlePicture.thumbnail} />
+                    <Image resizeMode={"cover"} style={{alignSelf: 'stretch', flex: 1}} source={singlePicture.thumbnail} />
                 </TouchableOpacity>
                 {this.sep()}
                 {this.hotteacher}
@@ -183,24 +205,26 @@ class HomePage extends Component {
                     }).cloneWithRows(activities)}
                     renderRow={(data, s, i) => (
                         <ListView
+                            key={i}
                             scrollEnabled={false}
                             contentContainerStyle={{justifyContent: 'space-between', flexDirection: 'row'}}
                             dataSource={new ListView.DataSource({
                                 rowHasChanged: (r1, r2) => !Map(r1).equals(Map(r2))
                             }).cloneWithRows(data)}
-                            renderRow={(data) => (
+                            renderRow={(data, s, i) => (
                                 <TouchableOpacity
+                                    key={i}
                                     style={{flex: 1, height: imgHeight, backgroundColor: '#ccc'}}
                                     onPress={() => this.routeHandle(data)}
                                 >
-                                    <Image source={data.thumbnail}/>
+                                    <Image style={{alignSelf: 'stretch', flex: 1}} resizeMode={'center'} source={data.thumbnail}/>
                                 </TouchableOpacity>
                             )}
                             renderSeparator={(s, i) => i != data.length - 1 &&
-                            <View style={{width: 10, flex: 0}}></View>}
+                            <View key={i} style={{width: 10, flex: 0}}></View>}
                         />
                     )}
-                    renderSeparator={(s, i) => i != activities.length - 1 && this.sep(true)}
+                    renderSeparator={(s, i) => i != activities.length - 1 && this.sep(true, null, { key: i })}
                 />
             </View>
         )
@@ -220,24 +244,25 @@ class HomePage extends Component {
                 dataSource={new ListView.DataSource({
                     rowHasChanged: (r1, r2) => !Map(r1).equals(Map(r2))
                 }).cloneWithRows(subItems)}
-                renderRow={({name, thumbnail, type, route}) => (
+                renderRow={({name, thumbnail, type, route}, s, i) => (
                     <TouchableOpacity
+                        key={i}
                         style={{flex: 1, alignItems: 'center', paddingVertical: 15}}
                         onPress={null}
                     >
-                        <Image style={{flex: 1}} resizeMode={"cover"} source={thumbnail}/>
+                        <Image style={{alignSelf: 'stretch', flex: 1}} resizeMode={'center'} source={thumbnail}/>
                         <Text style={sty.horText}>{name}</Text>
                     </TouchableOpacity>
                 )}
                 renderSeparator={(a, i) =>
-                i != subItems.length - 1 && <View style={{height: 60, width: 1, backgroundColor: '#e5e5e5'}}></View>
+                i != subItems.length - 1 && <View key={i} style={{height: 60, width: 1, backgroundColor: '#e5e5e5'}}></View>
                 }
             />
         )
     }
 
-    sep(noBorder, style) {
-        return sep(noBorder, style)
+    sep(noBorder, style, props) {
+        return sep(noBorder, style, props)
     }
 
     get cirbtns() {
@@ -254,12 +279,14 @@ class HomePage extends Component {
                 dataSource={new ListView.DataSource({
                     rowHasChanged: (r1, r2) => !Map(r1).equals(Map(r2))
                 }).cloneWithRows(mainItems)}
-                renderRow={({name, thumbnail, type, route}, i) => (
+                renderRow={({name, thumbnail, type, route}, s, i) => (
                     <TouchableOpacity
                         key={i}
                         style={sty.container}
                     >
-                        <View style={sty.rect}></View>
+                        <View style={sty.rect}>
+                            <Image style={{alignSelf: 'stretch', flex: 1}} resizeMode={'center'} source={thumbnail}/>
+                        </View>
                         <Text style={sty.text}>{name}</Text>
                     </TouchableOpacity>
                 )}

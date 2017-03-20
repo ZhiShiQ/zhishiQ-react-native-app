@@ -62,33 +62,55 @@ export const _debugger = (obj) => {
 import React from 'react';
 import {View, StyleSheet} from 'react-native';
 
-export const sep = (noBorder, style) => {
+export const sep = (noBorder, style, props) => {
     return <View style={[{
         height: 10,
         borderTopWidth: StyleSheet.hairlineWidth,
         borderBottomWidth: StyleSheet.hairlineWidth,
         borderColor: '#e5e5e5'
-    }, noBorder ? {borderColor: 'transparent'} : {}, style]}></View>
+    }, noBorder ? {borderColor: 'transparent'} : {}, style]} {...props}></View>
 }
+
 
 import {set, get, remove} from './storage';
+const memStorage = {}
+
+
 
 export async function setToken (token) {
+    memStorage['token'] = token;
     return await set('@token', token);
 }
-export async function getToken () {
-    return await get('@token');
+
+export function getTokenSync () {
+    return memStorage['token'];
 }
-export async function removeToken (token) {
+
+export async function getToken () {
+    const token = await get('@token');
+    memStorage['token'] = token;
+    return token;
+}
+export async function removeToken () {
+    delete memStorage['token'];
     return await remove('@token');
 }
 export async function checkSigned () {
+    if (memStorage['token']) {
+        return !!memStorage['token'];
+    }
     const t = await getToken();
     return !!t;
 }
-export async function getTokenHeader() {
+export async function getTokenJson () {
     return {
         authorization: await getToken()
+    };
+}
+
+export function getTokenJsonSync() {
+    return {
+        authorization: getTokenSync()
     };
 }
 

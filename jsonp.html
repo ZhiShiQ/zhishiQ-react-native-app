@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div id="div1">sss</div>
+<script src="http://localhost:3689?hello"></script>
+<script>
+//var xml=new XMLHttpRequest();
+//xml.open("get","http://localhost:3689?hello!!",true);
+//xml.onreadystatechange = function(){
+//    if(xml.readyState==4&&xml.status==200)
+//    {
+//        document.getElementById("div1").innerHTML=xml.responseText;
+//    }
+//};
+//xml.send();
+
+</script>
+<div style="width: 100%; height: 100%; background-color: #33b5e5">
+sss
+</div>
+
+<style>
+    tbody tr:nth-child(2n){
+        background-color: #eee;
+    }
+    tbody tr:hover {
+        background-color: yellow;
+    }
+    tbody tr:nth-child(2n+1){
+        background-color: #fff;
+    }
+</style>
+
+<table>
+    <tbody>
+    <tr>
+        <td>1</td>
+        <td>2</td>
+        <td>3</td>
+    </tr>
+    <tr>
+        <td>1</td>
+        <td>2</td>
+        <td>3</td>
+    </tr>
+    <tr>
+        <td>1</td>
+        <td>2</td>
+        <td>3</td>
+    </tr>
+    </tbody>
+</table>
+</body>
+
+<script>
+    function randInt(bound) {
+        return (bound*Math.random())>>0
+    }
+
+    function randColor() {
+        var r = randInt(256).toString(16),
+            g = randInt(256).toString(16),
+            b = randInt(256).toString(16);
+        return `#${r}${g}${b}` // => "#"+r+g+b;
+    }
+
+    function traverse (dom) {
+        dom = dom || document.body;
+        var doms = [].slice.call(dom.children);
+        var callee = arguments.callee;
+        doms.forEach((dom, i) => {
+            dom.style.outline = "2px "+randColor()+" dashed";
+            callee(dom);
+        })
+    }
+
+    function traverse_2 (dom) {
+        dom = dom || document.body;
+        var doms = [].slice.call(dom.children);
+        var out = [];
+
+        while (doms.length !== 0) {
+            var first = doms.shift();
+            if (first.clientWidth > 50 && first.clientHeight > 50) {
+                out.push(first);
+            }
+            doms = doms.concat([].slice.call(first.children));
+        }
+        return out;
+    }
+
+
+</script>
+
+</html>

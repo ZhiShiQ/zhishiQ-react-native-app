@@ -74,6 +74,11 @@ const initialState = {
         route: 'http://blog.moyuyc.xyz', type: 'url'
     },
 
+    singlePicture2: {
+        thumbnail: {},
+        route: 'http://blog.moyuyc.xyz', type: 'url'
+    },
+
     hotTeachers: [{
         title: "艺术与设计类申请咨询（英国）",
         tags: ["其他", "选校", "生活", "无效退款"],
