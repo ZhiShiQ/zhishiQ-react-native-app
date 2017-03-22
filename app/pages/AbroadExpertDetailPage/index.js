@@ -41,15 +41,15 @@ class AbroadExpertDetailPage extends Component {
     }
 
     componentWillMount() {
+    }
+
+    componentDidMount() {
         const {
             store: {
                 abroad_expert_detail: {isFetching, base: {avatar, id, name, content, tags, clients, rate, reviews}, detail, service, comment}
             }, actions
         } = this.props;
         actions.fetchAbroadExpertDetail(id);
-    }
-
-    componentDidMount() {
     }
 
     componentWillReceiveProps(newProps) {
@@ -112,7 +112,9 @@ class AbroadExpertDetailPage extends Component {
                     <ScrollTab
                         onChangeTab={({i}) => {
                             this._activeTab = +i;
-                            i == 1 && isCommentFirst && actions.fetchAbroadExpertCommentDetail(id);
+                            i == 1 && isCommentFirst &&
+                                actions.fetchAbroadExpertCommentDetail(id);
+
                         }}
                         tabContainerStyle={{flex: 1, alignItems: 'center'}}
                         tabBarTextStyle={{fontSize: 15, fontWeight: 'normal'}}

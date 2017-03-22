@@ -34,9 +34,9 @@ export const fetchSignIn = () => {
                         clearTimeout(timer);
                         emit(resetEntryRegVerify())
                     }
-                    emit(setEntryLoginIsFetching(false))
                     return setToken(json.data.auth_key)
                         .then((a) => {
+                            emit(setEntryLoginIsFetching(false))
                             return true;
                         });
                 }
@@ -73,11 +73,9 @@ export const fetchSignUp = () => {
                         clearTimeout(timer);
                         emit(resetEntryRegVerify());
                     }
-                    emit(setEntryRegIsFetching(false))
-
-
                     return setToken(json.data.auth_key)
                         .then((a) => {
+                            emit(setEntryRegIsFetching(false))
                             return true;
                         });
                 }
@@ -156,3 +154,5 @@ export const resetEntryRegVerify = () => (emit, getState) => {
 export const setEntryLoginIsFetching = (isFetching) => _t($.SET_ENTRY_LOGIN, {isFetching})
 export const setEntryLoginPwd = (pwd) => _t($.SET_ENTRY_LOGIN, {pwd})
 export const setEntryLoginUser = (user) => _t($.SET_ENTRY_LOGIN, {user})
+
+export const setEntryIsChecked = (isChecked) => _t($.SET_ENTRY_ROOT, {keys: ["isChecked"], data: isChecked})

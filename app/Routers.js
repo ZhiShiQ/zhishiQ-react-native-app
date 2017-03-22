@@ -62,6 +62,7 @@ import ForeignTeacherDetailPage from './pages/ForeignTeacherDetailPage';
 import ResetPwdByMailPage from './pages/ResetPwdByMailPage';
 import ServiceClausePage from './pages/ServiceClausePage';
 import OrderConfirmPage from './pages/OrderConfirmPage';
+import SettingPage from './pages/SettingPage';
 
 import TabIcon from './components/TabIcon';
 import NavigationDrawer from './components/NavigationDrawer';
@@ -264,9 +265,13 @@ class Routers extends React.Component {
 
     get abroadExpertForm() {
         const {
-            store: {common: {abroadExpertForm: {
+            store: {
+                common: {
+                    abroadExpertForm: {
                         items, index, name, thumbnail
-                    }}}, actions
+                    }
+                }
+            }, actions
         } = this.props;
         return (
             <View style={{paddingTop: 20, flex: 1, backgroundColor: '#fff'}}>
@@ -283,10 +288,15 @@ class Routers extends React.Component {
                           }
                           renderRow={(x, s, i) =>
                               <TouchableHighlight key={i}
-                                  style={{marginVertical: 6, marginHorizontal: 15, borderRadius: 6, overflow: 'hidden'}}
-                                  onPress={() => {
-                                      actions.setAbroadExpertFormIndex(i);
-                                  }}
+                                                  style={{
+                                                      marginVertical: 6,
+                                                      marginHorizontal: 15,
+                                                      borderRadius: 6,
+                                                      overflow: 'hidden'
+                                                  }}
+                                                  onPress={() => {
+                                                      actions.setAbroadExpertFormIndex(i);
+                                                  }}
                               >
                                   <View style={[{
                                       padding: 10
@@ -437,11 +447,12 @@ class Routers extends React.Component {
                                icon={TabIcon}>
                             <Scene key="tab_mine" component={conn(MinePage)} title="我的"
                                    navigationBarStyle={{borderBottomColor: 'transparent'}}
-                                   onLeft={() => alert()}
                                    hideTabBar={false}
                                    leftTitle="设置"
-                                   onRight={() => alert()}
-                                   rightTitle="消息"/>
+                                   onLeft={() => Actions.setting()}
+                                   rightTitle="消息"
+                                   onRight={() => {}}
+                            />
                             <Scene key="totalOrder" component={conn(TotalOrderPage)}
                                    hideTabBar
                                    getTitle={(p) => {
@@ -570,6 +581,10 @@ class Routers extends React.Component {
                        getTitle={({params}) => (params ? params.name : '')}
                 />
 
+                <Scene key="setting" component={conn(SettingPage)}
+                       hideTabBar
+                       title="设置"
+                />
 
                 <Scene key="boughtDone"
                        backTitle=""

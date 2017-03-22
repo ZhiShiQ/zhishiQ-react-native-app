@@ -41,15 +41,15 @@ class ForeignTeacherDetailPage extends Component {
     }
 
     componentWillMount() {
+    }
+
+    componentDidMount() {
         const {
             store: {
                 foreign_teacher_detail: {isFetching, base: {avatar, id, name, content, tags, clients, rate, reviews}, detail, service, comment}
             }, actions
         } = this.props;
         actions.fetchForeignTeacherDetail(id);
-    }
-
-    componentDidMount() {
     }
 
     componentWillReceiveProps(newProps) {

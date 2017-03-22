@@ -27,6 +27,7 @@ export const HOME_PAGE_SET = uint();
 /* end of entry's home related */
 
 /* start of entry's logic related */
+export const SET_ENTRY_ROOT = uint();
 export const SET_ENTRY_ACTIVE_INDEX = uint();
 export const SET_ENTRY_REG = uint();
 export const SET_ENTRY_LOGIN = uint();

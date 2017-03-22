@@ -25,6 +25,7 @@ import InputExtras from '../../components/InputExtras';
 import BlockButton from '../../components/BlockButton';
 import HrFlexLayout from '../../components/HrFlexLayout';
 import ScrollTab from '../../components/ScrollTab';
+import Loading from '../../components/Loading';
 import SubMenu from '../../components/SubMenu';
 import ModalDropDown from 'react-native-modal-dropdown';
 
@@ -36,7 +37,10 @@ class EntryPage extends Component {
 
     componentWillMount() {
         checkSigned()
-            .then(f => f && Actions.tabbar({type: "replace"}));
+            .then(f => {
+                !f && this.props.actions.setEntryIsChecked(true)
+                || Actions.tabbar({type: "replace"});
+            });
     }
 
     componentDidMount() {
@@ -69,20 +73,24 @@ class EntryPage extends Component {
     static propTypes = {}
 
     render() {
-        const {store: {entry: {reg, activeIndex}}, actions} = this.props;
-        const a = ["reg", "login"];
+        const {store: {entry: {reg, activeIndex, isChecked}}, actions} = this.props;
+        const a = ["login", "reg"];
+        if (!isChecked) {
+            return (<Loading/>)
+        }
         return (
             <View style={sty.main}>
                 <ScrollTab
                     page={a.indexOf(activeIndex)}
+                    initialPage={0}
                     style={{flex: 1}}
-                    onChangeTab={({i}) => actions.setEntryActiveIndex(a[+i])}
+                    onChangeTab={({i}) => {actions.setEntryActiveIndex(a[+i])}}
                 >
-                    <View style={{flex: 1}} tabLabel="注册">
-                        {this.regPage}
-                    </View>
                     <View style={{flex: 1}} tabLabel="登录">
                         {this. loginPage}
+                    </View>
+                    <View style={{flex: 1}} tabLabel="注册">
+                        {this.regPage}
                     </View>
                 </ScrollTab>
 
@@ -133,7 +141,7 @@ class EntryPage extends Component {
                 items={[{
                     label: "帐号",
                     inputProps: {
-                        defaultValue: login.user,
+                        value: login.user,
                         placeholder: "注册邮箱、用户名或手机号码",
                         placeholderTextColor: "",
                         onChangeText: (text) => actions.setEntryLoginUser(text)
@@ -143,7 +151,7 @@ class EntryPage extends Component {
                     rText: "忘记密码",
                     onRight: () => Actions.resetPwdByPhone(),
                     inputProps: {
-                        defaultValue: login.pwd,
+                        value: login.pwd,
                         placeholder: "请输入密码",
                         secureTextEntry: true,
                         placeholderTextColor: "",

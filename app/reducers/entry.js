@@ -1,11 +1,12 @@
 /**
  * Created by moyu on 2017/2/26.
  */
-import {Map, List, Set} from 'immutable';
+import {Map, List, Set, fromJS} from 'immutable';
 import * as $ from '../constant';
 
 const initialState = {
     activeIndex: 'login',
+    isChecked: false,
     reg: {
         phone: '',
         verify: '',
@@ -17,8 +18,8 @@ const initialState = {
         isFetching: false
     },
     login: {
-        user: "",
-        pwd: '',
+        user: "13240261691",
+        pwd: '123456',
 
         isFetching: false
     }
@@ -28,6 +29,8 @@ export default function (state=initialState, action) {
     let newState = {...state};
     const {type, ...rest} = action;
     switch (type) {
+        case $.SET_ENTRY_ROOT:
+            return fromJS(newState).setIn(rest.keys, rest.data).toJS();
         case $.SET_ENTRY_ACTIVE_INDEX:
             return {...newState, activeIndex: rest.index}
         case $.SET_ENTRY_REG:
