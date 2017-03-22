@@ -51,7 +51,7 @@ class Carousel extends Component {
             <View  onLayout={this._onLayoutDidChange}>
                 <LoopedCarousel
                     bullets
-                    delay={2000}
+                    delay={4000}
                     bulletStyle={{backgroundColor: 'rgba(255,255,255,.6)'}}
                     chosenBulletStyle={{backgroundColor: '#ea5502'}}
                     style={[this.state.size, style]}

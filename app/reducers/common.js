@@ -7,6 +7,10 @@ import * as $ from '../constant';
 const initialState = {
     openModal: false,
     modalType: 'referer',
+
+    referer: {
+        target: '',
+    },
     abroadExpertForm: {
         items: [{
             leftText: "加拿大留学生活学习",
@@ -34,6 +38,8 @@ export default function (state=initialState, action) {
             return {...newState, modalType: rest._type}
         case $.ABROAD_EXPERT_FORM_SET:
             return {...newState, abroadExpertForm: {...newState.abroadExpertForm, ...rest}};
+        case $.MODAL_REFERER_SET:
+            return fromJS(newState).setIn(['referer'].concat(rest.keys), rest.data).toJS();
         default:
             return newState;
     }

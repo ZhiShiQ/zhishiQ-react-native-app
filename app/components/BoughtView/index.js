@@ -72,7 +72,7 @@ class BoughtView extends Component {
 
     render() {
         const {onPress, style, btnTitle, onBtnPress, btnDisabled, title, thumbnail, prompt, state, content, price, disCount} = this.props
-        const Touchable = btnDisabled ? TouchableWithoutFeedback : TouchableHighlight;
+        const Touchable = btnDisabled ? View : TouchableOpacity;
         const stateMap = {
             'ing': ["进行中", "服务进行中"], 'wait': ["待反馈", "提交反馈"]
         };
@@ -105,11 +105,13 @@ class BoughtView extends Component {
                     <View style={sty.bottomContainer}>
                     <Touchable
                         diabled={btnDisabled}
-                        onPress={btnDisabled?null:onBtnPress} >
-                        <View style={[
-                            {borderRadius: 3, paddingVertical: 6, paddingHorizontal: 10, backgroundColor: '#fff'},
+                        onPress={btnDisabled?null:onBtnPress}
+                        style={[{borderRadius: 3, paddingVertical: 6, paddingHorizontal: 10, backgroundColor: '#fff'},
                             state === 'ing' && {borderWidth: 1, borderColor: '#848484'},
-                            state === 'wait' && {backgroundColor: '#fc6d34'},
+                            state === 'wait' && {backgroundColor: '#fc6d34'},]}
+                    >
+                        <View style={[
+
                         ]}>
                             <Text style={[sty.btnText,
                                 state === 'ing' && {color: '#848484'},

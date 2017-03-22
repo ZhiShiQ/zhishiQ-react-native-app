@@ -19,6 +19,7 @@ export const DURATION = 300;
 export const SET_COMMON_MODAL_OPEN = uint();
 export const SET_COMMON_MODAL_TYPE = uint();
 export const ABROAD_EXPERT_FORM_SET = uint();
+export const MODAL_REFERER_SET = uint();
 /* end of my common' logic related */
 
 

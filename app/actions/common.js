@@ -18,3 +18,5 @@ export const setAbroadExpertFormIndex = (index) => _t($.ABROAD_EXPERT_FORM_SET, 
 export const setAbroadExpertFormName = (name) => _t($.ABROAD_EXPERT_FORM_SET, {name});
 export const setAbroadExpertFormThumbnail = (thumbnail) => _t($.ABROAD_EXPERT_FORM_SET, {thumbnail});
 
+export const setRefererTarget = (target) => _t($.MODAL_REFERER_SET, {keys: ['target'], data: target});
+

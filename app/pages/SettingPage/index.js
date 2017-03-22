@@ -55,12 +55,12 @@ class SettingPage extends Component {
     componentWillUnmount() {
     }
 
-    static defaultProps = {}
-    state = {}
-    static propTypes = {}
+    static defaultProps = {};
+    state = {};
+    static propTypes = {};
 
     render() {
-        const {...props} = this.props
+        const {...props} = this.props;
 
         return (
             <View style={[sty.main, {backgroundColor: '#F7F7F7'}]}>

@@ -213,7 +213,7 @@ class CustomDropDown extends Component {
     }
 
     render() {
-        const {textStyle, icon, withoutTitle, hideBackground, zIndex, style} = this.props;
+        const {textStyle, icon, withoutTitle, containerStyle, hideBackground, zIndex, style} = this.props;
         const {title} = this.state;
 
         if (withoutTitle) {
@@ -224,7 +224,7 @@ class CustomDropDown extends Component {
             )
         }
         return (
-            <View style={[{flex: 1}, zIndex!=null&&{zIndex}]}
+            <View style={[{flex: 1}, zIndex!=null&&{zIndex}, containerStyle]}
                   onLayout={(e) => this._btnLayout = e.nativeEvent.layout}
             >
                 <TouchableOpacity
@@ -234,6 +234,7 @@ class CustomDropDown extends Component {
                         justifyContent: 'center', alignItems: 'center'
                     }, style]}
                     onPress={this._btnPress}>
+
                         <Text
                             numberOfLines={1}
                             ellipsizeMode={'tail'}

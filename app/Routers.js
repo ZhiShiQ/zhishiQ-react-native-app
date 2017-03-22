@@ -63,7 +63,10 @@ import ResetPwdByMailPage from './pages/ResetPwdByMailPage';
 import ServiceClausePage from './pages/ServiceClausePage';
 import OrderConfirmPage from './pages/OrderConfirmPage';
 import SettingPage from './pages/SettingPage';
+import QRCodePage from './pages/QRCodePage';
 
+
+// import QRCodeScreen from './components/QRCodeScreen';
 import TabIcon from './components/TabIcon';
 import NavigationDrawer from './components/NavigationDrawer';
 import Modal from './components/Modal';
@@ -169,7 +172,13 @@ class Routers extends React.Component {
         } = this.props;
         switch (modalType) {
             case 'referer':
-                return {buttons: [{title: "已打开网址，点击扫描"}], height: 442};
+                return {buttons: [{
+                    title: "已打开网址，点击扫描",
+                    onPress: () => {
+                        actions.setCommonModalIsOpen(false);
+                        Actions.qrCode();
+                    }
+                }], height: 442};
             case 'discount':
                 return {buttons: [{title: "查看我的优惠券"}, {title: "取消／确定"}], height: 470}
             case 'abroadExpertBuy':
@@ -221,7 +230,11 @@ class Routers extends React.Component {
                     modalType === 'referer' &&
                     <CirImageWithText
                         size={120}
-                        text={['亲爱的用户，可用电脑浏览器打开网址', '进行更多操作哦：', 'address']}
+                        text={[
+                            '亲爱的用户，移动端提交反馈功能正在开发中哦，',
+                            '可用电脑浏览器打开网址操作：',
+                            {text: 'sao.zhishiq.com', props: {selectable: true}}
+                        ]}
                     />
                 }
                 {modalType === 'discount' && <Text>我的优惠券</Text>}
@@ -584,6 +597,11 @@ class Routers extends React.Component {
                 <Scene key="setting" component={conn(SettingPage)}
                        hideTabBar
                        title="设置"
+                />
+
+                <Scene key="qrCode" component={conn(QRCodePage)}
+                       hideTabBar
+                       title="扫一扫"
                 />
 
                 <Scene key="boughtDone"

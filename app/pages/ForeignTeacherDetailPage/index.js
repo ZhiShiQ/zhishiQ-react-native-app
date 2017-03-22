@@ -37,7 +37,7 @@ import CollapsibleService from '../../components/CollapsibleService';
 @autobind
 class ForeignTeacherDetailPage extends Component {
     constructor(props) {
-        super(props)
+        super(props);
     }
 
     componentWillMount() {

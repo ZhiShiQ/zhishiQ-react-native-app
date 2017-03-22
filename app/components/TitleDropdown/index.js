@@ -62,6 +62,7 @@ class TitleDropdown extends Component {
         this.dropdown.show();
         this.setState({show: true});
     }
+
     render() {
         const {options, title, showTitleIcon, onSelect, style, selectedIndex, ...rest} = this.props
         const {show} = this.state;

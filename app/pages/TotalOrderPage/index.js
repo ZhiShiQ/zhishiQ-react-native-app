@@ -59,7 +59,13 @@ class TotalOrderPage extends Component {
             {title: '待评价', onPress: null},
             {title: '已取消', onPress: null},
         ],
-        boughtList: [{
+    }
+    state = {}
+    static propTypes = {}
+
+    render() {
+        const {store, menus, actions} = this.props;
+        const boughtList = [{
             title: 'sds', active: true, thumbnail: {},
             state: 'ing', prompt: '2016-09-12', disCount: 300,
             price: 99999,
@@ -72,14 +78,12 @@ class TotalOrderPage extends Component {
         }, {
             title: 'sds', active: true, thumbnail: {},
             state: 'wait', prompt: '2016-09-12', disCount: 300,
-            price: 99999, content: 'CONTENT'
-        }]
-    }
-    state = {}
-    static propTypes = {}
+            price: 99999, content: 'CONTESss', onBtnPress: () => {
+                actions.setRefererTarget("target");
+                actions.refererModalOpen();
+            }
+        }];
 
-    render() {
-        const {store, menus, boughtList} = this.props;
         return (
             /*<View sty={sty.main}>*/
                 <ScrollTab

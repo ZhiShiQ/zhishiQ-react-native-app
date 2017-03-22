@@ -40,6 +40,10 @@
     <false/>
     <key>NSLocationWhenInUseUsageDescription</key>
     <string/>
+
+    <key>NSCameraUsageDescription</key>
+    <string>Camera usage description</string>
+
     <key>NSAppTransportSecurity</key>
     <dict>
       <key>NSAllowsArbitraryLoads</key>
