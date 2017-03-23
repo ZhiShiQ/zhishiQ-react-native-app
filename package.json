@@ -31,7 +31,8 @@
     "react-redux": "^5.0.3",
     "redux": "^3.6.0",
     "redux-multi": "^0.1.12",
-    "redux-thunk": "^2.2.0"
+    "redux-thunk": "^2.2.0",
+    "url": "^0.11.0"
   },
   "devDependencies": {
     "babel-eslint": "^7.1.1",

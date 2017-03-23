@@ -89,10 +89,15 @@ class AbroadExpertDetailPage extends Component {
         const {
             store: {
                 abroad_expert_detail: {
-                    isFetching, isCommentFetching, isCommentFirst, base: {id, avatar, name, content, tags, clients, rate, reviews},
+                    isFetching, isFullFetch, isCommentFetching, isCommentFirst, base: {id, avatar, name, content, tags, clients, rate, reviews},
                     detail, comment: {currentPage, hasMore}}
             }, actions
         } = this.props;
+
+        if (isFetching && isFullFetch) {
+            return <Loading />;
+        }
+
         return (
             <View style={{flex: 1}}>
                 <ScrollView

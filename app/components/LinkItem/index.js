@@ -3,6 +3,7 @@ import {Map} from 'immutable';
 import autobind from 'autobind-decorator';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+import Entypo from 'react-native-vector-icons/Entypo';
 
 import {
     Text,
@@ -38,6 +39,7 @@ class LinkItem extends Component {
         showIcon: true,
         iconName: "angle-right",
         iconSize: 14,
+        rightStyle: {flex: 0},
     };
     state = {};
     static propTypes = {
@@ -98,6 +100,9 @@ class LinkItem extends Component {
         const {style, leftText, emphasize, iconSize, rightStyle, leftStyle, rightTextStyle, iconColor, leftComponent, rightComponent, showIcon, onPress, rightText, iconName, showBorder, borderColor} = this.props;
         if (iconName === 'check') {
             return <MaterialCommunityIcon style={sty.rightIcon} name={iconName} size={iconSize} color={iconColor || "#4a4a4a"} />
+        }
+        if (iconName === 'plus') {
+            return <Entypo style={sty.rightIcon} name={iconName} size={iconSize} color={iconColor || "#4a4a4a"} />
         }
         return <Icon style={sty.rightIcon} name={iconName} size={iconSize} color={iconColor || "#C4C4C4"} />
     }

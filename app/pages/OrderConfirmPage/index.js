@@ -66,8 +66,15 @@ class OrderConfirmPage extends Component {
                 <ScrollView>
                     <LinkItem showIcon={false}
                               emphasize
-                              leftText={"主题咨询："+topic}
-                              leftStyle={{flex: 5}}
+                              leftComponent={
+                                  <View style={{flexDirection: 'row'}}>
+                                      <Text style={{color: '#4a4a4a'}}>主题咨询：</Text>
+                                      <Text numberOfLines={1} ellipsizeMode={"tail"}
+                                            style={{color: '#4a4a4a', flex: 1}}>
+                                          {topic}
+                                      </Text>
+                                  </View>
+                              }
                               rightTextStyle={{color: '#ea5502', fontWeight: '600'}} rightText={"￥"+price}/>
                     <InputExtra ref="what" style={{marginTop: 16}} labelStyle={{width: 80}} label={"我想咨询"}
                                 inputProps={{placeholder: '输入想咨询的内容'}}/>

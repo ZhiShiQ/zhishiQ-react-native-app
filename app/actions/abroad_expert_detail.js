@@ -29,12 +29,23 @@ export const fetchAbroadExpertDetail = (id) => {
                         price: o.price
                     });
                     emit([
+                        setAbroadExpertDetailBase({
+                            avatar: {uri: o.advisor_avatar},
+                            tags: o.tags,
+                            content: o.advisor_brief,
+                            name: o.advisor_name,
+                            advisor_id: o.advisor_id,
+                            rate: o.advisor_average_rate,
+                            reviews: o.advisor_review_count,
+                            clients: o.advisor_client_count
+                        }),
                         setAbroadExpertDetailExperiences(o.experiences.map(mapExperience)),
                         setAbroadExpertDetailEducations(o.educations.map(mapEduc)),
                         setAbroadExpertDetailAwards(o.awards.map(mapAward)),
                         setAbroadExpertDetailSummary(o.advisor_summary),
                         setAbroadExpertDetailDescription(o.advisor_description),
-                        setAbroadExpertDetailServices(o.other_topics.map(mapTopic))
+                        setAbroadExpertDetailServices(o.other_topics.map(mapTopic)),
+                        setAbroadExpertFullFetch(false)
                     ]);
                 }
                 emit(setAbroadExpertDetailFetching(false));
@@ -76,7 +87,7 @@ export const fetchAbroadExpertCommentDetail = (id, page=1, opts={}) => {
                             ? setAbroadExpertDetailCommentList(o.reviews.map((x, i) => mapComment(x, i, id)))
                             : setAbroadExpertDetailCommentList(
                                 o.reviews.map((x, i) => mapComment(x, i, id)), true
-                            )
+                            ),
                     ]);
                 }
                 emit(setAbroadExpertDetailCommentFetching(false));
@@ -135,6 +146,7 @@ const mapComment = ({name, content, avatar, course_id, created_at, topic_name, .
 
 
 export const setAbroadExpertDetailFetching = (fetching) => _t($.ABROAD_EXPERT_DETAIL_FETCHING_SET, {fetching})
+export const setAbroadExpertFullFetch = (isFullFetch) => _t($.ABROAD_EXPERT_FULL_FETCHING_SET, {isFullFetch})
 export const setAbroadExpertDetailCommentFetching = (fetching) => _t($.ABROAD_EXPERT_DETAIL_COMMENT_FETCHING_SET, {fetching})
 export const setAbroadExpertDetailCommentAverage = (average) => _t($.ABROAD_EXPERT_DETAIL_COMMENT_AVERAGE_SET, {average})
 export const setAbroadExpertDetailCommentLevels = (list) => _t($.ABROAD_EXPERT_DETAIL_COMMENT_LEVELS_SET, {list})

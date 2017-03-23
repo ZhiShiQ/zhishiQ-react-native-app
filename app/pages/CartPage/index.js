@@ -74,7 +74,7 @@ class CartPage extends Component {
                     <View style={style.ctl}>
                         <Radio
                             onPress={() => actions.setAllCartItemSelected( !(selectedNum===items.length) )}
-                            selected={selectedNum===items.length}>
+                            selected={selectedNum!==0 && selectedNum===items.length}>
                         </Radio>
                         <Text style={style.ctlText}>全选</Text>
                     </View>

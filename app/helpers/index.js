@@ -60,7 +60,9 @@ export const _debugger = (obj) => {
 
 
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
+import {View, StyleSheet, Alert} from 'react-native';
+
+export const alert = (title, message) => {Alert.alert(title && title.toString() || "title", message);}
 
 export const sep = (noBorder, style, props) => {
     return <View style={[{

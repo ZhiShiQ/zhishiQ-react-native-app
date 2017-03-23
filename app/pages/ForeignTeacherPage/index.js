@@ -85,11 +85,10 @@ class ForeignTeacherPage extends Component {
                     ? <Loading />
                     : hasMore ? <ListView
                         enableEmptySections
-                        contentContainerStyle={{backgroundColor: '#fff', paddingHorizontal: 15}}
                         dataSource={
                             new ListView.DataSource({
                                 rowHasChanged: (r1, r2) => !Map(r1).equals(Map(r2))
-                            }).cloneWithRows(list)
+                            }).cloneWithRows(list.map(x=>({...x, style: { paddingHorizontal: 15, backgroundColor: '#fff' }})))
                         }
                         renderRow={this._renderRow}
                         renderSeparator={(s, i) => this._renderSeparator(i ,list)}
@@ -106,7 +105,7 @@ class ForeignTeacherPage extends Component {
                          }*/
                         renderFooter={() => {
                             if (isFetching) {
-                                return hasMore ? <Loading /> : NoMore;
+                                return hasMore ? <Loading style={{backgroundColor: 'transparent'}} /> : NoMore;
                             }
                         }}
                     /> : NoMore

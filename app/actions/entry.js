@@ -34,7 +34,7 @@ export const fetchSignIn = () => {
                         clearTimeout(timer);
                         emit(resetEntryRegVerify())
                     }
-                    return setToken(json.data.auth_key)
+                    return setToken(JSON.stringify({auth_key: json.data.auth_key, id: json.data.id}))
                         .then((a) => {
                             emit(setEntryLoginIsFetching(false))
                             return true;
@@ -73,7 +73,7 @@ export const fetchSignUp = () => {
                         clearTimeout(timer);
                         emit(resetEntryRegVerify());
                     }
-                    return setToken(json.data.auth_key)
+                    return setToken(JSON.stringify({auth_key: json.data.auth_key, id: json.data.id}))
                         .then((a) => {
                             emit(setEntryRegIsFetching(false))
                             return true;
@@ -109,8 +109,8 @@ export const fetchVerify = () =>
                 } else {
                     if (timer!=null) {
                         clearTimeout(timer);
-                        emit(resetEntryRegVerify())
                     }
+                    emit(resetEntryRegVerify())
                     timer = setTimeout(function () {
                         const {entry: { reg: {leftSecond} } } = getState();
                         if (leftSecond === 0 && timer!=null) {
@@ -147,7 +147,7 @@ export const setEntryRegLeftSecondDecrease = () => (emit, getState) => {
     return emit(setEntryRegLeftSecond(leftSecond-1));
 };
 
-export const resetEntryRegVerify = () => (emit, getState) => {
+const resetEntryRegVerify = () => (emit, getState) => {
     return emit([setEntryRegIsVerifySent(false), setEntryRegLeftSecond(60)]);
 }
 

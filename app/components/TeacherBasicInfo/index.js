@@ -104,7 +104,8 @@ class TeacherBasicInfo extends Component {
     }
 
     get renders() {
-        const {style, listValues, listKeys, thumbnail, name, content, tags, appointNum, average, commentNum} = this.props
+        let {style, listValues, listKeys, thumbnail, name, content, tags, appointNum, average, commentNum} = this.props
+        listValues = listValues.map(x => !isNaN(x)&& x.toString().includes('.')?Number(x).toFixed(1):x)
         return listKeys ? listKeys.map((k, i) => (
             <View style={sty.tag} key={i}>
                 <Text>{listValues[i]}</Text>

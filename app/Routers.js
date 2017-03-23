@@ -164,9 +164,8 @@ class Routers extends React.Component {
         const {
             store: {
                 common: {
-                    openModal, modalType, abroadExpertForm: {
-                    items, index,
-                }
+                    openModal, modalType, abroadExpertForm: {items, index,},
+                    timeRange: {deletable, start, end}
                 }
             }, actions
         } = this.props;
@@ -179,6 +178,15 @@ class Routers extends React.Component {
                         Actions.qrCode();
                     }
                 }], height: 442};
+            case 'timeRange':
+                return {buttons: [{
+                    title: "保存",
+                    onPress: () => {
+                        actions.setCommonModalIsOpen(false);
+                    }
+                }, deletable ? {title: "删除", onPress: () => {
+                        actions.setCommonModalIsOpen(false);
+                    }} : undefined], height: 400+(deletable?30:0)}
             case 'discount':
                 return {buttons: [{title: "查看我的优惠券"}, {title: "取消／确定"}], height: 470}
             case 'abroadExpertBuy':
@@ -233,15 +241,40 @@ class Routers extends React.Component {
                         text={[
                             '亲爱的用户，移动端提交反馈功能正在开发中哦，',
                             '可用电脑浏览器打开网址操作：',
-                            {text: 'sao.zhishiq.com', props: {selectable: true}}
+                            {text: 'www.zhishiq.com/sao', props: {selectable: true}}
                         ]}
                     />
                 }
+                {modalType === 'timeRange' && this.timeRange}
                 {modalType === 'discount' && <Text>我的优惠券</Text>}
                 {modalType === 'abroadExpertBuy' && this.abroadExpertForm}
                 {modalType === 'abroadExpertCart' && this.abroadExpertForm}
                 {modalType === 'simplePay' && this.simplePlay}
             </Modal>
+        )
+    }
+
+    get timeRange() {
+        const {store: {common: {timeRange: {deletable, start, end}}}, actions} = this.props;
+        // TODO: DatePickerIOS => only ios
+        const {DatePickerIOS} = require('react-native');
+        return (
+            <View style={{}}>
+                <DatePickerIOS
+                    textColor="#4a4a4a"
+                    style={{fontSize: 14}}
+                    date={start}
+                    onDateChange={(date) => actions.setTimeRangeStart(date)}
+                    mode={"time"}
+                />
+                <Text style={{alignSelf: 'center'}}>至</Text>
+                <DatePickerIOS
+                    textColor="red"
+                    date={end}
+                    onDateChange={(date) => actions.setTimeRangeEnd(date)}
+                    mode={"time"}
+                />
+            </View>
         )
     }
 
@@ -414,12 +447,7 @@ class Routers extends React.Component {
                                    rightTitle="搜索"
                                    getRightTitle={() => searchIcon}
                                    onRight={() => alert()}/>
-                            <Scene key="abroadExpertDetail" component={conn(AbroadExpertDetailPage)}
-                                   hideTabBar
-                                   type={ActionConst.PUSH_OR_POP}
-                                   getTitle={({params}) => (params ? params.title : '')}
-                                   getRightTitle={() => shareIcon}
-                                   onRight={() => alert()}/>
+
                             <Scene key="foreignTeacher" component={conn(ForeignTeacherPage)}
                                    type={ActionConst.PUSH_OR_POP}
                                    hideTabBar
@@ -428,14 +456,6 @@ class Routers extends React.Component {
                                    getRightTitle={() => searchIcon}
                                    onRight={() => alert()}
                                    backTitle=""/>
-
-                            <Scene key="foreignTeacherDetail" component={conn(ForeignTeacherDetailPage)}
-                                   type={ActionConst.PUSH_OR_POP}
-                                   hideTabBar
-                                   title=""
-                                   rightTitle="分享"
-                                   onRight={() => alert()}
-                            />
 
                             <Scene key="orderConfirm" component={conn(OrderConfirmPage)}
                                    type={ActionConst.PUSH_OR_POP}
@@ -500,12 +520,6 @@ class Routers extends React.Component {
                                 key="wayOfContact"
                                 titile="联系方式"
                                 component={conn(WayOfContactPage)}
-                            />
-                            <Scene
-                                key="timezoneAndFreeTime"
-                                titile="时区与空闲时间"
-                                backTitle=""
-                                component={conn(TimezoneNFreeTimePage)}
                             />
                             <Scene
                                 title="基本资料"
@@ -581,6 +595,19 @@ class Routers extends React.Component {
                     </Scene>
                 </Scene>
 
+                <Scene key="abroadExpertDetail" component={conn(AbroadExpertDetailPage)}
+                       hideTabBar
+                       type={ActionConst.PUSH_OR_POP}
+                       getTitle={({params}) => (params ? params.title : '')}
+                       getRightTitle={() => shareIcon}
+                       onRight={() => alert()}/>
+
+                <Scene key="foreignTeacherDetail" component={conn(ForeignTeacherDetailPage)}
+                       type={ActionConst.PUSH_OR_POP}
+                       hideTabBar
+                       title=""
+                       rightTitle="分享"
+                       onRight={() => alert()}/>
 
                 <Scene key="messages" component={conn(MessagesPage)}
                        hideTabBar
@@ -611,6 +638,13 @@ class Routers extends React.Component {
                        component={conn(BoughtDonePage)}
                 />
 
+                <Scene
+                    key="timezoneAndFreeTime"
+                    title="时区与空闲时间"
+                    backTitle=""
+                    hideTabBar
+                    component={conn(TimezoneNFreeTimePage)}
+                />
 
             </Scene>
         )

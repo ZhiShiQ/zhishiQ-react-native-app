@@ -32,7 +32,6 @@ class BlockButton extends Component {
     componentWillUnmount() {}
     static defaultProps = {
         backgroundColor: '#ea5502',
-        title: 'title',
         disabledStyle: {backgroundColor: '#ccc'},
         disabledTextStyle: {color: '#4a4a4a'},
         color: '#FFF',
@@ -51,7 +50,10 @@ class BlockButton extends Component {
     }
     render() {
         const {title, disabled, full, onPress, backgroundColor, disabledTextStyle, disabledStyle, color} = this.props
-        const Container = disabled ? View : TouchableOpacity
+        const Container = disabled ? View : TouchableOpacity;
+        if (!title) {
+            return null;
+        }
         return (
                 <Container
                     disabled={disabled}

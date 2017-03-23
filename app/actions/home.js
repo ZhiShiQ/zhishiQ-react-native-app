@@ -66,7 +66,7 @@ const mapActivity = ({coverImage, ...r}) => ({
 
 const mapTopic = ({name, client_count, advisor_average_rate, advisor_avatar, ...r}) => ({
     ...r, client_count, advisor_average_rate, avatar: advisor_avatar,
-    title: name, bottomValues: [client_count, advisor_average_rate],
+    title: name, bottomValues: [advisor_average_rate, client_count],
     content: r.advisor_brief, thumbnail: {uri: advisor_avatar}
 });
 const mapBanner = ({coverImage, ...r}) => ({
@@ -74,7 +74,7 @@ const mapBanner = ({coverImage, ...r}) => ({
 });
 const mapEditor = ({name, avatar, client_count, advisor_average_rate, ...r}) => ({
     ...r, client_count, advisor_average_rate, avatar,
-    title: name, bottomValues: [client_count, advisor_average_rate],
+    title: name, bottomValues: [advisor_average_rate, client_count],
     content: r.brief, thumbnail: {uri: avatar}
 })
 

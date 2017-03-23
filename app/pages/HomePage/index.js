@@ -156,28 +156,52 @@ class HomePage extends Component {
     }
 
     get hotteacher() {
-        const {store: {home: {hotTeachers}}} = this.props;
+        const {store: {home: {hotTeachers}}, actions} = this.props;
         return (
             <View style={{padding: 15, backgroundColor: '#fff'}}>
                 {this.renderMoreHead('热门导师', () => {
                     Actions.foreignTeacher();
                 })}
                 <HomeItems
-                    items={hotTeachers}
+                    items={hotTeachers.map(x => ({...x, onPress: () => {
+                        const newData = {
+                            ...x,
+                            avatar: x.thumbnail,
+                            name: x.advisor_name,
+                            clients: x.client_count,
+                            rate: x.advisor_average_rate,
+                            reviews: x.advisor_review_count
+                        }
+                        actions.setForeignTeacherDetailBase(newData);
+                        actions.setForeignTeacherFullFetch(true);
+                        Actions.foreignTeacherDetail();
+                    }}))}
                 />
             </View>
         )
     }
 
     get hottopic() {
-        const {store: {home: {recommendTopics}}} = this.props;
+        const {store: {home: {recommendTopics}}, actions} = this.props;
         return (
             <View style={{padding: 15, backgroundColor: '#fff'}}>
                 {this.renderMoreHead('推荐话题', () => {
                     Actions.abroadExpert();
                 })}
                 <HomeItems
-                    items={recommendTopics}
+                    items={recommendTopics.map(x => ({...x, onPress: () => {
+                        const newData = {
+                            ...x,
+                            name: x.advisor_name,
+                            avatar: x.thumbnail,
+                            clients: x.client_count,
+                            rate: x.advisor_average_rate,
+                            reviews: x.advisor_review_count
+                        }
+                        actions.setAbroadExpertDetailBase(newData);
+                        actions.setAbroadExpertFullFetch(true);
+                        Actions.abroadExpertDetail();
+                    }}))}
                 />
             </View>
         )
@@ -255,7 +279,7 @@ class HomePage extends Component {
                     </TouchableOpacity>
                 )}
                 renderSeparator={(a, i) =>
-                i != subItems.length - 1 && <View key={i} style={{height: 60, width: 1, backgroundColor: '#e5e5e5'}}></View>
+                    i != subItems.length - 1 && <View key={i} style={{height: 60, width: 1, backgroundColor: '#e5e5e5'}}></View>
                 }
             />
         )

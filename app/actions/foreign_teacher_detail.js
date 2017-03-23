@@ -19,11 +19,21 @@ export const fetchForeignTeacherDetail = (id) => {
                     alert(o.message);
                 } else {
                     emit([
+                        setForeignTeacherDetailBase({
+                            name: o.name,
+                            avatar: {uri: o.avatar},
+                            tags: o.tags,
+                            content: o.brief,
+                            rate: o.average_rate,
+                            reviews: o.review_count,
+                            clients: o.client_count
+                        }),
                         setForeignTeacherDetailExperiences(o.experiences.map(mapExperience)),
                         setForeignTeacherDetailEducations(o.educations.map(mapEduc)),
                         setForeignTeacherDetailSummary(o.summary),
                         setForeignTeacherDetailDescription(o.description),
-                        setForeignTeacherDetailServices(o.services.map(mapService))
+                        setForeignTeacherDetailServices(o.services.map(mapService)),
+                        setForeignTeacherFullFetch(false)
                     ]);
                 }
                 emit(setForeignTeacherDetailFetching(false));
@@ -167,6 +177,7 @@ export const setForeignTeacherDetailCommentTotal = (total) => _t($.FOREIGN_TEACH
 export const setForeignTeacherDetailCommentFirst = (first) => _t($.FOREIGN_TEACHER_DETAIL_COMMENT_FIRST_SET, {first})
 
 export const setForeignTeacherDetailBase = (base) => _t($.FOREIGN_TEACHER_DETAIL_BASE_SET, {base})
+export const setForeignTeacherFullFetch = (isFullFetch) => _t($.ABROAD_EXPERT_FULL_FETCHING_SET, {isFullFetch})
 export const setForeignTeacherDetailExperiences = (list) => _t($.FOREIGN_TEACHER_DETAIL_EXPERIENCE_SET, {list})
 export const setForeignTeacherDetailEducations = (list) => _t($.FOREIGN_TEACHER_DETAIL_EDUC_SET, {list})
 export const setForeignTeacherDetailSummary = (summary) => _t($.FOREIGN_TEACHER_DETAIL_SUMMARY_SET, {summary})

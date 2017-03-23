@@ -12,6 +12,7 @@ import {
     ScrollView,
 } from 'react-native';
 import ModalBox from 'react-native-modalbox';
+import EvilIcons from 'react-native-vector-icons/EvilIcons'
 
 import Button from 'react-native-button';
 import sty from './style';
@@ -39,32 +40,32 @@ class Modal extends Component {
     static defaultProps = {
         isOpen: false,
         buttons: [],
-        showClose: false
+        hiddenClose: false
     }
     static propTypes = {
         isOpen: PropTypes.bool,
         buttons: PropTypes.array,
         style: PropTypes.object,
         height: PropTypes.number,
-        showClose: PropTypes.bool,
+        hiddenClose: PropTypes.bool,
         closeStyle: PropTypes.object
     }
     open() {
         return this.modal.open();
     }
     close() {
-        return this.modal.open();
+        return this.modal.close();
     }
     render() {
-        const {isOpen, children, showClose, buttons, height, style, closeStyle, ...rest} = this.props;
-        const CloseBtn = <Button onPress={() => this.setState({isOpen: false})} style={[sty.btn, sty.btnModal, closeStyle]}>X</Button>;
+        const {isOpen, children, hiddenClose, buttons, height, style, closeStyle, ...rest} = this.props;
         return (
             <ModalBox
-                {...rest}
+                backdropPressToClose={true}
                 ref={r => this.modal = r}
                 isOpen={isOpen}
                 position={'bottom'}
                 style={[sty.main, style, height ? {height} : {}]}
+                {...rest}
             >
                 <View style={{alignSelf: 'stretch', flex: 1}}>
                 {children}
@@ -73,7 +74,14 @@ class Modal extends Component {
                         <BlockButton key={i} {...p} />
                     )}
                 </View>
-                {showClose ? CloseBtn : null}
+                    {!hiddenClose && <TouchableOpacity
+                        onPress={() => {
+                            this.close();
+                        }}
+                        style={{position: 'absolute', top: 6, right: 6, zIndex: 3, backgroundColor: 'transparent'}}
+                    >
+                        <EvilIcons size={30} name="close" color="#4a4a4a"/>
+                    </TouchableOpacity>}
                 </View>
             </ModalBox>
         )

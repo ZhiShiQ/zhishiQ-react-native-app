@@ -8,6 +8,7 @@ const initialState = {
     isFetching: true,
     isCommentFetching: true,
     isCommentFirst: true,
+    isFullFetch: false,
 
     base: {
         avatar: {uri: ""},
@@ -71,7 +72,7 @@ export default function (state=initialState, action) {
         case $.FOREIGN_TEACHER_DETAIL_COMMENT_CURR_SET:
             return fromJS(newState).setIn(['comment', 'currentPage'], rest.current).toJS();
         case $.FOREIGN_TEACHER_DETAIL_BASE_SET:
-            return fromJS(newState).set('base', rest.base).toJS();
+            return fromJS(newState).mergeIn(['base'], rest.base).toJS();
         case $.FOREIGN_TEACHER_DETAIL_SUMMARY_SET:
             return fromJS(newState).setIn(['detail', 'summary'], rest.summary).toJS();
         case $.FOREIGN_TEACHER_DETAIL_DESCRIPTION_SET:
@@ -84,6 +85,8 @@ export default function (state=initialState, action) {
             return fromJS(newState).setIn(['detail', 'services'], rest.list).toJS();
         case $.FOREIGN_TEACHER_DETAIL_COMMENT_FIRST_SET:
             return fromJS(newState).set('isCommentFirst', rest.first).toJS();
+        case $.ABROAD_EXPERT_FULL_FETCHING_SET:
+            return fromJS(newState).set('isFullFetch', rest.isFullFetch).toJS();
         default:
             return newState;
     }

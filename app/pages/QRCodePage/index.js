@@ -16,10 +16,13 @@ import {
 const {height, width} = Dimensions.get('window');
 import * as Animatable from 'react-native-animatable';
 import querystring from 'querystring';
-import {getToken} from '../../helpers';
+import {getToken, getTokenSync, _debugger, open} from '../../helpers';
+import {saoRedirect} from '../../helpers/remote-urls';
+import {parse} from 'url';
+
 import sty from './style';
-import QRCodeScreen from '../../components/QRCodeScreen'
-import Loading from '../../components/Loading'
+import QRCodeScreen from '../../components/QRCodeScreen';
+import Loading from '../../components/Loading';
 
 
 @autobind
@@ -62,14 +65,42 @@ class QRCodePage extends Component {
         )
     }
 
-    async _sendAuthKey(uid) {
-        alert(uid);
+    async _sendAuthKey(data) {
+        const obj = parse(data, true);
+        if (obj.pathname !== '/sao/wechat') {
+            open(obj.href);
+            return true;
+        }
         const {store: {common: {referer: {target}}}, actions} = this.props;
         const token = await getToken();
-        const query = querystring.stringify({auth_key: token, target, uid});
-        const remote = "";
-
-        // fetch(remote+"?"+query, {})
+        const tokenObj = JSON.parse(token);
+        const query = querystring.stringify({
+            auth_key: tokenObj.auth_key,
+            user_id: tokenObj.id,
+            redirect_url: 'http://blog.moyuyc.xyz',
+            id: obj.query.id,
+            code: obj.query.code
+        });
+        return fetch(saoRedirect, {
+            method: 'POST',
+            headers: {
+                'content-type': 'application/x-www-form-urlencoded'
+            },
+            body: query
+        })
+            .then(r => r.json())
+            .then(json => {
+                if (!json.success) {
+                    alert(json.message);
+                    return false;
+                } else {
+                    return true;
+                }
+            })
+            .catch(ex => {
+                _debugger(ex);
+                return false;
+            })
     }
 }
 

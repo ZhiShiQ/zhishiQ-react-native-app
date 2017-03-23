@@ -21,7 +21,7 @@ import BlockButton from '../../components/BlockButton';
 import ScrollTab from '../../components/ScrollTab';
 
 
-const LABEL_WIDTH = 86;
+import {LABEL_WIDTH} from '../ResetPwdByPhonePage';
 
 @autobind
 class ResetPwdByPhonePage extends Component {

@@ -8,6 +8,12 @@ const initialState = {
     openModal: false,
     modalType: 'referer',
 
+
+    timeRange: {
+        start: new Date(),
+        end: new Date(new Date() - (1000*60*60*24)),
+        deletable: false
+    },
     referer: {
         target: '',
     },
@@ -40,6 +46,9 @@ export default function (state=initialState, action) {
             return {...newState, abroadExpertForm: {...newState.abroadExpertForm, ...rest}};
         case $.MODAL_REFERER_SET:
             return fromJS(newState).setIn(['referer'].concat(rest.keys), rest.data).toJS();
+
+        case $.MODAL_TIME_RANGE_SET:
+            return fromJS(newState).setIn(['timeRange'].concat(rest.keys), rest.data).toJS();
         default:
             return newState;
     }

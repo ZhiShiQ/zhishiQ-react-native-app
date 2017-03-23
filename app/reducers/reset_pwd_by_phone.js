@@ -8,7 +8,10 @@ const initialState = {
     phone: '',
     verify: '',
     newPwd: '',
-    confirmPwd: ''
+    confirmPwd: '',
+    isFetching: false,
+    isVerifySent: false,
+    leftSecond: 60
 };
 
 export default function (state=initialState, action) {

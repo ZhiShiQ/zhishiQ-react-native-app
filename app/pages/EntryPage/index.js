@@ -211,6 +211,7 @@ class EntryPage extends Component {
                     inputProps: {
                         defaultValue: reg.verify,
                         placeholder: "输入验证码",
+                        keyboardType: "numeric",
                         placeholderTextColor: "",
                         onChangeText: (text) => actions.setEntryRegVerify(text)
                     }

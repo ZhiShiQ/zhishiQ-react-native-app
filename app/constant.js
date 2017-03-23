@@ -20,6 +20,7 @@ export const SET_COMMON_MODAL_OPEN = uint();
 export const SET_COMMON_MODAL_TYPE = uint();
 export const ABROAD_EXPERT_FORM_SET = uint();
 export const MODAL_REFERER_SET = uint();
+export const MODAL_TIME_RANGE_SET = uint();
 /* end of my common' logic related */
 
 
@@ -78,6 +79,8 @@ export const ABROAD_EXPERT_DETAIL_COMMENT_SUMMARY_SET = uint();
 export const ABROAD_EXPERT_DETAIL_COMMENT_HASMORE_SET = uint();
 export const ABROAD_EXPERT_DETAIL_COMMENT_AVERAGE_SET = uint();
 export const ABROAD_EXPERT_DETAIL_COMMENT_CURR_SET = uint();
+
+export const ABROAD_EXPERT_FULL_FETCHING_SET = uint();
 /* end of abroad_expert's logic related */
 
 
@@ -99,6 +102,8 @@ export const FOREIGN_TEACHER_DETAIL_COMMENT_SUMMARY_SET = uint();
 export const FOREIGN_TEACHER_DETAIL_COMMENT_HASMORE_SET = uint();
 export const FOREIGN_TEACHER_DETAIL_COMMENT_AVERAGE_SET = uint();
 export const FOREIGN_TEACHER_DETAIL_COMMENT_CURR_SET = uint();
+
+export const FOREIGN_TEACHER_FULL_FETCHING_SET = uint();
 /* end of foreign_teacher_detail's logic related */
 
 /* start of abroad_expert_detail's logic related */

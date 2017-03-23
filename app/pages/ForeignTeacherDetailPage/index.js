@@ -89,10 +89,13 @@ class ForeignTeacherDetailPage extends Component {
         const {
             store: {
                 foreign_teacher_detail: {
-                    isFetching, isCommentFetching, isCommentFirst, base: {id, avatar, name, content, tags, clients, rate, reviews},
+                    isFetching, isFullFetch, isCommentFetching, isCommentFirst, base: {id, avatar, name, content, tags, clients, rate, reviews},
                     detail, comment: {currentPage, hasMore}}
             }, actions
         } = this.props;
+        if (isFetching && isFullFetch) {
+            return <Loading/>
+        }
 
         return (
             <View style={{flex: 1}}>
