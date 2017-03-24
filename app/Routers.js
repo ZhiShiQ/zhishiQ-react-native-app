@@ -429,6 +429,39 @@ class Routers extends React.Component {
                                 onRight={() => Actions.messages()}
                                 rightTitle="消息"
                             />
+
+                            {/*duplicate*/}
+                            <Scene key="homeAbroadExpertDetail" component={conn(AbroadExpertDetailPage)}
+                                   hideTabBar
+                                   type={ActionConst.PUSH_OR_POP}
+                                   getTitle={({params}) => (params ? params.title : '')}
+                                   getRightTitle={() => shareIcon}
+                                   onRight={() => alert()}/>
+
+                            <Scene key="homeForeignTeacherDetail" component={conn(ForeignTeacherDetailPage)}
+                                   type={ActionConst.PUSH_OR_POP}
+                                   hideTabBar
+                                   title=""
+                                   rightTitle="分享"
+                                   onRight={() => alert()}/>
+
+                            <Scene key="homeAbroadExpert" component={conn(AbroadExpertPage)}
+                                   hideTabBar
+                                   type={ActionConst.PUSH_OR_POP}
+                                   title="留学行家咨询"
+                                   rightTitle="搜索"
+                                   getRightTitle={() => searchIcon}
+                                   onRight={() => alert()}/>
+
+                            <Scene key="homeForeignTeacher" component={conn(ForeignTeacherPage)}
+                                   type={ActionConst.PUSH_OR_POP}
+                                   hideTabBar
+                                   title="外籍文书顾问"
+                                   rightTitle="搜索"
+                                   getRightTitle={() => searchIcon}
+                                   onRight={() => alert()}
+                                   backTitle=""/>
+                            {/*duplicate end*/}
                         </Scene>
                         <Scene backButtonImage={backIcon} key="tab_service_main"
                                navigationBarStyle={styles.navigationBarStyle}
@@ -467,6 +500,20 @@ class Routers extends React.Component {
                                    hideTabBar
                                    title="服务条款"
                             />
+
+                            <Scene key="abroadExpertDetail" component={conn(AbroadExpertDetailPage)}
+                                   hideTabBar
+                                   type={ActionConst.PUSH_OR_POP}
+                                   getTitle={({params}) => (params ? params.title : '')}
+                                   getRightTitle={() => shareIcon}
+                                   onRight={() => alert()}/>
+
+                            <Scene key="foreignTeacherDetail" component={conn(ForeignTeacherDetailPage)}
+                                   type={ActionConst.PUSH_OR_POP}
+                                   hideTabBar
+                                   title=""
+                                   rightTitle="分享"
+                                   onRight={() => alert()}/>
                         </Scene>
                         <Scene backButtonImage={backIcon} key="tab_cart" component={conn(CartPage)} title="购物车"
                                navigationBarStyle={styles.navigationBarStyle}
@@ -594,20 +641,6 @@ class Routers extends React.Component {
                         </Scene>
                     </Scene>
                 </Scene>
-
-                <Scene key="abroadExpertDetail" component={conn(AbroadExpertDetailPage)}
-                       hideTabBar
-                       type={ActionConst.PUSH_OR_POP}
-                       getTitle={({params}) => (params ? params.title : '')}
-                       getRightTitle={() => shareIcon}
-                       onRight={() => alert()}/>
-
-                <Scene key="foreignTeacherDetail" component={conn(ForeignTeacherDetailPage)}
-                       type={ActionConst.PUSH_OR_POP}
-                       hideTabBar
-                       title=""
-                       rightTitle="分享"
-                       onRight={() => alert()}/>
 
                 <Scene key="messages" component={conn(MessagesPage)}
                        hideTabBar

@@ -32,6 +32,8 @@ import Hr from '../../components/Hr';
 import Loading from '../../components/Loading';
 
 const AnimatableLinkItems = Animatable.createAnimatableComponent(LinkItems)
+const AnimatableTextWithBgs = Animatable.createAnimatableComponent(TextWithBgs)
+const AnimatableCollapsibleItem = Animatable.createAnimatableComponent(CollapsibleItem)
 
 @autobind
 class AbroadExpertPage extends Component {
@@ -154,17 +156,18 @@ class AbroadExpertPage extends Component {
             waySelectedIndex = showItems.length-1;
         }
         return (
-            <View style={[{
-                position: 'absolute', top: 33, left: 0, right: 0,
-            }, expended && {backgroundColor: OPACITY_BG_CLR, height: deviceHeight,}]}>
-                <CollapsibleItem
+            <Animatable.View
+                style={[{
+                    position: 'absolute', top: 33, left: 0, right: 0,
+                }, expended && {backgroundColor: OPACITY_BG_CLR, height: deviceHeight,}]}>
+                <AnimatableCollapsibleItem
                     ref="collapsible"
                     activeOpacity={1}
                     onExpendOrColl={expended => this.setState({expended})}
-                    style={{
+                    style={[{
                         backgroundColor: '#fff',
                         borderBottomWidth: expended ? 0 : StyleSheet.hairlineWidth, borderColor: '#e5e5e5'
-                    }}
+                    }]}
                     control={
                         <TextWithBgs
                             style={{paddingLeft: 15, paddingTop: 8, paddingBottom: expended ? 6 : 8}}
@@ -190,8 +193,10 @@ class AbroadExpertPage extends Component {
                         />
                     }
                 >
-                    <TextWithBgs
-                        style={{paddingHorizontal: 15, paddingBottom: 8, backgroundColor: '#fff'}}
+                    <AnimatableTextWithBgs
+                        style={[
+                            {paddingHorizontal: 15, paddingBottom: 8, backgroundColor: '#fff', justifyContent: 'flex-start'},
+                        ]}
                         items={ways.slice(showNum).map((x, i) => (waySelectedIndex == i + showNum
                                 ? activeItem(x.title)
                                 : {
@@ -212,8 +217,8 @@ class AbroadExpertPage extends Component {
                             overflow: 'hidden'
                         }}
                     />
-                </CollapsibleItem>
-            </View>
+                </AnimatableCollapsibleItem>
+            </Animatable.View>
         )
     }
 

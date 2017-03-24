@@ -29,7 +29,7 @@ export const fetchAbroadExpertDetail = (id) => {
                         price: o.price
                     });
                     emit([
-                        setAbroadExpertDetailBase({
+                        getState().abroad_expert_detail.isFullFetch && setAbroadExpertDetailBase({
                             avatar: {uri: o.advisor_avatar},
                             tags: o.tags,
                             content: o.advisor_brief,

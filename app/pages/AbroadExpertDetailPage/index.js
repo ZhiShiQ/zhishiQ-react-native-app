@@ -49,7 +49,10 @@ class AbroadExpertDetailPage extends Component {
                 abroad_expert_detail: {isFetching, base: {avatar, id, name, content, tags, clients, rate, reviews}, detail, service, comment}
             }, actions
         } = this.props;
-        actions.fetchAbroadExpertDetail(id);
+        actions.setAbroadExpertDetailFetching(true);
+        setTimeout(() => {
+            actions.fetchAbroadExpertDetail(id);
+        }, 0);
     }
 
     componentWillReceiveProps(newProps) {
@@ -117,9 +120,13 @@ class AbroadExpertDetailPage extends Component {
                     <ScrollTab
                         onChangeTab={({i}) => {
                             this._activeTab = +i;
-                            i == 1 && isCommentFirst &&
-                                actions.fetchAbroadExpertCommentDetail(id);
-
+                            if (i == 1 && isCommentFirst) {
+                                actions.setAbroadExpertDetailCommentFetching(true);
+                                setTimeout(() => {
+                                    actions.setAbroadExpertDetailCommentFetching(false);
+                                    actions.fetchAbroadExpertCommentDetail(id);
+                                }, 0);
+                            }
                         }}
                         tabContainerStyle={{flex: 1, alignItems: 'center'}}
                         tabBarTextStyle={{fontSize: 15, fontWeight: 'normal'}}

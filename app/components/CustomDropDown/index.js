@@ -57,15 +57,15 @@ class CustomDropDown extends Component {
     componentWillUpdate(newProps, newState, newContext) {
         const animate = (height) => {
             if (newState.showDropdown)
-                this._modal.transitionTo({opacity: 1, height: height})
+                this._modal && this._modal.transitionTo({opacity: 1, height: height})
             else {
                 // this.setState({_hiddenModal: true})
-                // this._modal.transitionTo({opacity: 0})
+                this._modal.transitionTo({opacity: 0})
             }
         }
         const {modalStyle, getModalStyle} = this.props;
         if (newState.showDropdown !== this.state.showDropdown) {
-            // const flattedStyle =  StyleSheet.flatten([modalStyle, getModalStyle && getModalStyle(this._btnLayout)])
+            const flattedStyle =  StyleSheet.flatten([modalStyle, getModalStyle && getModalStyle(this._btnLayout)])
             // animate(flattedStyle.height || deviceHeight-(this._btnLayout.height+this._btnLayout.y));
         }
     }
@@ -160,7 +160,8 @@ class CustomDropDown extends Component {
                     ]}
                 >
                     {this._renderSeparator(null, -1)}
-                    <ListView
+                    <AnimatableListView
+                        duration={duration}
                         contentContainerStyle={[sty.dropdown]}
                         dataSource={
                             new ListView.DataSource({

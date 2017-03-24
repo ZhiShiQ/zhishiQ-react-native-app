@@ -160,7 +160,7 @@ class HomePage extends Component {
         return (
             <View style={{padding: 15, backgroundColor: '#fff'}}>
                 {this.renderMoreHead('热门导师', () => {
-                    Actions.foreignTeacher();
+                    Actions.homeForeignTeacher();
                 })}
                 <HomeItems
                     items={hotTeachers.map(x => ({...x, onPress: () => {
@@ -174,7 +174,7 @@ class HomePage extends Component {
                         }
                         actions.setForeignTeacherDetailBase(newData);
                         actions.setForeignTeacherFullFetch(true);
-                        Actions.foreignTeacherDetail();
+                        Actions.homeForeignTeacherDetail();
                     }}))}
                 />
             </View>
@@ -186,7 +186,7 @@ class HomePage extends Component {
         return (
             <View style={{padding: 15, backgroundColor: '#fff'}}>
                 {this.renderMoreHead('推荐话题', () => {
-                    Actions.abroadExpert();
+                    Actions.homeAbroadExpert();
                 })}
                 <HomeItems
                     items={recommendTopics.map(x => ({...x, onPress: () => {
@@ -200,7 +200,7 @@ class HomePage extends Component {
                         }
                         actions.setAbroadExpertDetailBase(newData);
                         actions.setAbroadExpertFullFetch(true);
-                        Actions.abroadExpertDetail();
+                        Actions.homeAbroadExpertDetail();
                     }}))}
                 />
             </View>

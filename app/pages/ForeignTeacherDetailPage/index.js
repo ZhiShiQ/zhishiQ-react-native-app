@@ -17,6 +17,7 @@ import * as Animatable from 'react-native-animatable';
 import Collapsible from 'react-native-collapsible';
 import sty from './style';
 import {splitText} from '../../helpers';
+import {NAV_BAR_HEIGHT} from '../../constant'
 import {upIcon, downIcon, starIcon} from '../../helpers/resource';
 
 import TeacherBasicInfo from '../../components/TeacherBasicInfo';
@@ -34,6 +35,7 @@ import Hr from '../../components/Hr';
 import Experience from '../../components/Experience';
 import CollapsibleService from '../../components/CollapsibleService';
 
+const SCROLL_TAB_HEIGHT = 40;
 @autobind
 class ForeignTeacherDetailPage extends Component {
     constructor(props) {
@@ -49,7 +51,10 @@ class ForeignTeacherDetailPage extends Component {
                 foreign_teacher_detail: {isFetching, base: {avatar, id, name, content, tags, clients, rate, reviews}, detail, service, comment}
             }, actions
         } = this.props;
-        actions.fetchForeignTeacherDetail(id);
+        actions.setForeignTeacherDetailFetching(true);
+        setTimeout(() => {
+            actions.fetchForeignTeacherDetail(id);
+        }, 0);
     }
 
     componentWillReceiveProps(newProps) {
@@ -73,7 +78,8 @@ class ForeignTeacherDetailPage extends Component {
     static defaultProps = {}
     state = {
         starCollapsed: true,
-        scrollEnable: true
+        scrollEnable: true,
+        tabSticky: false
     };
     static propTypes = {}
 
@@ -85,6 +91,38 @@ class ForeignTeacherDetailPage extends Component {
             contentSize.height - paddingToBottom;
     };
 
+    _onScroll_fetchComment(nativeEvent) {
+        const {
+            store: {
+                foreign_teacher_detail: {
+                    isFetching, isFullFetch, isCommentFetching, isCommentFirst, base: {id, avatar, name, content, tags, clients, rate, reviews},
+                    detail, comment: {currentPage, hasMore}}
+            }, actions
+        } = this.props;
+
+        if (this._activeTab == 1 && this.isCloseToBottom(nativeEvent)) {
+            if (!isCommentFetching) {
+                actions.fetchForeignTeacherCommentDetail(id, +currentPage+1);
+            }
+        } else if (this._activeTab == 1) {
+        }
+    }
+
+    _onMeasureTabs() {
+        const {tabSticky} = this.state;
+        const height = NAV_BAR_HEIGHT+SCROLL_TAB_HEIGHT;
+
+        /*this.refs.tabPos.measure && this.refs.tabPos.measure((ox, oy, width, height, px, py) => {
+            console.info(py);
+            if (py <= height && this.state.tabSticky != true) {
+                // reached
+                this.setState({tabSticky: true});
+            } else if (py >= height+50 && this.state.tabSticky != false) {
+                this.setState({tabSticky: false});
+            }
+        });*/
+    }
+
     render() {
         const {
             store: {
@@ -93,57 +131,104 @@ class ForeignTeacherDetailPage extends Component {
                     detail, comment: {currentPage, hasMore}}
             }, actions
         } = this.props;
+
         if (isFetching && isFullFetch) {
             return <Loading/>
         }
-
+        const {tabSticky} = this.state;
         return (
             <View style={{flex: 1}}>
-                <ScrollView
-                    scrollEnable={this.state.scrollEnable}
+                {!tabSticky && <ScrollView
+                    /*renderScrollComponent={(p) => this.state.scrollEnable && !tabSticky? ScrollView.defaultProps.renderScrollComponent(p): <View {...p} />}*/
+                    scrollEnable={this.state.scrollEnable/* && !tabSticky*/}
                     scrollEventThrottle={100}
                     onScroll={({nativeEvent}) => {
-                        if (this._activeTab == 1 && this.isCloseToBottom(nativeEvent)) {
-                            if (!isCommentFetching) {
-                                actions.fetchForeignTeacherCommentDetail(id, +currentPage+1);
-                            }
-                        } else if (this._activeTab == 1) {
-                        }
+                        this._onScroll_fetchComment(nativeEvent);
+                        this._onMeasureTabs();
                     }}
                     contentContainerStyle={[sty.main]}
                 >
-                {this.header}
+                    {this.header}
+                    {this.scrollTabView}
+                </ScrollView>}
+
+                {tabSticky &&
+                    this.scrollTabView
+                }
+                {isFetching ? null: this.fixBottom}
+            </View>
+        )
+    }
+
+    get scrollTabView() {
+        const {
+            store: {
+                foreign_teacher_detail: {
+                    isFetching, isFullFetch, isCommentFetching, isCommentFirst, base: {id, avatar, name, content, tags, clients, rate, reviews},
+                    detail, comment: {currentPage, hasMore}}
+            }, actions
+        } = this.props;
+        const {tabSticky} = this.state;
+
+        const Container = tabSticky? ScrollView : View;
+
+        return (
+            <View style={{flex: 1}}>
                 <ScrollTab
                     onChangeTab={({i}) => {
                         this._activeTab = +i;
-                        i == 1 && isCommentFirst && actions.fetchForeignTeacherCommentDetail(id);
+                        if (i == 1 && isCommentFirst) {
+                            actions.setForeignTeacherDetailCommentFetching(true);
+                            setTimeout(() => {
+                                actions.setForeignTeacherDetailCommentFetching(false);
+                                actions.fetchForeignTeacherCommentDetail(id);
+                            }, 0);
+                        }
                     }}
                     tabContainerStyle={{flex: 1, alignItems: 'center'}}
                     tabBarTextStyle={{fontSize: 15, fontWeight: 'normal'}}
-                    tabBarStyle={{height: 40}}
+                    tabBarStyle={[{height: SCROLL_TAB_HEIGHT},
+                        tabSticky && {
+                            position: 'absolute',
+                            top: 0, left: 0, right: 0,
+                            zIndex: 10
+                        }]}
                     initialPage={0}
                 >
-                    <View tabLabel="导师详情">
-
-                        {isFetching ? <Loading style={{flex: 1}}/> :
-                            <View>
+                    <View style={[this.state.tabSticky && {marginTop: SCROLL_TAB_HEIGHT, flex: 1}]} tabLabel="导师详情">
+                        {isFetching ? <Loading style={{}}/> :
+                            <Container
+                                renderScrollComponent={(p) => tabSticky? ScrollView.defaultProps.renderScrollComponent(p): <View {...p} />}
+                                onScroll={({nativeEvent}) => {
+                                    this._onMeasureTabs();
+                                }}
+                                contentContainerStyle={[sty.main]}
+                                scrollEventThrottle={100}
+                                scrollEnable={tabSticky}>
+                                <View ref="tabPos"></View>
                                 {this.sep()}
                                 {this.intro}
-                            </View>
+                            </Container>
                         }
                     </View>
-                    <View tabLabel={"用户评价"}>
-                        {isCommentFetching && isCommentFirst ? <Loading style={{flex: 1}}/> :
-                            <View>
+                    <View style={[this.state.tabSticky && {marginTop: SCROLL_TAB_HEIGHT, flex: 1}]} tabLabel={"用户评价"}>
+                        {isCommentFetching && isCommentFirst ? <Loading style={{}}/> :
+                            <Container
+                                renderScrollComponent={(p) => tabSticky? ScrollView.defaultProps.renderScrollComponent(p): <View {...p} />}
+                                onScroll={({nativeEvent}) => {
+                                    this._onScroll_fetchComment(nativeEvent);
+                                    this._onMeasureTabs();
+                                }}
+                                scrollEventThrottle={100}
+                                scrollEnable={tabSticky}>
+                                <View ref="tabPos"></View>
                                 {this.sep()}
                                 {this.comments}
                                 {this.commentList}
-                            </View>
+                            </Container>
                         }
                     </View>
                 </ScrollTab>
-                </ScrollView>
-                {isFetching ? null: this.fixBottom}
             </View>
         )
     }

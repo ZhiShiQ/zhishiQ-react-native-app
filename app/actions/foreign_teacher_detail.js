@@ -19,7 +19,7 @@ export const fetchForeignTeacherDetail = (id) => {
                     alert(o.message);
                 } else {
                     emit([
-                        setForeignTeacherDetailBase({
+                        getState().foreign_teacher_detail.isFullFetch && setForeignTeacherDetailBase({
                             name: o.name,
                             avatar: {uri: o.avatar},
                             tags: o.tags,

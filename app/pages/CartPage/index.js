@@ -5,13 +5,17 @@ import {
     Text,
     View,
     TouchableHighlight,
+    TouchableOpacity,
     Button
 } from 'react-native';
 
+import {DURATION} from '../../constant'
+import * as Animate from 'react-native-animatable';
 import style from './style';
-import Carts from '../../components/CartItems'
-import Radio from '../../components/Radio'
+import Carts from '../../components/CartItems';
+import Radio from '../../components/Radio';
 
+AnimateTouchableOpacity = Animate.createAnimatableComponent(TouchableOpacity);
 
 @autobind
 class CartPage extends Component {
@@ -67,14 +71,16 @@ class CartPage extends Component {
         const {store: {cart: {items}}, actions} = this.props;
         const {items: computedItems, saveSum, sum, selectedNum} = this.itemsWithFunc();
 
+        const Touchable = selectedNum === 0 ? View : TouchableOpacity;
+
         return (
             <View style={style.main}>
-                <Carts disableSwipe={false} items={computedItems} />
+                <Carts disableSwipe={false} items={computedItems}/>
                 <View style={style.bottomBar}>
                     <View style={style.ctl}>
                         <Radio
-                            onPress={() => actions.setAllCartItemSelected( !(selectedNum===items.length) )}
-                            selected={selectedNum!==0 && selectedNum===items.length}>
+                            onPress={() => actions.setAllCartItemSelected(!(selectedNum === items.length))}
+                            selected={selectedNum !== 0 && selectedNum === items.length}>
                         </Radio>
                         <Text style={style.ctlText}>全选</Text>
                     </View>
@@ -82,16 +88,24 @@ class CartPage extends Component {
                         <Text style={style.sum}>总计：{sum}</Text>
                         <Text style={style.save}>已节省：{saveSum}</Text>
                     </View>
-                    <TouchableHighlight
-                        style={[style.done, selectedNum>0&&{backgroundColor: '#fc6d34'}]}
+                    <Touchable
                         onPress={selectedNum > 0 ? () => {
-                            actions.simplePayModalOpen();
-                        }: null}
+                                actions.simplePayModalOpen();
+                            } : null}
                     >
-                        <View>
-                            <Text style={[style.doneText, selectedNum>0&&{color: '#fff'}]}>结算({selectedNum})</Text>
-                        </View>
-                    </TouchableHighlight>
+                        <Animate.View
+                            duration={DURATION}
+                            transition="backgroundColor"
+                            style={[style.done, {flex: 1},  selectedNum > 0 && {backgroundColor: '#fc6d34'}]}
+                        >
+                            <Animate.Text
+                                transition={["color"]}
+                                duration={DURATION}
+                                style={[style.doneText, selectedNum > 0 && {color: '#fff'}]}>
+                                结算({selectedNum})
+                            </Animate.Text>
+                        </Animate.View>
+                    </Touchable>
                 </View>
             </View>
         )
