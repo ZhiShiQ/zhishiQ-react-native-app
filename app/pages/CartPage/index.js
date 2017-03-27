@@ -90,7 +90,9 @@ class CartPage extends Component {
                     </View>
                     <Touchable
                         onPress={selectedNum > 0 ? () => {
-                                actions.simplePayModalOpen();
+                                const Alipay = require('react-native-yunpeng-alipay').default;
+                                Alipay.pay("signed pay info string").then(alert, alert);
+                                // actions.simplePayModalOpen();
                             } : null}
                     >
                         <Animate.View
