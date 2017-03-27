@@ -9,6 +9,7 @@ import {
     TouchableOpacity,
     TouchableWithoutFeedback,
     StyleSheet,
+    Dimensions,
     ListView,
     ScrollView,
     Button
@@ -110,15 +111,15 @@ class ForeignTeacherDetailPage extends Component {
 
     _onMeasureTabs() {
         const {tabSticky} = this.state;
-        const height = NAV_BAR_HEIGHT+SCROLL_TAB_HEIGHT;
+        const HEIGHT = NAV_BAR_HEIGHT;
 
         /*this.refs.tabPos.measure && this.refs.tabPos.measure((ox, oy, width, height, px, py) => {
-            console.info(py);
-            if (py <= height && this.state.tabSticky != true) {
-                // reached
+            if (py <= HEIGHT && this.state.tabSticky != true) {
+                // alert('reached' + py);// reached
                 this.setState({tabSticky: true});
-            } else if (py >= height+50 && this.state.tabSticky != false) {
-                this.setState({tabSticky: false});
+            } else if (py > HEIGHT && this.state.tabSticky != false) {
+                // alert('unreached' + py);
+                // this.setState({tabSticky: false});
             }
         });*/
     }
@@ -138,7 +139,7 @@ class ForeignTeacherDetailPage extends Component {
         const {tabSticky} = this.state;
         return (
             <View style={{flex: 1}}>
-                {!tabSticky && <ScrollView
+                {<ScrollView
                     /*renderScrollComponent={(p) => this.state.scrollEnable && !tabSticky? ScrollView.defaultProps.renderScrollComponent(p): <View {...p} />}*/
                     scrollEnable={this.state.scrollEnable/* && !tabSticky*/}
                     scrollEventThrottle={100}
@@ -151,12 +152,10 @@ class ForeignTeacherDetailPage extends Component {
                     {this.header}
                     {this.scrollTabView}
                 </ScrollView>}
-
-                {tabSticky &&
-                    this.scrollTabView
-                }
                 {isFetching ? null: this.fixBottom}
+
             </View>
+
         )
     }
 
@@ -168,12 +167,14 @@ class ForeignTeacherDetailPage extends Component {
                     detail, comment: {currentPage, hasMore}}
             }, actions
         } = this.props;
+        const {height, width} = Dimensions.get('window');
         const {tabSticky} = this.state;
 
         const Container = tabSticky? ScrollView : View;
 
         return (
             <View style={{flex: 1}}>
+                <View ref="tabPos"></View>
                 <ScrollTab
                     onChangeTab={({i}) => {
                         this._activeTab = +i;
@@ -190,38 +191,37 @@ class ForeignTeacherDetailPage extends Component {
                     tabBarStyle={[{height: SCROLL_TAB_HEIGHT},
                         tabSticky && {
                             position: 'absolute',
-                            top: 0, left: 0, right: 0,
+                            top: SCROLL_TAB_HEIGHT, left: 0, right: 0,
                             zIndex: 10
                         }]}
                     initialPage={0}
                 >
-                    <View style={[this.state.tabSticky && {marginTop: SCROLL_TAB_HEIGHT, flex: 1}]} tabLabel="导师详情">
+                    <View style={[tabSticky && {flex: 1}]} tabLabel="导师详情">
                         {isFetching ? <Loading style={{}}/> :
                             <Container
-                                renderScrollComponent={(p) => tabSticky? ScrollView.defaultProps.renderScrollComponent(p): <View {...p} />}
                                 onScroll={({nativeEvent}) => {
                                     this._onMeasureTabs();
                                 }}
-                                contentContainerStyle={[sty.main]}
+                                style={[tabSticky  && { marginTop: SCROLL_TAB_HEIGHT, height: height-SCROLL_TAB_HEIGHT-NAV_BAR_HEIGHT }]}
                                 scrollEventThrottle={100}
                                 scrollEnable={tabSticky}>
-                                <View ref="tabPos"></View>
+                                {/*<View ref="tabPos"></View>*/}
                                 {this.sep()}
                                 {this.intro}
                             </Container>
                         }
                     </View>
-                    <View style={[this.state.tabSticky && {marginTop: SCROLL_TAB_HEIGHT, flex: 1}]} tabLabel={"用户评价"}>
+                    <View style={[this.state.tabSticky && {marginTop: SCROLL_TAB_HEIGHT, }]} tabLabel={"用户评价"}>
                         {isCommentFetching && isCommentFirst ? <Loading style={{}}/> :
                             <Container
-                                renderScrollComponent={(p) => tabSticky? ScrollView.defaultProps.renderScrollComponent(p): <View {...p} />}
                                 onScroll={({nativeEvent}) => {
                                     this._onScroll_fetchComment(nativeEvent);
                                     this._onMeasureTabs();
                                 }}
+                                style={[tabSticky  && { height: height-SCROLL_TAB_HEIGHT-NAV_BAR_HEIGHT }]}
                                 scrollEventThrottle={100}
                                 scrollEnable={tabSticky}>
-                                <View ref="tabPos"></View>
+                                {/*<View ref="tabPos"></View>*/}
                                 {this.sep()}
                                 {this.comments}
                                 {this.commentList}
