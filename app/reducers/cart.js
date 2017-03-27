@@ -46,16 +46,24 @@ const initialState = {
 };
 
 export default function (state=initialState, action) {
-    let newState = fromJS(state);
+    let newState = {...state};
     const {type, ...rest} = action;
     switch (type) {
         case $.SET_CART_ITEM_SELECTED_BY_INDEX:
-            return newState.setIn(['items', rest.index, 'selected'], rest.selected).toJS();
+            state.items[rest.index].selected = rest.selected;
+            return state;
+            // return {...newState, items: List(newState.items).update(rest.index, obj => ({...obj, selected: rest.selected})).toJS() };
         case $.DEL_CART_ITEM_BY_INDEX:
-            return newState.removeIn(['items', rest.index]).toJS();
+            state.items.splice(rest.index, 1);
+            return state;
+            // return {...newState, items: List(newState.items).remove(rest.index).toJS() };
         case $.SET_ALL_CART_ITEM_SELECTED:
-            return newState.updateIn(['items'], list => List(list).map(x => Map(x).set('selected', rest.selected))).toJS();
+            newState.items.forEach(x => x.selected = rest.selected)
+            return state;
+            // return {...newState, items: newState.items.map((v, k) => ({...v, selected: rest.selected})) };
+            // return {...newState, items: List(newState.items).map((v, k) => ({...v, selected: rest.selected})).toJS() };
+            // return fromJS(newState).updateIn(['items'], list => List(list).map(x => Map(x).set('selected', rest.selected))).toJS();
         default:
-            return newState.toJS();
+            return state;
     }
 }

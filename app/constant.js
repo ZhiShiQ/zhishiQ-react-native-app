@@ -21,6 +21,7 @@ export const SET_COMMON_MODAL_TYPE = uint();
 export const ABROAD_EXPERT_FORM_SET = uint();
 export const MODAL_REFERER_SET = uint();
 export const MODAL_TIME_RANGE_SET = uint();
+export const MODAL_PICKER_SET = uint();
 /* end of my common' logic related */
 
 

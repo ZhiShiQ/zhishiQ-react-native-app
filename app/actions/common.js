@@ -10,6 +10,7 @@ export const setCommonModalType = (_type) => _t($.SET_COMMON_MODAL_TYPE, {_type}
 export const refererModalOpen = () => (emit) => emit([setCommonModalIsOpen(true), setCommonModalType('referer')])
 export const discountModalOpen = () => (emit) => emit([setCommonModalIsOpen(true), setCommonModalType('discount')])
 export const timeRangeModalOpen = () => (emit) => emit([setCommonModalIsOpen(true), setCommonModalType('timeRange')])
+export const pickerModalOpen = () => (emit) => emit([setCommonModalIsOpen(true), setCommonModalType('picker')])
 export const timeRangeModalDeletable = (enable) => (emit) => emit([])
 export const abroadExpertBuyFormModalOpen = (index=0) => (emit) => emit([setCommonModalIsOpen(true), setAbroadExpertFormIndex(index), setCommonModalType('abroadExpertBuy')])
 export const abroadExpertCartFormModalOpen = (index=0) => (emit) => emit([setCommonModalIsOpen(true), setAbroadExpertFormIndex(index), setCommonModalType('abroadExpertCart')])
@@ -25,4 +26,6 @@ export const setTimeRangeEnd = (end) => _t($.MODAL_TIME_RANGE_SET, {keys: ["end"
 export const setTimeRangeDeletable = (deletable) => _t($.MODAL_TIME_RANGE_SET, {keys: ["deletable"], data: deletable});
 
 export const setRefererTarget = (target) => _t($.MODAL_REFERER_SET, {keys: ['target'], data: target});
+
+export const setPickerItems = (items) => _t($.MODAL_PICKER_SET, {keys: ['items'], data: items});
 

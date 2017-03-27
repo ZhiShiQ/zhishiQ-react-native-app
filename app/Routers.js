@@ -25,9 +25,11 @@ import {
     StyleSheet,
     TextInput,
     ScrollView,
-    TouchableHighlight
+    TouchableHighlight,
+    TouchableOpacity,
 } from 'react-native';
 import autobind from 'autobind-decorator';
+const {height, width} = Dimensions.get('window');
 
 import LoginPage from './pages/LoginPage';
 import HomePage from './pages/HomePage';
@@ -79,9 +81,11 @@ import ReduxTitleDropdown from './components/ReduxTitleDropdown';
 import SearchTitle from './components/SearchTitle';
 import Hr from './components/Hr';
 import BlockButton from './components/BlockButton';
+import ModalPicker from './components/ModalPicker';
 import EvilIcon from 'react-native-vector-icons/EvilIcons'
 import * as $ from './constant';
 import {BACK_ICON, shareIcon, searchIcon} from './helpers/resource';
+const Alipay = require('react-native-yunpeng-alipay').default;
 
 const MapStateToProps = (state) => ({store: state})
 const MapDispatchToProps = (dispatch) => ({
@@ -147,6 +151,9 @@ class Routers extends React.Component {
         return <Component {...props} {...this.props}/>
     }
 
+    componentWillUpdate(newProps, newState, newContext) {
+    }
+
     reducerCreate(params) {
         const defaultReducer = Reducer(params);
         return (state, action) => {
@@ -160,6 +167,14 @@ class Routers extends React.Component {
     };
 
 
+    state = {
+        abroadExpertFormIndex: null
+    }
+
+    shouldComponentUpdate(newProps, newState, newContext) {
+        return !Map(this.props).equals(Map(newProps)) || !Map(this.state).equals(Map(newState))
+    }
+
     _mapModalProps() {
         const {
             store: {
@@ -171,22 +186,28 @@ class Routers extends React.Component {
         } = this.props;
         switch (modalType) {
             case 'referer':
-                return {buttons: [{
-                    title: "已打开网址，点击扫描",
-                    onPress: () => {
-                        actions.setCommonModalIsOpen(false);
-                        Actions.qrCode();
-                    }
-                }], height: 442};
+                return {
+                    buttons: [{
+                        title: "已打开网址，点击扫描",
+                        onPress: () => {
+                            actions.setCommonModalIsOpen(false);
+                            Actions.qrCode();
+                        }
+                    }], height: 442
+                };
             case 'timeRange':
-                return {buttons: [{
-                    title: "保存",
-                    onPress: () => {
-                        actions.setCommonModalIsOpen(false);
-                    }
-                }, deletable ? {title: "删除", onPress: () => {
-                        actions.setCommonModalIsOpen(false);
-                    }} : undefined], height: 400+(deletable?30:0)}
+                return {
+                    buttons: [{
+                        title: "保存",
+                        onPress: () => {
+                            actions.setCommonModalIsOpen(false);
+                        }
+                    }, deletable ? {
+                            title: "删除", onPress: () => {
+                                actions.setCommonModalIsOpen(false);
+                            }
+                        } : undefined], height: 400 + (deletable ? 30 : 0)
+                }
             case 'discount':
                 return {buttons: [{title: "查看我的优惠券"}, {title: "取消／确定"}], height: 470}
             case 'abroadExpertBuy':
@@ -202,7 +223,7 @@ class Routers extends React.Component {
                             actions.setOrderConfirmId(id);
                             Actions.orderConfirm({params: {type: 'buy'}});
                         }
-                    }], height: 440
+                    }], height: 450 //height - 50
                 }
             case 'abroadExpertCart':
                 return {
@@ -218,7 +239,7 @@ class Routers extends React.Component {
                             actions.setOrderConfirmId(id);
                             Actions.orderConfirm({params: {type: 'cart'}});
                         }
-                    }], height: 440
+                    }], height: 450 // height - 50
                 }
             case 'simplePay':
                 return {buttons: [], height: 320}
@@ -227,10 +248,16 @@ class Routers extends React.Component {
 
     _renderModal() {
         const {store: {common: {openModal, modalType}}, actions} = this.props;
+        if (openModal && modalType === 'picker') {
+            return this.modalPicker;
+        }
         return (
             <Modal
                 isOpen={openModal}
-                onClosed={() => actions.setCommonModalIsOpen(false)}
+                onClosed={() => {
+                    actions.setCommonModalIsOpen(false)
+                    this.setState({abroadExpertFormIndex: null});
+                }}
                 style={{backgroundColor: '#fff'}}
                 {...this._mapModalProps()}
             >
@@ -295,7 +322,9 @@ class Routers extends React.Component {
                 />
                 <Hr marginBottom={0} style={{alignSelf: 'stretch', marginHorizontal: $.PADDING_SIZE}}
                     color={"#e5e5e5"}/>
-                <LinkItem onPress={null} showBorder={null}
+                <LinkItem onPress={() => {
+                    Alipay.pay("alipay_sdk=alipay-sdk-php-20161101&app_id=2016080300157788&biz_content=%7B%22subject%22%3A%22IT%5Cu79d1%5Cu6280%5C%2FIT%5Cu8f6f%5Cu4ef6%5Cu4e0e%5Cu670d%5Cu52a1%22%2C%22total_amount%22%3A0.1%2C%22body%22%3A%22Iphone6+16G%22%2C%22out_trade_no%22%3A%223288a28ab2f8934a066c8d66914f88d8a55f7bb3%22%2C%22product_code%22%3A%22QUICK_MSECURITY_PAY%22%2C%22passback_params%22%3A%22merchantBizType%253d3C%2526merchantBizNo%253d2016010101111%22%7D&charset=UTF-8&format=json&method=alipay.trade.app.pay&sign_type=RSA2×tamp=2017-03-27+08%3A25%3A22&version=1.0&sign=iL24r%2Blo0nGesa83OKnXgtFs3SeHuFU36s80%2F52ZOG%2FW5phWk3s8JscdPu2BeX9ulp84x%2FposaQf0xejYul4TvtH1XgsCdcBr72F%2FowDp7t17RcvDd7BIHr3c3DZb5toSv1wZUNo%2BqfwrHzQ9Z4UZBWrxFaHtTcq%2BdSjTAPcnEkxFiHi2Efw%2BeVD53sHUDVee2fKto7pK78xDZA4xzh7DO9RYssRuumg5XoPkXYxXY8LCy9UWzUvM505BT%2BUv1ZWepV08TgHOc%2BiMkg1KHsi9oJ2bOw%2Bg3cwxlXlQA33z%2Be%2FS0QNoJdNqPilDkqPu%2FMtLKyewrE4KMv2pceTw%2FIYbA%3D%3D").then(alert, alert);
+                }} showBorder={null}
                           style={{paddingHorizontal: $.PADDING_SIZE, paddingVertical: 4}}
                           leftComponent={<HrFlexLayout style={{alignItems: 'center'}}><CirImage
                               style={{marginRight: 12}}
@@ -309,6 +338,21 @@ class Routers extends React.Component {
         )
     }
 
+    _openModalPicker() {
+        this.refs.picker.open();
+    }
+
+    get modalPicker() {
+        const {store: {common: {picker: {items}}}, actions} = this.props;
+
+        return (
+            <ModalPicker
+                ref="picker" items={items}
+                onClose={() => actions.setCommonModalIsOpen(false)}
+            />
+        )
+    }
+
     get abroadExpertForm() {
         const {
             store: {
@@ -319,6 +363,46 @@ class Routers extends React.Component {
                 }
             }, actions
         } = this.props;
+        let {abroadExpertFormIndex} = this.state;
+        abroadExpertFormIndex = abroadExpertFormIndex != null ? abroadExpertFormIndex : index;
+
+        const renderRow = (x, i, opt = {}) => {
+            const Container = opt.disabled ? View : TouchableOpacity;
+            if (opt.active == null) {
+                opt.active = i == abroadExpertFormIndex;
+            }
+            return (
+                <Container
+                    key={i}
+                    style={[{
+                        marginHorizontal: 15,
+                        borderRadius: 6,
+                        overflow: 'hidden',
+                        padding: 10
+                    }, opt.active ? {backgroundColor: '#fc6d34'} : {
+                            backgroundColor: '#fafafa',
+                            borderWidth: StyleSheet.hairlineWidth,
+                            borderColor: '#e5e5e5'
+                        }, opt.style]}
+                    onPress={() => {
+                        this.setState({abroadExpertFormIndex: i});
+                        // actions.setAbroadExpertFormIndex(i);
+                    }}
+                >
+                    <View style={[]}>
+                        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                            <View style={{flex: 1}}>
+                                <Text style={[opt.active ? {color: '#fff'} : {}]}>{x.leftText}</Text>
+                            </View>
+                            <View style={{flex: 0, marginLeft: 15}}>
+                                <Text style={[opt.active ? {color: '#fff'} : {}]}>{x.rightText}</Text>
+                            </View>
+                        </View>
+                    </View>
+                </Container>
+            );
+        }
+
         return (
             <View style={{paddingTop: 20, flex: 1, backgroundColor: '#fff'}}>
                 <View style={{alignItems: 'center'}}>
@@ -326,46 +410,42 @@ class Routers extends React.Component {
                     <Text style={{fontSize: 18, fontWeight: '600', marginTop: 6}}>{name}</Text>
                 </View>
 
-                <ListView style={{marginTop: 20, marginBottom: 54}}
+                <ListView style={{marginTop: 10, paddingTop: 10, marginBottom: 54}}
                           dataSource={
                               new ListView.DataSource({
                                   rowHasChanged: (r1, r2) => !Map(r1).equals(Map(r2))
-                              }).cloneWithRows(items)
+                              }).cloneWithRows(items.map((x, i) => ({
+                                  ...x,
+                                  items: i == 0 ? [{leftText: 'aHHHH'}, {leftText: 'aHHHH'}, {leftText: 'aHHHH'}] : null
+                              })))
                           }
                           renderRow={(x, s, i) =>
-                              <TouchableHighlight key={i}
-                                                  style={{
-                                                      marginVertical: 6,
-                                                      marginHorizontal: 15,
-                                                      borderRadius: 6,
-                                                      overflow: 'hidden'
-                                                  }}
-                                                  onPress={() => {
-                                                      actions.setAbroadExpertFormIndex(i);
-                                                  }}
-                              >
-                                  <View style={[{
-                                      padding: 10
-                                  }, i == index ? {backgroundColor: '#fc6d34'} : {
-                                          backgroundColor: '#fafafa',
-                                          borderWidth: StyleSheet.hairlineWidth,
-                                          borderColor: '#e5e5e5'
-                                      }]}>
-                                      <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                                          <View style={{flex: 1}}>
-                                              <Text style={[i == index ? {color: '#fff'} : {}]}>{x.leftText}</Text>
-                                          </View>
-                                          <View style={{flex: 0, marginLeft: 15}}>
-                                              <Text style={[i == index ? {color: '#fff'} : {}]}>{x.rightText}</Text>
-                                          </View>
-                                      </View>
-                                  </View>
-                              </TouchableHighlight>
+                              !x.items ? renderRow(x, i)
+                                  : <ListView
+                                      renderHeader={() => renderRow(x, -1, {
+                                          style: {
+                                              borderBottomLeftRadius: 2, borderBottomRightRadius: 2,
+                                              backgroundColor: '#f1f1f1'
+                                          }, disabled: true
+                                      }) }
+                                      dataSource={
+                                          new ListView.DataSource({
+                                              rowHasChanged: (r1, r2) => !Map(r1).equals(Map(r2))
+                                          }).cloneWithRows(x.items)
+                                      }
+                                      renderRow={(x, s, j) =>
+                                          renderRow(x, i + j, {
+                                              style: {borderRadius: 2, borderTopWidth: 0}
+                                          })
+                                      }
+                                  />
                           }
+                          renderSeparator={() => <View style={{height: 12}}/>}
                 />
             </View>
         )
     }
+
 
     render() {
         return (
@@ -531,7 +611,8 @@ class Routers extends React.Component {
                                    leftTitle="设置"
                                    onLeft={() => Actions.setting()}
                                    rightTitle="消息"
-                                   onRight={() => {}}
+                                   onRight={() => {
+                                   }}
                             />
                             <Scene key="totalOrder" component={conn(TotalOrderPage)}
                                    hideTabBar

@@ -104,6 +104,9 @@ class LinkItem extends Component {
         if (iconName === 'plus') {
             return <Entypo style={sty.rightIcon} name={iconName} size={iconSize} color={iconColor || "#4a4a4a"} />
         }
+        if (iconName === 'down') {
+            return <Entypo style={sty.rightIcon} name={'chevron-thin-down'} size={iconSize} color={iconColor || "#C4C4C4"} />
+        }
         return <Icon style={sty.rightIcon} name={iconName} size={iconSize} color={iconColor || "#C4C4C4"} />
     }
 }

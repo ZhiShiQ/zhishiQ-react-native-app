@@ -237,7 +237,7 @@ class AbroadExpertDetailPage extends Component {
         const items = services;
 
         return (
-            <CollapsibleIntro title={"套餐类型"} style={{paddingBottom: 0}}>
+            <CollapsibleIntro title={"留学主题咨询"} style={{paddingBottom: 0}}>
                 <View style={{marginHorizontal: -15}}>
                     {items.map((item, i) => this._renderService(item, i))}
                 </View>

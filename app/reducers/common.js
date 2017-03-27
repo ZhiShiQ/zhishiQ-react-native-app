@@ -21,6 +21,11 @@ const initialState = {
         items: [{
             leftText: "加拿大留学生活学习",
             rightText: "¥21",
+            items: [{
+                leftText: "加拿大留学生活学习",
+            }, {
+                leftText: "加拿大留学生活学习",
+            }]
         }, {
             leftText: "加拿大留学生活学习",
             rightText: "¥21"
@@ -31,6 +36,10 @@ const initialState = {
         index: 0,
         name: "Nick Hu",
         thumbnail: {}
+    },
+
+    picker: {
+        items: []
     }
 };
 
@@ -46,9 +55,10 @@ export default function (state=initialState, action) {
             return {...newState, abroadExpertForm: {...newState.abroadExpertForm, ...rest}};
         case $.MODAL_REFERER_SET:
             return fromJS(newState).setIn(['referer'].concat(rest.keys), rest.data).toJS();
-
         case $.MODAL_TIME_RANGE_SET:
             return fromJS(newState).setIn(['timeRange'].concat(rest.keys), rest.data).toJS();
+        case $.MODAL_PICKER_SET:
+            return fromJS(newState).setIn(['picker'].concat(rest.keys), rest.data).toJS();
         default:
             return newState;
     }

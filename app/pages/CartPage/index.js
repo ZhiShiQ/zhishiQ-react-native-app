@@ -46,7 +46,9 @@ class CartPage extends Component {
     }
 
     static defaultProps = {}
-    state = {}
+    state = {
+        selectedIndex: {}
+    }
     static propTypes = {}
 
     itemsWithFunc() {
@@ -55,7 +57,16 @@ class CartPage extends Component {
             a.items.push({
                 ...x,
                 onRemove: () => actions.delCartItemByIndex(index),
-                onControlPress: () => actions.setCartItemSelectedByIndex(index, !x.selected),
+                onControlPress: () => {
+                    // const select = {...this.state.selectedIndex}
+                    // if (!x.selected) {
+                    //     select[index] = true
+                    // } else {
+                    //     delete select[index];
+                    // }
+                    // this.setState({selectedIndex: select});
+                    actions.setCartItemSelectedByIndex(index, !x.selected)
+                },
                 onBtnPress: () => actions.discountModalOpen()
             });
             if (x.selected) {
@@ -90,9 +101,7 @@ class CartPage extends Component {
                     </View>
                     <Touchable
                         onPress={selectedNum > 0 ? () => {
-                                const Alipay = require('react-native-yunpeng-alipay').default;
-                                Alipay.pay("signed pay info string").then(alert, alert);
-                                // actions.simplePayModalOpen();
+                                actions.simplePayModalOpen();
                             } : null}
                     >
                         <Animate.View
