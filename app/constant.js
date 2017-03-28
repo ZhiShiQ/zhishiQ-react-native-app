@@ -24,6 +24,9 @@ export const MODAL_TIME_RANGE_SET = uint();
 export const MODAL_PICKER_SET = uint();
 /* end of my common' logic related */
 
+/* start of weekly_day's related */
+export const WEEKLY_DAY_ITEM_SET = uint();
+/* end of weekly_day's related */
 
 /* start of entry's home related */
 export const HOME_PAGE_SET = uint();

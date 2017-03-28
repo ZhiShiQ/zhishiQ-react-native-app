@@ -474,13 +474,13 @@ class Routers extends React.Component {
         return (
             <Scene key="Root" backButtonImage={backIcon} navigationBarStyle={styles.navigationBarStyle}>
 
-                <Scene initial hideTabBar key="weeklyDay" component={conn(WeeklyDayPage)} title={'每周空闲时间'}/>
+                <Scene hideTabBar key="weeklyDay" component={conn(WeeklyDayPage)} title={'每周空闲时间'}/>
 
                 <Scene hideTabBar key="entry" component={conn(EntryPage)} title={TITLE}/>
 
                 <Scene key="resetPwdByPhone" component={conn(ResetPwdByPhonePage)} title={'重置密码'}/>
                 <Scene key="resetPwdByMail" component={conn(ResetPwdByMailPage)} title={'重置密码'}/>
-                <Scene key="tabbar" component={conn(NavigationDrawer)}>
+                <Scene initial key="tabbar" component={conn(NavigationDrawer)}>
                     <Scene
                         initial
                         key="tab_main"
@@ -547,7 +547,7 @@ class Routers extends React.Component {
                                    backTitle=""/>
                             {/*duplicate end*/}
                         </Scene>
-                        <Scene backButtonImage={backIcon} key="tab_service_main"
+                        <Scene initial  backButtonImage={backIcon} key="tab_service_main"
                                navigationBarStyle={styles.navigationBarStyle}
                                type={ActionConst.JUMP}
                                iconName={"service"}
@@ -574,11 +574,12 @@ class Routers extends React.Component {
                                    onRight={() => alert()}
                                    backTitle=""/>
 
-                            <Scene key="orderConfirm" component={conn(OrderConfirmPage)}
+                            <Scene initial  key="orderConfirm" component={conn(OrderConfirmPage)}
                                    type={ActionConst.PUSH_OR_POP}
                                    hideTabBar
                                    title="确认订单"
                             />
+
                             <Scene key="serviceClause" component={conn(ServiceClausePage)}
                                    type={ActionConst.PUSH_OR_POP}
                                    hideTabBar

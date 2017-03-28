@@ -19,4 +19,5 @@ export default {
     ...require('./abroad_expert'),
     ...require('./order_confirm'),
     ...require('./home'),
+    ...require('./weekly_day'),
 }

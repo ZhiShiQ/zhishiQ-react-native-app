@@ -26,4 +26,5 @@ export default combineReducers({
     order_confirm: require('./order_confirm').default,
     home: require('./home').default,
     messages: require('./messages').default,
+    weekly_day: require('./weekly_day').default,
 })

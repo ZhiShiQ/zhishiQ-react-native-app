@@ -66,7 +66,7 @@ class OrderConfirmPage extends Component {
     render() {
         const {actions, store: {
             order_confirm: {id, topic, skype, qq, price, want}
-        }, params: {type}} = this.props;
+        }} = this.props;
 
         return (
             <View style={sty.main}>
@@ -211,7 +211,8 @@ class OrderConfirmPage extends Component {
     }
 
     _getBottomBtnsProps() {
-        const {params: {type}, actions} = this.props;
+        const {actions, params={}} = this.props;
+        const {type="buy"} = params;
         switch (type) {
             case 'buy':
                 return {mainText: "去付款", onMainPress: () => {
