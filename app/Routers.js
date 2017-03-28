@@ -66,6 +66,7 @@ import ServiceClausePage from './pages/ServiceClausePage';
 import OrderConfirmPage from './pages/OrderConfirmPage';
 import SettingPage from './pages/SettingPage';
 import QRCodePage from './pages/QRCodePage';
+import WeeklyDayPage from './pages/WeeklyDayPage';
 
 
 // import QRCodeScreen from './components/QRCodeScreen';
@@ -472,7 +473,10 @@ class Routers extends React.Component {
         const backIcon = {uri: BACK_ICON};
         return (
             <Scene key="Root" backButtonImage={backIcon} navigationBarStyle={styles.navigationBarStyle}>
-                <Scene initial hideTabBar key="entry" component={conn(EntryPage)} title={TITLE}/>
+
+                <Scene initial hideTabBar key="weeklyDay" component={conn(WeeklyDayPage)} title={'每周空闲时间'}/>
+
+                <Scene hideTabBar key="entry" component={conn(EntryPage)} title={TITLE}/>
 
                 <Scene key="resetPwdByPhone" component={conn(ResetPwdByPhonePage)} title={'重置密码'}/>
                 <Scene key="resetPwdByMail" component={conn(ResetPwdByMailPage)} title={'重置密码'}/>
