@@ -324,7 +324,9 @@ class Routers extends React.Component {
                 <Hr marginBottom={0} style={{alignSelf: 'stretch', marginHorizontal: $.PADDING_SIZE}}
                     color={"#e5e5e5"}/>
                 <LinkItem onPress={() => {
-                    Alipay.pay("alipay_sdk=alipay-sdk-php-20161101&app_id=2016080300157788&biz_content=%7B%22subject%22%3A%22IT%5Cu79d1%5Cu6280%5C%2FIT%5Cu8f6f%5Cu4ef6%5Cu4e0e%5Cu670d%5Cu52a1%22%2C%22total_amount%22%3A0.1%2C%22body%22%3A%22Iphone6+16G%22%2C%22out_trade_no%22%3A%223288a28ab2f8934a066c8d66914f88d8a55f7bb3%22%2C%22product_code%22%3A%22QUICK_MSECURITY_PAY%22%2C%22passback_params%22%3A%22merchantBizType%253d3C%2526merchantBizNo%253d2016010101111%22%7D&charset=UTF-8&format=json&method=alipay.trade.app.pay&sign_type=RSA2×tamp=2017-03-27+08%3A25%3A22&version=1.0&sign=iL24r%2Blo0nGesa83OKnXgtFs3SeHuFU36s80%2F52ZOG%2FW5phWk3s8JscdPu2BeX9ulp84x%2FposaQf0xejYul4TvtH1XgsCdcBr72F%2FowDp7t17RcvDd7BIHr3c3DZb5toSv1wZUNo%2BqfwrHzQ9Z4UZBWrxFaHtTcq%2BdSjTAPcnEkxFiHi2Efw%2BeVD53sHUDVee2fKto7pK78xDZA4xzh7DO9RYssRuumg5XoPkXYxXY8LCy9UWzUvM505BT%2BUv1ZWepV08TgHOc%2BiMkg1KHsi9oJ2bOw%2Bg3cwxlXlQA33z%2Be%2FS0QNoJdNqPilDkqPu%2FMtLKyewrE4KMv2pceTw%2FIYbA%3D%3D").then(alert, alert);
+                    let json = {"alipay_sdk":"alipay-sdk-php-20161101","app_id":"2016080300157788","biz_content":"{\"subject\":\"IT\\u79d1\\u6280\\/IT\\u8f6f\\u4ef6\\u4e0e\\u670d\\u52a1\",\"total_amount\":0.1,\"body\":\"Iphone6 16G\",\"out_trade_no\":\"03d3d8d4ff56e5e65427313a3b14f374fbe8d1eb\",\"product_code\":\"QUICK_MSECURITY_PAY\",\"passback_params\":\"merchantBizType%3d3C%26merchantBizNo%3d2016010101111\"}","charset":"UTF-8","format":"json","method":"alipay.trade.app.pay","sign_type":"RSA2","timestamp":"2017-03-29 02:41:49","version":"1.0","sign":"FkLW4vt/xkgS1edUs5WO6ruwG+eIeewe0U9dwhRwWw9n9entFiuRtCSrOmqI6Uj9CXmQo/FRVK+Uh/bMt+08zh5+3leRs+9Vz0HSJV30/AfMvtPREUr+A4YCMuoZn1vizotVwNs/RTuCwvf1+aaxIX82w1Ivjc+yx7Ul+A72FSomNjfdoU+r9NhtoqV9FN7MiW+BWm8P14oohxYaYFrFWK8SMgziLukf3VX5D/wPGuEg6xph+k1LUgznLV85lg2Z8xsyPGx/FpyJDivi5EIaLMaL3X8vC1UHxAYUF5H++HIvFs4ua/XyfF4UXmWGvzJgaUYqy0A1pNqAEo7qvioUAw=="};
+                    let sign = require('querystring').stringify(json);
+                    Alipay.pay(sign).then(alert, alert);
                 }} showBorder={null}
                           style={{paddingHorizontal: $.PADDING_SIZE, paddingVertical: 4}}
                           leftComponent={<HrFlexLayout style={{alignItems: 'center'}}><CirImage
@@ -370,7 +372,7 @@ class Routers extends React.Component {
         const renderRow = (x, i, opt = {}) => {
             const Container = opt.disabled ? View : TouchableOpacity;
             if (opt.active == null) {
-                opt.active = i == abroadExpertFormIndex;
+                opt.active = (i == abroadExpertFormIndex) || (i == abroadExpertFormIndex+'-0');
             }
             return (
                 <Container
@@ -420,8 +422,8 @@ class Routers extends React.Component {
                                   items: i == 0 ? [{leftText: 'aHHHH'}, {leftText: 'aHHHH'}, {leftText: 'aHHHH'}] : null
                               })))
                           }
-                          renderRow={(x, s, i) =>
-                              !x.items ? renderRow(x, i)
+                          renderRow={(x, s, i) => {
+                              const out = !x.items ? renderRow(x, i)
                                   : <ListView
                                       renderHeader={() => renderRow(x, -1, {
                                           style: {
@@ -435,12 +437,13 @@ class Routers extends React.Component {
                                           }).cloneWithRows(x.items)
                                       }
                                       renderRow={(x, s, j) =>
-                                          renderRow(x, i + j, {
+                                          renderRow(x, +i+('-')+ (+j), {
                                               style: {borderRadius: 2, borderTopWidth: 0}
                                           })
                                       }
                                   />
-                          }
+                              return out;
+                          }}
                           renderSeparator={() => <View style={{height: 12}}/>}
                 />
             </View>
@@ -476,13 +479,12 @@ class Routers extends React.Component {
 
                 <Scene hideTabBar key="weeklyDay" component={conn(WeeklyDayPage)} title={'每周空闲时间'}/>
 
-                <Scene hideTabBar key="entry" component={conn(EntryPage)} title={TITLE}/>
+                <Scene initial hideTabBar key="entry" component={conn(EntryPage)} title={TITLE}/>
 
                 <Scene key="resetPwdByPhone" component={conn(ResetPwdByPhonePage)} title={'重置密码'}/>
                 <Scene key="resetPwdByMail" component={conn(ResetPwdByMailPage)} title={'重置密码'}/>
-                <Scene initial key="tabbar" component={conn(NavigationDrawer)}>
+                <Scene key="tabbar" component={conn(NavigationDrawer)}>
                     <Scene
-                        initial
                         key="tab_main"
                         tabs
                         backButtonImage={backIcon}
@@ -490,13 +492,7 @@ class Routers extends React.Component {
                         tabBarStyle={[styles.tabBarStyle, {height: $.TAB_BAR_HEIGHT}]}
                         tabBarSelectedItemStyle={styles.tabBarSelectedItemStyle}
                     >
-                        <Scene key="search" component={conn(SearchPage)}
-                               navigationBarStyle={styles.navigationBarStyle}
-                               title="我是输入框"
-                               backTitle="取消"
-                        />
-
-                        <Scene backButtonImage={backIcon} initial key="tab_home_main"
+                        <Scene backButtonImage={backIcon} key="tab_home_main"
                                navigationBarStyle={styles.navigationBarStyle}
                                iconName={"home"}
                                title="首页"
@@ -547,7 +543,12 @@ class Routers extends React.Component {
                                    backTitle=""/>
                             {/*duplicate end*/}
                         </Scene>
-                        <Scene initial  backButtonImage={backIcon} key="tab_service_main"
+                        <Scene key="search" component={conn(SearchPage)}
+                               navigationBarStyle={styles.navigationBarStyle}
+                               title="我是输入框"
+                               backTitle="取消"
+                        />
+                        <Scene backButtonImage={backIcon} key="tab_service_main"
                                navigationBarStyle={styles.navigationBarStyle}
                                type={ActionConst.JUMP}
                                iconName={"service"}
@@ -574,7 +575,7 @@ class Routers extends React.Component {
                                    onRight={() => alert()}
                                    backTitle=""/>
 
-                            <Scene initial  key="orderConfirm" component={conn(OrderConfirmPage)}
+                            <Scene key="orderConfirm" component={conn(OrderConfirmPage)}
                                    type={ActionConst.PUSH_OR_POP}
                                    hideTabBar
                                    title="确认订单"

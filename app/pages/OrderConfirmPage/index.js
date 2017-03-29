@@ -64,33 +64,54 @@ class OrderConfirmPage extends Component {
     }
 
     render() {
-        const {actions, store: {
+        const {
+            actions, store: {
             order_confirm: {id, topic, skype, qq, price, want}
-        }} = this.props;
+        }
+        } = this.props;
 
         return (
             <View style={sty.main}>
                 <ScrollView>
-                    <LinkItem showIcon={false}
-                              emphasize
-                              leftComponent={
-                                  <View style={{flexDirection: 'row'}}>
-                                      <Text style={{color: '#4a4a4a', fontSize: 16}}>主题咨询：</Text>
-                                      <Text numberOfLines={1} ellipsizeMode={"tail"}
-                                            style={{color: '#4a4a4a', flex: 1, fontSize: 16}}>
-                                          {topic}
-                                      </Text>
-                                  </View>
-                              }
-                              rightTextStyle={{color: '#ea5502', fontWeight: 'bold', fontSize: 16}} rightText={"￥"+price}/>
+                    <LinkItem
+                        showIcon={false}
+                        emphasize
+                        leftComponent={
+                            <View style={{flexDirection: 'row'}}>
+                                <Text style={{color: '#4a4a4a', fontSize: 16}}>主题咨询：</Text>
+                                <Text numberOfLines={1} ellipsizeMode={"tail"}
+                                      style={{color: '#4a4a4a', flex: 1, fontSize: 16}}>
+                                    {topic}
+                                </Text>
+                            </View>
+                        }
+                        rightTextStyle={{color: '#ea5502', fontWeight: 'bold', fontSize: 16}} rightText={"￥" + price}/>
                     {sep(true, {height: 16})}
-                    {this.renderSelectable({label: '申请学位', content: '请选择您申请的学位', onPress: () => actions.pickerModalOpen(true) })}
+                    {this.renderSelectable({
+                        label: '申请学位',
+                        content: '请选择您申请的学位',
+                        onPress: () => actions.pickerModalOpen(true)
+                    })}
                     {this.hr}
-                    {this.renderSelectable({label: '申请领域', content: '请选择您的申请领域', onPress: () => actions.pickerModalOpen(true)})}
+                    {this.renderSelectable({
+                        label: '申请领域',
+                        content: '请选择您的申请领域',
+                        onPress: () => actions.pickerModalOpen(true)
+                    })}
                     {sep(true, {height: 16})}
-                    {this.renderSelectable({label: '文档类型', content: 'PS', contentHighlight: true, onPress: () => actions.pickerModalOpen(true)})}
+                    {this.renderSelectable({
+                        label: '文档类型',
+                        content: 'PS',
+                        contentHighlight: true,
+                        onPress: () => actions.pickerModalOpen(true)
+                    })}
                     {sep(true, {height: 16})}
-                    {this.renderSelectable({label: '文书语言', content: '选择您将上传文书的语言', contentHighlight: false, onPress: () => actions.pickerModalOpen(true) })}
+                    {this.renderSelectable({
+                        label: '文书语言',
+                        content: '选择您将上传文书的语言',
+                        contentHighlight: false,
+                        onPress: () => actions.pickerModalOpen(true)
+                    })}
                     {this.pureText('上传中文文书将默认选择翻译服务（0.18元／字）')}
 
                     {this.renderSelectable({label: '原稿字数', content: '请输入原稿字数', showIcon: false})}
@@ -98,13 +119,28 @@ class OrderConfirmPage extends Component {
                     {this.renderSelectable({label: '终稿字数', content: '请输入终稿期望字数', showIcon: false})}
                     {this.pureText('顾问会参考您提供的终稿字数提供服务，语言润色服务终稿单词数浮动范围为原稿单词数上下10%')}
 
-                    {this.renderSelectable({label: '服务等级', content: '语言润色', contentHighlight: true, onPress: () => actions.pickerModalOpen(true)})}
+                    {this.renderSelectable({
+                        label: '服务等级',
+                        content: '语言润色',
+                        contentHighlight: true,
+                        onPress: () => actions.pickerModalOpen(true)
+                    })}
                     {this.pureText('这里需要一个关于服务等级的介绍，可能还有一个链接到单项文书产品页的链接，并且可以直接返回到这里')}
 
-                    {this.renderSelectable({label: '加急处理', content: '不需要', contentHighlight: true, onPress: () => actions.pickerModalOpen(true)})}
+                    {this.renderSelectable({
+                        label: '加急处理',
+                        content: '不需要',
+                        contentHighlight: true,
+                        onPress: () => actions.pickerModalOpen(true)
+                    })}
                     {this.pureText('注意：加急处理无法取消')}
 
-                    {this.renderSelectable({label: '指定顾问', content: '指定文书顾问', contentHighlight: true, onPress: () => actions.pickerModalOpen(true)})}
+                    {this.renderSelectable({
+                        label: '指定顾问',
+                        content: '指定文书顾问',
+                        contentHighlight: true,
+                        onPress: () => actions.pickerModalOpen(true)
+                    })}
                     {this.hr}
                     <View style={{backgroundColor: '#fff', padding: 15, paddingBottom: 0}}>
                         <TextInput
@@ -123,7 +159,7 @@ class OrderConfirmPage extends Component {
                     {sep(true, {height: 16})}
                 </ScrollView>
                 <BottomBtns lefts={[{text: "收藏"}, {text: "客服"}]}
-                    {...this._getBottomBtnsProps()}
+                            {...this._getBottomBtnsProps()}
                 />
             </View>
         )
@@ -138,7 +174,7 @@ class OrderConfirmPage extends Component {
                     rowHasChanged: (r1, r2) => !Map(r1).equals(Map(r2))
                 }).cloneWithRows(items)}
                 renderRow={(x, s, i) => this.renderPerson(x, i)}
-                renderSeparator={(x, i) => i!=items.length-1?this.hr:null}
+                renderSeparator={(x, i) => i != items.length - 1 ? this.hr : null}
                 renderFooter={() => this.renderResetButton()}
             />
         )
@@ -174,14 +210,14 @@ class OrderConfirmPage extends Component {
                         <Text style={{flex: 1, fontSize: 16, fontColor: '#4a4a4a', fontWeight: '600'}}>November M</Text>
                         <Text style={{fontSize: 14, color: '#848484'}}>
                             <Text style={{color: '#ea5502'}}>4.8 </Text>分
-                            <Text>  </Text>
+                            <Text> </Text>
                             <Text style={{color: '#ea5502'}}>234 </Text>服务
                         </Text>
                     </View>
                     <View style={{marginTop: 6}}>
                         <Text style={{fontSize: 14, color: '#848484', flex: 1}}>
                             <Text style={{}}>伦敦艺术大学</Text>
-                            <Text>   </Text>
+                            <Text> </Text>
                             <Text style={{}}>面试招生官</Text>
                         </Text>
                     </View>
@@ -211,40 +247,44 @@ class OrderConfirmPage extends Component {
     }
 
     _getBottomBtnsProps() {
-        const {actions, params={}} = this.props;
-        const {type="buy"} = params;
+        const {actions, params = {}} = this.props;
+        const {type = "buy"} = params;
         switch (type) {
             case 'buy':
-                return {mainText: "去付款", onMainPress: () => {
-                    // Actions.tab_cart({type: ActionConst.JUMP});
-                    actions.simplePayModalOpen();
-                    const {what: {value}} = this.refs;
-                }}
+                return {
+                    mainText: "去付款", onMainPress: () => {
+                        // Actions.tab_cart({type: ActionConst.JUMP});
+                        actions.simplePayModalOpen();
+                    }
+                }
             case 'cart':
-                return {subText: " 加入购物车", onSubPress: () => {
-                    Actions.tab_cart({type: ActionConst.JUMP});
-                    const {what: {value}} = this.refs;
-                }}
+                return {
+                    subText: " 加入购物车", onSubPress: () => {
+                        Actions.tab_cart({type: ActionConst.JUMP});
+                    }
+                }
         }
     }
 
     pureText(text, btnText) {
         return (
-            <View style={{flexDirection: 'row', marginTop: 8,
-                marginBottom: 15, paddingLeft: 15,}}>
-                {btnText && <Text style={{top: 7}} ><EvilIcon size={18} color="#ea5502" name="check"/></Text>}
-            <Text style={{
-                color: '#a1a1a1',
-                lineHeight: 18,
-                fontSize: 13.5,
-                paddingRight: !btnText? 15: 0,
+            <View style={{
+                flexDirection: 'row', marginTop: 8,
+                marginBottom: 15, paddingLeft: 15,
             }}>
-                {text}
-            </Text>
+                {btnText && <Text style={{top: 7}}><EvilIcon size={18} color="#ea5502" name="check"/></Text>}
+                <Text style={{
+                    color: '#a1a1a1',
+                    lineHeight: 18,
+                    fontSize: 13.5,
+                    paddingRight: !btnText ? 15 : 0,
+                }}>
+                    {text}
+                </Text>
                 {btnText && <TouchableWithoutFeedback
-                    onPress={()=>Actions.serviceClause()}>
+                    onPress={() => Actions.serviceClause()}>
                     <View>
-                    <Text style={{fontSize: 13.5, lineHeight: 25, color: '#ea5502'}}>{btnText}</Text>
+                        <Text style={{fontSize: 13.5, lineHeight: 25, color: '#ea5502'}}>{btnText}</Text>
                     </View>
                 </TouchableWithoutFeedback>}
             </View>

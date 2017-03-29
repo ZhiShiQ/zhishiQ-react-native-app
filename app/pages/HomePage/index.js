@@ -106,11 +106,11 @@ class HomePage extends Component {
                 <Carousel
                     style={{justifyContent: 'center', alignSelf: 'center'}}
                 >
-                    {sliders.map(({thumbnail, route, type}, i) => (
+                    {sliders.map(({thumbnail, route, type, ...rest}, i) => (
                         <TouchableOpacity key={i}
                             style={{backgroundColor: '#fff', alignItems: 'center', justifyContent: 'center'}}
                             onPress={() => {
-                                this.routeHandle({route, type});
+                                this.routeHandle({route, type, ...rest});
                             }}
                         >
                             <Image style={{alignSelf: 'stretch', flex: 1}} resizeMode={'center'} source={thumbnail}/>
@@ -207,9 +207,9 @@ class HomePage extends Component {
         )
     }
 
-    routeHandle({route, type}) {
+    routeHandle({route, url, type}) {
         if (type === 'url') {
-            open(route);
+            open(url);
         }
     }
 

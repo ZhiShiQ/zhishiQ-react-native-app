@@ -16,6 +16,7 @@ import {
 import * as Animatable from 'react-native-animatable';
 
 import sty from './style';
+import * as RES from '../../helpers/resource';
 
 
 @autobind
@@ -155,6 +156,8 @@ class WeeklyDayPage extends Component {
                             ]}
                         >
                             <Image
+                                resizeMode={"cover"}
+                                source={{uri: b?RES.FACE_SMILE:RES.FACE_NORMAL}}
                                 style={{height: 31, width: 31}}
                             />
                         </TouchableOpacity>
