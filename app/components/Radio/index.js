@@ -62,14 +62,6 @@ class Radio extends Component {
             </RadioButtonInput>
         )
 
-        return (
-            <TouchableHighlight
-                style={[sty.main, selected?selectedStyle:{}, style||{}]}
-                onPress={onPress}
-            >
-                {children}
-            </TouchableHighlight>
-        )
     }
 }
 

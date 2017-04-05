@@ -13,8 +13,10 @@ export default StyleSheet.create({
     leftContainer: {
         flex: 0,
         width: 48,
-        paddingHorizontal: 10,
-        alignItems: 'center'
+        // paddingHorizontal: 10,
+        alignItems: 'center',
+        alignSelf: 'stretch',
+        justifyContent: 'center',
     },
     leftControl: {
         width: 20,

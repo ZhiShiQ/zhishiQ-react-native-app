@@ -47,7 +47,9 @@ class CollapsibleService extends Component {
     componentWillUnmount() {
     }
 
-    static defaultProps = {}
+    static defaultProps = {
+        collapsible: true
+    }
     state = {}
     static propTypes = {
         detail: PropTypes.object,
@@ -55,11 +57,12 @@ class CollapsibleService extends Component {
         name: PropTypes.string,
         rSubText: PropTypes.string,
         price: PropTypes.number,
+        collapsible: PropTypes.bool,
         onBtnPress: PropTypes.func
     }
 
     render() {
-        const {detail, table, name, rSubText, price, onBtnPress} = this.props
+        const {detail, table, name, rSubText, price, onBtnPress, collapsible, ...rest} = this.props
 
         return (
             <CollapsibleItem
@@ -79,6 +82,8 @@ class CollapsibleService extends Component {
                         </View>
                     </View>
                 }
+                collapsible={collapsible}
+                {...rest}
             >
                 <View style={{
                     backgroundColor: '#fbfbfb',
@@ -107,7 +112,7 @@ class CollapsibleService extends Component {
                     </View>
                     }
                     {detail &&
-                        <View  style={{marginVertical: 12}}>
+                        <View style={{marginVertical: 12}}>
                             <TextWithBgs items={detail.tags}
                                          eachStyle={{fontSize: 12.5, paddingVertical: 1, paddingHorizontal: 2, borderWidth: .5, borderRadius: 3}}
                                          borderColor={'#979797'} bgColor={'transparent'}/>
@@ -122,7 +127,7 @@ class CollapsibleService extends Component {
                             }
                         </View>
                     }
-
+                    {collapsible &&
                     <View>
                         <TouchableOpacity
                             onPress={onBtnPress}
@@ -135,6 +140,7 @@ class CollapsibleService extends Component {
                             <Text style={{color: '#fff', fontSize: 13}}>立即预约</Text>
                         </TouchableOpacity>
                     </View>
+                    }
                 </View>
             </CollapsibleItem>
         )

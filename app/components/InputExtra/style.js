@@ -25,7 +25,7 @@ export default StyleSheet.create({
         color: '#4A4A4A',
         flex: 0,
         width: 80-PADDING_SIZE,
-        textAlign: 'left'
+        textAlign: 'left',
     },
     rBtn: {
         flex: 0,

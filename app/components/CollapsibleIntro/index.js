@@ -21,25 +21,43 @@ import Entypo from 'react-native-vector-icons/EvilIcons'
 import {PADDING_SIZE} from '../../constant';
 import {upIcon, downIcon} from '../../helpers/resource';
 import sty from './style';
-
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 @autobind
 class CollapsibleIntro extends Component {
     constructor(props) {
-      super(props)
+        super(props)
     }
-    componentWillMount() {}
-    componentDidMount() {}
-    componentWillReceiveProps(newProps) {}
+
+    componentWillMount() {
+    }
+
+    componentDidMount() {
+    }
+
+    componentWillReceiveProps(newProps) {
+    }
+
     shouldComponentUpdate(newProps, newState, newContext) {
-      return !Map(this.props).equals(Map(newProps)) || !Map(this.state).equals(Map(newState))
+        return !Map(this.props).equals(Map(newProps)) || !Map(this.state).equals(Map(newState))
     }
-    componentWillUpdate(newProps, newState, newContext) {}
-    componentDidUpdate(oldProps, oldState, oldContext) {}
-    componentWillUnmount() {}
-    static defaultProps = {}
+
+    componentWillUpdate(newProps, newState, newContext) {
+    }
+
+    componentDidUpdate(oldProps, oldState, oldContext) {
+    }
+
+    componentWillUnmount() {
+    }
+
+    static defaultProps = {
+        titleCenter: false,
+        hasMore: false
+    }
     state = {
-        expended: false
+        expended: false,
+
     }
     static propTypes = {
         showTexts: PropTypes.oneOfType(PropTypes.array, PropTypes.string),
@@ -48,13 +66,18 @@ class CollapsibleIntro extends Component {
         hideComponent: PropTypes.element,
         showComponent: PropTypes.element,
         style: PropTypes.object,
+        titleStyle: PropTypes.object,
+        titleCenter: PropTypes.bool,
+        hasMore: PropTypes.bool,
+        onMore: PropTypes.func,
         textStyle: PropTypes.object,
     }
+
     render() {
-        const {hideComponent, style, textStyle, hideTexts, title} = this.props;
+        const {hideComponent, style, titleStyle, textStyle, hasMore, onMore, titleCenter, hideTexts, title} = this.props;
         return (
             <View style={[sty.main, {backgroundColor: '#fff', padding: PADDING_SIZE, paddingTop: 20}, style]}>
-                {title && CollapsibleIntro.getHead(title)}
+                {title && CollapsibleIntro.getHead(title, false, titleCenter, titleStyle, hasMore, onMore)}
                 {this.props.children}
                 {this.getText()}
                 {this.getComponent()}
@@ -71,7 +94,7 @@ class CollapsibleIntro extends Component {
         }
         return (
             <View style={{backgroundColor: '#fff'}}>
-                <Collapsible collapsed={!expended} align={"center"} >
+                <Collapsible collapsed={!expended} align={"center"}>
                     {hideComponent}
                 </Collapsible>
             </View>
@@ -92,36 +115,36 @@ class CollapsibleIntro extends Component {
         return (
             <View style={{backgroundColor: '#fff'}}>
                 <Text style={textStyle}>
-                {showTexts.map((t, i) =>
-                    /*<HTML
-                        htmlStyles={{
-                            '*': {color: '#848484', marginBottom: 10, lineHeight: 17}
-                        }}
-                        html={t+((i==showTexts.length-1 && !!t && hideTexts && hideTexts.length)
-                            ?(!expended?'...':''):'')}
-                        onLinkPress={(evt, href) => alert(href)}
-                    />*/
-                    <Text key={i} style={{color: '#848484', marginBottom: 10, lineHeight: 17}}>
-                        {t+((i==showTexts.length-1 && !!t && hideTexts && hideTexts.length)
-                            ?(!expended?'...':''):'')}
-                    </Text>
-                )}
+                    {showTexts.map((t, i) =>
+                        /*<HTML
+                         htmlStyles={{
+                         '*': {color: '#848484', marginBottom: 10, lineHeight: 17}
+                         }}
+                         html={t+((i==showTexts.length-1 && !!t && hideTexts && hideTexts.length)
+                         ?(!expended?'...':''):'')}
+                         onLinkPress={(evt, href) => alert(href)}
+                         />*/
+                        <Text key={i} style={{color: '#848484', marginBottom: 10, lineHeight: 17}}>
+                            {t + ((i == showTexts.length - 1 && !!t && hideTexts && hideTexts.length)
+                                ? (!expended ? '...' : '') : '')}
+                        </Text>
+                    )}
                 </Text>
                 <Collapsible
                     collapsed={!expended} align="center">
                     <Text style={textStyle}>
-                    {hideTexts && hideTexts.map((t, i) =>
-                        <Text key={i} style={{color: '#848484', marginBottom: 10, lineHeight: 17}}>
-                            {t}
-                        </Text>
-                    )}
+                        {hideTexts && hideTexts.map((t, i) =>
+                            <Text key={i} style={{color: '#848484', marginBottom: 10, lineHeight: 17}}>
+                                {t}
+                            </Text>
+                        )}
                     </Text>
                 </Collapsible>
             </View>
         )
     }
 
-    expendableCtl(onPress=() => this.setState({expended: !expended})) {
+    expendableCtl(onPress = () => this.setState({expended: !expended})) {
         const {expended} = this.state;
 
         return <TouchableOpacity
@@ -156,25 +179,64 @@ class CollapsibleIntro extends Component {
         )
     }
 
-    static getHead(title, noMargin) {
-        return (
+    static getHead(title, noMargin, titleCenter, titleStyle, hasMore, onMore) {
+        const renderFrame = (children, style) => (
             <View style={[{
-                marginBottom: noMargin?0:15, flexDirection: 'row'
-            }]}>
-                <View style={{
-                    width: 2,
-                    backgroundColor: '#ea5502',
-                    marginRight: 6
-                }}>
-                </View>
-                <Text
-                    style={{
-                        fontWeight: 'bold',
-                        color: '#4a4a4a'
-                    }}
-                >{title}</Text>
+                marginBottom: noMargin ? 0 : 15, flexDirection: 'row'
+            }, style, titleStyle]}>
+                {children}
             </View>
         )
+
+        if (!titleCenter) {
+            return (
+                renderFrame([
+                    <View style={{
+                        width: 2,
+                        backgroundColor: '#ea5502',
+                        marginRight: 6
+                    }}>
+                    </View>,
+                    <Text
+                        style={{
+                            fontSize: 16,
+                            fontWeight: 'bold',
+                            color: '#4a4a4a'
+                        }}
+                    >{title}</Text>
+                ])
+            )
+        } else {
+            return (
+                renderFrame([
+                    <View style={{
+                        alignItems: 'center',
+                        alignSelf: 'center',
+                        paddingBottom: 3,
+                        borderBottomWidth: 2,
+                        borderBottomColor: '#ea5502',
+                        flex: 1,
+                    }}>
+                    <Text style={{
+                        fontWeight: 'bold',
+                        fontSize: 16,
+                        color: '#4a4a4a',
+                    }}>
+                        {title}
+                    </Text>
+                    </View>,
+                    hasMore &&
+                    <TouchableOpacity
+                        style={{position: 'absolute', right: 3, bottom: 3}}
+                        onPress={onMore}
+                    >
+                        <Text style={{fontSize: 12, color: '#848484'}}>
+                            查看更多 <Icon name="angle-right" size={15}></Icon>
+                        </Text>
+                    </TouchableOpacity>
+                ], {flexDirection: 'column'})
+            )
+        }
     }
 }
 

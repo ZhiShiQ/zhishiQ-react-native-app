@@ -9,6 +9,7 @@ import {
     ListView,
     StyleSheet,
     Image,
+    TouchableOpacity,
     ScrollView,
     Button
 } from 'react-native';
@@ -55,7 +56,9 @@ class CartItem extends Component {
         return (
             <View style={style.main}>
                 <View style={style.leftContainer}>
-                    <Radio selected={selected} onPress={onControlPress} />
+                    <TouchableOpacity style={{flex: 1, justifyContent: 'center',}} onPress={onControlPress} >
+                        <Radio style={{}} selected={selected} disabled/>
+                    </TouchableOpacity>
                 </View>
                 <View style={style.mainContainer}>
                     <View style={style.mainTitleContainer}><Text style={style.titleText}>{title}</Text></View>

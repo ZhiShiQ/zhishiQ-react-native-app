@@ -34,7 +34,7 @@ class InputExtra extends Component {
     }
 
     shouldComponentUpdate(newProps, newState, newContext) {
-        return !Map(this.props).equals(Map(newProps))
+        return !Map(this.props).equals(Map(newProps)) || !Map(this.state).equals(Map(newState))
     }
 
     componentWillUpdate(newProps, newState, newContext) {
@@ -49,10 +49,13 @@ class InputExtra extends Component {
     static defaultProps = {
         label: "LABEL",
         inputProps: {},
-        input: <TextInput></TextInput>
+        input: <TextInput></TextInput>,
+        autoGrow: false,
     }
     state = {
-        _value: ''
+        _value: '',
+        height: 0,
+        width: 0,
     }
     static propTypes = {
         label: PropTypes.string.isRequired,
@@ -62,6 +65,9 @@ class InputExtra extends Component {
         input: PropTypes.element,
         style: PropTypes.object,
         labelStyle: PropTypes.object,
+        inputStyle: PropTypes.object,
+        autoGrow: PropTypes.bool,
+        maxHeight: PropTypes.number
     }
 
     get value() {
@@ -69,21 +75,31 @@ class InputExtra extends Component {
     }
 
     render() {
-        const {label, input, rText, onRight, style,
-            inputProps, labelStyle} = this.props;
+        const {label, input, rText, onRight, style, autoGrow, maxHeight,
+            inputProps, labelStyle, inputStyle} = this.props;
         const {onChangeText, ...rest} = inputProps;
-
-        const Touchable = onRight? TouchableOpacity: View
-
+        const {height, width, _value} = this.state;
+        const Touchable = onRight? TouchableOpacity: View;
+        const numOfLine = _value.split('\n').length;
+        const isSetHeight = height>0 || numOfLine>1;
         return (
             <View style={[sty.main, style]}>
-                {label && <Text style={[sty.label, labelStyle]}>{label}</Text>}
+                {label && <Text style={[sty.label, isSetHeight&&{alignSelf: 'flex-start'}, labelStyle]}>{label}</Text>}
                 {React.cloneElement(input, {
-                    style: [sty.input, label ? {paddingRight: 14} : {}],
+                    style: [sty.input, label && {paddingRight: 0}, isSetHeight&&{height}, inputStyle, maxHeight && {maxHeight}],
                     onChangeText: (text) => {
                         onChangeText && onChangeText(text);
                         this.setState({_value: text});
                     },
+                    onChange: autoGrow ? ({nativeEvent: {contentSize}}) => {
+                        const size = {...contentSize};
+                        size.height = size.height - 8;
+                        this.setState({...size});
+                        // alert("update "+JSON.stringify(nativeEvent))
+                    }: null,
+                    /*onLayout: ({nativeEvent: {layout: {x, y, height}}}) => this.initialHeight = height,*/
+                    autoCapitalize: 'none',
+                    autoCorrect: false,
                     ...rest
                 })}
                 {rText && <Touchable

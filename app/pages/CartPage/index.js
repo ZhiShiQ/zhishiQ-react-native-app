@@ -88,13 +88,17 @@ class CartPage extends Component {
             <View style={style.main}>
                 <Carts disableSwipe={false} items={computedItems}/>
                 <View style={style.bottomBar}>
-                    <View style={style.ctl}>
-                        <Radio
-                            onPress={() => actions.setAllCartItemSelected(!(selectedNum === items.length))}
-                            selected={selectedNum !== 0 && selectedNum === items.length}>
-                        </Radio>
-                        <Text style={style.ctlText}>全选</Text>
-                    </View>
+                    <TouchableOpacity
+                        onPress={() => actions.setAllCartItemSelected(!(selectedNum === items.length))}
+                    >
+                        <View style={style.ctl}>
+                            <Radio
+                                disabled
+                                selected={selectedNum !== 0 && selectedNum === items.length}>
+                            </Radio>
+                            <Text style={style.ctlText}>全选</Text>
+                        </View>
+                    </TouchableOpacity>
                     <View style={style.info}>
                         <Text style={style.sum}>总计：{sum}</Text>
                         <Text style={style.save}>已节省：{saveSum}</Text>

@@ -41,6 +41,7 @@ class CollapsibleItem extends Component {
         collapsed: true,
         style: {backgroundColor: '#fff'},
         upIcon: upIcon,
+        collapsible: true,
         activeOpacity: TouchableOpacity.defaultProps.activeOpacity,
         downIcon: downIcon
     };
@@ -53,6 +54,8 @@ class CollapsibleItem extends Component {
         downIcon: PropTypes.element,
         collapsed: PropTypes.bool,
         onExpendOrColl: PropTypes.func,
+        onPress: PropTypes.func,
+        collapsible: PropTypes.bool,
         activeOpacity: PropTypes.number,
         style: PropTypes.object
     };
@@ -69,11 +72,13 @@ class CollapsibleItem extends Component {
     }
 
     render() {
-        const {control, children, downIcon, upIcon, style, onExpendOrColl, activeOpacity} = this.props;
+        const {control, collapsible, children, downIcon, upIcon, onPress, style, onExpendOrColl, activeOpacity} = this.props;
         const {collapsed} = this.state;
+        const CollContainer = collapsible ? Collapsible : View;
         return (
             <View>
                 <TouchableOpacity style={style} onPress={() => {
+                    onPress && onPress();
                     this.setState({collapsed: !collapsed});
                     onExpendOrColl && onExpendOrColl(collapsed);
                 }} activeOpacity={activeOpacity} >
@@ -86,9 +91,9 @@ class CollapsibleItem extends Component {
                         })}
                     </View>
                 </TouchableOpacity>
-                <Collapsible collapsed={collapsed} align={"center"}>
+                <CollContainer collapsed={collapsed} align={"center"}>
                     {children}
-                </Collapsible>
+                </CollContainer>
             </View>
         )
     }

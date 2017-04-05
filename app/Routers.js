@@ -67,6 +67,8 @@ import OrderConfirmPage from './pages/OrderConfirmPage';
 import SettingPage from './pages/SettingPage';
 import QRCodePage from './pages/QRCodePage';
 import WeeklyDayPage from './pages/WeeklyDayPage';
+import ServiceDetailPage from './pages/ServiceDetailPage';
+import SubServiceDetailPage from './pages/SubServiceDetailPage';
 
 
 // import QRCodeScreen from './components/QRCodeScreen';
@@ -158,7 +160,7 @@ class Routers extends React.Component {
     reducerCreate(params) {
         const defaultReducer = Reducer(params);
         return (state, action) => {
-            this.props.__dispatch(action)
+            this.props.__dispatch(action);
             return defaultReducer(state, action);
         };
     }
@@ -479,12 +481,17 @@ class Routers extends React.Component {
 
                 <Scene hideTabBar key="weeklyDay" component={conn(WeeklyDayPage)} title={'每周空闲时间'}/>
 
-                <Scene initial hideTabBar key="entry" component={conn(EntryPage)} title={TITLE}/>
+                <Scene hideTabBar key="entry" component={conn(EntryPage)} title={TITLE}/>
+
+                <Scene initial hideTabBar key="subServiceDetail" component={conn(SubServiceDetailPage)} title={TITLE}/>
+
+                <Scene hideTabBar key="serviceDetail" component={conn(ServiceDetailPage)} title={"留学文书修改服务"}/>
 
                 <Scene key="resetPwdByPhone" component={conn(ResetPwdByPhonePage)} title={'重置密码'}/>
                 <Scene key="resetPwdByMail" component={conn(ResetPwdByMailPage)} title={'重置密码'}/>
                 <Scene key="tabbar" component={conn(NavigationDrawer)}>
                     <Scene
+                        initial
                         key="tab_main"
                         tabs
                         backButtonImage={backIcon}

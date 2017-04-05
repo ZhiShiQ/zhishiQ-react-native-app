@@ -58,7 +58,31 @@ class TeacherBasicInfo extends Component {
         listValues: PropTypes.array,
     }
     render() {
-        const {style, listValues, contentCollapsible, listKeys, thumbnail, name, content, tags, appointNum, average, commentNum} = this.props;
+        const {style, listValues, children, contentCollapsible, listKeys, thumbnail, name, content, tags, appointNum, average, commentNum} = this.props;
+        const {collapsed} = this.state;
+        return (
+            <View style={[sty.main, style]}>
+                {
+                    React.isValidElement(children) ? children : this.renderMain()
+                }
+                <HrFlexLayout
+                    style={{marginTop: 14}}
+                    renders={this.renders}
+                    separator={
+                        <View
+                            style={{
+                                width: StyleSheet.hairlineWidth,
+                                backgroundColor: '#C4C4C4',
+                            }}
+                        />
+                    }
+                />
+            </View>
+        )
+    }
+
+    renderMain () {
+        const {style, listValues, children, contentCollapsible, listKeys, thumbnail, name, content, tags, appointNum, average, commentNum} = this.props;
         const {collapsed} = this.state;
         let obj;
         if (contentCollapsible) {
@@ -68,7 +92,7 @@ class TeacherBasicInfo extends Component {
             };
         }
         return (
-            <View style={[sty.main]}>
+            <View>
                 <CirImage size={110} source={thumbnail} style={{marginBottom: 6}}/>
                 <Text style={sty.name}>{name}</Text>
                 {!contentCollapsible || true
@@ -86,18 +110,6 @@ class TeacherBasicInfo extends Component {
                     eachStyle={{borderRadius: 2, paddingVertical: 1.5, paddingHorizontal: 3, fontSize: 12, marginTop: 2}}
                     bgColor="#FFF"
                     borderColor="#4a4a4a"
-                />
-                <HrFlexLayout
-                    style={{marginTop: 14}}
-                    renders={this.renders}
-                    separator={
-                        <View
-                            style={{
-                                width: StyleSheet.hairlineWidth,
-                                backgroundColor: '#C4C4C4',
-                            }}
-                        />
-                    }
                 />
             </View>
         )
