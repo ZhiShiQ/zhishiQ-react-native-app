@@ -51,7 +51,7 @@ export const setOrderConfirmPreTranslateEnable = (preTranslateEnable) => _t($.OR
 export const setOrderConfirmUrgentEnable = (urgentEnable) => _t($.ORDER_CONFIRM_ROOT_SET, {urgentEnable});
 export const setOrderConfirmSkypeEnable = (skypeEnable) => _t($.ORDER_CONFIRM_ROOT_SET, {skypeEnable});
 
-export const setOrderConfirmType = (type) => _t($.ORDER_CONFIRM_ROOT_SET, {type});
+export const setOrderConfirmType = (type) => _t($.ORDER_CONFIRM_ROOT_SET, {_type: type});
 export const setOrderConfirmAdvisers = (advisers) => _t($.ORDER_CONFIRM_ROOT_SET, {advisers});
 export const setOrderConfirmSelectAdviserIndex = (selectAdviserIndex) => _t($.ORDER_CONFIRM_ROOT_SET, {selectAdviserIndex});
 

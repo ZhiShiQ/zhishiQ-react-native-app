@@ -459,6 +459,7 @@ class ForeignTeacherDetailPage extends Component {
                 subText="加入购物车"
                 onSubPress={() => {
                     this.initialModalForm();
+                    // actions.setOrderConfirmType();
                     actions.abroadExpertCartFormModalOpen();
                 }}
                 mainText={"立即预约"}

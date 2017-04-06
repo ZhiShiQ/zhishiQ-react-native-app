@@ -8,9 +8,10 @@ const initialState = {
     id: -1,
     topic: '洒洒水',
     price: '',
-    // want: '',
-    // qq: '',
-    // skype: '',
+    want: '',
+    qq: '',
+    skype: '',
+    freeTime: '',
 
     // 简历领域
     resumeFields: [{label: "GGG"}, {label: "HHH"}],
@@ -57,9 +58,8 @@ const initialState = {
 
     selectAdviserIndex: -1,
 
-    // enum("completePaper", "singlePaper", "resume")
-    type: "resume",
-    freeTime: ''
+    // enum("completePaper", "singlePaper", "resume", "topic")
+    _type: "topic",
 };
 
 export default function (state=initialState, action) {

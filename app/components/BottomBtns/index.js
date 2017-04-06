@@ -54,12 +54,16 @@ class BottomBtns extends Component {
                     flexDirection: 'row',
                     // position: 'absolute',
                     // bottom: 0,
+                    height: 49,
+                    justifyContent: 'center',
                 }}
             >
                 {
                     lefts.map(({text, onPress}, i) => <TouchableOpacity style={{
                         flex: 0, alignItems: 'center', width: 70,
-                        paddingVertical: 16.5, backgroundColor: "#fff"
+                        // paddingVertical: 16.5,
+                        justifyContent: 'center',
+                        backgroundColor: "#fff"
                     }} onPress={onPress} key={i}
                     >
                         <View>
@@ -73,21 +77,25 @@ class BottomBtns extends Component {
                 {!!subText && <TouchableOpacity
                     style={{
                         flex: 2, alignItems: 'center',
-                        paddingVertical: 15, backgroundColor: "#ffb12e",
+                        // paddingVertical: 15,
+                        justifyContent: 'center',
+                        backgroundColor: "#ffb12e",
                     }}
                     onPress={onSubPress}
                 >
-                    <View><Text style={{color: '#fff'}}>{subText}</Text></View>
+                    <View><Text style={{color: '#fff', fontSize: 16}}>{subText}</Text></View>
                 </TouchableOpacity>}
 
                 {!!mainText && <TouchableOpacity
                     style={{
                         flex: 2, alignItems: 'center',
-                        paddingVertical: 15, backgroundColor: "#ea5502",
+                        // paddingVertical: 15,
+                        justifyContent: 'center',
+                        backgroundColor: "#ea5502",
                     }}
                     onPress={onMainPress}
                 >
-                    <View><Text style={{color: '#fff'}}>{mainText}</Text></View>
+                    <View><Text style={{color: '#fff', fontSize: 16}}>{mainText}</Text></View>
                 </TouchableOpacity>}
             </View>
         )

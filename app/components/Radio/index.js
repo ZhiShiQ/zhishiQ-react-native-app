@@ -47,19 +47,21 @@ class Radio extends Component {
         const {selected, disabled, color, onPress, selectedStyle=sty.selected, style, children} = this.props
 
         return (
-            <RadioButtonInput
-                onPress={onPress}
-                isSelected={selected}
-                disabled={disabled}
-                obj={{}}
-                buttonInnerColor={color}
-                buttonOuterColor={color}
-                buttonSize={10}
-                buttonOuterSize={16}
-                buttonStyle={{borderWidth: 1.5}}
-                buttonWrapStyle={{style}}
-            >
-            </RadioButtonInput>
+            <View style={style}>
+                <RadioButtonInput
+                    onPress={onPress}
+                    isSelected={selected}
+                    disabled={disabled}
+                    obj={{}}
+                    buttonInnerColor={color}
+                    buttonOuterColor={color}
+                    buttonSize={10}
+                    buttonOuterSize={16}
+                    buttonStyle={{borderWidth: 1.5}}
+                    buttonWrapStyle={{style}}
+                >
+                </RadioButtonInput>
+            </View>
         )
 
     }

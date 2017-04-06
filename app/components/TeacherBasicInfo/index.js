@@ -92,7 +92,7 @@ class TeacherBasicInfo extends Component {
             };
         }
         return (
-            <View>
+            <View style={{alignItems: 'center', flex: 1}}>
                 <CirImage size={110} source={thumbnail} style={{marginBottom: 6}}/>
                 <Text style={sty.name}>{name}</Text>
                 {!contentCollapsible || true

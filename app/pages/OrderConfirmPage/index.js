@@ -21,6 +21,7 @@ import {sep} from '../../helpers';
 import * as CONST from '../../constant';
 
 import InputExtra from '../../components/InputExtra';
+import PersonInOrder from '../../components/PersonInOrder';
 import CollapsibleItem from '../../components/CollapsibleItem';
 import LinkItem from '../../components/LinkItem';
 import Hr from '../../components/Hr';
@@ -37,8 +38,6 @@ class OrderConfirmPage extends Component {
     }
 
     componentWillMount() {
-        const {actions} = this.props;
-        actions.orderConfirmReset();
     }
 
     componentDidMount() {
@@ -48,7 +47,7 @@ class OrderConfirmPage extends Component {
     }
 
     shouldComponentUpdate(newProps, newState, newContext) {
-        return !Map(this.props).equals(Map(newProps))
+        return !Map(this.props.store.order_confirm).equals(Map(newProps.store.order_confirm))
     }
 
     componentWillUpdate(newProps, newState, newContext) {
@@ -58,6 +57,8 @@ class OrderConfirmPage extends Component {
     }
 
     componentWillUnmount() {
+        const {actions} = this.props;
+        actions.orderConfirmReset();
     }
 
     static defaultProps = {}
@@ -116,7 +117,19 @@ class OrderConfirmPage extends Component {
     renderResetButton() {
         const {actions, store: {order_confirm: {advisers}}} = this.props;
         return (
-            <View style={{alignItems: 'center', backgroundColor: '#fff', paddingBottom: 15}}>
+            OrderConfirmPage.BlueButton({
+                onPress: () => {
+                    actions.setOrderConfirmSelectAdviserIndex(-1);
+                    actions.setOrderConfirmAdvisers(advisers);
+                },
+                text: '重新选择'
+            })
+        )
+    }
+
+    static BlueButton({onPress, text, style}) {
+        return (
+            <View style={[{alignItems: 'center', backgroundColor: '#fff', paddingBottom: 15}, style]}>
                 <TouchableOpacity
                     style={{
                         paddingVertical: 10,
@@ -124,50 +137,20 @@ class OrderConfirmPage extends Component {
                         backgroundColor: '#1097ec',
                         borderRadius: 2
                     }}
-                    onPress={() => {
-                        actions.setOrderConfirmSelectAdviserIndex(-1);
-                        actions.setOrderConfirmAdvisers(advisers);
-                    }}
+                    onPress={() => onPress}
                 >
                     <View>
-                        <Text style={{color: '#fff', fontSize: 13}}>重新选择</Text>
+                        <Text style={{color: '#fff', fontSize: 13}}>{text}</Text>
                     </View>
                 </TouchableOpacity>
             </View>
         )
     }
 
-    renderPerson({clients, average, school, intro, onPress, style}, i) {
-        const Container = onPress ? TouchableOpacity : View;
+    renderPerson(p, i) {
 
         return (
-            <Container
-                onPress={onPress}
-                style={[{flexDirection: 'row', flex: 1, alignSelf: 'stretch', padding: 15, backgroundColor: '#fff'},
-                    style
-                ]}
-            >
-                <View style={{marginRight: 10}}>
-                    <CirImage size={45}/>
-                </View>
-                <View style={{flex: 1}}>
-                    <View style={{flexDirection: 'row'}}>
-                        <Text style={{flex: 1, fontSize: 16, fontColor: '#4a4a4a', fontWeight: '600'}}>November M</Text>
-                        <Text style={{fontSize: 14, color: '#848484'}}>
-                            <Text style={{color: '#ea5502'}}>{average} </Text>分
-                            <Text> </Text>
-                            <Text style={{color: '#ea5502'}}>{clients} </Text>服务
-                        </Text>
-                    </View>
-                    <View style={{marginTop: 6}}>
-                        <Text style={{fontSize: 14, color: '#848484', flex: 1}}>
-                            <Text style={{}}>{school}</Text>
-                            <Text> </Text>
-                            <Text style={{}}>{intro}</Text>
-                        </Text>
-                    </View>
-                </View>
-            </Container>
+            <PersonInOrder {...p} key={i} />
         )
     }
 
@@ -257,11 +240,13 @@ class OrderConfirmPage extends Component {
             actions,
             store: {
                 order_confirm: {
-                    id, topic, skype, qq, price, want, type = "completePaper"
+                    id, topic, skype, qq, price, want, _type = "completePaper"
                 }
             }
         } = this.props;
-        switch (type) {
+        switch (_type) {
+            case 'topic':
+                return this.renderTopic();
             case 'completePaper':
                 return this.renderCompletePaperService();
             case 'singlePaper':
@@ -271,6 +256,58 @@ class OrderConfirmPage extends Component {
                 return this.renderResumeService();
         }
 
+    }
+
+    _renderFreeTime() {
+        const {
+            actions,
+            store: {
+                order_confirm: {
+                    freeTime, qq, skype, want
+                }
+            }
+        } = this.props;
+        return (
+            <LinkItem leftText={"设置空闲时间"} leftTextStyle={{color: "#848484"}} onPress={() => Actions.weeklyDay()}/>
+        )
+    }
+
+    renderTopic() {
+        const {
+            actions,
+            store: {
+                order_confirm: {
+                    freeTime, qq, skype, want
+                }
+            }
+        } = this.props;
+        const labelWidth = undefined;
+        return (
+            <View style={sty.main}>
+                <ScrollView>
+                    {this.header(labelWidth)}
+                    {this.pureText("别忘了先介绍一下自己，如教育背景、 GPA 、托福等")}
+                    {this.renderInputAble({
+                        label: "QQ",
+                        labelWidth,
+                        placeholder: "输入您的QQ"
+                    })}
+                    {this.hr}
+                    {this.renderInputAble({
+                        label: "Skype",
+                        labelWidth,
+                        placeholder: "输入您的Skype（选填）"
+                    })}
+                    {this.pureText("顾问会通过qq或skype与您取得联系")}
+                    {this._renderFreeTime()}
+                    {sep(true)}
+                    {this.pureText("已阅读或同意", "服务条款")}
+                </ScrollView>
+                <BottomBtns lefts={[{text: "收藏"}, {text: "客服"}]}
+                            {...this._getBottomBtnsProps()}
+                />
+            </View>
+        )
     }
 
     _renderAdviser({labelWidth}) {
@@ -365,6 +402,7 @@ class OrderConfirmPage extends Component {
      * @returns {XML}
      */
     renderCompletePaperService() {
+        // alert(2);
         const {
             actions,
             store: {
@@ -472,15 +510,12 @@ class OrderConfirmPage extends Component {
                     })}
 
                     {this.hr}
-                    {this._renderAdviser()}
+                    {this._renderAdviser({labelWidth})}
 
                     {this.hr}
-                    {this.renderSelectable({
-                        label: '空闲时间',
-                        labelWidth,
-                        content: '',
-                        onPress: () => actions.pickerModalOpen(true)
-                    })}
+                    <LinkItem leftText={"空闲时间"} leftTextStyle={{color: '#848484'}} onPress={() => {
+                        Actions.weeklyDay();
+                    }}/>
 
                     {this.hr}
                     {this.renderInputAble({

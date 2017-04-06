@@ -33,7 +33,7 @@ import Loading from '../../components/Loading';
 
 const AnimatableLinkItems = Animatable.createAnimatableComponent(LinkItems)
 const AnimatableTextWithBgs = Animatable.createAnimatableComponent(TextWithBgs)
-const AnimatableCollapsibleItem = Animatable.createAnimatableComponent(CollapsibleItem)
+const AnimatableCollapsibleItem = CollapsibleItem;//Animatable.createAnimatableComponent(CollapsibleItem)
 
 @autobind
 class AbroadExpertPage extends Component {

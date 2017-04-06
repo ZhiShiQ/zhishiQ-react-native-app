@@ -306,7 +306,7 @@ class AbroadExpertDetailPage extends Component {
         const {actions, store: {abroad_expert_detail: {base: {avatar, name}, detail: {services}}}} = this.props;
         const mapService = ({price, name, ...r}, i) => ({
             ...r, price, rightText: '¥'+price,
-            leftText: name
+            leftText: name, type: "topic"
         });
         return (
             <BottomBtns

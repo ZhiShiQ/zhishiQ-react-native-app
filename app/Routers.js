@@ -69,6 +69,7 @@ import QRCodePage from './pages/QRCodePage';
 import WeeklyDayPage from './pages/WeeklyDayPage';
 import ServiceDetailPage from './pages/ServiceDetailPage';
 import SubServiceDetailPage from './pages/SubServiceDetailPage';
+import OrderConfirmDetailPage from './pages/OrderConfirmDetailPage';
 
 
 // import QRCodeScreen from './components/QRCodeScreen';
@@ -171,7 +172,7 @@ class Routers extends React.Component {
 
 
     state = {
-        abroadExpertFormIndex: null
+        abroadExpertFormIndex: 0
     }
 
     shouldComponentUpdate(newProps, newState, newContext) {
@@ -182,11 +183,13 @@ class Routers extends React.Component {
         const {
             store: {
                 common: {
-                    openModal, modalType, abroadExpertForm: {items, index,},
+                    openModal, modalType, abroadExpertForm: {items, },
                     timeRange: {deletable, start, end}
                 }
             }, actions
         } = this.props;
+
+        const {abroadExpertFormIndex: index} = this.state;
         switch (modalType) {
             case 'referer':
                 return {
@@ -212,15 +215,22 @@ class Routers extends React.Component {
                         } : undefined], height: 400 + (deletable ? 30 : 0)
                 }
             case 'discount':
-                return {buttons: [{title: "查看我的优惠券"}, {title: "取消／确定"}], height: 470}
+                return {
+                    buttons: [{
+                        title: "确定", full: false, onPrees: () => {
+                        }
+                    }], height: 470
+                }
             case 'abroadExpertBuy':
                 return {
                     buttons: [{
                         full: true,
                         title: "确定",
                         onPress: () => {
+
                             actions.setCommonModalIsOpen(false);
-                            const {id, leftText: name, price} = items[index];
+                            const {id, leftText: name, price, type} = items[index];
+                            actions.setOrderConfirmType(type);
                             actions.setOrderConfirmTopic(name);
                             actions.setOrderConfirmPrice(price);
                             actions.setOrderConfirmId(id);
@@ -236,7 +246,9 @@ class Routers extends React.Component {
                         backgroundColor: '#ffb12e',
                         onPress: () => {
                             actions.setCommonModalIsOpen(false);
-                            const {id, leftText: name, price} = items[index];
+                            const {id, leftText: name, price, type} = items[index];
+                            // alert(type+name);
+                            actions.setOrderConfirmType(type);
                             actions.setOrderConfirmTopic(name);
                             actions.setOrderConfirmPrice(price);
                             actions.setOrderConfirmId(id);
@@ -258,8 +270,17 @@ class Routers extends React.Component {
             <Modal
                 isOpen={openModal}
                 onClosed={() => {
+                    if (modalType === 'simplePay' && openModal) {
+                        /*Actions.orderConfirmDetail({params: {},
+                            type: ActionConst.REPLACE,
+                            animation: 'fadeIn'
+                        });*/
+                        Actions.totalOrder({
+                            type: ActionConst.REPLACE,
+                        })
+                    }
                     actions.setCommonModalIsOpen(false)
-                    this.setState({abroadExpertFormIndex: null});
+                    this.setState({abroadExpertFormIndex: 0});
                 }}
                 style={{backgroundColor: '#fff'}}
                 {...this._mapModalProps()}
@@ -276,11 +297,46 @@ class Routers extends React.Component {
                     />
                 }
                 {modalType === 'timeRange' && this.timeRange}
-                {modalType === 'discount' && <Text>我的优惠券</Text>}
+                {modalType === 'discount' && this.discount}
                 {modalType === 'abroadExpertBuy' && this.abroadExpertForm}
                 {modalType === 'abroadExpertCart' && this.abroadExpertForm}
                 {modalType === 'simplePay' && this.simplePlay}
             </Modal>
+        )
+    }
+
+    get discount() {
+        const discounts = [
+            {largeText: ''}, {largeText: ''}, {largeText: ''}, {largeText: ''},
+            {largeText: ''}, {largeText: ''}, {largeText: ''}, {largeText: ''}
+        ];
+
+        // return this.abroadExpertForm;
+
+        return (
+            <View style={{padding: 10, paddingTop: 20, paddingBottom: 14, flex: 0}}>
+                <View style={{alignItems: 'center'}}>
+                    <Text style={{color: '#4a4a4a', fontSize: 16}}>选择优惠券</Text>
+                </View>
+
+
+                <ListView
+                    style={{marginTop: 10, paddingTop: 10, marginBottom: 54}}
+                    dataSource={
+                        new ListView.DataSource({
+                            rowHasChanged: (r1, r2) => !Map(r1).equals(Map(r2))
+                        }).cloneWithRows(discounts)
+                    }
+                    renderRow={(x) => (
+                        <TouchableOpacity style={{
+                            marginHorizontal: 20,
+                            borderRadius: 6,
+                            overflow: 'hidden',
+                            height: 101, backgroundColor: '#ccc'}}/>
+                    )}
+                    renderSeparator={() => (<View style={{height: 10}}/>)}
+                />
+            </View>
         )
     }
 
@@ -326,8 +382,20 @@ class Routers extends React.Component {
                 <Hr marginBottom={0} style={{alignSelf: 'stretch', marginHorizontal: $.PADDING_SIZE}}
                     color={"#e5e5e5"}/>
                 <LinkItem onPress={() => {
-                    let json = {"alipay_sdk":"alipay-sdk-php-20161101","app_id":"2016080300157788","biz_content":"{\"subject\":\"IT\\u79d1\\u6280\\/IT\\u8f6f\\u4ef6\\u4e0e\\u670d\\u52a1\",\"total_amount\":0.1,\"body\":\"Iphone6 16G\",\"out_trade_no\":\"03d3d8d4ff56e5e65427313a3b14f374fbe8d1eb\",\"product_code\":\"QUICK_MSECURITY_PAY\",\"passback_params\":\"merchantBizType%3d3C%26merchantBizNo%3d2016010101111\"}","charset":"UTF-8","format":"json","method":"alipay.trade.app.pay","sign_type":"RSA2","timestamp":"2017-03-29 02:41:49","version":"1.0","sign":"FkLW4vt/xkgS1edUs5WO6ruwG+eIeewe0U9dwhRwWw9n9entFiuRtCSrOmqI6Uj9CXmQo/FRVK+Uh/bMt+08zh5+3leRs+9Vz0HSJV30/AfMvtPREUr+A4YCMuoZn1vizotVwNs/RTuCwvf1+aaxIX82w1Ivjc+yx7Ul+A72FSomNjfdoU+r9NhtoqV9FN7MiW+BWm8P14oohxYaYFrFWK8SMgziLukf3VX5D/wPGuEg6xph+k1LUgznLV85lg2Z8xsyPGx/FpyJDivi5EIaLMaL3X8vC1UHxAYUF5H++HIvFs4ua/XyfF4UXmWGvzJgaUYqy0A1pNqAEo7qvioUAw=="};
+                    let json = {
+                        "alipay_sdk": "alipay-sdk-php-20161101",
+                        "app_id": "2017032706426269",
+                        "biz_content": "{\"subject\":\"IT\\u79d1\\u6280\\/IT\\u8f6f\\u4ef6\\u4e0e\\u670d\\u52a1\",\"total_amount\":0.1,\"body\":\"Iphone6 16G\",\"out_trade_no\":\"3a950804a18e86ad991644c4836a292c249a75e5\",\"product_code\":\"QUICK_MSECURITY_PAY\",\"passback_params\":\"merchantBizType%3d3C%26merchantBizNo%3d2016010101111\"}",
+                        "charset": "UTF-8",
+                        "format": "json",
+                        "method": "alipay.trade.app.pay",
+                        "sign_type": "RSA2",
+                        "timestamp": "2017-04-06 07:56:41",
+                        "version": "1.0",
+                        "sign": "al9XDXpYW6WfCf9l7Ji10UaXJe/zkjpnLIZfA4+3F1samoNAf4ZGFlIGchOZf0yDNXuDq8EUz+0ptwc5DGuHdljfr2KI9ouMj695Ns9hpOzYPDC/SsFmMeOdEETBcpBbRiZVs/ghcDxgiMukUZ3dO+OOE9xh8SNUFr74i/B9cP+Kq/t0RT9c34UA7EaUTEWBLvXFnV1lnUIE+4/GAY+ZUgS0PPMXSPkhviJTBYNVRffUYCULbM+IRui2e9TTMn4I9DghIjydJObD5v57YEz8BpYePpLU2F6ZIBftYqMJZk6F1kdgx1kft/tgRDHod6At50uH1fHla1CDkqg3RhP3PQ=="
+                    };
                     let sign = require('querystring').stringify(json);
+                    // sign = json.sign;
                     Alipay.pay(sign).then(alert, alert);
                 }} showBorder={null}
                           style={{paddingHorizontal: $.PADDING_SIZE, paddingVertical: 4}}
@@ -374,7 +442,7 @@ class Routers extends React.Component {
         const renderRow = (x, i, opt = {}) => {
             const Container = opt.disabled ? View : TouchableOpacity;
             if (opt.active == null) {
-                opt.active = (i == abroadExpertFormIndex) || (i == abroadExpertFormIndex+'-0');
+                opt.active = (i == abroadExpertFormIndex) || (i == abroadExpertFormIndex + '-0');
             }
             return (
                 <Container
@@ -415,38 +483,39 @@ class Routers extends React.Component {
                     <Text style={{fontSize: 18, fontWeight: '600', marginTop: 6}}>{name}</Text>
                 </View>
 
-                <ListView style={{marginTop: 10, paddingTop: 10, marginBottom: 54}}
-                          dataSource={
-                              new ListView.DataSource({
-                                  rowHasChanged: (r1, r2) => !Map(r1).equals(Map(r2))
-                              }).cloneWithRows(items.map((x, i) => ({
-                                  ...x,
-                                  items: i == 0 ? [{leftText: 'aHHHH'}, {leftText: 'aHHHH'}, {leftText: 'aHHHH'}] : null
-                              })))
-                          }
-                          renderRow={(x, s, i) => {
-                              const out = !x.items ? renderRow(x, i)
-                                  : <ListView
-                                      renderHeader={() => renderRow(x, -1, {
-                                          style: {
-                                              borderBottomLeftRadius: 2, borderBottomRightRadius: 2,
-                                              backgroundColor: '#f1f1f1'
-                                          }, disabled: true
-                                      }) }
-                                      dataSource={
-                                          new ListView.DataSource({
-                                              rowHasChanged: (r1, r2) => !Map(r1).equals(Map(r2))
-                                          }).cloneWithRows(x.items)
-                                      }
-                                      renderRow={(x, s, j) =>
-                                          renderRow(x, +i+('-')+ (+j), {
-                                              style: {borderRadius: 2, borderTopWidth: 0}
-                                          })
-                                      }
-                                  />
-                              return out;
-                          }}
-                          renderSeparator={() => <View style={{height: 12}}/>}
+                <ListView
+                    style={{marginTop: 10, paddingTop: 10, marginBottom: 54}}
+                    dataSource={
+                        new ListView.DataSource({
+                            rowHasChanged: (r1, r2) => !Map(r1).equals(Map(r2))
+                        }).cloneWithRows(items.map((x, i) => ({
+                            ...x,
+                            items: i == 0 ? null : null
+                        })))
+                    }
+                    renderRow={(x, s, i) => {
+                        const out = !x.items ? renderRow(x, i)
+                            : <ListView
+                                renderHeader={() => renderRow(x, -1, {
+                                    style: {
+                                        borderBottomLeftRadius: 2, borderBottomRightRadius: 2,
+                                        backgroundColor: '#f1f1f1'
+                                    }, disabled: true
+                                }) }
+                                dataSource={
+                                    new ListView.DataSource({
+                                        rowHasChanged: (r1, r2) => !Map(r1).equals(Map(r2))
+                                    }).cloneWithRows(x.items)
+                                }
+                                renderRow={(x, s, j) =>
+                                    renderRow(x, +i + ('-') + (+j), {
+                                        style: {borderRadius: 2, borderTopWidth: 0}
+                                    })
+                                }
+                            />
+                        return out;
+                    }}
+                    renderSeparator={() => <View style={{height: 12}}/>}
                 />
             </View>
         )
@@ -483,13 +552,47 @@ class Routers extends React.Component {
 
                 <Scene hideTabBar key="entry" component={conn(EntryPage)} title={TITLE}/>
 
-                <Scene initial hideTabBar key="subServiceDetail" component={conn(SubServiceDetailPage)} title={TITLE}/>
+                <Scene hideTabBar key="subServiceDetail" component={conn(SubServiceDetailPage)} title={TITLE}/>
 
                 <Scene hideTabBar key="serviceDetail" component={conn(ServiceDetailPage)} title={"留学文书修改服务"}/>
 
+                <Scene hideTabBar key="orderConfirmDetail" component={conn(OrderConfirmDetailPage)}
+                       getTitle={({params = {}}) => {
+                           const {title = "确认订单"} = params;
+                           return <Text>{title}</Text>;
+                       }}/>
+
+                <Scene key="orderConfirm" component={conn(OrderConfirmPage)}
+                       type={ActionConst.PUSH_OR_POP}
+                       hideTabBar
+                       title="确认订单"
+                />
+
+                <Scene key="totalOrder"x component={conn(TotalOrderPage)}
+                       hideTabBar
+                       backButtonImage={backIcon}
+                       getTitle={(p) => {
+                           const ConnectedDrop = conn(ReduxTitleDropdown);
+                           return <ConnectedDrop {...p} />
+                       }}/>
+
+                <Scene key="abroadExpertDetail" component={conn(AbroadExpertDetailPage)}
+                       hideTabBar
+                       type={ActionConst.PUSH_OR_POP}
+                       getTitle={({params}) => (params ? params.title : '')}
+                       getRightTitle={() => shareIcon}
+                       onRight={() => alert()}/>
+
+                <Scene key="foreignTeacherDetail" component={conn(ForeignTeacherDetailPage)}
+                       type={ActionConst.PUSH_OR_POP}
+                       hideTabBar
+                       title=""
+                       rightTitle="分享"
+                       onRight={() => alert()}/>
+
                 <Scene key="resetPwdByPhone" component={conn(ResetPwdByPhonePage)} title={'重置密码'}/>
                 <Scene key="resetPwdByMail" component={conn(ResetPwdByMailPage)} title={'重置密码'}/>
-                <Scene key="tabbar" component={conn(NavigationDrawer)}>
+                <Scene initial key="tabbar" component={conn(NavigationDrawer)}>
                     <Scene
                         initial
                         key="tab_main"
@@ -582,11 +685,6 @@ class Routers extends React.Component {
                                    onRight={() => alert()}
                                    backTitle=""/>
 
-                            <Scene key="orderConfirm" component={conn(OrderConfirmPage)}
-                                   type={ActionConst.PUSH_OR_POP}
-                                   hideTabBar
-                                   title="确认订单"
-                            />
 
                             <Scene key="serviceClause" component={conn(ServiceClausePage)}
                                    type={ActionConst.PUSH_OR_POP}
@@ -594,19 +692,7 @@ class Routers extends React.Component {
                                    title="服务条款"
                             />
 
-                            <Scene key="abroadExpertDetail" component={conn(AbroadExpertDetailPage)}
-                                   hideTabBar
-                                   type={ActionConst.PUSH_OR_POP}
-                                   getTitle={({params}) => (params ? params.title : '')}
-                                   getRightTitle={() => shareIcon}
-                                   onRight={() => alert()}/>
 
-                            <Scene key="foreignTeacherDetail" component={conn(ForeignTeacherDetailPage)}
-                                   type={ActionConst.PUSH_OR_POP}
-                                   hideTabBar
-                                   title=""
-                                   rightTitle="分享"
-                                   onRight={() => alert()}/>
                         </Scene>
                         <Scene backButtonImage={backIcon} key="tab_cart" component={conn(CartPage)} title="购物车"
                                navigationBarStyle={styles.navigationBarStyle}
@@ -627,12 +713,6 @@ class Routers extends React.Component {
                                    onRight={() => {
                                    }}
                             />
-                            <Scene key="totalOrder" component={conn(TotalOrderPage)}
-                                   hideTabBar
-                                   getTitle={(p) => {
-                                       const ConnectedDrop = conn(ReduxTitleDropdown);
-                                       return <ConnectedDrop {...p} />
-                                   }}/>
                             <Scene key="myInformation"
                                    backTitle=""
                                    title="我的资料"

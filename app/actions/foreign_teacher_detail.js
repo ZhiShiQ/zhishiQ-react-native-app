@@ -48,7 +48,9 @@ export const fetchForeignTeacherDetail = (id) => {
 export const mapService = (({slug, head, price, price_per_hour, ...r}, i) => {
     const body = [], pre = "￥";
     let min = 0;
+    let type = "";
     if (slug === 'ServiceText_graduate') {
+        type = "singlePaper";
         if (price.l1_base!=null && price.l1_word!=null) {
             body.push(['语言润色', pre+price.l1_base, pre+price.l1_word])
         }
@@ -64,6 +66,7 @@ export const mapService = (({slug, head, price, price_per_hour, ...r}, i) => {
         body.push(['服务价格', pre+price]);
         min = Math.min(price);
     } else if (slug === 'ServiceTextPackage_normal') {
+        type = "completePaper";
         if (price.l2_u1!=null && price.l2_u2!= null && price.l2_u3!=null) {
             body.push(['深度修改套餐', {
                 name: pre+price.l2_u1, align: 'center'
@@ -89,7 +92,7 @@ export const mapService = (({slug, head, price, price_per_hour, ...r}, i) => {
         min = Math.min(price_per_hour);
     }
     return {
-        ...r, price: min, rSubText: '最低',
+        ...r, price: min, rSubText: '最低', type,
         table: {
             head,
             body

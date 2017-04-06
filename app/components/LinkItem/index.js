@@ -77,7 +77,7 @@ class LinkItem extends Component {
                     <View style={sty.container}>
                         <View style={[sty.left, leftComponent?{flex: 5}:{}, leftStyle]}>
                             {leftComponent}
-                            {!leftComponent && <Text style={[{color: '#4a4a4a'}, leftTextStyle]}>{leftText}</Text>}
+                            {!leftComponent && <Text style={[{color: '#4a4a4a', fontSize: 16}, leftTextStyle]}>{leftText}</Text>}
                         </View>
                         <View style={[sty.right, rightStyle]}>
                             {rightComponent}
