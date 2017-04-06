@@ -70,6 +70,7 @@ import WeeklyDayPage from './pages/WeeklyDayPage';
 import ServiceDetailPage from './pages/ServiceDetailPage';
 import SubServiceDetailPage from './pages/SubServiceDetailPage';
 import OrderConfirmDetailPage from './pages/OrderConfirmDetailPage';
+import ProjectDetailPage from './pages/ProjectDetailPage';
 
 
 // import QRCodeScreen from './components/QRCodeScreen';
@@ -275,9 +276,9 @@ class Routers extends React.Component {
                             type: ActionConst.REPLACE,
                             animation: 'fadeIn'
                         });*/
-                        Actions.totalOrder({
+                        /*Actions.totalOrder({
                             type: ActionConst.REPLACE,
-                        })
+                        })*/
                     }
                     actions.setCommonModalIsOpen(false)
                     this.setState({abroadExpertFormIndex: 0});
@@ -550,6 +551,14 @@ class Routers extends React.Component {
 
                 <Scene hideTabBar key="weeklyDay" component={conn(WeeklyDayPage)} title={'每周空闲时间'}/>
 
+                <Scene initial hideTabBar key="projectDetail" component={conn(ProjectDetailPage)}
+                       getTitele={({params={}}) => {
+                           const {title="项目一"} = params;
+                           return <Text>{title}</Text>
+                       }}
+                       backButtonImage={backIcon}
+                />
+
                 <Scene hideTabBar key="entry" component={conn(EntryPage)} title={TITLE}/>
 
                 <Scene hideTabBar key="subServiceDetail" component={conn(SubServiceDetailPage)} title={TITLE}/>
@@ -592,7 +601,7 @@ class Routers extends React.Component {
 
                 <Scene key="resetPwdByPhone" component={conn(ResetPwdByPhonePage)} title={'重置密码'}/>
                 <Scene key="resetPwdByMail" component={conn(ResetPwdByMailPage)} title={'重置密码'}/>
-                <Scene initial key="tabbar" component={conn(NavigationDrawer)}>
+                <Scene key="tabbar" component={conn(NavigationDrawer)}>
                     <Scene
                         initial
                         key="tab_main"
