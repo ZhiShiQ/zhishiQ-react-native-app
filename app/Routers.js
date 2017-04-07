@@ -89,7 +89,7 @@ import BlockButton from './components/BlockButton';
 import ModalPicker from './components/ModalPicker';
 import EvilIcon from 'react-native-vector-icons/EvilIcons'
 import * as $ from './constant';
-import {BACK_ICON, shareIcon, searchIcon} from './helpers/resource';
+import {BACK_ICON, shareIcon, moreIcon, searchIcon} from './helpers/resource';
 const Alipay = require('react-native-yunpeng-alipay').default;
 
 const MapStateToProps = (state) => ({store: state})
@@ -228,15 +228,16 @@ class Routers extends React.Component {
                         full: true,
                         title: "确定",
                         onPress: () => {
-                            const {id, leftText: name, price, type} = items[index];
+
                             actions.setCommonModalIsOpen(false);
+                            const {id, leftText: name, price, type} = items[index];
                             actions.setOrderConfirmType(type);
                             actions.setOrderConfirmTopic(name);
                             actions.setOrderConfirmPrice(price);
                             actions.setOrderConfirmId(id);
                             Actions.orderConfirm({params: {type: 'buy'}});
                         }
-                    }], height: 450 - (!name ? 20 : 0) - (!thumbnail ? 160 : 0) //height - 50
+                    }], height: 450 //height - 50
                 }
             case 'abroadExpertCart':
                 return {
@@ -245,15 +246,16 @@ class Routers extends React.Component {
                         title: "加入购物车",
                         backgroundColor: '#ffb12e',
                         onPress: () => {
-                            const {id, leftText: name, price, type} = items[index];
                             actions.setCommonModalIsOpen(false);
+                            const {id, leftText: name, price, type} = items[index];
+                            // alert(type+name);
                             actions.setOrderConfirmType(type);
                             actions.setOrderConfirmTopic(name);
                             actions.setOrderConfirmPrice(price);
                             actions.setOrderConfirmId(id);
                             Actions.orderConfirm({params: {type: 'cart'}});
                         }
-                    }], height: 450 - (!name ? 20 : 0) - (!thumbnail ? 160 : 0) // height - 50
+                    }], height: 450 // height - 50
                 }
             case 'simplePay':
                 return {buttons: [], height: 320}
@@ -292,7 +294,7 @@ class Routers extends React.Component {
                 {modalType === 'discount' && this.discount}
                 {modalType === 'abroadExpertBuy' && this.abroadExpertForm}
                 {modalType === 'abroadExpertCart' && this.abroadExpertForm}
-                {modalType === 'simplePay' && this.simplePay}
+                {modalType === 'simplePay' && this.simplePlay}
             </Modal>
         )
     }
@@ -324,8 +326,7 @@ class Routers extends React.Component {
                             marginHorizontal: 20,
                             borderRadius: 6,
                             overflow: 'hidden',
-                            height: 101, backgroundColor: '#ccc'
-                        }}/>
+                            height: 101, backgroundColor: '#ccc'}}/>
                     )}
                     renderSeparator={() => (<View style={{height: 10}}/>)}
                 />
@@ -357,7 +358,7 @@ class Routers extends React.Component {
         )
     }
 
-    get simplePay() {
+    get simplePlay() {
         return (
             <View style={{alignItems: 'center', backgroundColor: '#fff', flex: 1}}>
                 <Text style={{marginBottom: 8, marginTop: 35, fontSize: 17, fontWeight: 'bold', color: '#4a4a4a'}}>感谢您选择
@@ -374,50 +375,27 @@ class Routers extends React.Component {
                 />
                 <Hr marginBottom={0} style={{alignSelf: 'stretch', marginHorizontal: $.PADDING_SIZE}}
                     color={"#e5e5e5"}/>
-                <LinkItem
-                    onPress={() => {
-                        let json = {
-                            "alipay_sdk": "alipay-sdk-php-20161101",
-                            "app_id": "2017032706426269",
-                            "biz_content": "{\"subject\":\"IT\\u79d1\\u6280\\/IT\\u8f6f\\u4ef6\\u4e0e\\u670d\\u52a1\",\"total_amount\":0.1,\"body\":\"Iphone6 16G\",\"out_trade_no\":\"1e3e4babcb0b0530e5306801d69babbc2262330f\",\"product_code\":\"QUICK_MSECURITY_PAY\",\"passback_params\":\"merchantBizType%3d3C%26merchantBizNo%3d2016010101111\"}",
-                            "charset": "UTF-8",
-                            "format": "json",
-                            "method": "alipay.trade.app.pay",
-                            "sign_type": "RSA2",
-                            "timestamp": "2017-04-06 12:01:10",
-                            "version": "1.0",
-                            "sign": "akKXvsguhLYIE31iTzDq56Rxrx2avth7G3BCw50Nt+ZvGaVofGpGRx9xPL9ccVcfY1vbxi1JIb/ORbkVZqwnN4YevEjf43A+b1nQzHS4uyZ2OCVVxG0Z1+cHXeavWllvYv0BmWj/dlCnS9IN4bjH6rA9fyVlgd+Na0YItuxnTpMYJ6rQAK+WprCI5auI0Tw86K85dPW4zan6svUso1fVR2uOcXHuHOBj5pnrKv00VZuXdWQOPMLHjhNt3E5gPn/3AC4hCNC3Xes/k6pjQwAQ+176BZjjIGp4D8n2WYyR/z+ky1gR9GkIIJM+RrX3HAZ0VDqnvfB4Qleueh8ix4zWOA==",
-                            "notify_url": "http://yc.dev.mydocumate.com/resume/default/wx-cache"
-                        };
-
-                        for (var k in json) {
-                            json[k] = decodeURIComponent(json[k]);
-                        }
-
-                        let sign = require('querystring').stringify(json);
-                        // sign = json.sign;
-                        Alipay.pay(sign).then((x) => {
-                            alert(x);
-                        }, (x) => {
-                            alert(x);
-                        }).then(x => {
-                            Actions.totalOrder({
-                                type: ActionConst.REPLACE,
-                            });
-                            this.props.actions.setCommonModalIsOpen(false);
-                        });
-                    }}
-                    showBorder={null}
-                    style={{paddingHorizontal: $.PADDING_SIZE, paddingVertical: 4}}
-                    leftComponent={
-                        <HrFlexLayout style={{alignItems: 'center'}}>
-                            <CirImage
-                                style={{marginRight: 12}}
-                                size={32}
-                            />
-                            <Text>支付宝支付</Text>
-                        </HrFlexLayout>
-                    }
+                <LinkItem onPress={() => {
+                    let json = {
+                        "alipay_sdk": "alipay-sdk-php-20161101",
+                        "app_id": "2017032706426269",
+                        "biz_content": "{\"subject\":\"IT\\u79d1\\u6280\\/IT\\u8f6f\\u4ef6\\u4e0e\\u670d\\u52a1\",\"total_amount\":0.1,\"body\":\"Iphone6 16G\",\"out_trade_no\":\"3a950804a18e86ad991644c4836a292c249a75e5\",\"product_code\":\"QUICK_MSECURITY_PAY\",\"passback_params\":\"merchantBizType%3d3C%26merchantBizNo%3d2016010101111\"}",
+                        "charset": "UTF-8",
+                        "format": "json",
+                        "method": "alipay.trade.app.pay",
+                        "sign_type": "RSA2",
+                        "timestamp": "2017-04-06 07:56:41",
+                        "version": "1.0",
+                        "sign": "al9XDXpYW6WfCf9l7Ji10UaXJe/zkjpnLIZfA4+3F1samoNAf4ZGFlIGchOZf0yDNXuDq8EUz+0ptwc5DGuHdljfr2KI9ouMj695Ns9hpOzYPDC/SsFmMeOdEETBcpBbRiZVs/ghcDxgiMukUZ3dO+OOE9xh8SNUFr74i/B9cP+Kq/t0RT9c34UA7EaUTEWBLvXFnV1lnUIE+4/GAY+ZUgS0PPMXSPkhviJTBYNVRffUYCULbM+IRui2e9TTMn4I9DghIjydJObD5v57YEz8BpYePpLU2F6ZIBftYqMJZk6F1kdgx1kft/tgRDHod6At50uH1fHla1CDkqg3RhP3PQ=="
+                    };
+                    let sign = require('querystring').stringify(json);
+                    // sign = json.sign;
+                    Alipay.pay(sign).then(alert, alert);
+                }} showBorder={null}
+                          style={{paddingHorizontal: $.PADDING_SIZE, paddingVertical: 4}}
+                          leftComponent={<HrFlexLayout style={{alignItems: 'center'}}><CirImage
+                              style={{marginRight: 12}}
+                              size={32}/><Text>支付宝支付</Text></HrFlexLayout>}
                 />
                 <Hr marginBottom={0} color={'#e5e5e5'} style={{alignSelf: 'stretch', marginHorizontal: 0}}/>
                 <View style={{alignItems: 'center', marginTop: 10, marginHorizontal: $.PADDING_SIZE}}>
@@ -495,7 +473,7 @@ class Routers extends React.Component {
         return (
             <View style={{paddingTop: 20, flex: 1, backgroundColor: '#fff'}}>
                 <View style={{alignItems: 'center'}}>
-                    {thumbnail && <CirImage size={100} source={thumbnail}/>}
+                    <CirImage size={100} source={thumbnail}/>
                     <Text style={{fontSize: 18, fontWeight: '600', marginTop: 6}}>{name}</Text>
                 </View>
 
@@ -561,27 +539,26 @@ class Routers extends React.Component {
             actions
         } = this.props;
         const backIcon = {uri: BACK_ICON};
+        //const moreIcon = {uri: moreIcon};
         return (
             <Scene key="Root" backButtonImage={backIcon} navigationBarStyle={styles.navigationBarStyle}>
 
                 <Scene hideTabBar key="weeklyDay" component={conn(WeeklyDayPage)} title={'每周空闲时间'}/>
 
-                <Scene hideTabBar key="projectDetail" component={conn(ProjectDetailPage)}
-                       getTitele={({params = {}}) => {
+                <Scene initial hideTabBar key="projectDetail" component={conn(ProjectDetailPage)}
+                       getTitle={({params = {}}) => {
                            const {title = "项目一"} = params;
                            return <Text>{title}</Text>
                        }}
                        backButtonImage={backIcon}
+                       renderRightButton={() =>
+                           <View>{moreIcon}</View>
+                       }
                 />
 
                 <Scene hideTabBar key="entry" component={conn(EntryPage)} title={TITLE}/>
 
-                <Scene hideTabBar key="subServiceDetail" component={conn(SubServiceDetailPage)}
-                       getTitle={({params = {}}) => {
-                           const {title = TITLE} = params;
-                           return <Text>{title}</Text>
-                       }}
-                />
+                <Scene hideTabBar key="subServiceDetail" component={conn(SubServiceDetailPage)} title={TITLE}/>
 
                 <Scene hideTabBar key="serviceDetail" component={conn(ServiceDetailPage)} title={"留学文书修改服务"}/>
 
@@ -621,9 +598,8 @@ class Routers extends React.Component {
 
                 <Scene key="resetPwdByPhone" component={conn(ResetPwdByPhonePage)} title={'重置密码'}/>
                 <Scene key="resetPwdByMail" component={conn(ResetPwdByMailPage)} title={'重置密码'}/>
-                <Scene initial key="tabbar" component={conn(NavigationDrawer)}>
+                <Scene key="tabbar" component={conn(NavigationDrawer)}>
                     <Scene
-                        initial
                         key="tab_main"
                         tabs
                         backButtonImage={backIcon}
