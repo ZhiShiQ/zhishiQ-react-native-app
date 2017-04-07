@@ -15,6 +15,16 @@ export const DURATION = 300;
 
 /* UI related end */
 
+/* start of sub service detail's logic related */
+export const SUB_SERVICE_DETAIL_ROOT_SET = uint();
+export const SUB_SERVICE_DETAIL_INNER_SET = uint();
+/* end of sub service detail's logic related */
+
+/* start of service detail's logic related */
+export const SERVICE_DETAIL_ROOT_SET = uint();
+export const SERVICE_DETAIL_INNER_SET = uint();
+/* end of service detail's logic related */
+
 /* start of my common' logic related */
 export const SET_COMMON_MODAL_OPEN = uint();
 export const SET_COMMON_MODAL_TYPE = uint();

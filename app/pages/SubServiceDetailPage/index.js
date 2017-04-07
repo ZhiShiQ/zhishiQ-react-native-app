@@ -14,6 +14,7 @@ import {
     Button
 } from 'react-native';
 import * as Animatable from 'react-native-animatable';
+import {Actions} from 'react-native-router-flux';
 import * as CONST from '../../constant';
 import * as HELPER from '../../helpers';
 
@@ -27,7 +28,7 @@ import sty from './style';
 const {sep} = HELPER;
 const textStyle = {color: '#4a4a4a', fontSize: 14, lineHeight: 27};
 const thinSep = <View style={{height: 1.4, flex: 0, backgroundColor: '#f7f7f7'}}/>;
-
+const titleStyle = {fontWeight: '600', color: '#4a4a4a', fontSize: 14, lineHeight: 20};
 @autobind
 class SubServiceDetailPage extends Component {
     constructor(props) {
@@ -61,10 +62,18 @@ class SubServiceDetailPage extends Component {
     static propTypes = {};
 
     render() {
-        const {...props} = this.props
+        const {
+            actions,
+            store: {
+                sub_service_detail: {
+                    type,
+                    base: {description},
+                    detail: {items, subs}
+                }
+            }
+        } = this.props
 
         const titles = [{title: "方案比较"}, {title: "文章样例"}];
-        const titleStyle = {fontWeight: '600', color: '#4a4a4a', fontSize: 14, lineHeight: 20};
 
         return (
             <View style={{flex: 1}}>
@@ -103,114 +112,204 @@ class SubServiceDetailPage extends Component {
                     />
 
                     {sep()}
-                    {this.renderItem()}
+                    <ListView
+                        scrollEnabled={false}
+                        dataSource={
+                            new ListView.DataSource({
+                                rowHasChanged: (r1, r2) => !Map(r1).equals(Map(r2))
+                            }).cloneWithRows(items.map((x, i)=>({
+                                ...x, onBtnPress: () => {
+                                    this._pushOrderConfirm({index: i})
+                                }
+                            })))
+                        }
+                        renderRow={(x, s, i) => this.renderItem(x, i)}
+                        renderSeparator={(s, i) => i != items.length - 1 && sep()}
+                    />
                     {sep()}
-                    {this.renderItem()}
-                    {sep()}
-                    <CollapsibleIntro
-                        title={"套餐外可额外加购服务"}
-                    >
-                        <Panel title={'指定顾问'}>
-                                <View>
-                                    <Text style={[titleStyle, {marginTop: 0}]}>指定特定顾问：</Text>
-                                    <Text style={textStyle}>• 将由该顾问完成您的文书修改</Text>
-                                    <Text style={textStyle}>• 将由该顾问完成您的文书修改</Text>
-                                </View>
-                                <View>
-                                    <Text style={[titleStyle, {marginTop: 5}]}>指定指定顾问等级：</Text>
-                                    <View style={{flexDirection: 'row', marginVertical: 4}}>
-                                        <Text style={[textStyle, {lineHeight: 20}]}>• </Text>
-                                        <Text style={[textStyle, {lineHeight: 20, flex: 1}]}>顾问等级为平台依据专家组评分，用户评价，服务响应时间等标准综合评比确定</Text>
-                                    </View>
-                                    <Text style={textStyle}>• 指定不同等级顾问价格如下：</Text>
-                                    <View style={{marginLeft: 15}}>
-                                        <Text style={[textStyle, {color: '#848484', lineHeight: 22}]}>指定 level2 顾问＋总价 10%</Text>
-                                        <Text style={[textStyle, {color: '#848484', lineHeight: 22}]}>指定 level2 顾问＋总价 10%</Text>
-                                        <Text style={[textStyle, {color: '#848484', lineHeight: 22}]}>指定 level2 顾问＋总价 10%</Text>
-                                        <Text style={[textStyle, {color: '#848484', lineHeight: 22}]}>指定 level2 顾问＋总价 10%</Text>
-                                    </View>
-                                </View>
+                    <ListView
+                        scrollEnabled={false}
+                        dataSource={
+                            new ListView.DataSource({
+                                rowHasChanged: (r1, r2) => !Map(r1).equals(Map(r2))
+                            }).cloneWithRows(subs)
+                        }
+                        renderRow={(x, s, i) => this.renderSubItem(x, i)}
+                        renderSeparator={(s, i) => i != subs.length - 1 && sep()}
+                    />
 
-                                <View>
-                                    <Text style={[titleStyle, {marginTop: 5}]}>不指定顾问：</Text>
-                                    <View style={{flexDirection: 'row', marginVertical: 4}}>
-                                        <Text style={[textStyle, {lineHeight: 20}]}>• </Text>
-                                        <Text style={[textStyle, {lineHeight: 20, flex: 1}]}>不指定特定顾问和顾问等级，文书将由本申请领域各等级顾问自由接单。</Text>
-                                    </View>
-                                </View>
-                            </Panel>
-
-                        <View style={{height: 14}}/>
-
-
-                        <Panel
-                            title={"翻译"}
-                        >
-                            <View>
-                                <View style={{flexDirection: 'row', marginVertical: 4}}>
-                                    <Text style={[textStyle, {lineHeight: 20}]}>• </Text>
-                                    <Text style={[textStyle, {lineHeight: 20, flex: 1}]}>72 小时, 180.84 元 / 千汉字（正常）</Text>
-                                </View>
-
-                                <View style={{flexDirection: 'row', marginVertical: 4}}>
-                                    <Text style={[textStyle, {lineHeight: 20}]}>• </Text>
-                                    <Text style={[textStyle, {lineHeight: 20, flex: 1}]}>72 小时, 180.84 元 / 千汉字（正常）</Text>
-                                </View>
-                            </View>
-                        </Panel>
-                    </CollapsibleIntro>
 
                     <View style={{height: 14}}/>
                 </ScrollView>
-                <BottomBtns lefts={[{text: "客服", onPress: null}]} mainText={"立即购买"}/>
+                <BottomBtns lefts={[{text: "客服", onPress: null}]}
+                            mainText={"立即购买"}
+                            onMainPress={() => {
+                                // 默认选择第一个服务等级。
+                                this._pushOrderConfirm({index: 0});
+                            }}
+                />
             </View>
-    )
-    }
-
-    renderItem() {
-
-        return (
-        <View>
-        <CollapsibleIntro
-        title={"语言润色"}
-        titleCenter
-        >
-        <Text style={textStyle}>• 适用于已有初稿并且希望着重提升语言表达的用户</Text>
-        <Text style={textStyle}>• 适用于除简历外所有留学文书</Text>
-        <Text style={textStyle}>• 一对一匹配顶级名校外籍老师</Text>
-        <Text style={textStyle}>• 1 稿 / 3 天</Text>
-        <Text style={textStyle}>• 每一稿完成 3 天内不限留言数</Text>
-        <Text style={textStyle}>• 文章压缩范围：±10%</Text>
-        <Text style={textStyle}>• 服务有效期：7 天</Text>
-        </CollapsibleIntro>
-        {thinSep}
-        <View style={{
-            flexDirection: 'row',
-            backgroundColor: '#fff',
-            paddingHorizontal: CONST.PADDING_SIZE,
-            paddingVertical: 8
-        }}>
-        <View style={{flex: 1}}>
-        <View style={{flexDirection: 'row', alignItems: 'center'}}>
-        <Text style={{fontSize: 24, color: '#ea5502'}}>￥160</Text>
-        <Text style={{fontSize: 14, color: '#4a4a4a'}}> 起/300单词</Text>
-        </View>
-        <Text style={{fontSize: 12, color: '#848484'}}>（超过部分¥0.53/单词）</Text>
-        </View>
-        <View style={{flex: 0, justifyContent: 'center'}}>
-        <TouchableOpacity style={{
-            paddingHorizontal: 24,
-            paddingVertical: 10,
-            backgroundColor: '#ea5502',
-            borderRadius: 2
-        }}>
-        <Text style={{color: '#fff', fontSize: 13}}>立即购买</Text>
-        </TouchableOpacity>
-        </View>
-        </View>
-        </View>
         )
     }
+
+    _pushOrderConfirm({index = 0}) {
+        const {
+            actions,
+            store: {
+                sub_service_detail: {
+                    type,
+                    base: {description, id},
+                    detail: {items, subs}
+                }
+            }
+        } = this.props;
+        actions.setOrderConfirmType(type);
+        // actions.setOrderConfirmTopic(name);
+        actions.setOrderConfirmLevels(
+            items.map(({title, bottom: {price}}) => ({label: title, price}))
+        );
+        actions.setOrderConfirmPrice(items[index].bottom.price);
+        actions.setOrderConfirmLevelIndex(index || 0);
+        actions.setOrderConfirmId(id);
+        Actions.orderConfirm({params: {type: 'buy'}});
     }
 
-    export default SubServiceDetailPage;
+    renderItem({title, contents, bottom, onBtnPress}, i) {
+
+        return (
+            <View key={i}>
+                <CollapsibleIntro
+                    title={title}
+                    titleCenter
+                >
+                    {contents.map((text, i) => (
+                        <View key={i} style={{flexDirection: 'row'}}>
+                            <Text style={[textStyle, {lineHeight: 20}]}>• </Text>
+                            <Text style={[textStyle, {lineHeight: 20}]}>{text}</Text>
+                        </View>
+                    ))}
+                </CollapsibleIntro>
+                {thinSep}
+                <View style={{
+                    flexDirection: 'row',
+                    backgroundColor: '#fff',
+                    paddingHorizontal: CONST.PADDING_SIZE,
+                    paddingVertical: 8
+                }}>
+                    <View style={{flex: 1}}>
+                        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                            <Text style={{fontSize: 24, color: '#ea5502'}}>￥{bottom.price}</Text>
+                            <Text style={{fontSize: 14, color: '#4a4a4a'}}> 起/300单词</Text>
+                        </View>
+                        <Text style={{fontSize: 12, color: '#848484'}}>{bottom.tip}</Text>
+                    </View>
+                    <View style={{flex: 0, justifyContent: 'center'}}>
+                        <TouchableOpacity
+                            style={{
+                                paddingHorizontal: 24,
+                                paddingVertical: 10,
+                                backgroundColor: '#ea5502',
+                                borderRadius: 2
+                            }}
+                            onPress={onBtnPress}
+                        >
+                            <Text style={{color: '#fff', fontSize: 13}}>立即购买</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </View>
+        )
+    }
+
+    renderSubItem({title, contents}, i) {
+        // debugger;
+        // alert(title, contents.length);
+        // const {title: title1, contents: contents1} = contents;
+        return (
+            <CollapsibleIntro
+                key={i}
+                title={title}
+            >
+
+                <ListView
+                    scrollEnabled={false}
+                    dataSource={
+                        new ListView.DataSource({
+                            rowHasChanged: (r1, r2) => !Map(r1).equals(Map(r2))
+                        }).cloneWithRows(contents)
+                    }
+                    renderRow={({title, contents}, s, i) => (
+                        <Panel title={title}>
+                            {contents.map((c, i) => {
+                                let title, contents, content;
+                                if (typeof c === 'string') {
+                                    content = c;
+                                } else {
+                                    title = c.title;
+                                    contents = c.contents;
+                                }
+                                return (
+                                    <View key={i}>
+                                        {title &&
+                                        <Text style={[titleStyle, {marginTop: i == 0 ? 0 : 5}]}>{title}</Text>}
+                                        {/*{content && <View style={{flexDirection: 'row', marginVertical: 4}}>*/}
+                                        {/*<Text style={[textStyle, {lineHeight: 20}]}>• </Text>*/}
+                                        {/*<Text style={[textStyle, {*/}
+                                        {/*lineHeight: 20,*/}
+                                        {/*flex: 0*/}
+                                        {/*}]}>{content}</Text>*/}
+                                        {/*</View>}*/}
+
+                                        <View>
+                                            {contents &&
+                                            <View>
+                                                {contents.map((c, i) => {
+                                                    let contents, content;
+                                                    if (typeof c === 'string') {
+                                                        content = c;
+                                                    } else {
+                                                        content = c.title;
+                                                        contents = c.contents;
+                                                    }
+                                                    return (
+                                                        <View key={i}>
+                                                            {content &&
+                                                            <View style={{flexDirection: 'row', marginVertical: 4}}>
+                                                                <Text style={[textStyle, {lineHeight: 20}]}>• </Text>
+                                                                <Text style={[textStyle, {
+                                                                    lineHeight: 20,
+                                                                    flex: 1
+                                                                }]}>{content}</Text>
+                                                            </View>}
+                                                            {contents &&
+                                                            contents.map((text, i) => (
+                                                                <View style={{marginLeft: 15}}>
+                                                                    <Text key={i} style={[textStyle, {
+                                                                        color: '#848484',
+                                                                        lineHeight: 22
+                                                                    }]}>
+                                                                        {text}
+                                                                    </Text>
+                                                                </View>
+                                                            ))
+                                                            }
+                                                        </View>
+                                                    )
+                                                })}
+                                            </View>
+                                            }
+                                        </View>
+                                    </View>
+                                )
+                            })}
+                        </Panel>
+                    )}
+                    renderSeparator={(s, i) => i != contents.length - 1 && <View style={{height: 14}}/>}
+                />
+
+            </CollapsibleIntro>
+        )
+    }
+}
+
+export default SubServiceDetailPage;

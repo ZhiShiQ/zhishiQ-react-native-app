@@ -69,7 +69,7 @@ class OrderConfirmPage extends Component {
         return <Hr marginBottom={0} style={{marginHorizontal: 15}} color={"#e5e5e5"}/>;
     }
 
-    header(labelWidth) {
+    header(labelWidth, key, title) {
         const {
             actions, store: {order_confirm: {id, topic, skype, qq, price, want}}
         } = this.props;
@@ -79,10 +79,12 @@ class OrderConfirmPage extends Component {
                 emphasize
                 leftComponent={
                     <View style={{flexDirection: 'row'}}>
-                        <Text style={[{color: '#4a4a4a', fontSize: 16}, labelWidth && {width: labelWidth}]}>主题咨询：</Text>
+                        <Text style={[{color: '#4a4a4a', fontSize: 16}, labelWidth && {width: labelWidth}]}>
+                            {key || '主题咨询：'}
+                        </Text>
                         <Text numberOfLines={1} ellipsizeMode={"tail"}
                               style={{color: '#4a4a4a', flex: 1, fontSize: 16}}>
-                            {topic}
+                            {title || topic}
                         </Text>
                     </View>
                 }
@@ -419,7 +421,7 @@ class OrderConfirmPage extends Component {
         return (
             <View style={sty.main}>
                 <ScrollView>
-                    {this.header(labelWidth)}
+                    {this.header(labelWidth, '全套文书：')}
                     {sep(true, {height: 16})}
                     {this.renderSelectable({
                         label: '申请领域',
@@ -558,7 +560,7 @@ class OrderConfirmPage extends Component {
         return (
             <View style={sty.main}>
                 <ScrollView>
-                    {this.header(labelWidth)}
+                    {this.header(labelWidth, '简历服务：')}
                     {sep(true, {height: 16})}
                     {this.renderSelectable({
                         label: '简历领域',
@@ -692,7 +694,7 @@ class OrderConfirmPage extends Component {
         return (
             <View style={sty.main}>
                 <ScrollView>
-                    {this.header()}
+                    {this.header(undefined, '单项文书：', 'PS／Essay／RL／SoP')}
                     {sep(true, {height: 16})}
                     {this.renderSelectable({
                         label: '申请学位',

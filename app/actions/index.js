@@ -20,4 +20,6 @@ export default {
     ...require('./order_confirm'),
     ...require('./home'),
     ...require('./weekly_day'),
+    ...require('./service_detail'),
+    ...require('./sub_service_detail'),
 }

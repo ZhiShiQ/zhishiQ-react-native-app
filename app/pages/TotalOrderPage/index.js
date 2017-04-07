@@ -64,25 +64,12 @@ class TotalOrderPage extends Component {
     static propTypes = {}
 
     render() {
-        const {store, menus, actions} = this.props;
-        const boughtList = [{
-            title: 'sds', active: true, thumbnail: {},
-            state: 'ing', prompt: '2016-09-12', disCount: 300,
-            price: 99999,
-            content: 'CONTENT',
-            onPress: null, onBtnPress: null, btnDisabled: true
-        }, {
-            title: 'sds', active: true, thumbnail: {},
-            state: 'ing', prompt: '2016-09-12', disCount: 300,
-            price: 99999, content: 'CONTENT'
-        }, {
-            title: 'sds', active: true, thumbnail: {},
-            state: 'wait', prompt: '2016-09-12', disCount: 300,
-            price: 99999, content: 'CONTESss', onBtnPress: () => {
-                actions.setRefererTarget("target");
-                actions.refererModalOpen();
+        const {store: {
+            my_total_order: {
+                items
             }
-        }];
+        }, actions} = this.props;
+        const boughtList = items;
 
         return (
             /*<View sty={sty.main}>*/
@@ -95,7 +82,7 @@ class TotalOrderPage extends Component {
                 >
                     <View style={{flex: 1}} tabLabel="全部">
                         <BoughtViews
-                            renderHeader={() => sep()}
+                            renderHeader={() => sep(true)}
                             items={boughtList} />
                     </View>
                     <View tabLabel="待付款"></View>

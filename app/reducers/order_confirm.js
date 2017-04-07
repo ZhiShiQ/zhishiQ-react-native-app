@@ -35,7 +35,7 @@ const initialState = {
     docTypes: [{label: "PS", id: 1}, {label: "VIP"}],
     docTypeIndex: 0,
     // 文书语言
-    docLangs: [{label: "PS", id: 1}, {label: "VIP"}],
+    docLangs: [{label: "PSSS", id: 1}, {label: "VIP"}],
     docLangIndex: -1,
 
     adviseSelects: [

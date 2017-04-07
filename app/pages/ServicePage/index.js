@@ -35,10 +35,10 @@ class ServicePage extends Component {
                 {text: "留学行家", onPress: () => Actions.abroadExpert()}
             ], [
                 {text: "一站式服务", onPress: () => null},
-                {text: "全套文书", onPress: null},
+                {text: "全套文书", onPress: () => Actions.serviceDetail()},
                 {text: "国际优化快递", onPress: null},
-                {text: "单项文书", onPress: null},
-                {text: "简历", onPress: null},
+                {text: "单项文书", onPress: () => Actions.serviceDetail()},
+                {text: "简历", onPress: () => Actions.serviceDetail()},
                 {text: "模拟考试", onPress: null}
             ]
         ]
