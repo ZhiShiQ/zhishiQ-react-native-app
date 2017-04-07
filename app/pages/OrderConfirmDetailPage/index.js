@@ -12,6 +12,7 @@ import {
     ScrollView,
     Button
 } from 'react-native';
+import {Actions} from 'react-native-router-flux';
 import * as Animatable from 'react-native-animatable';
 
 import sty from './style';
@@ -27,7 +28,7 @@ import Radio from '../../components/Radio';
 import OrderConfirmPage from '../OrderConfirmPage';
 
 const {BlueButton} = OrderConfirmPage;
-const {sep} = HELPER;
+const {sep, open} = HELPER;
 @autobind
 class OrderConfirmDetailPage extends Component {
     constructor(props) {
@@ -69,6 +70,7 @@ class OrderConfirmDetailPage extends Component {
             case 'waitToUpload':
                 return this.renderWaitToUpload();
             case 'ing':
+
                 return this.renderIng();
             case 'waitToConfirmMeetTime':
                 return this.renderWaitToConfirmMeetTime();
@@ -144,12 +146,12 @@ class OrderConfirmDetailPage extends Component {
                 keys: ["课程名", "额外信息"],
                 vals: ["交互设计／HCI留学作品集指导", "交互、UI设计专业、院校推荐；申请过程可能需要准备些什么材料；需要掌握哪些技能；交互设计未来趋势是怎样的，有没有必要出国留学，进行下去？我的作品集里应该有哪些内容？大致的风格什么的应该是怎样的？然后又木有什么参考？"]
             }],
-            bottomComponent: this._renderBottom({mainText: "联系客服", subText: "其他", text: "联系顾问"})
+            bottomComponent: _renderBottom({mainText: "联系客服", subText: "其他", text: "联系顾问"})
         })
     }
 
     renderIng() {
-        return this._render({
+        const data = {
             stateText: '进行中',
             tipText: '上传文书原稿后，就可以开始服务啦',
             kvItems: [{
@@ -161,32 +163,70 @@ class OrderConfirmDetailPage extends Component {
                 keys: ["服务等级", "项目数量", "文书管家"],
                 vals: ["语言润色", "4个项目", "不需要"]
             }],
-            children: (
-                <View>
-                    <LinkItem leftText={"空闲时间"} leftTextStyle={{color: "#4a4a4a"}} onPress={null}/>
-                    {sep()}
-                    {_renderMainItem({title: "文书项目列表（共4个 已添加2个）",})}
-                    <Hr marginBottom={0} style={{marginHorizontal: 15}} color={'#e5e5e5'}/>
-                    {_renderSubject({
-                        name: "留学文书润色 ID：1423",
-                        state: "进行中",
-                        intro: "语言润色• 金融学 语言润色 • 运筹学、物流管理、供应链管理学 • Pers…"
-                    })}
-                    <Hr marginBottom={0} style={{marginHorizontal: 15}} color={'#e5e5e5'}/>
-                    {_renderSubject({
-                        name: "留学文书润色 ID：1423",
-                        state: "待上传文书",
-                        intro: "语言润色• 金融学 语言润色 • 运筹学、物流管理、供应链管理学 • Pers…"
-                    })}
-                    <Hr marginBottom={0} style={{marginHorizontal: 15}} color={'#e5e5e5'}/>
-                </View>
-            ),
-            bottomComponent: this._renderBottom({
-                mainText: "添加项目",
-                subText: "购买文书管家",
-                text: "联系顾问"
-            })
-        })
+            listItems: [
+                {
+                    name: "Carleton University",
+                    state: "6篇项目内文书",
+                    intro: "会计、审计、金融管理• 	Master • Master of Manag…",
+                    onPress: () => Actions.projectDetail({params: {title: '项目一'}})
+                },
+                {
+                    name: "Carleton University",
+                    state: "3篇项目内文书",
+                    intro: "工商管理/MBA • MBA • Financial Management",
+                    onPress: () => Actions.projectDetail({params: {title: '项目二'}})
+                },
+                {
+                    name: "项目三：等待添加",
+                    state: 'waiting'
+                },
+                {
+                    name: "项目四：等待添加",
+                    state: 'waiting'
+                }
+            ]
+        };
+        return this._render(
+            {
+                ...data,
+                children: (
+                    <View>
+                        <LinkItem leftText={"项目列表"} rightText={"查看所有项目内文书"}
+                                  onPress={null} rightTextStyle={{fontSize: 14, color: '#4a4a4a'}}
+                                  showIcon={false}
+                        />
+                        <Hr marginBottom={0} style={{marginHorizontal: 15}} color={'#e5e5e5'}/>
+                        <ListView
+                            scrollEnabled={false}
+                            dataSource={
+                                new ListView.DataSource({
+                                    rowHasChanged: (r1, r2) => !Map(r1).equals(Map(r2))
+                                }).cloneWithRows(data.listItems)
+                            }
+                            renderRow={(x, s, i) => {
+                                return x.state != 'waiting' ? _renderSubject(x) :
+                                    <LinkItem
+                                        leftText={x.name}
+                                        rightText={"添加"}
+                                        onPress={null}
+                                        leftTextStyle={{fontSize: 14, color: '#c4c4c4'}}
+                                        rightTextStyle={{fontSize: 14, color: '#848484'}}
+                                        showIcon={false}
+                                    />
+                            }}
+                            renderSeparator={(s, i) => data.listItems.length - 1 != i &&
+                            <Hr marginBottom={0} style={{marginHorizontal: 15}} color={'#e5e5e5'}/>}
+                        />
+                        {sep(true)}
+                        {sep(true)}
+                    </View>
+                ),
+                bottomComponent: _renderBottom({
+                    mainText: "添加项目",
+                    text: "联系顾问"
+                })
+            }
+        )
     }
 
     renderWaitToUpload() {
@@ -212,55 +252,8 @@ class OrderConfirmDetailPage extends Component {
                                    intro={"面试招生官"}/>
                 </View>
             ),
-            bottomComponent: this._renderBottom({mainText: "去上传", subText: "购买文书管家", text: "联系顾问"})
+            bottomComponent: _renderBottom({mainText: "去上传", subText: "购买文书管家", text: "联系顾问"})
         })
-    }
-
-    _renderBottom({mainText, subText, onMain, onSub, text, onText}) {
-        return (
-            <View style={{
-                flexDirection: 'row',
-                height: 49,
-                justifyContent: 'center',
-                paddingHorizontal: CONST.PADDING_SIZE,
-                // alignItems: 'center',
-                backgroundColor: '#fff'
-            }}>
-                <TouchableOpacity
-                    style={{justifyContent: 'center', flex: 0}}
-                    onPress={onText}
-                >
-                    <Text style={{color: '#4a4a4a', fontSize: 14}}>{text}</Text>
-                </TouchableOpacity>
-                <View style={{
-                    flex: 1,
-                    flexDirection: 'row',
-                    justifyContent: 'flex-end',
-                    alignSelf: 'center',
-                    height: 35
-                }}>
-                    <TouchableOpacity
-                        style={{
-                            marginRight: 8,
-                            width: 100, alignItems: 'center', justifyContent: 'center',
-                            borderColor: '#848484', borderWidth: .75, borderRadius: 4
-                        }}
-                        onPress={onSub}
-                    >
-                        <Text style={{paddingHorizontal: 0, fontSize: 13, color: '#4a4a4a'}}>{subText}</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        style={{
-                            width: 100, justifyContent: 'center', alignItems: 'center',
-                            borderColor: '#f0591d', borderWidth: .75, borderRadius: 4,
-                        }}
-                        onPress={onMain}
-                    >
-                        <Text style={{paddingHorizontal: 0, fontSize: 13, color: '#ea5502'}}>{mainText}</Text>
-                    </TouchableOpacity>
-                </View>
-            </View>
-        )
     }
 
     _render({stateText, tipText, kvItems = [], preChildren, children, bottomComponent}) {
@@ -381,8 +374,56 @@ const _renderInnerKV = ({keys = [], vals = []}) => (
         }}
     />
 )
+export const _renderBottom = ({mainText, subText, onMain, onSub, text, onText}) => {
+    return (
+        <View style={{
+            flexDirection: 'row',
+            height: 49,
+            justifyContent: 'center',
+            paddingHorizontal: CONST.PADDING_SIZE,
+            // alignItems: 'center',
+            paddingVertical: 10,
+            backgroundColor: '#fff'
+        }}>
+            <TouchableOpacity
+                style={{justifyContent: 'center', flex: 0}}
+                onPress={onText}
+            >
+                <Text style={{color: '#4a4a4a', fontSize: 14}}>{text}</Text>
+            </TouchableOpacity>
+            <View style={{
+                flex: 1,
+                flexDirection: 'row',
+                justifyContent: 'flex-end',
+                alignSelf: 'center',
+                height: 35
+            }}>
+                {subText ?
 
-const _renderMainItem = ({title, keys = [], vals = []}) => {
+                    <TouchableOpacity
+                        style={{
+                            marginRight: 8,
+                            width: 100, alignItems: 'center', justifyContent: 'center',
+                            borderColor: '#848484', borderWidth: .75, borderRadius: 4
+                        }}
+                        onPress={onSub}>
+                        <Text style={{paddingHorizontal: 0, fontSize: 13, color: '#4a4a4a'}}>{subText}</Text>
+                    </TouchableOpacity> : null
+                }
+                <TouchableOpacity
+                    style={{
+                        width: 100, justifyContent: 'center', alignItems: 'center',
+                        borderColor: '#f0591d', borderWidth: .75, borderRadius: 4,
+                    }}
+                    onPress={onMain}
+                >
+                    <Text style={{paddingHorizontal: 0, fontSize: 13, color: '#ea5502'}}>{mainText}</Text>
+                </TouchableOpacity>
+            </View>
+        </View>
+    )
+}
+export const _renderMainItem = ({title, keys = [], vals = [], links = []}) => {
 
     return (
         <View style={{padding: CONST.PADDING_SIZE, backgroundColor: '#fff'}}>
@@ -390,25 +431,36 @@ const _renderMainItem = ({title, keys = [], vals = []}) => {
             {keys.map((k, i) => (
                 <View key={i} style={{flexDirection: 'row', marginTop: 8}}>
                     <Text style={{fontSize: 14, lineHeight: 18, color: '#848484', width: 80, flex: 0}}>{k}</Text>
-                    <Text style={{fontSize: 14, lineHeight: 18, color: '#4a4a4a', flex: 1}}>{vals[i]}</Text>
+                    <Text style={{fontSize: 14, lineHeight: 18, color: links[i] ? '#ea5502' : '#4a4a4a', flex: 1}}
+                          onPress={() => {
+                              links[i] && open(links[i])
+                          }}>{vals[i]}</Text>
                 </View>
             ))}
         </View>
     )
 };
 
-const _renderSubject = ({name, state, intro}) => {
-
-    return (
+export const _renderSubject = ({name, state, intro, onPress, stateColor}) => {
+    const content = (
         <View style={{padding: CONST.PADDING_SIZE, backgroundColor: '#fff'}}>
             <View style={{marginBottom: 8, flexDirection: 'row'}}>
                 <Text style={{fontSize: 14, color: '#4a4a4a', flex: 1}}>{name}</Text>
-                <Text style={{fontSize: 14, color: '#ea5502', flex: 0}}>{state}</Text>
+                <Text style={{fontSize: 14, color: stateColor ? stateColor : '#ea5502', flex: 0}}>{state}</Text>
             </View>
 
             <Text numberOfLines={1} style={{flex: 1, color: '#848484', fontSize: 14}}
                   ellipsizeMode={"tail"}>{intro}</Text>
         </View>
+    );
+    return (
+        onPress
+            ? <TouchableOpacity
+            onPress={onPress}
+        >
+            {content}
+        </TouchableOpacity>
+            : content
     )
 };
 

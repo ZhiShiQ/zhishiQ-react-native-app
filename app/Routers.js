@@ -89,7 +89,7 @@ import BlockButton from './components/BlockButton';
 import ModalPicker from './components/ModalPicker';
 import EvilIcon from 'react-native-vector-icons/EvilIcons'
 import * as $ from './constant';
-import {BACK_ICON, shareIcon, searchIcon} from './helpers/resource';
+import {BACK_ICON, shareIcon, searchIcon, moreIcon} from './helpers/resource';
 const Alipay = require('react-native-yunpeng-alipay').default;
 
 const MapStateToProps = (state) => ({store: state})
@@ -184,7 +184,7 @@ class Routers extends React.Component {
         const {
             store: {
                 common: {
-                    openModal, modalType, abroadExpertForm: {items, },
+                    openModal, modalType, abroadExpertForm: {items,},
                     timeRange: {deletable, start, end}
                 }
             }, actions
@@ -210,10 +210,10 @@ class Routers extends React.Component {
                             actions.setCommonModalIsOpen(false);
                         }
                     }, deletable ? {
-                            title: "删除", onPress: () => {
-                                actions.setCommonModalIsOpen(false);
-                            }
-                        } : undefined], height: 400 + (deletable ? 30 : 0)
+                        title: "删除", onPress: () => {
+                            actions.setCommonModalIsOpen(false);
+                        }
+                    } : undefined], height: 400 + (deletable ? 30 : 0)
                 }
             case 'discount':
                 return {
@@ -273,12 +273,12 @@ class Routers extends React.Component {
                 onClosed={() => {
                     if (modalType === 'simplePay' && openModal) {
                         /*Actions.orderConfirmDetail({params: {},
-                            type: ActionConst.REPLACE,
-                            animation: 'fadeIn'
-                        });*/
+                         type: ActionConst.REPLACE,
+                         animation: 'fadeIn'
+                         });*/
                         /*Actions.totalOrder({
-                            type: ActionConst.REPLACE,
-                        })*/
+                         type: ActionConst.REPLACE,
+                         })*/
                     }
                     actions.setCommonModalIsOpen(false)
                     this.setState({abroadExpertFormIndex: 0});
@@ -333,7 +333,8 @@ class Routers extends React.Component {
                             marginHorizontal: 20,
                             borderRadius: 6,
                             overflow: 'hidden',
-                            height: 101, backgroundColor: '#ccc'}}/>
+                            height: 101, backgroundColor: '#ccc'
+                        }}/>
                     )}
                     renderSeparator={() => (<View style={{height: 10}}/>)}
                 />
@@ -454,10 +455,10 @@ class Routers extends React.Component {
                         overflow: 'hidden',
                         padding: 10
                     }, opt.active ? {backgroundColor: '#fc6d34'} : {
-                            backgroundColor: '#fafafa',
-                            borderWidth: StyleSheet.hairlineWidth,
-                            borderColor: '#e5e5e5'
-                        }, opt.style]}
+                        backgroundColor: '#fafafa',
+                        borderWidth: StyleSheet.hairlineWidth,
+                        borderColor: '#e5e5e5'
+                    }, opt.style]}
                     onPress={() => {
                         this.setState({abroadExpertFormIndex: i});
                         // actions.setAbroadExpertFormIndex(i);
@@ -497,23 +498,23 @@ class Routers extends React.Component {
                     renderRow={(x, s, i) => {
                         const out = !x.items ? renderRow(x, i)
                             : <ListView
-                                renderHeader={() => renderRow(x, -1, {
-                                    style: {
-                                        borderBottomLeftRadius: 2, borderBottomRightRadius: 2,
-                                        backgroundColor: '#f1f1f1'
-                                    }, disabled: true
-                                }) }
-                                dataSource={
-                                    new ListView.DataSource({
-                                        rowHasChanged: (r1, r2) => !Map(r1).equals(Map(r2))
-                                    }).cloneWithRows(x.items)
-                                }
-                                renderRow={(x, s, j) =>
-                                    renderRow(x, +i + ('-') + (+j), {
-                                        style: {borderRadius: 2, borderTopWidth: 0}
-                                    })
-                                }
-                            />
+                            renderHeader={() => renderRow(x, -1, {
+                                style: {
+                                    borderBottomLeftRadius: 2, borderBottomRightRadius: 2,
+                                    backgroundColor: '#f1f1f1'
+                                }, disabled: true
+                            }) }
+                            dataSource={
+                                new ListView.DataSource({
+                                    rowHasChanged: (r1, r2) => !Map(r1).equals(Map(r2))
+                                }).cloneWithRows(x.items)
+                            }
+                            renderRow={(x, s, j) =>
+                                renderRow(x, +i + ('-') + (+j), {
+                                    style: {borderRadius: 2, borderTopWidth: 0}
+                                })
+                            }
+                        />
                         return out;
                     }}
                     renderSeparator={() => <View style={{height: 12}}/>}
@@ -546,17 +547,21 @@ class Routers extends React.Component {
             actions
         } = this.props;
         const backIcon = {uri: BACK_ICON};
+        //const moreIcon = {uri: moreIcon};
         return (
             <Scene key="Root" backButtonImage={backIcon} navigationBarStyle={styles.navigationBarStyle}>
 
                 <Scene hideTabBar key="weeklyDay" component={conn(WeeklyDayPage)} title={'每周空闲时间'}/>
 
-                <Scene initial hideTabBar key="projectDetail" component={conn(ProjectDetailPage)}
-                       getTitele={({params={}}) => {
-                           const {title="项目一"} = params;
+                <Scene hideTabBar key="projectDetail" component={conn(ProjectDetailPage)}
+                       getTitle={({params = {}}) => {
+                           const {title = "项目一"} = params;
                            return <Text>{title}</Text>
                        }}
                        backButtonImage={backIcon}
+                       renderRightButton={() =>
+                           <View>{moreIcon}</View>
+                       }
                 />
 
                 <Scene hideTabBar key="entry" component={conn(EntryPage)} title={TITLE}/>
@@ -565,7 +570,7 @@ class Routers extends React.Component {
 
                 <Scene hideTabBar key="serviceDetail" component={conn(ServiceDetailPage)} title={"留学文书修改服务"}/>
 
-                <Scene hideTabBar key="orderConfirmDetail" component={conn(OrderConfirmDetailPage)}
+                <Scene initial hideTabBar key="orderConfirmDetail" component={conn(OrderConfirmDetailPage)}
                        getTitle={({params = {}}) => {
                            const {title = "确认订单"} = params;
                            return <Text>{title}</Text>;
@@ -577,7 +582,7 @@ class Routers extends React.Component {
                        title="确认订单"
                 />
 
-                <Scene key="totalOrder"x component={conn(TotalOrderPage)}
+                <Scene key="totalOrder" x component={conn(TotalOrderPage)}
                        hideTabBar
                        backButtonImage={backIcon}
                        getTitle={(p) => {
