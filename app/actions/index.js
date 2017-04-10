@@ -23,5 +23,6 @@ export default {
     service_detail: require('./service_detail'),
     onestep_detail: require('./onestep_detail'),
     ...require('./sub_service_detail'),
+    ...require('./service_test'),
     // onestep_sub_service_detail: require('./onestep_sub_service_detail'),
 }

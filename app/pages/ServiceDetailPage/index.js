@@ -28,6 +28,8 @@ import Services from '../../components/Services';
 import ServiceItem from '../../components/ServiceItem';
 import BottomBtns from '../../components/BottomBtns';
 import Hr from '../../components/Hr';
+import Comments from '../../components/Comments';
+import CommentStar from '../../components/CommentStar';
 
 const {getHead} = CollapsibleIntro;
 const {sep} = HELPER;
@@ -308,7 +310,9 @@ class ServiceDetailPage extends Component {
                             </View>
                         </View>
                         <View tabLabel="用户评价">
-
+                            <View style={{flex:1}}>
+                                {sep()}
+                            </View>
                         </View>
                     </ScrollTab>
                 </ScrollView>

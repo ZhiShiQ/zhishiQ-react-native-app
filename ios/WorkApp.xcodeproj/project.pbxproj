@@ -739,7 +739,7 @@
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
-						DevelopmentTeam = 3B5D6SJ9YU;
+						DevelopmentTeam = LRAQF45T73;
 					};
 					2D02E47A1E0B4A5D006451C7 = {
 						CreatedOnToolsVersion = 8.2.1;
@@ -1239,7 +1239,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
-				DEVELOPMENT_TEAM = 3B5D6SJ9YU;
+				DEVELOPMENT_TEAM = LRAQF45T73;
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/node_modules/react-native-yunpeng-alipay/ios/AlipayModule";
 				INFOPLIST_FILE = WorkApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1258,7 +1258,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 3B5D6SJ9YU;
+				DEVELOPMENT_TEAM = LRAQF45T73;
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/node_modules/react-native-yunpeng-alipay/ios/AlipayModule";
 				INFOPLIST_FILE = WorkApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

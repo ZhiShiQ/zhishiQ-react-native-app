@@ -73,6 +73,8 @@ import OrderConfirmDetailPage from './pages/OrderConfirmDetailPage';
 import ProjectDetailPage from './pages/ProjectDetailPage';
 import OneStepServiceDetailPage from './pages/OneStepServiceDetailPage';
 
+import ServiceTestPage from './pages/ServiceTestPage';
+import SubmitSuccessPage from './pages/SubmitSuccessPage';
 
 // import QRCodeScreen from './components/QRCodeScreen';
 import TabIcon from './components/TabIcon';
@@ -540,13 +542,17 @@ class Routers extends React.Component {
             actions
         } = this.props;
         const backIcon = {uri: BACK_ICON};
-
-
         //const moreIcon = {uri: moreIcon};
         return (
             <Scene key="Root" backButtonImage={backIcon} navigationBarStyle={styles.navigationBarStyle}>
 
                 <Scene hideTabBar key="weeklyDay" component={conn(WeeklyDayPage)} title={'每周空闲时间'}/>
+                <Scene hideTabBar key="servicePage" component={conn(ServiceTestPage)} title={'免费测评'}
+                       backButtonImage={backIcon}
+                />
+                <Scene hideTabBar key="submitSuccessPage" component={conn(SubmitSuccessPage)} title={'提交成功'}
+                       backButtonImage={backIcon}
+                />
 
                 <Scene hideTabBar key="projectDetail" component={conn(ProjectDetailPage)}
                        getTitle={({params = {}}) => {
@@ -582,7 +588,7 @@ class Routers extends React.Component {
 
                 <Scene hideTabBar key="serviceDetail" component={conn(ServiceDetailPage)} title={"留学文书修改服务"}/>
 
-                <Scene hideTabBar key="orderConfirmDetail" component={conn(OrderConfirmDetailPage)}
+                <Scene initial hideTabBar key="orderConfirmDetail" component={conn(OrderConfirmDetailPage)}
                        getTitle={({params = {}}) => {
                            const {title = "确认订单"} = params;
                            return <Text>{title}</Text>;
@@ -847,7 +853,7 @@ class Routers extends React.Component {
                        rightTitle="客服"
                        type={ActionConst.PUSH_OR_POP}
                        onRight={() => alert()}/>
-                <Scene initial key="chat" component={conn(ChatPage)}
+                <Scene key="chat" component={conn(ChatPage)}
                        hideTabBar
                        type={ActionConst.PUSH_OR_POP}
                        getTitle={({params}) => (params ? params.name : '')}

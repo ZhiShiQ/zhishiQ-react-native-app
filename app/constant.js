@@ -150,3 +150,7 @@ export const SET_CART_ITEM_SELECTED_BY_INDEX = uint();
 export const SET_ALL_CART_ITEM_SELECTED = uint();
 
 /* end of cart's logic related */
+
+/* start of service test's logic related*/
+export const SERVICE_TEST_ROOT_SET = uint();
+/* end of service test's logic related*/

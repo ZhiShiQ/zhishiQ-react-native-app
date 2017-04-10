@@ -36,6 +36,7 @@ class BottomBtns extends Component {
             {text: '收藏', onPress: null},
             {text: '客服', onPress: null}
         ],
+        mainButtonStyle:{}
     }
     state = {}
     static propTypes = {
@@ -44,9 +45,10 @@ class BottomBtns extends Component {
         subText: PropTypes.string,
         onMainPress: PropTypes.func,
         onSubPress: PropTypes.func,
+        mainButtonStyle: PropTypes.object,
     }
     render() {
-        const {lefts, onMainPress, onSubPress, mainText, subText} = this.props
+        const {lefts, onMainPress, onSubPress, mainText, subText, mainButtonStyle} = this.props
 
         return (
             <View
@@ -92,6 +94,7 @@ class BottomBtns extends Component {
                         // paddingVertical: 15,
                         justifyContent: 'center',
                         backgroundColor: "#ea5502",
+                        ...mainButtonStyle
                     }}
                     onPress={onMainPress}
                 >

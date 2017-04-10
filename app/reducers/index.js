@@ -30,5 +30,6 @@ export default combineReducers({
     service_detail: require('./service_detail').default,
     onestep_detail: require('./onestep_detail').default,
     sub_service_detail: require('./sub_service_detail').default,
+    service_test:require('./service_test').default,
     onestep_sub_service_detail: require('./onestep_sub_service_detail').default,
 })
