@@ -56,13 +56,14 @@ class CollapsibleService extends Component {
         table: PropTypes.object,
         name: PropTypes.string,
         rSubText: PropTypes.string,
+        append: PropTypes.string,
         price: PropTypes.number,
         collapsible: PropTypes.bool,
         onBtnPress: PropTypes.func
     }
 
     render() {
-        const {detail, table, name, rSubText, price, onBtnPress, collapsible, ...rest} = this.props
+        const {detail, table, name, rSubText, append, price, onBtnPress, collapsible, ...rest} = this.props
 
         return (
             <CollapsibleItem
@@ -78,7 +79,8 @@ class CollapsibleService extends Component {
                         <Text style={{flex: 1, fontSize: 15, lineHeight: 17.5, color: '#4a4a4a'}}>{name}</Text>
                         <View style={{flexDirection: 'row', flex: 0, alignItems: 'center', justifyContent: 'flex-end'}}>
                             <Text style={{color: '#a1a1a1', fontSize: 12}}>{rSubText}</Text>
-                            <Text numberOfLines={1} style={{marginLeft: 4, color: '#ea5502', fontSize: 15}}>¥{price}</Text>
+                            <Text numberOfLines={1} style={{marginLeft: 4, color: '#ea5502', fontSize: 16}}>¥{price}</Text>
+                            {append && <Text numberOfLines={1} style={{color: '#a1a1a1', fontSize: 13}}>{append}</Text>}
                         </View>
                     </View>
                 }

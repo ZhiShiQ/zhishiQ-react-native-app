@@ -56,8 +56,10 @@ class ProjectDetailPage extends Component {
         const kvItems = [{
             title: "项目信息",
             keys: ["学校名称", "项目名称", "申请专业", "申请学位"],
-            vals: ["Carleton University", "Master of Management - Internationa…", "工商管理/MBA", "MBA"],
-            links:['http://www.baidu.com','http://www.baidu.com','','']
+            vals: [
+                {text: "Carleton University", highlight: true},
+                {text: "Master of Management - Internationa…", highlight: true},
+                "工商管理/MBA", "MBA"]
         }]
         return (
             <View style={sty.main}>

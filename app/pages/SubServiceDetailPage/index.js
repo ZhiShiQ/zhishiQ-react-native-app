@@ -62,54 +62,65 @@ class SubServiceDetailPage extends Component {
     static propTypes = {};
 
     render() {
+        // const {params={}} = this.props;
+        // const {source="sub_service_detail"} = params;
         const {
             actions,
             store: {
                 sub_service_detail: {
-                    type,
+                    type,//("oneStepApply")
                     base: {description},
                     detail: {items, subs}
                 }
             }
-        } = this.props
+        } = this.props;
 
         const titles = [{title: "方案比较"}, {title: "文章样例"}];
+        const isOneStepApply = type == 'oneStepApply';
+        const noBase = isOneStepApply;
 
         return (
             <View style={{flex: 1}}>
                 <ScrollView style={sty.main}>
-                    <View style={{flexDirection: 'row', padding: 15, alignItems: 'center', backgroundColor: '#fff'}}>
-                        <View style={{paddingRight: 15}}>
-                            <Image style={{width: 100, height: 100, backgroundColor: '#eee'}}/>
+                    {!noBase &&
+                    <View>
+                        <View
+                            style={{flexDirection: 'row', padding: 15, alignItems: 'center', backgroundColor: '#fff'}}>
+                            <View style={{paddingRight: 15}}>
+                                <Image style={{width: 100, height: 100, backgroundColor: '#eee'}}/>
+                            </View>
+                            <View style={{flex: 1}}>
+                                <Text style={{color: '#4a4a4a', fontSize: 14, lineHeight: 18}}>提供针对个人陈述/推荐信/简历/小文章等留学文书的点评、语言润色、深度修改、辅导撰写等服务，权威外籍导师一对一个性化指导，助你的文书脱颖而出。</Text>
+                            </View>
                         </View>
-                        <View style={{flex: 1}}>
-                            <Text style={{color: '#4a4a4a', fontSize: 14, lineHeight: 18}}>提供针对个人陈述/推荐信/简历/小文章等留学文书的点评、语言润色、深度修改、辅导撰写等服务，权威外籍导师一对一个性化指导，助你的文书脱颖而出。</Text>
-                        </View>
-                    </View>
-
-                    {thinSep}
-
-                    <ListView
-                        scrollEnabled={false}
-                        contentContainerStyle={{
-                            paddingVertical: 15,
-                            flexDirection: 'row',// height: 125,
-                            justifyContent: 'center',
-                            alignItems: 'center', backgroundColor: '#fff'
-                        }}
-                        dataSource={
-                            new ListView.DataSource({
-                                rowHasChanged: (r1, r2) => !Map(r1).equals(Map(r2))
-                            }).cloneWithRows(titles)
-                        }
-                        renderRow={ (x, s, i) =>
-                            <TouchableOpacity style={{flex: 1, alignItems: 'center'}}>
-                                <Text style={{color: '#ea5502', fontSize: 16}}>{x.title}</Text>
-                            </TouchableOpacity>
-                        }
-                        renderSeparator={ (x, i) => i != titles.length - 1 && <View
-                            style={{width: 1, alignSelf: 'stretch', marginVertical: -2, backgroundColor: '#c4c4c4'}}/> }
-                    />
+                        {thinSep}
+                        <ListView
+                            scrollEnabled={false}
+                            contentContainerStyle={{
+                                paddingVertical: 15,
+                                flexDirection: 'row',// height: 125,
+                                justifyContent: 'center',
+                                alignItems: 'center', backgroundColor: '#fff'
+                            }}
+                            dataSource={
+                                new ListView.DataSource({
+                                    rowHasChanged: (r1, r2) => !Map(r1).equals(Map(r2))
+                                }).cloneWithRows(titles)
+                            }
+                            renderRow={ (x, s, i) =>
+                                <TouchableOpacity style={{flex: 1, alignItems: 'center'}}>
+                                    <Text style={{color: '#ea5502', fontSize: 16}}>{x.title}</Text>
+                                </TouchableOpacity>
+                            }
+                            renderSeparator={ (x, i) => i != titles.length - 1 && <View
+                                style={{
+                                    width: 1,
+                                    alignSelf: 'stretch',
+                                    marginVertical: -2,
+                                    backgroundColor: '#c4c4c4'
+                                }}/> }
+                        />
+                    </View>}
 
                     {sep()}
                     <ListView
@@ -117,16 +128,22 @@ class SubServiceDetailPage extends Component {
                         dataSource={
                             new ListView.DataSource({
                                 rowHasChanged: (r1, r2) => !Map(r1).equals(Map(r2))
-                            }).cloneWithRows(items.map((x, i)=>({
+                            }).cloneWithRows(items.map((x, i) => ({
                                 ...x, onBtnPress: () => {
-                                    this._pushOrderConfirm({index: i})
-                                }
+                                    if (!isOneStepApply) {
+                                        this._pushOrderConfirm({index: i})
+                                    } else {
+
+                                    }
+                                }, onSubPress: isOneStepApply ? () => {
+
+                                    } : null
                             })))
                         }
                         renderRow={(x, s, i) => this.renderItem(x, i)}
                         renderSeparator={(s, i) => i != items.length - 1 && sep()}
                     />
-                    {sep()}
+                    {sep(!subs||!subs.length)}
                     <ListView
                         scrollEnabled={false}
                         dataSource={
@@ -142,6 +159,9 @@ class SubServiceDetailPage extends Component {
                     <View style={{height: 14}}/>
                 </ScrollView>
                 <BottomBtns lefts={[{text: "客服", onPress: null}]}
+                            subText={"加入购物车"}
+                            onSubPress={() => {
+                            }}
                             mainText={"立即购买"}
                             onMainPress={() => {
                                 // 默认选择第一个服务等级。
@@ -174,7 +194,7 @@ class SubServiceDetailPage extends Component {
         Actions.orderConfirm({params: {type: 'buy'}});
     }
 
-    renderItem({title, contents, bottom, onBtnPress}, i) {
+    renderItem({title, contents, bottom, onBtnPress, onSubPress}, i) {
 
         return (
             <View key={i}>
@@ -194,26 +214,31 @@ class SubServiceDetailPage extends Component {
                     flexDirection: 'row',
                     backgroundColor: '#fff',
                     paddingHorizontal: CONST.PADDING_SIZE,
-                    paddingVertical: 8
+                    paddingVertical: bottom.addon ? 8 : CONST.PADDING_SIZE
                 }}>
                     <View style={{flex: 1}}>
                         <View style={{flexDirection: 'row', alignItems: 'center'}}>
                             <Text style={{fontSize: 24, color: '#ea5502'}}>￥{bottom.price}</Text>
-                            <Text style={{fontSize: 14, color: '#4a4a4a'}}> 起/300单词</Text>
+                            {bottom.addon && <Text style={{fontSize: 14, color: '#4a4a4a'}}> 起/300单词</Text>}
                         </View>
-                        <Text style={{fontSize: 12, color: '#848484'}}>{bottom.tip}</Text>
+                        {bottom.tip && <Text style={{fontSize: 12, color: '#848484'}}>{bottom.tip}</Text>}
                     </View>
+
+                    {bottom.subBtnText && <View style={{flex: 0, justifyContent: 'center', marginRight: 20}}>
+                        <Text style={{fontSize: 13, color: '#848484'}} onPress={onSubPress}>{bottom.subBtnText}</Text>
+                    </View>}
+
                     <View style={{flex: 0, justifyContent: 'center'}}>
                         <TouchableOpacity
                             style={{
                                 paddingHorizontal: 24,
                                 paddingVertical: 10,
-                                backgroundColor: '#ea5502',
+                                backgroundColor: bottom.infoBtn ? '#1097ec' : '#ea5502',
                                 borderRadius: 2
                             }}
                             onPress={onBtnPress}
                         >
-                            <Text style={{color: '#fff', fontSize: 13}}>立即购买</Text>
+                            <Text style={{color: '#fff', fontSize: 13}}>{bottom.btnText || "立即购买"}</Text>
                         </TouchableOpacity>
                     </View>
                 </View>

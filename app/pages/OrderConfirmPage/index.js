@@ -101,7 +101,7 @@ class OrderConfirmPage extends Component {
             : advisers.map((a, i) => ({
                 ...a, onPress: () => {
                     actions.setOrderConfirmSelectAdviserIndex(i)
-                }, style: i == 0 && {paddingTop: 0}
+                }, /*style: i == 0 && {paddingTop: 0}*/
             }))
         return (
             <ListView
@@ -111,19 +111,48 @@ class OrderConfirmPage extends Component {
                 }).cloneWithRows(items)}
                 renderRow={(x, s, i) => this.renderPerson(x, i)}
                 renderSeparator={(x, i) => i != items.length - 1 ? this.hr : null}
-                renderFooter={() => selectAdviserIndex >= 0 ? this.renderResetButton() : null }
+                renderFooter={() => selectAdviserIndex >= 0 ? this.renderResetButton({
+                        onPress: () => {
+                            actions.setOrderConfirmSelectAdviserIndex(-1);
+                            actions.setOrderConfirmAdvisers(advisers);
+                        }
+                    }) : null }
             />
         )
     }
 
-    renderResetButton() {
+    renderTeachers() {
+        const {store: {order_confirm: {teachers, selectTeacherIndex}}, actions} = this.props;
+
+        const items = selectTeacherIndex >= 0 ? [teachers[selectTeacherIndex]]
+            : teachers.map((a, i) => ({
+                ...a, onPress: () => {
+                    actions.setOrderConfirmSelectTeacherIndex(i)
+                }, /*style: i == 0 && {paddingTop: 0}*/
+            }))
+        return (
+            <ListView
+                scrollEnabled={false}
+                dataSource={new ListView.DataSource({
+                    rowHasChanged: (r1, r2) => !Map(r1).equals(Map(r2))
+                }).cloneWithRows(items)}
+                renderRow={(x, s, i) => this.renderPerson(x, i)}
+                renderSeparator={(x, i) => i != items.length - 1 ? this.hr : null}
+                renderFooter={() => selectTeacherIndex >= 0 ? this.renderResetButton({
+                        onPress: () => {
+                            actions.setOrderConfirmSelectTeacherIndex(-1);
+                            actions.setOrderConfirmTeachers(teachers);
+                        }
+                    }) : null }
+            />
+        )
+    }
+
+    renderResetButton({onPress}) {
         const {actions, store: {order_confirm: {advisers}}} = this.props;
         return (
             OrderConfirmPage.BlueButton({
-                onPress: () => {
-                    actions.setOrderConfirmSelectAdviserIndex(-1);
-                    actions.setOrderConfirmAdvisers(advisers);
-                },
+                onPress: onPress,
                 text: '重新选择'
             })
         )
@@ -139,7 +168,7 @@ class OrderConfirmPage extends Component {
                         backgroundColor: '#1097ec',
                         borderRadius: 2
                     }}
-                    onPress={() => onPress}
+                    onPress={onPress}
                 >
                     <View>
                         <Text style={{color: '#fff', fontSize: 13}}>{text}</Text>
@@ -150,9 +179,8 @@ class OrderConfirmPage extends Component {
     }
 
     renderPerson(p, i) {
-
         return (
-            <PersonInOrder {...p} key={i} />
+            <PersonInOrder {...p} key={i}/>
         )
     }
 
@@ -212,13 +240,14 @@ class OrderConfirmPage extends Component {
         }
     }
 
-    pureText(text, btnText) {
+    pureText(text, btnText, rest, options={}) {
+        const {showIcon=false, onPress=()=>Actions.serviceClause()} = options;
         return (
             <View style={{
                 flexDirection: 'row', marginTop: 8,
                 marginBottom: 15, paddingLeft: 15,
             }}>
-                {btnText && <Text style={{top: 3.5}}><EvilIcon size={18} color="#ea5502" name="check"/></Text>}
+                {btnText && showIcon && <Text style={{top: 3.5}}><EvilIcon size={18} color="#ea5502" name="check"/></Text>}
                 <Text style={{
                     color: '#a1a1a1',
                     lineHeight: 18,
@@ -228,11 +257,24 @@ class OrderConfirmPage extends Component {
                     {text}
                 </Text>
                 {btnText && <TouchableWithoutFeedback
-                    onPress={() => Actions.serviceClause()}>
-                    <View>
-                        <Text style={{fontSize: 13.5, lineHeight: 18, color: '#ea5502'}}>{btnText}</Text>
+                    onPress={onPress}
+                >
+                    <View style={{borderBottomWidth: .75, borderBottomColor: '#ea5502'}}>
+                        <Text style={{
+                            fontSize: 13.5, lineHeight: 18, color: '#ea5502',
+                            //textDecorationLine: 'underline'
+                        }}>{btnText}</Text>
                     </View>
                 </TouchableWithoutFeedback>}
+
+                {rest && <Text style={{
+                    color: '#a1a1a1',
+                    lineHeight: 18,
+                    fontSize: 13.5,
+                    paddingRight: 0,
+                }}>
+                    {rest}
+                </Text>}
             </View>
         )
     }
@@ -253,6 +295,8 @@ class OrderConfirmPage extends Component {
                 return this.renderCompletePaperService();
             case 'singlePaper':
                 return this.renderSinglePaper();
+            case 'oneStepApply':
+                return this.renderOneStepApply();
             case 'resume':
             default:
                 return this.renderResumeService();
@@ -321,7 +365,7 @@ class OrderConfirmPage extends Component {
                     aimLangs, aimLangIndex, applyDegrees, applyDegreeIndex,
                     applyFields, applyFieldIndex, selectAdviserIndex,
                     adviseSelects, adviseType, paperManagerEnable, skypeEnable,
-                    adviserLevels, adviserLevelIndex
+                    adviserLevels, adviserLevelIndex, advisers
                 }
             }
         } = this.props;
@@ -345,7 +389,7 @@ class OrderConfirmPage extends Component {
                     {this.hr}
                     <View style={{flex: 1}}>
                         { selectAdviserIndex < 0 &&
-                        <View style={{backgroundColor: '#fff', padding: 15, paddingBottom: 15}}>
+                        <View style={{backgroundColor: '#fff', padding: 15, paddingBottom: advisers.length ? 0:15}}>
                             <TextInput
                                 autoCapitalize={false}
                                 autoCorrect={false}
@@ -353,11 +397,13 @@ class OrderConfirmPage extends Component {
                                     actions.setOrderConfirmAdvisers([{
                                         average: 4.8,
                                         clients: 234,
+                                        name: "moyu..",
                                         school: "伦敦艺术大学",
                                         intro: "面试招生官"
                                     }, {
                                         average: 4.8,
                                         clients: 234,
+                                        name: "moyu..",
                                         school: "伦敦艺术大学",
                                         intro: "面试招生官"
                                     }])
@@ -367,7 +413,7 @@ class OrderConfirmPage extends Component {
                                 style={{
                                     color: '#4a4a4a',
                                     borderRadius: 3, flex: 1, paddingHorizontal: 10, fontSize: 16, height: 35,
-                                    backgroundColor: '#f7f7f7', borderWidth: 1, borderColor: '#e5e5e5'
+                                    backgroundColor: '#f7f7f7', borderWidth: 1, borderColor: '#e5e5e5',
                                 }}
                             />
                         </View>
@@ -395,6 +441,157 @@ class OrderConfirmPage extends Component {
 
                 {this.pureText('指定文书顾问需要额外缴纳50%的指定费用，直接下单将由芝士圈文书顾问团队中的一位顾问接手您的订单。')}
                 {sep(true, {height: 16})}
+            </View>
+        )
+    }
+
+    /**
+     * 指定主导师
+     * @param labelWidth
+     * @returns {XML}
+     * @private
+     */
+    _renderTeacher({labelWidth}) {
+        const {
+            actions,
+            store: {
+                order_confirm: {
+                    levels, levelIndex, applyCountries, applyCountryIndex,
+                    aimLangs, aimLangIndex, applyDegrees, applyDegreeIndex,
+                    applyFields, applyFieldIndex, selectAdviserIndex,
+                    adviseSelects, adviseType, paperManagerEnable, skypeEnable,
+                    adviserLevels, adviserLevelIndex, teacherType, teacherSelects,
+                    selectTeacherIndex, teachers
+                }
+            }
+        } = this.props;
+        return (
+            <View>
+                {this.renderSelectable({
+                    label: '指定顾问',
+                    labelWidth,
+                    content: teacherSelects.find(x => x.type == teacherType).label,
+                    contentHighlight: true,
+                    onPress: () => actions.pickerModalOpen(
+                        teacherSelects.map(a => ({
+                            ...a, onPress: ({type}, i) => {
+                                actions.setOrderConfirmTeacherType(type);
+                            }
+                        }))
+                    )
+                })}
+                {teacherType == 'person' &&
+                <View align={"center"}>
+                    {this.hr}
+                    <View style={{flex: 1}}>
+                        { selectTeacherIndex < 0 &&
+                        <View style={{backgroundColor: '#fff', padding: 15, paddingBottom: teachers.length ? 0:15}}>
+                            <TextInput
+                                autoCapitalize={false}
+                                autoCorrect={false}
+                                onChangeText={(text) => {/*fetch Search*/
+                                    actions.setOrderConfirmTeachers([{
+                                        average: 4.8,
+                                        clients: 234,
+                                        name: "moyu..",
+                                        school: "伦敦艺术大学",
+                                        intro: "面试招生官"
+                                    }, {
+                                        average: 4.8,
+                                        clients: 234,
+                                        name: "moyu..",
+                                        school: "伦敦艺术大学",
+                                        intro: "面试招生官"
+                                    }])
+                                }}
+                                placeholder={"输入顾问名字，如：Andy"}
+                                editable={true}
+                                style={{
+                                    color: '#4a4a4a',
+                                    borderRadius: 3, flex: 1, paddingHorizontal: 10, fontSize: 16, height: 35,
+                                    backgroundColor: '#f7f7f7', borderWidth: 1, borderColor: '#e5e5e5'
+                                }}
+                            />
+                        </View>
+                        }
+                        {this.renderTeachers()}
+                        <Hr marginBottom={0} style={{marginHorizontal: 0}} color={"#e5e5e5"}/>
+                    </View>
+                </View>
+                }
+                {this.pureText('您可以在','顾问页面','查看符合您专业和愿望的顾问', {onPress: () => {}, showIcon: false})}
+            </View>
+        )
+    }
+
+    /**
+     *  一站式申请服务
+     * @returns {XML}
+     */
+    renderOneStepApply() {
+        const {
+            actions,
+            store: {
+                order_confirm: {
+                    levels, levelIndex, applyCountries, applyCountryIndex,
+                    aimLangs, aimLangIndex, applyDegrees, applyDegreeIndex,
+                    applyFields, applyFieldIndex, selectAdviserIndex,
+                    adviseEnable, paperManagerEnable, skypeEnable
+                }
+            }
+        } = this.props;
+        const labelWidth = undefined;
+
+        return (
+            <View style={sty.main}>
+                <ScrollView>
+                    {this.header(labelWidth, '一站式服务 ')}
+                    {sep(true, {height: 16})}
+                    {this.renderSelectable({
+                        label: '申请国家',
+                        content: applyCountryIndex < 0 ? '请选择您申请国家' : applyCountries[applyCountryIndex].label,
+                        labelWidth,
+                        contentHighlight: applyCountryIndex >= 0,
+                        onPress: () => actions.pickerModalOpen(applyCountries.map(a => ({
+                            ...a, onPress: (a, i) => {
+                                actions.setOrderConfirmApplyCountryIndex(i)
+                            }
+                        })))
+                    })}
+                    {sep(true, {height: 16})}
+                    {this.renderSelectable({
+                        label: '申请学位',
+                        content: applyDegreeIndex < 0 ? '请选择您的申请学位' : applyDegrees[applyDegreeIndex].label,
+                        labelWidth,
+                        contentHighlight: applyDegreeIndex >= 0,
+                        onPress: () => actions.pickerModalOpen(applyDegrees.map(a => ({
+                            ...a, onPress: (a, i) => {
+                                actions.setOrderConfirmApplyDegreeIndex(i)
+                            }
+                        })))
+                    })}
+                    {this.hr}
+                    {this.renderSelectable({
+                        label: '申请领域',
+                        content: applyFieldIndex < 0 ? '请选择您申请领域' : applyFields[applyFieldIndex].label,
+                        labelWidth,
+                        contentHighlight: applyFieldIndex >= 0,
+                        onPress: () => actions.pickerModalOpen(applyFields.map(a => ({
+                            ...a, onPress: (a, i) => {
+                                actions.setOrderConfirmApplyFieldIndex(i)
+                            }
+                        })))
+                    })}
+                    {this.pureText("系统会根据您需要申请的研究领域和申请学位匹配处理您的服务的顾问，因为这一点，全套文书服务中申请的每个项目都应该是这个领域的")}
+
+
+                    {this._renderTeacher({labelWidth})}
+                    {this._renderAdviser({labelWidth})}
+
+                </ScrollView>
+                <BottomBtns lefts={[{text: "收藏"}, {text: "客服"}]}
+                            {...this._getBottomBtnsProps()}
+                />
             </View>
         )
     }

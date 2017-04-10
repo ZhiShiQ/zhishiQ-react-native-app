@@ -33,18 +33,19 @@ class ChatMessage extends Component {
     componentDidUpdate(oldProps, oldState, oldContext) {}
     componentWillUnmount() {}
     static defaultProps = {
-        content: "  "
+        content: "  ",
+        lock: false,
     }
     state = {}
     static propTypes = {
         img: PropTypes.object,
         type: PropTypes.oneOf("self", "other"),
         name: PropTypes.string,
-        content: PropTypes.string
+        content: PropTypes.string,
+        lock: PropTypes.bool,
     }
     render() {
-        const {content, name, style, type} = this.props;
-
+        const {content, name, style, lock, type} = this.props;
         return (
             <View style={[sty.main, style]}>
                 {type == 'self' ? this.selfMessage() : this.otherMessage()}
@@ -52,8 +53,25 @@ class ChatMessage extends Component {
         )
     }
 
+    _renderLock() {
+        const {content, name, style, lock, type} = this.props;
+        if (!lock) {
+            return null;
+        }
+        return (
+            <Text style={[{
+                position: 'absolute', color: '#fff',
+                overflow: 'hidden', textAlign: 'center',
+                borderRadius: 17/2, height: 17, width: 17
+            }, type == 'other'? {right: -22, backgroundColor: '#d8d8d8'}: {left: -22, backgroundColor: '#fc6d34'}
+            ]}>
+                {'L'}
+            </Text>
+        )
+    }
+
     otherMessage() {
-        const {content, name, type} = this.props;
+        const {content, name, type, lock} = this.props;
         return (
             <View style={[{flexDirection: 'row'}, sty.message]}>
                 <CirImage size={IMGSIZE} />
@@ -67,13 +85,14 @@ class ChatMessage extends Component {
                     <Text style={sty.otherContent}>
                         {content}
                     </Text>
+                    {this._renderLock()}
                 </View>
             </View>
         )
     }
 
     selfMessage() {
-        const {content, name, type} = this.props;
+        const {content, name, type, lock} = this.props;
         return (
             <View style={[{flexDirection: 'row-reverse'}, sty.message]}>
                 <CirImage size={IMGSIZE} />
@@ -87,6 +106,7 @@ class ChatMessage extends Component {
                     <Text style={sty.selfContent}>
                         内容是什么内容
                     </Text>
+                    {this._renderLock()}
                 </View>
             </View>
         )

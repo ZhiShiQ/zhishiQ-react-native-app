@@ -25,6 +25,7 @@ import PersonInOrder from '../../components/PersonInOrder';
 import Hr from '../../components/Hr';
 import BottomBtns from '../../components/BottomBtns';
 import Radio from '../../components/Radio';
+import CirImage from '../../components/CirImage';
 import OrderConfirmPage from '../OrderConfirmPage';
 
 const {BlueButton} = OrderConfirmPage;
@@ -63,7 +64,7 @@ class OrderConfirmDetailPage extends Component {
 
     render() {
         const {...props} = this.props;
-        const state = "ing";
+        const state = "waitToUploadInOneStep";
         switch (state) {
             case 'waitToPay':
                 return this.renderWaitToPay();
@@ -73,6 +74,9 @@ class OrderConfirmDetailPage extends Component {
                 return this.renderIng();
             case 'waitToConfirmMeetTime':
                 return this.renderWaitToConfirmMeetTime();
+            case 'waitToUploadInOneStep':
+                return this.renderWaitToUploadInOneStep()
+            // case 'waitToUpload':
         }
     }
 
@@ -177,11 +181,11 @@ class OrderConfirmDetailPage extends Component {
                 },
                 {
                     name: "项目三：等待添加",
-                    state: 'waiting'
+                    state: 'append'
                 },
                 {
                     name: "项目四：等待添加",
-                    state: 'waiting'
+                    state: 'append'
                 }
             ]
         };
@@ -189,36 +193,10 @@ class OrderConfirmDetailPage extends Component {
             {
                 ...data,
                 children: (
-                    <View>
-                        <LinkItem leftText={"项目列表"} rightText={"查看所有项目内文书"}
-                                  onPress={null} rightTextStyle={{fontSize: 14, color: '#4a4a4a'}}
-                                  showIcon={false}
-                        />
-                        <Hr marginBottom={0} style={{marginHorizontal: 15}} color={'#e5e5e5'}/>
-                        <ListView
-                            scrollEnabled={false}
-                            dataSource={
-                                new ListView.DataSource({
-                                    rowHasChanged: (r1, r2) => !Map(r1).equals(Map(r2))
-                                }).cloneWithRows(data.listItems)
-                            }
-                            renderRow={(x, s, i) => {
-                                return x.state != 'waiting' ? _renderSubject(x) :
-                                    <LinkItem
-                                        leftText={x.name}
-                                        rightText={"添加"}
-                                        onPress={null}
-                                        leftTextStyle={{fontSize: 14, color: '#c4c4c4'}}
-                                        rightTextStyle={{fontSize: 14, color: '#848484'}}
-                                        showIcon={false}
-                                    />
-                            }}
-                            renderSeparator={(s, i) => data.listItems.length - 1 != i &&
-                            <Hr marginBottom={0} style={{marginHorizontal: 15}} color={'#e5e5e5'}/>}
-                        />
-                        {sep(true)}
-                        {sep(true)}
-                    </View>
+                    _renderListItems({
+                        title: "项目列表", rTitle: "查看所有项目内文书",
+                        listItems: data.listItems
+                    })
                 ),
                 bottomComponent: _renderBottom({
                     mainText: "添加项目",
@@ -228,6 +206,111 @@ class OrderConfirmDetailPage extends Component {
         )
     }
 
+    /**
+     * 一站式待上传
+     * @returns {*}
+     */
+    renderWaitToUploadInOneStep() {
+        return this._render({
+            stateText: '待上传文书原稿',
+            tipText: '上传文书原稿后，就可以开始服务啦',
+            kvItems: [{
+                title: "基本信息",
+                keys: ["服务等级", "指定顾问", "处理中顾问", "申请国家", "申请领域", "选校信息表"],
+                vals: ["深度修改", "Jaclyn Leeds", "Jaclyn Leeds", "US", "SJD", {text: "Jaclyn Leeds的选校信息表", highlight: true}]
+            }],
+            children: (
+                <View>
+                    {_renderMainItem({
+                        title: "项目内消息",
+                        children: (
+                            <View style={{}}>
+                                <TouchableOpacity style={{flexDirection: 'row', paddingVertical: 15}}>
+                                    <CirImage size={50} style={{flex: 0, marginRight: 10}}/>
+                                    <View style={{flex: 1, alignItems: 'center', justifyContent: 'space-around'}}>
+                                        <View style={{flexDirection: 'row', alignItems: 'center', }}>
+                                            <View style={{flex: 1}}>
+                                                <Text style={{fontSize: 16, color: '#4a4a4a'}}>{'一站式服务  ID:123762'}</Text>
+                                            </View>
+                                            <Text style={{fontSize: 12, color: '#848484'}}>{'星期三'}</Text>
+                                        </View>
+                                        <View style={{flexDirection: 'row'}}>
+                                            <View style={{flex: 1}}>
+                                                <Text style={{fontSize: 14, color: '#848484'}}>{'Donald Holmes：A good heart is be…'}</Text>
+                                            </View>
+                                            <Text style={CONST.badgeStyle}>
+                                                {'99'}</Text>
+                                        </View>
+                                    </View>
+                                </TouchableOpacity>
+                                <Hr marginBottom={0} color={'#e5e5e5'} />
+                                <View style={{flexDirection: 'row', height: 49, paddingHorizontal: 0, paddingVertical: 10}}>
+                                    <View style={{flexDirection: 'row', justifyContent: 'flex-start', flex: 1}}>
+                                        {[1,1,1,].map((u, i) => (
+                                            <CirImage key={i} size={35} style={[{borderWidth: 2, borderColor: '#fff'}, {
+                                                right: 10*i
+                                            }]}/>
+                                        ))}
+                                    </View>
+                                    <TouchableOpacity style={{
+                                        height: 35,
+                                        width: 100, justifyContent: 'center', alignItems: 'center',
+                                        borderRadius: 4, borderWidth: .75, borderColor: '#848484'
+                                    }}>
+                                        <Text style={{color: '#4a4a4a', fontSize: 13}}>{'发送消息'}</Text>
+                                    </TouchableOpacity>
+                                </View>
+
+                            </View>
+                        )
+                    })}
+                    {sep()}
+                    {_renderListItems({
+                    title: "包含的服务",
+                    listItems: [
+                        {
+                            name: "Carleton University",
+                            state: "已结束",
+                            stateColor: '#848484',
+                            intro: "会计、审计、金融管理• 	Master • Master of Manag…",
+                            bottomText: "开始时间：2016-06-03",
+                            onPress: () => Actions.projectDetail({params: {title: '项目一'}})
+                        },
+                        {
+                            name: "Carleton University",
+                            state: "已结束",
+                            stateColor: '#848484',
+                            intro: "工商管理/MBA • MBA • Financial Management",
+                            bottomText: "开始时间：2016-06-03",
+                            onPress: () => Actions.projectDetail({params: {title: '项目二'}})
+                        },
+                        {
+                            name: "Carleton University",
+                            state: "处理中",
+                            intro: "工商管理/MBA • MBA • Financial Management",
+                            bottomText: "开始时间：2016-06-03",
+                            onPress: () => Actions.projectDetail({params: {title: '项目二'}})
+                        },
+                        {
+                            name: "Carleton University",
+                            state: "已付款",
+                            stateColor: '#11a98a',
+                            intro: "工商管理/MBA • MBA • Financial Management",
+                            bottomText: "开始时间：暂未开始",
+                            onPress: () => Actions.projectDetail({params: {title: '项目二'}})
+                        },
+                    ],
+                })}
+                </View>
+            ),
+            bottomComponent: _renderBottom({mainText: "去上传", subText: "购买文书管家"})
+        })
+    }
+
+    /**
+     * 单项文书
+     * @returns {*}
+     */
     renderWaitToUpload() {
         return this._render({
             stateText: '待上传文书原稿',
@@ -341,6 +424,39 @@ class OrderConfirmDetailPage extends Component {
     }
 }
 
+const _renderListItems = ({listItems, title, rTitle}) => (
+    <View>
+        <LinkItem leftText={title} rightText={rTitle}
+                  onPress={null} rightTextStyle={{fontSize: 14, color: '#4a4a4a'}}
+                  showIcon={false}
+        />
+        <Hr marginBottom={0} style={{marginHorizontal: 15}} color={'#e5e5e5'}/>
+        <ListView
+            scrollEnabled={false}
+            dataSource={
+                new ListView.DataSource({
+                    rowHasChanged: (r1, r2) => !Map(r1).equals(Map(r2))
+                }).cloneWithRows(listItems)
+            }
+            renderRow={(x, s, i) => {
+                return x.state != 'append' ? _renderSubject(x) :
+                    <LinkItem
+                        leftText={x.name}
+                        rightText={"添加"}
+                        onPress={null}
+                        leftTextStyle={{fontSize: 14, color: '#c4c4c4'}}
+                        rightTextStyle={{fontSize: 14, color: '#848484'}}
+                        showIcon={false}
+                    />
+            }}
+            renderSeparator={(s, i) => listItems.length - 1 != i &&
+            <Hr marginBottom={0} style={{marginHorizontal: 15}} color={'#e5e5e5'}/>}
+        />
+        {sep(true)}
+        {sep(true)}
+    </View>
+)
+
 const _renderInnerKV = ({keys = [], vals = []}) => (
     <ListView
         scrollEnabled={false}
@@ -422,7 +538,7 @@ export const _renderBottom = ({mainText, subText, onMain, onSub, text, onText}) 
         </View>
     )
 }
-export const _renderMainItem = ({title, keys = [], vals = [], links = []}) => {
+export const _renderMainItem = ({title, keys = [], vals = [], children}) => {
 
     return (
         <View style={{padding: CONST.PADDING_SIZE, backgroundColor: '#fff'}}>
@@ -430,26 +546,26 @@ export const _renderMainItem = ({title, keys = [], vals = [], links = []}) => {
             {keys.map((k, i) => (
                 <View key={i} style={{flexDirection: 'row', marginTop: 8}}>
                     <Text style={{fontSize: 14, lineHeight: 18, color: '#848484', width: 80, flex: 0}}>{k}</Text>
-                    <Text style={{fontSize: 14, lineHeight: 18, color: links[i] ? '#ea5502' : '#4a4a4a', flex: 1}}
-                          onPress={() => {
-                              links[i] && open(links[i])
-                          }}>{vals[i]}</Text>
+                    <Text style={{fontSize: 14, lineHeight: 18, color: vals[i].highlight ? '#ea5502' : '#4a4a4a', flex: 1}}
+                          onPress={vals[i].onPress}>{typeof vals[i] === 'string' ? vals[i] : vals[i].text}</Text>
                 </View>
             ))}
+            {children}
         </View>
     )
 };
 
-export const _renderSubject = ({name, state, intro, onPress, stateColor}) => {
+export const _renderSubject = ({name, state, intro, onPress, stateColor, bottomText}) => {
     const content = (
         <View style={{padding: CONST.PADDING_SIZE, backgroundColor: '#fff'}}>
             <View style={{marginBottom: 8, flexDirection: 'row'}}>
-                <Text style={{fontSize: 14, color: '#4a4a4a', flex: 1}}>{name}</Text>
+                <Text style={{fontSize: 14, color: '#4a4a4a', flex: 1, fontWeight: '600'}}>{name}</Text>
                 <Text style={{fontSize: 14, color: stateColor ? stateColor : '#ea5502', flex: 0}}>{state}</Text>
             </View>
 
-            <Text numberOfLines={1} style={{flex: 1, color: '#848484', fontSize: 14}}
+            <Text /*numberOfLines={1}*/ style={{flex: 1, color: '#848484', fontSize: 14}}
                   ellipsizeMode={"tail"}>{intro}</Text>
+            <Text style={{flex: 1, color: '#c4c4c4', fontSize: 14, marginTop: 5}}>{bottomText}</Text>
         </View>
     );
     return (

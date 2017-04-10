@@ -28,5 +28,7 @@ export default combineReducers({
     messages: require('./messages').default,
     weekly_day: require('./weekly_day').default,
     service_detail: require('./service_detail').default,
+    onestep_detail: require('./onestep_detail').default,
     sub_service_detail: require('./sub_service_detail').default,
+    onestep_sub_service_detail: require('./onestep_sub_service_detail').default,
 })

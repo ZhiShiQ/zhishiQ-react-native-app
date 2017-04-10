@@ -65,18 +65,21 @@ class ServiceDetailPage extends Component {
     static propTypes = {}
 
     render() {
+        const {params={}} = this.props;
+        const {source="service_detail"} = params;
+
         const {
             actions, store: {
-            service_detail: {
+            [source]: {
                 base,
                 detail: {
-                    services, teacherInfo,
+                    services, teacherInfo, serviceTitle="套餐类型",
                     character, promise, process, offerRank
                 }
             }
-        }
-        } = this.props;
-
+        }} = this.props;
+        // 针对不同服务的各自的action（统一命名/统一交互）
+        const {[source]: innerAction} = actions;
         return (
             <View style={{flex: 1}}>
                 <ScrollView style={sty.main}>
@@ -102,12 +105,163 @@ class ServiceDetailPage extends Component {
                         <View tabLabel="服务详情">
                             <View style={{flex: 1}}>
                                 {sep()}
-                                <CollapsibleIntro title={"套餐类型"} style={{paddingBottom: 0}}>
+                                <CollapsibleIntro title={serviceTitle} style={{paddingBottom: 0}}>
                                     <View style={{marginHorizontal: -15}}>
                                         {services.map((item, i) => {
                                             item.onPress = function () {
                                                 actions.setSubServiceDetailType(item.type);
-                                                Actions.subServiceDetail({params: {title: item.name}});
+                                                Actions.subServiceDetail({params: {
+                                                    title: item.name,
+                                                }});
+
+                                                if (item.type!='oneStepApply') {
+                                                    actions.setSubServiceDetailItems([{
+                                                        title: "语言润色",
+                                                        contents: [
+                                                            "适用于已有初稿并且希望着重提升语言表达的用户",
+                                                            "适用于除简历外所有留学文书",
+                                                            "一对一匹配顶级名校外籍老师",
+                                                            "1 稿 / 3 天",
+                                                            "每一稿完成 3 天内不限留言数",
+                                                            "文章压缩范围：±10%",
+                                                            "服务有效期：7 天"
+                                                        ],
+                                                        bottom: {
+                                                            price: 160,
+                                                            tip: "（超过部分¥0.53/单词）"
+                                                        }
+                                                    }, {
+                                                        title: "深度修改",
+                                                        contents: [
+                                                            "适用于已有初稿并且希望着重提升语言表达,结构逻辑，素材使用的用户",
+                                                            "适用于除简历、case study、writing sample等学术类文书外所有留学文书",
+                                                            "一对一匹配顶级名校外籍老师",
+                                                            "1 稿 / 3 天",
+                                                            "每一稿完成 3 天内不限留言数",
+                                                            "文章压缩范围：±10%",
+                                                            "服务有效期：7 天"
+                                                        ],
+                                                        bottom: {
+                                                            price: 284,
+                                                            tip: "（超过部分¥0.95/单词）"
+                                                        }
+                                                    }, {
+                                                        title: "VIP文书辅导",
+                                                        contents: [
+                                                            "适用于已有初稿并且希望着重提升语言表达的用户",
+                                                            "适用于除简历外所有留学文书",
+                                                            "一对一匹配顶级名校外籍老师",
+                                                            "1 稿 / 3 天",
+                                                            "每一稿完成 3 天内不限留言数",
+                                                            "文章压缩范围：±10%",
+                                                            "服务有效期：7 天"
+                                                        ],
+                                                        bottom: {
+                                                            price: 160,
+                                                            tip: "（超过部分¥0.53/单词）"
+                                                        }
+                                                    }])
+                                                    actions.setSubServiceDetailSubs([{
+                                                    title: "套餐外可额外加购服务",
+                                                    contents: [{
+                                                        title: '指定顾问',
+                                                        contents: [{
+                                                            title: '指定特定顾问：',
+                                                            contents: [
+                                                                "将由该顾问完成您的文书修改",
+                                                                '价格以顾问自己定价为准'
+                                                            ]
+                                                        }, {
+                                                            title: '指定顾问等级：',
+                                                            contents: [
+                                                                '顾问等级为平台依据专家组评分，用户评价，服务响应时间等标准综合评比确定',
+                                                                {
+                                                                    title: '指定不同等级顾问价格如下：',
+                                                                    contents: [
+                                                                        '指定 level2 顾问＋总价 10%',
+                                                                        '指定 level3 顾问＋总价 30%',
+                                                                        '指定 level4 顾问＋总价 50%',
+                                                                        '指定 level5 顾问＋总价 100%'
+                                                                    ]
+                                                                }
+                                                            ]
+                                                        }, {
+                                                            title: '不指定顾问：',
+                                                            contents: [
+                                                                '不指定特定顾问和顾问等级，文书将由本申请领域各等级顾问自由接单。'
+                                                            ]
+                                                        }]
+                                                    }, {
+                                                        title: '翻译',
+                                                        contents: [{
+                                                            contents: [
+                                                                '72 小时, 180.84 元 / 千汉字（正常）',
+                                                                '48 小时, 271.26 元 / 千汉字（加急）'
+                                                            ]
+                                                        }]
+                                                    }]
+                                                }])
+                                                } else {
+                                                    actions.setSubServiceDetailItems([
+                                                        {
+                                                            title: "美国",
+                                                            contents: [
+                                                                '8个项目',
+                                                                '额外赠送：\n1小时OPT/H1B指导\n1小时任意留学行家咨询'
+                                                            ],
+                                                            bottom: {
+                                                                price: "41000",
+                                                                addon: false,
+                                                                infoBtn: true,
+                                                                btnText: "免费测评",
+                                                                subBtnText: "查看详情",
+                                                            }
+                                                        },
+                                                        {
+                                                            title: "美国",
+                                                            contents: [
+                                                                '8个项目',
+                                                                '额外赠送：\n1小时OPT/H1B指导\n1小时任意留学行家咨询'
+                                                            ],
+                                                            bottom: {
+                                                                price: "41000",
+                                                                addon: false,
+                                                                infoBtn: true,
+                                                                btnText: "免费测评",
+                                                                subBtnText: "查看详情"
+                                                            }
+                                                        },
+                                                        {
+                                                            title: "美国",
+                                                            contents: [
+                                                                '8个项目',
+                                                                '额外赠送：\n1小时OPT/H1B指导\n1小时任意留学行家咨询'
+                                                            ],
+                                                            bottom: {
+                                                                price: "41000",
+                                                                addon: false,
+                                                                infoBtn: true,
+                                                                btnText: "免费测评",
+                                                                subBtnText: "查看详情"
+                                                            }
+                                                        },
+                                                        {
+                                                            title: "美国",
+                                                            contents: [
+                                                                '8个项目',
+                                                                '额外赠送：\n1小时OPT/H1B指导\n1小时任意留学行家咨询'
+                                                            ],
+                                                            bottom: {
+                                                                price: "41000",
+                                                                addon: false,
+                                                                infoBtn: true,
+                                                                btnText: "免费测评",
+                                                                subBtnText: "查看详情"
+                                                            }
+                                                        }
+                                                    ])
+                                                    actions.setSubServiceDetailSubs([]);
+                                                }
                                             };
                                             return this._renderService(item, i);
                                         })}
@@ -178,7 +332,10 @@ class ServiceDetailPage extends Component {
     _renderService(data, i) {
         const icon = <Entypo name="chevron-thin-right" size={15} color="#a1a1a1"/>;
         return (
-            <CollapsibleService collapsible={false} key={i} {...data} downIcon={icon} upIcon={icon}/>
+            <CollapsibleService
+                append="起"
+                collapsible={false} key={i} {...data} downIcon={icon} upIcon={icon}
+            />
         )
     }
 }

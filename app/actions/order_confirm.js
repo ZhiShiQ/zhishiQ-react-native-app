@@ -11,7 +11,9 @@ export const orderConfirmReset = () =>
             setOrderConfirmApplyDegreeIndex(-1), setOrderConfirmApplyFieldIndex(-1),
             setOrderConfirmAdviseType('none'), setOrderConfirmAdviserLevelIndex(0), setOrderConfirmPaperManagerEnable(false),
             setOrderConfirmSkypeEnable(false), setOrderConfirmUrgentEnable(false), setOrderConfirmPreTranslateEnable(false),
-            setOrderConfirmAdvisers([]), setOrderConfirmSelectAdviserIndex(-1)
+            setOrderConfirmAdvisers([]), setOrderConfirmSelectAdviserIndex(-1),
+            setOrderConfirmTeachers([]), setOrderConfirmSelectTeacherIndex(-1),
+            setOrderConfirmTeacherType('person')
         ]);
 
 export const setOrderConfirmId = (id) => _t($.ORDER_CONFIRM_ROOT_SET, {id});
@@ -54,9 +56,13 @@ export const setOrderConfirmSkypeEnable = (skypeEnable) => _t($.ORDER_CONFIRM_RO
 export const setOrderConfirmType = (type) => _t($.ORDER_CONFIRM_ROOT_SET, {_type: type});
 export const setOrderConfirmAdvisers = (advisers) => _t($.ORDER_CONFIRM_ROOT_SET, {advisers});
 export const setOrderConfirmSelectAdviserIndex = (selectAdviserIndex) => _t($.ORDER_CONFIRM_ROOT_SET, {selectAdviserIndex});
+export const setOrderConfirmTeachers = (teachers) => _t($.ORDER_CONFIRM_ROOT_SET, {teachers});
+export const setOrderConfirmSelectTeacherIndex = (selectTeacherIndex) => _t($.ORDER_CONFIRM_ROOT_SET, {selectTeacherIndex});
 
 export const setOrderConfirmAdviseType = (adviseType) => _t($.ORDER_CONFIRM_ROOT_SET, {adviseType});
 export const setOrderConfirmAdviseSelects = (adviseSelects) => _t($.ORDER_CONFIRM_ROOT_SET, {adviseSelects});
+export const setOrderConfirmTeacherType = (teacherType) => _t($.ORDER_CONFIRM_ROOT_SET, {teacherType});
+export const setOrderConfirmTeacherSelects = (teacherSelects) => _t($.ORDER_CONFIRM_ROOT_SET, {teacherSelects});
 
 export const setOrderConfirmAdviserLevelIndex = (adviserLevelIndex) => _t($.ORDER_CONFIRM_ROOT_SET, {adviserLevelIndex});
 export const setOrderConfirmAdviserLevels = (adviserLevels) => _t($.ORDER_CONFIRM_ROOT_SET, {adviserLevels});

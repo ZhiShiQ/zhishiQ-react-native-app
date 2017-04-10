@@ -12,6 +12,11 @@ export const PADDING_SIZE = 15;
 export const SWIPE_BLOCK_WIDTH = 65;
 export const OPACITY_BG_CLR = 'rgba(0, 0, 0, .5)';
 export const DURATION = 300;
+export const badgeStyle = {
+    flex: 0, paddingHorizontal: 4.5, borderRadius: 8.5, fontSize: 14,
+    color: '#fff', backgroundColor: '#fc6d34',
+    overflow: 'hidden', paddingVertical: .5,
+};
 
 /* UI related end */
 

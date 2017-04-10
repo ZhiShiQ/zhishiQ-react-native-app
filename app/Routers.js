@@ -71,6 +71,7 @@ import ServiceDetailPage from './pages/ServiceDetailPage';
 import SubServiceDetailPage from './pages/SubServiceDetailPage';
 import OrderConfirmDetailPage from './pages/OrderConfirmDetailPage';
 import ProjectDetailPage from './pages/ProjectDetailPage';
+import OneStepServiceDetailPage from './pages/OneStepServiceDetailPage';
 
 
 // import QRCodeScreen from './components/QRCodeScreen';
@@ -539,13 +540,15 @@ class Routers extends React.Component {
             actions
         } = this.props;
         const backIcon = {uri: BACK_ICON};
+
+
         //const moreIcon = {uri: moreIcon};
         return (
             <Scene key="Root" backButtonImage={backIcon} navigationBarStyle={styles.navigationBarStyle}>
 
                 <Scene hideTabBar key="weeklyDay" component={conn(WeeklyDayPage)} title={'每周空闲时间'}/>
 
-                <Scene initial hideTabBar key="projectDetail" component={conn(ProjectDetailPage)}
+                <Scene hideTabBar key="projectDetail" component={conn(ProjectDetailPage)}
                        getTitle={({params = {}}) => {
                            const {title = "项目一"} = params;
                            return <Text>{title}</Text>
@@ -557,8 +560,25 @@ class Routers extends React.Component {
                 />
 
                 <Scene hideTabBar key="entry" component={conn(EntryPage)} title={TITLE}/>
+                <Scene hideTabBar key="oneStepDetail"
+                       passProps params={{source: "onestep_detail"}}
+                       component={conn(ServiceDetailPage)}
+                       title={'一站式留学服务'}/>
 
-                <Scene hideTabBar key="subServiceDetail" component={conn(SubServiceDetailPage)} title={TITLE}/>
+
+                <Scene hideTabBar key="subServiceDetail" component={conn(SubServiceDetailPage)}
+                       getTitle={({params = {}}) => {
+                           const {title = ""} = params;
+                           return <Text>{title}</Text>;
+                       }}
+                />
+                {/*<Scene hideTabBar key="oneStepSubDetail" component={conn(SubServiceDetailPage)}*/}
+                       {/*passProps params={{source: "onestep_sub_service_detail"}}*/}
+                       {/*getTitle={({params = {}}) => {*/}
+                           {/*const {title = ""} = params;*/}
+                           {/*return <Text>{title}</Text>;*/}
+                       {/*}}*/}
+                {/*/>*/}
 
                 <Scene hideTabBar key="serviceDetail" component={conn(ServiceDetailPage)} title={"留学文书修改服务"}/>
 
@@ -827,7 +847,7 @@ class Routers extends React.Component {
                        rightTitle="客服"
                        type={ActionConst.PUSH_OR_POP}
                        onRight={() => alert()}/>
-                <Scene key="chat" component={conn(ChatPage)}
+                <Scene initial key="chat" component={conn(ChatPage)}
                        hideTabBar
                        type={ActionConst.PUSH_OR_POP}
                        getTitle={({params}) => (params ? params.name : '')}

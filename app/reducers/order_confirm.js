@@ -44,6 +44,13 @@ const initialState = {
         {label: "指定顾问等级", type: "level"}
     ],
     adviseType: 'none',
+
+    teacherSelects: [
+        {label: "不指定", type: "none"},
+        {label: "指定主导师", type: "person"},
+    ],
+    teacherType: 'person',
+
     adviserLevels: [
         {label: "LV1"}, {label: "LV2"}, {label: "LV3"},
     ],
@@ -55,8 +62,10 @@ const initialState = {
     preTranslateEnable: false,
 
     advisers: [],
-
     selectAdviserIndex: -1,
+
+    teachers: [],
+    selectTeacherIndex: -1,
 
     // enum("completePaper", "singlePaper", "resume", "topic")
     _type: "topic",

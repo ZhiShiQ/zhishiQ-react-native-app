@@ -15,12 +15,13 @@ const initialState = {
         content: '内容是什么内容是什么内容是什么内容内容内容是什么内容是什么内容是什么内容内容内容是什么内容是什么内容是什么内容内容',
         name: 'Ethan Andrews',
         avatar: {},
-        active: true,
+        activeNum: 9,
     }, {
         time: '12月20号12:12',
         content: '内容是什么内容是什么内容是什么内容内容内容是什么内容是什么内容是什么内容内容内容是什么内容是什么内容是什么内容内容',
         name: 'Ethan Andrews',
         avatar: {},
+        activeNum: 5,
     }, {
         time: '12月20号12:12',
         content: '内容是什么内容是什么内容是什么内容内容内容是什么内容是什么内容是什么内容内容内容是什么内容是什么内容是什么内容内容',

@@ -34,7 +34,7 @@ class ServicePage extends Component {
                 {text: "外籍导师", onPress: () => Actions.foreignTeacher()},
                 {text: "留学行家", onPress: () => Actions.abroadExpert()}
             ], [
-                {text: "一站式服务", onPress: () => null},
+                {text: "一站式服务", onPress: () => Actions.oneStepDetail()},
                 {text: "全套文书", onPress: () => Actions.serviceDetail()},
                 {text: "国际优化快递", onPress: null},
                 {text: "单项文书", onPress: () => Actions.serviceDetail()},

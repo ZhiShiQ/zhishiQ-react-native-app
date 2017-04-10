@@ -14,10 +14,13 @@ import {
     Button
 } from 'react-native';
 import * as Animatable from 'react-native-animatable';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import Entypo from 'react-native-vector-icons/Entypo';
 
 import sty, {BGCLR, IMGSIZE} from './style';
 
 import ChatMessage from '../../components/ChatMessage';
+import AutoGrowInput from '../../components/AutoGrowInput';
 
 
 @autobind
@@ -60,49 +63,40 @@ class ChatPage extends Component {
                             type: 'other'
                         }, {
                             content: "内容是什么内容是什么内容是什么内容内容...",
-                            type: 'other'
-                        }, {
-                            content: "内容是什么内容是什么内容是什么内容内容...",
-                            type: 'other'
-                        }, {
-                            content: "内容是什么内容是什么内容是什么内容内容...",
-                            type: 'other'
-                        }, {
-                            content: "内容是什么内容是什么内容是什么内容内容...",
-                            type: 'other'
-                        }, {
-                            content: "内容是什么内容是什么内容是什么内容内容...",
-                            type: 'other'
-                        }, {
-                            content: "",
+                            lock: true,
                             type: 'self'
                         }, {
                             content: "内容是什么内容是什么内容是什么内容内容...",
-                            type: 'other'
-                        }, {
-                            content: "内容是什么内容是什么内容是什么内容内容...",
-                            type: 'other'
-                        }, {
-                            content: "",
                             type: 'self'
                         }, {
                             content: "内容是什么内容是什么内容是什么内容内容...",
+                            lock: true,
                             type: 'other'
-                        }, {
-                            content: "内容是什么内容是什么内容是什么内容内容...",
-                            type: 'other'
-                        }, {
-                            content: "",
-                            type: 'self'
                         }])
                     }
+
+                    renderFooter={() => (
+                        null
+                    )}
                 />
+
                 <View style={sty.sender}>
-                    <TextInput
+                    <AutoGrowInput
+                        autoCorrect={false}
+                        multiline={true}
+                        autoCapitalize={'none'}
                         style={sty.input}
                     />
-                    <View style={[sty.btn, {marginHorizontal: 10}]}></View>
-                    <View style={sty.btn}></View>
+                    <View style={[sty.btn, {marginLeft: 10, overflow: 'hidden'}]}>
+                        <Text style={{overflow: 'hidden'}}>
+                            <MaterialCommunityIcons
+                                color="#4a4a4a"
+                                style={{ overflow: 'hidden'}}
+                                name="plus"
+                                size={18}
+                            />
+                        </Text>
+                    </View>
                 </View>
             </View>
         )

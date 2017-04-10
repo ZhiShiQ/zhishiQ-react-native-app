@@ -20,6 +20,8 @@ export default {
     ...require('./order_confirm'),
     ...require('./home'),
     ...require('./weekly_day'),
-    ...require('./service_detail'),
+    service_detail: require('./service_detail'),
+    onestep_detail: require('./onestep_detail'),
     ...require('./sub_service_detail'),
+    // onestep_sub_service_detail: require('./onestep_sub_service_detail'),
 }
