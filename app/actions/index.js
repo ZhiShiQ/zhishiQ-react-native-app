@@ -22,4 +22,5 @@ export default {
     ...require('./weekly_day'),
     ...require('./service_detail'),
     ...require('./sub_service_detail'),
+    ...require('./service_test'),
 }

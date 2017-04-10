@@ -71,7 +71,8 @@ import ServiceDetailPage from './pages/ServiceDetailPage';
 import SubServiceDetailPage from './pages/SubServiceDetailPage';
 import OrderConfirmDetailPage from './pages/OrderConfirmDetailPage';
 import ProjectDetailPage from './pages/ProjectDetailPage';
-
+import ServiceTestPage from './pages/ServiceTestPage';
+import SubmitSuccessPage from './pages/SubmitSuccessPage';
 
 // import QRCodeScreen from './components/QRCodeScreen';
 import TabIcon from './components/TabIcon';
@@ -415,7 +416,9 @@ class Routers extends React.Component {
         return (
             <ModalPicker
                 ref="picker" items={items}
-                onClose={() => actions.setCommonModalIsOpen(false)}
+                onClose={
+                    () => actions.setCommonModalIsOpen(false)
+                }
             />
         )
     }
@@ -542,10 +545,14 @@ class Routers extends React.Component {
         //const moreIcon = {uri: moreIcon};
         return (
             <Scene key="Root" backButtonImage={backIcon} navigationBarStyle={styles.navigationBarStyle}>
-
                 <Scene hideTabBar key="weeklyDay" component={conn(WeeklyDayPage)} title={'每周空闲时间'}/>
-
-                <Scene initial hideTabBar key="projectDetail" component={conn(ProjectDetailPage)}
+                <Scene hideTabBar key="servicePage" component={conn(ServiceTestPage)} title={'免费测评'}
+                       backButtonImage={backIcon}
+                />
+                <Scene initial hideTabBar key="submitSuccessPage" component={conn(SubmitSuccessPage)} title={'提交成功'}
+                       backButtonImage={backIcon}
+                />
+                <Scene hideTabBar key="projectDetail" component={conn(ProjectDetailPage)}
                        getTitle={({params = {}}) => {
                            const {title = "项目一"} = params;
                            return <Text>{title}</Text>

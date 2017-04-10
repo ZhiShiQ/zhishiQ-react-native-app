@@ -99,10 +99,10 @@ class OrderConfirmPage extends Component {
 
         const items = selectAdviserIndex >= 0 ? [advisers[selectAdviserIndex]]
             : advisers.map((a, i) => ({
-                ...a, onPress: () => {
-                    actions.setOrderConfirmSelectAdviserIndex(i)
-                }, style: i == 0 && {paddingTop: 0}
-            }))
+            ...a, onPress: () => {
+                actions.setOrderConfirmSelectAdviserIndex(i)
+            }, style: i == 0 && {paddingTop: 0}
+        }))
         return (
             <ListView
                 scrollEnabled={false}
@@ -152,43 +152,7 @@ class OrderConfirmPage extends Component {
     renderPerson(p, i) {
 
         return (
-            <PersonInOrder {...p} key={i} />
-        )
-    }
-
-    renderInputAble({label, placeholder, labelWidth = 80, inputProps, ...rest}) {
-        return (
-            <InputExtra
-                label={label} labelStyle={{width: labelWidth, fontSize: 16, color: '#848484'}}
-                inputProps={{
-                    placeholder,
-                    ...inputProps,
-                }}
-                inputStyle={{
-                    color: '#4a4a4a'
-                }}
-                {...rest}
-            />
-        )
-    }
-
-    renderSelectable({label, content, onPress, labelWidth = 80, contentStyle, contentHighlight, ...rest}) {
-        return (
-            <LinkItem
-                leftComponent={
-                    <View style={{flexDirection: 'row'}}>
-                        <Text style={{width: labelWidth, fontSize: 16, color: '#848484'}}>{label}</Text>
-                        <Text style={[{fontSize: 16, fontWeight: 'normal', color: '#c4c4c4'},
-                            contentHighlight && {color: '#4a4a4a'},
-                            contentStyle
-                        ]}>
-                            {content}</Text>
-                    </View>
-                }
-                iconName={"down"}
-                onPress={onPress}
-                {...rest}
-            />
+            <PersonInOrder {...p} key={i}/>
         )
     }
 
@@ -289,13 +253,13 @@ class OrderConfirmPage extends Component {
                 <ScrollView>
                     {this.header(labelWidth)}
                     {this.pureText("别忘了先介绍一下自己，如教育背景、 GPA 、托福等")}
-                    {this.renderInputAble({
+                    {renderInputAble({
                         label: "QQ",
                         labelWidth,
                         placeholder: "输入您的QQ"
                     })}
                     {this.hr}
-                    {this.renderInputAble({
+                    {renderInputAble({
                         label: "Skype",
                         labelWidth,
                         placeholder: "输入您的Skype（选填）"
@@ -327,7 +291,7 @@ class OrderConfirmPage extends Component {
         } = this.props;
         return (
             <View>
-                {this.renderSelectable({
+                {renderSelectable({
                     label: '指定顾问',
                     labelWidth,
                     content: adviseSelects.find(x => x.type == adviseType).label,
@@ -378,7 +342,7 @@ class OrderConfirmPage extends Component {
                 </View>
                 }
                 {adviseType == 'level' &&
-                this.renderSelectable({
+                renderSelectable({
                     label: "选择等级",
                     labelWidth,
                     contentHighlight: true,
@@ -423,7 +387,7 @@ class OrderConfirmPage extends Component {
                 <ScrollView>
                     {this.header(labelWidth, '全套文书：')}
                     {sep(true, {height: 16})}
-                    {this.renderSelectable({
+                    {renderSelectable({
                         label: '申请领域',
                         content: applyFieldIndex < 0 ? '请选择您申请领域' : applyFields[applyFieldIndex].label,
                         labelWidth,
@@ -435,7 +399,7 @@ class OrderConfirmPage extends Component {
                         })))
                     })}
                     {this.hr}
-                    {this.renderSelectable({
+                    {renderSelectable({
                         label: '申请学位',
                         content: applyDegreeIndex < 0 ? '请选择您的申请学位' : applyDegrees[applyDegreeIndex].label,
                         labelWidth,
@@ -448,7 +412,7 @@ class OrderConfirmPage extends Component {
                     })}
 
                     {sep(true, {height: 16})}
-                    {this.renderSelectable({
+                    {renderSelectable({
                         label: '目标语言',
                         content: aimLangIndex < 0 ? '请选择您的目标语言' : aimLangs[aimLangIndex].label,
                         labelWidth,
@@ -460,7 +424,7 @@ class OrderConfirmPage extends Component {
                         })))
                     })}
                     {this.hr}
-                    {this.renderSelectable({
+                    {renderSelectable({
                         label: '申请国家',
                         content: applyCountryIndex < 0 ? '请选择您的申请国家' : applyCountries[applyCountryIndex].label,
                         labelWidth,
@@ -473,7 +437,7 @@ class OrderConfirmPage extends Component {
                     })}
                     {sep(true, {height: 16})}
 
-                    {this.renderSelectable({
+                    {renderSelectable({
                         label: '服务等级',
                         content: levels[levelIndex].label,
                         labelWidth,
@@ -486,7 +450,7 @@ class OrderConfirmPage extends Component {
                     })}
                     {this.pureText('这里需要一个关于服务等级的介绍，可能还有一个链接到单项文书产品页的链接，并且可以直接返回到这里')}
 
-                    {this.renderSelectable({
+                    {renderSelectable({
                         label: '项目数量',
                         labelWidth,
                         content: '',
@@ -495,7 +459,7 @@ class OrderConfirmPage extends Component {
                     })}
 
                     {this.hr}
-                    {this.renderSelectable({
+                    {renderSelectable({
                         label: '文书管家',
                         labelWidth,
                         content: paperManagerEnable ? "是" : "否",
@@ -520,7 +484,7 @@ class OrderConfirmPage extends Component {
                     }}/>
 
                     {this.hr}
-                    {this.renderInputAble({
+                    {renderInputAble({
                         label: '优惠码',
                         labelWidth,
                         placeholder: '请输入优惠码',
@@ -562,7 +526,7 @@ class OrderConfirmPage extends Component {
                 <ScrollView>
                     {this.header(labelWidth, '简历服务：')}
                     {sep(true, {height: 16})}
-                    {this.renderSelectable({
+                    {renderSelectable({
                         label: '简历领域',
                         content: resumeFieldIndex < 0 ? '请选择您简历领域' : resumeFields[resumeFieldIndex].label,
                         labelWidth,
@@ -573,7 +537,7 @@ class OrderConfirmPage extends Component {
                         })))
                     })}
                     {this.hr}
-                    {this.renderSelectable({
+                    {renderSelectable({
                         label: '申请国家',
                         content: applyCountryIndex < 0 ? '请选择您的申请国家' : applyCountries[applyCountryIndex].label,
                         labelWidth,
@@ -584,7 +548,7 @@ class OrderConfirmPage extends Component {
                         })))
                     })}
                     {sep(true, {height: 16})}
-                    {this.renderSelectable({
+                    {renderSelectable({
                         label: '目标语言',
                         content: aimLangIndex < 0 ? '请选择您的目标语言' : aimLangs[aimLangIndex].label,
                         labelWidth,
@@ -595,7 +559,7 @@ class OrderConfirmPage extends Component {
                         })))
                     })}
                     {sep(true, {height: 16})}
-                    {this.renderSelectable({
+                    {renderSelectable({
                         label: '润色前翻译',
                         content: !preTranslateEnable ? '否' : '是',
                         labelWidth,
@@ -610,7 +574,7 @@ class OrderConfirmPage extends Component {
                     })}
                     {this.pureText('上传中文文书将默认选择翻译服务（0.18元／字）')}
 
-                    {this.renderSelectable({
+                    {renderSelectable({
                         label: '服务等级',
                         content: levelIndex < 0 ? '请选择您的服务等级' : levels[levelIndex].label,
                         labelWidth,
@@ -622,27 +586,27 @@ class OrderConfirmPage extends Component {
                     })}
                     {this.pureText('这里需要一个关于服务等级的介绍，可能还有一个链接到单项文书产品页的链接，并且可以直接返回到这里')}
 
-                    {this.renderInputAble({
+                    {renderInputAble({
                         label: '原稿字数',
                         placeholder: '原简历文稿单词数',
                         labelWidth,
                         inputProps: {keyboardType: "numeric"}
                     })}
                     {this.hr}
-                    {this.renderInputAble({
+                    {renderInputAble({
                         label: '原稿页数', placeholder: '请输入原稿页数',
                         labelWidth,
                         inputProps: {keyboardType: "numeric"}
                     })}
                     {this.hr}
-                    {this.renderInputAble({
+                    {renderInputAble({
                         label: '终稿页数', placeholder: '请输入终稿页数',
                         labelWidth,
                         inputProps: {keyboardType: "numeric"}
                     })}
                     {this.pureText('终稿一页字数大概为300单词，请您根据自己情况购买页数')}
 
-                    {this.renderSelectable({
+                    {renderSelectable({
                         label: '加急处理',
                         labelWidth,
                         content: !urgentEnable ? '否' : '是',
@@ -656,7 +620,7 @@ class OrderConfirmPage extends Component {
 
                     {this._renderAdviser({labelWidth})}
 
-                    {this.renderSelectable({
+                    {renderSelectable({
                         label: 'skype讨论',
                         labelWidth,
                         content: !skypeEnable ? '否' : '是',
@@ -696,7 +660,7 @@ class OrderConfirmPage extends Component {
                 <ScrollView>
                     {this.header(undefined, '单项文书：', 'PS／Essay／RL／SoP')}
                     {sep(true, {height: 16})}
-                    {this.renderSelectable({
+                    {renderSelectable({
                         label: '申请学位',
                         content: applyDegreeIndex < 0 ? '请选择您申请的学位' : applyDegrees[applyDegreeIndex].label,
                         contentHighlight: applyDegreeIndex >= 0,
@@ -707,7 +671,7 @@ class OrderConfirmPage extends Component {
                         })))
                     })}
                     {this.hr}
-                    {this.renderSelectable({
+                    {renderSelectable({
                         label: '申请领域',
                         content: applyFieldIndex < 0 ? '请选择您的申请领域' : applyFields[applyFieldIndex].label,
                         contentHighlight: applyFieldIndex >= 0,
@@ -718,7 +682,7 @@ class OrderConfirmPage extends Component {
                         })))
                     })}
                     {sep(true, {height: 16})}
-                    {this.renderSelectable({
+                    {renderSelectable({
                         label: '文档类型',
                         content: docTypeIndex < 0 ? '请选择您的文档类型' : docTypes[docTypeIndex].label,
                         contentHighlight: docTypeIndex >= 0,
@@ -729,7 +693,7 @@ class OrderConfirmPage extends Component {
                         })))
                     })}
                     {sep(true, {height: 16})}
-                    {this.renderSelectable({
+                    {renderSelectable({
                         label: '文书语言',
                         content: docLangIndex < 0 ? '选择您将上传文书的语言' : docLangs[docLangIndex].label,
                         contentHighlight: docLangIndex >= 0,
@@ -741,7 +705,7 @@ class OrderConfirmPage extends Component {
                     })}
                     {this.pureText('上传中文文书将默认选择翻译服务（0.18元／字）')}
 
-                    {this.renderSelectable({
+                    {renderSelectable({
                         label: '服务等级',
                         content: levelIndex < 0 ? '请选择您的服务等级' : levels[levelIndex].label,
                         contentHighlight: levelIndex >= 0,
@@ -753,19 +717,19 @@ class OrderConfirmPage extends Component {
                     })}
                     {this.pureText('这里需要一个关于服务等级的介绍，可能还有一个链接到单项文书产品页的链接，并且可以直接返回到这里')}
 
-                    {this.renderInputAble({
+                    {renderInputAble({
                         label: '原稿字数',
                         placeholder: '请输入原稿字数',
                         inputProps: {keyboardType: "numeric"}
                     })}
                     {this.hr}
-                    {this.renderInputAble({
+                    {renderInputAble({
                         label: '终稿字数', placeholder: '请输入终稿期望字数',
                         inputProps: {keyboardType: "numeric"}
                     })}
                     {this.pureText('顾问会参考您提供的终稿字数提供服务，语言润色服务终稿单词数浮动范围为原稿单词数上下10%')}
 
-                    {this.renderSelectable({
+                    {renderSelectable({
                         label: '加急处理',
                         content: urgentEnable ? "是" : '否',
                         contentHighlight: true,
@@ -791,5 +755,39 @@ class OrderConfirmPage extends Component {
         )
     }
 }
-
+export const renderSelectable = ({label, content, onPress, labelWidth = 80, contentStyle, contentHighlight, ...rest}) => {
+    return (
+        <LinkItem
+            leftComponent={
+                <View style={{flexDirection: 'row'}}>
+                    <Text style={{width: labelWidth, fontSize: 16, color: '#848484'}}>{label}</Text>
+                    <Text style={[{fontSize: 16, fontWeight: 'normal', color: '#c4c4c4'},
+                        contentHighlight && {color: '#4a4a4a'},
+                        contentStyle
+                    ]}>
+                        {content}</Text>
+                </View>
+            }
+            iconName={"down"}
+            onPress={onPress}
+            {...rest}
+        />
+    )
+}
+export const renderInputAble = ({label, placeholder, labelWidth = 80, inputProps, ...rest}) => {
+    return (
+        <InputExtra
+            label={label} labelStyle={{width: labelWidth, fontSize: 16, color: '#848484'}}
+            inputProps={{
+                placeholder,
+                ...inputProps,
+            }}
+            inputStyle={{
+                color: '#4a4a4a'
+            }}
+            style={{flex: 0}}
+            {...rest}
+        />
+    )
+}
 export default OrderConfirmPage;

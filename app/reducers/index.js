@@ -29,4 +29,5 @@ export default combineReducers({
     weekly_day: require('./weekly_day').default,
     service_detail: require('./service_detail').default,
     sub_service_detail: require('./sub_service_detail').default,
+    service_test:require('./service_test').default,
 })
