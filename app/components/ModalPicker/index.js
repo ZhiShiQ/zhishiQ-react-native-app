@@ -17,6 +17,7 @@ import * as Animatable from 'react-native-animatable';
 import sty from './style';
 // react-native-modal-picker
 import ModalPicker3rd from '../react-native-modal-picker';
+import pick from '../../helpers/picker';
 
 
 @autobind
@@ -26,7 +27,13 @@ class ModalPicker extends Component {
     }
     componentWillMount() {}
     componentDidMount() {
-        this.open();
+        const {items, onClose, ...rest} = this.props;
+
+        pick({
+            customButtons: items.map(x => ({...x, title: x.label})),
+            onClose
+        });
+        // this.open();
     }
     close() {
         this.picker.close();
@@ -47,9 +54,13 @@ class ModalPicker extends Component {
     }
     state = {}
     static propTypes = {
-        items: PropTypes.array
+        items: PropTypes.array,
+        onClose: PropTypes.func,
     }
     render() {
+        return <View ref={r => this.picker = r} style={{opacity: 0, height:0, width: 0}}></View>;
+    }
+    renderOld() {
         const {items, ...rest} = this.props;
         return (
             <ModalPicker3rd
