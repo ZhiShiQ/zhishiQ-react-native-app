@@ -15,28 +15,53 @@ import {
 import * as Animatable from 'react-native-animatable';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-import sty, {IMGSIZE, SELF_BGCLR, OTHER_BGCLR} from './style';
+import sty, {IMGSIZE, SELF_BGCLR, OTHER_BGCLR, MAX_WIDTH} from './style';
 import CirImage from '../CirImage';
-
+import LockTip from  '../LockTip'
 @autobind
 class ChatMessage extends Component {
     constructor(props) {
-      super(props)
+        super(props)
     }
-    componentWillMount() {}
-    componentDidMount() {}
-    componentWillReceiveProps(newProps) {}
+
+    componentWillMount() {
+    }
+
+    componentDidMount() {
+        setTimeout(()=>{
+            this.lockIcon&&this.lockIcon.measure((ox, oy, width, height, px, py) => {
+                console.log(ox,oy,width,height,px,py)
+                this.setState({
+                    caretLeft:px- 62
+                })
+            })
+        },0)
+    }
+
+    componentWillReceiveProps(newProps) {
+    }
+
     shouldComponentUpdate(newProps, newState, newContext) {
-      return !Map(this.props).equals(Map(newProps))
+        return !Map(this.props).equals(Map(newProps)) || !Map(this.state).equals(Map(newState))
     }
-    componentWillUpdate(newProps, newState, newContext) {}
-    componentDidUpdate(oldProps, oldState, oldContext) {}
-    componentWillUnmount() {}
+
+    componentWillUpdate(newProps, newState, newContext) {
+    }
+
+    componentDidUpdate(oldProps, oldState, oldContext) {
+    }
+
+    componentWillUnmount() {
+    }
+
     static defaultProps = {
         content: "  ",
         lock: false,
     }
-    state = {}
+    state = {
+        showLockTip: false,
+        caretLeft: 0
+    }
     static propTypes = {
         img: PropTypes.object,
         type: PropTypes.oneOf("self", "other"),
@@ -44,11 +69,18 @@ class ChatMessage extends Component {
         content: PropTypes.string,
         lock: PropTypes.bool,
     }
+
     render() {
-        const {content, name, style, lock, type} = this.props;
+        const {content, name, lock, type, style,lockTip} = this.props;
+        const {caretLeft,showLockTip}=this.state;
         return (
-            <View style={[sty.main, style]}>
-                {type == 'self' ? this.selfMessage() : this.otherMessage()}
+            <View style={[sty.main, style, style]}>
+                {type=='text'? this.textLine():type == 'self' ? this.selfMessage() : this.otherMessage()}
+                <LockTip
+                    showLockTip={showLockTip}
+                    containerStyle={{width: MAX_WIDTH, left: 50}}
+                    caretStyle={{left: caretLeft}}
+                    tipContent={lockTip}></LockTip>
             </View>
         )
     }
@@ -59,29 +91,66 @@ class ChatMessage extends Component {
             return null;
         }
         return (
-            <Text style={[{
-                position: 'absolute', color: '#fff',
-                overflow: 'hidden', textAlign: 'center',
-                borderRadius: 17/2, height: 17, width: 17
-            }, type == 'other'? {right: -22, backgroundColor: '#d8d8d8'}: {left: -22, backgroundColor: '#fc6d34'}
-            ]}>
-                {'L'}
-            </Text>
+            <TouchableHighlight underlayColor='' style={[{
+                position: 'absolute',
+                borderRadius: 17 / 2,
+                height: 17, width: 17,
+                overflow: 'hidden'
+            }, type == 'other' ? {right: -22, backgroundColor: '#d8d8d8'} : {
+                left: -22,
+                backgroundColor: '#fc6d34'
+            }]}
+                                onLongPress={this._renderLockTip}
+                                onPressOut={this._removeLockTip}
+                                ref={ref => this.lockIcon = ref}
+            >
+                <View>
+                    <Text style={{
+                        color: '#fff',
+                        textAlign: 'center'
+                    }}>
+                        {'L'}
+                    </Text>
+                </View>
+            </TouchableHighlight>
         )
     }
 
+    _renderLockTip() {
+        const {lock, lockTip}=this.props;
+        if (!lock) {
+            return null;
+        }
+        this.setState({
+            showLockTip: true
+        })
+    }
+
+    _removeLockTip() {
+        this.setState({
+            showLockTip: false
+        })
+    }
+    textLine(){
+        const {content}=this.props;
+        return(
+            <View style={sty.textContentContainer}>
+                <Text style={sty.textContent}>{content}</Text>
+            </View>
+        )
+    }
     otherMessage() {
         const {content, name, type, lock} = this.props;
         return (
             <View style={[{flexDirection: 'row'}, sty.message]}>
-                <CirImage size={IMGSIZE} />
-                <View style={sty.otherContentContainer}>
+                <CirImage size={IMGSIZE}/>
+                <View style={[sty.otherContentContainer, lock ? {maxWidth: MAX_WIDTH - 7} : {}]}>
                     <Icon style={{
                         backgroundColor: 'transparent',
                         left: -6.5,
-                        top: IMGSIZE/2-10,
+                        top: IMGSIZE / 2 - 10,
                         position: 'absolute'
-                    }} name="caret-left" size={20} color={OTHER_BGCLR} />
+                    }} name="caret-left" size={20} color={OTHER_BGCLR}/>
                     <Text style={sty.otherContent}>
                         {content}
                     </Text>
@@ -95,16 +164,16 @@ class ChatMessage extends Component {
         const {content, name, type, lock} = this.props;
         return (
             <View style={[{flexDirection: 'row-reverse'}, sty.message]}>
-                <CirImage size={IMGSIZE} />
-                <View style={sty.selfContentContainer}>
+                <CirImage size={IMGSIZE}/>
+                <View style={[sty.selfContentContainer, lock ? {maxWidth: MAX_WIDTH - 7} : {}]}>
                     <Icon style={{
-                        backgroundColor: 'transparent',
                         right: -6.5,
-                        top: IMGSIZE/2-10,
-                        position: 'absolute'
-                    }} name="caret-right" size={20} color={SELF_BGCLR} />
+                        top: IMGSIZE / 2 - 10,
+                        position: 'absolute',
+                        backgroundColor: 'transparent'
+                    }} name="caret-right" size={20} color={SELF_BGCLR}/>
                     <Text style={sty.selfContent}>
-                        内容是什么内容
+                        {content}
                     </Text>
                     {this._renderLock()}
                 </View>

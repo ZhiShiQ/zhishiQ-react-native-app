@@ -856,7 +856,7 @@ class Routers extends React.Component {
                        rightTitle="客服"
                        type={ActionConst.PUSH_OR_POP}
                        onRight={() => alert()}/>
-                <Scene key="chat" component={conn(ChatPage)}
+                <Scene initial key="chat" component={conn(ChatPage)}
                        hideTabBar
                        type={ActionConst.PUSH_OR_POP}
                        getTitle={({params}) => (params ? params.name : '')}
