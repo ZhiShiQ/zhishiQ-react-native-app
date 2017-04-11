@@ -59,20 +59,30 @@ class ChatPage extends Component {
                         new ListView.DataSource({
                             rowHasChanged: (r1, r2) => !Map(r1).equals(Map(r2))
                         }).cloneWithRows([{
-                            content: "内容是什么内容是什么内容是什么内容内容...",
-                            type: 'other'
+                            content: "上午 12：00",
+                            type: 'text'
+                        },{
+                            content: "内容...",
+                            type: 'other',
+                            lock:true,
+                            lockTip:'该消息为私密消息，仅Lori May可见'
                         }, {
-                            content: "内容是什么内容是什么内容是什么内容内容...",
+                            content: "内容是什么内容...",
+                            type: 'self',
                             lock: true,
+                            lockTip:'该消息为私密消息，仅 老司机 可见'
+                        }, {
+                            content: "下午 12：00",
+                            type: 'text'
+                        },{
+                            content: "内容是什么内容是什么内容...",
                             type: 'self'
                         }, {
-                            content: "内容是什么内容是什么内容是什么内容内容...",
-                            type: 'self'
-                        }, {
-                            content: "内容是什么内容是什么内容是什么内容内容...",
+                            content: "内容是什么内容是什...",
+                            type: 'other',
                             lock: true,
-                            type: 'other'
-                        }])
+                            lockTip:'该消息为私密消息，仅 moyu 可见'
+                        }].map((item, i, {length})=>({...item, style: {zIndex: length-i+2}})))
                     }
 
                     renderFooter={() => (

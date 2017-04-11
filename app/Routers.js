@@ -588,7 +588,7 @@ class Routers extends React.Component {
 
                 <Scene hideTabBar key="serviceDetail" component={conn(ServiceDetailPage)} title={"留学文书修改服务"}/>
 
-                <Scene initial hideTabBar key="orderConfirmDetail" component={conn(OrderConfirmDetailPage)}
+                <Scene hideTabBar key="orderConfirmDetail" component={conn(OrderConfirmDetailPage)}
                        getTitle={({params = {}}) => {
                            const {title = "确认订单"} = params;
                            return <Text>{title}</Text>;
@@ -853,7 +853,7 @@ class Routers extends React.Component {
                        rightTitle="客服"
                        type={ActionConst.PUSH_OR_POP}
                        onRight={() => alert()}/>
-                <Scene key="chat" component={conn(ChatPage)}
+                <Scene initial key="chat" component={conn(ChatPage)}
                        hideTabBar
                        type={ActionConst.PUSH_OR_POP}
                        getTitle={({params}) => (params ? params.name : '')}
