@@ -33,11 +33,13 @@ export default StyleSheet.create({
     input: {
         backgroundColor: '#f7f7f7',
         flex: 1,
-        height: 34,
         justifyContent: 'center',
         fontSize: 16,
         paddingHorizontal: 18,
         // paddingVertical: 8,
+        height: 34,
+        // alignSelf: 'center',
+        paddingTop: 3,
         borderRadius: 20,
         borderColor: '#e5e5e5',
         borderWidth: .5

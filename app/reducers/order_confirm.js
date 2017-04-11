@@ -68,7 +68,7 @@ const initialState = {
     selectTeacherIndex: -1,
 
     // enum("completePaper", "singlePaper", "resume", "topic")
-    _type: "topic",
+    _type: "completePaper",
 };
 
 export default function (state=initialState, action) {

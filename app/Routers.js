@@ -391,6 +391,9 @@ class Routers extends React.Component {
                         "version": "1.0",
                         "sign": "al9XDXpYW6WfCf9l7Ji10UaXJe/zkjpnLIZfA4+3F1samoNAf4ZGFlIGchOZf0yDNXuDq8EUz+0ptwc5DGuHdljfr2KI9ouMj695Ns9hpOzYPDC/SsFmMeOdEETBcpBbRiZVs/ghcDxgiMukUZ3dO+OOE9xh8SNUFr74i/B9cP+Kq/t0RT9c34UA7EaUTEWBLvXFnV1lnUIE+4/GAY+ZUgS0PPMXSPkhviJTBYNVRffUYCULbM+IRui2e9TTMn4I9DghIjydJObD5v57YEz8BpYePpLU2F6ZIBftYqMJZk6F1kdgx1kft/tgRDHod6At50uH1fHla1CDkqg3RhP3PQ=="
                     };
+                    //for (let k in json) {
+                    //    json[k] = encodeURIComponent(json[k]);
+                    //}
                     let sign = require('querystring').stringify(json);
                     // sign = json.sign;
                     Alipay.pay(sign).then(alert, alert);
@@ -594,7 +597,7 @@ class Routers extends React.Component {
                            return <Text>{title}</Text>;
                        }}/>
 
-                <Scene key="orderConfirm" component={conn(OrderConfirmPage)}
+                <Scene initial key="orderConfirm" component={conn(OrderConfirmPage)}
                        type={ActionConst.PUSH_OR_POP}
                        hideTabBar
                        title="确认订单"
