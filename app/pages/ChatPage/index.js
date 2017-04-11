@@ -20,7 +20,7 @@ import Collapsible from 'react-native-collapsible';
 
 import sty, {BGCLR, IMGSIZE} from './style';
 
-import pickImage from '../../helpers/picker';
+import {pickImage} from '../../helpers/picker';
 import ChatMessage from '../../components/ChatMessage';
 import AutoGrowInput from '../../components/AutoGrowInput';
 
