@@ -184,40 +184,12 @@ class OrderConfirmPage extends Component {
         )
     }
 
-    renderInputAble({label, placeholder, labelWidth = 80, inputProps, ...rest}) {
-        return (
-            <InputExtra
-                label={label} labelStyle={{width: labelWidth, fontSize: 16, color: '#848484'}}
-                inputProps={{
-                    placeholder,
-                    ...inputProps,
-                }}
-                inputStyle={{
-                    color: '#4a4a4a'
-                }}
-                {...rest}
-            />
-        )
+    renderInputAble(a) {
+        renderInputAble(a);
     }
 
-    renderSelectable({label, content, onPress, labelWidth = 80, contentStyle, contentHighlight, ...rest}) {
-        return (
-            <LinkItem
-                leftComponent={
-                    <View style={{flexDirection: 'row'}}>
-                        <Text style={{width: labelWidth, fontSize: 16, color: '#848484'}}>{label}</Text>
-                        <Text style={[{fontSize: 16, fontWeight: 'normal', color: '#c4c4c4'},
-                            contentHighlight && {color: '#4a4a4a'},
-                            contentStyle
-                        ]}>
-                            {content}</Text>
-                    </View>
-                }
-                iconName={"down"}
-                onPress={onPress}
-                {...rest}
-            />
-        )
+    renderSelectable(a) {
+        renderSelectable(a);
     }
 
     _getBottomBtnsProps() {
@@ -987,6 +959,43 @@ class OrderConfirmPage extends Component {
             </View>
         )
     }
+}
+
+
+export const renderInputAble = ({label, placeholder, labelWidth = 80, inputProps, ...rest}) => {
+    return (
+        <InputExtra
+            label={label} labelStyle={{width: labelWidth, fontSize: 16, color: '#848484'}}
+            inputProps={{
+                placeholder,
+                ...inputProps,
+            }}
+            inputStyle={{
+                color: '#4a4a4a'
+            }}
+            {...rest}
+        />
+    )
+}
+
+export const renderSelectable = ({label, content, onPress, labelWidth = 80, contentStyle, contentHighlight, ...rest}) => {
+    return (
+        <LinkItem
+            leftComponent={
+                <View style={{flexDirection: 'row'}}>
+                    <Text style={{width: labelWidth, fontSize: 16, color: '#848484'}}>{label}</Text>
+                    <Text style={[{fontSize: 16, fontWeight: 'normal', color: '#c4c4c4'},
+                        contentHighlight && {color: '#4a4a4a'},
+                        contentStyle
+                    ]}>
+                        {content}</Text>
+                </View>
+            }
+            iconName={"down"}
+            onPress={onPress}
+            {...rest}
+        />
+    )
 }
 
 export default OrderConfirmPage;

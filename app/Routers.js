@@ -550,10 +550,10 @@ class Routers extends React.Component {
             <Scene key="Root" backButtonImage={backIcon} navigationBarStyle={styles.navigationBarStyle}>
 
                 <Scene hideTabBar key="weeklyDay" component={conn(WeeklyDayPage)} title={'每周空闲时间'}/>
-                <Scene hideTabBar key="servicePage" component={conn(ServiceTestPage)} title={'免费测评'}
+                <Scene initial hideTabBar key="serviceTest" component={conn(ServiceTestPage)} title={'免费测评'}
                        backButtonImage={backIcon}
                 />
-                <Scene hideTabBar key="submitSuccessPage" component={conn(SubmitSuccessPage)} title={'提交成功'}
+                <Scene hideTabBar key="submitSuccess" component={conn(SubmitSuccessPage)} title={'提交成功'}
                        backButtonImage={backIcon}
                 />
 
@@ -597,7 +597,7 @@ class Routers extends React.Component {
                            return <Text>{title}</Text>;
                        }}/>
 
-                <Scene initial key="orderConfirm" component={conn(OrderConfirmPage)}
+                <Scene key="orderConfirm" component={conn(OrderConfirmPage)}
                        type={ActionConst.PUSH_OR_POP}
                        hideTabBar
                        title="确认订单"
@@ -856,7 +856,7 @@ class Routers extends React.Component {
                        rightTitle="客服"
                        type={ActionConst.PUSH_OR_POP}
                        onRight={() => alert()}/>
-                <Scene initial key="chat" component={conn(ChatPage)}
+                <Scene key="chat" component={conn(ChatPage)}
                        hideTabBar
                        type={ActionConst.PUSH_OR_POP}
                        getTitle={({params}) => (params ? params.name : '')}
