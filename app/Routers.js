@@ -627,7 +627,7 @@ class Routers extends React.Component {
 
                 <Scene key="resetPwdByPhone" component={conn(ResetPwdByPhonePage)} title={'重置密码'}/>
                 <Scene key="resetPwdByMail" component={conn(ResetPwdByMailPage)} title={'重置密码'}/>
-                <Scene key="tabbar" component={conn(NavigationDrawer)}>
+                <Scene initial key="tabbar" component={conn(NavigationDrawer)}>
                     <Scene
                         key="tab_main"
                         tabs
@@ -856,7 +856,7 @@ class Routers extends React.Component {
                        rightTitle="客服"
                        type={ActionConst.PUSH_OR_POP}
                        onRight={() => alert()}/>
-                <Scene initial key="chat" component={conn(ChatPage)}
+                <Scene key="chat" component={conn(ChatPage)}
                        hideTabBar
                        type={ActionConst.PUSH_OR_POP}
                        getTitle={({params}) => (params ? params.name : '')}

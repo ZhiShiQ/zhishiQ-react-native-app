@@ -100,8 +100,7 @@ class ChatMessage extends Component {
                 left: -22,
                 backgroundColor: '#fc6d34'
             }]}
-                                onLongPress={this._renderLockTip}
-                                onPressOut={this._removeLockTip}
+                                onPress={this._renderLockTip}
                                 ref={ref => this.lockIcon = ref}
             >
                 <View>
@@ -122,13 +121,7 @@ class ChatMessage extends Component {
             return null;
         }
         this.setState({
-            showLockTip: true
-        })
-    }
-
-    _removeLockTip() {
-        this.setState({
-            showLockTip: false
+            showLockTip: !this.state.showLockTip
         })
     }
     textLine(){
