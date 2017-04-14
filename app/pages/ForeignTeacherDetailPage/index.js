@@ -434,10 +434,14 @@ class ForeignTeacherDetailPage extends Component {
         const {actions, store: {
             foreign_teacher_detail: {detail: {services}, base: {avatar, name}}
         }} = this.props;
-        const mapService = ({price, name, ...r}, i) => ({
+        const mapService = ({price, name, type, ...r}, i) => ({
             ...r, price, rightText: '¥'+price,
-            leftText: name
+            leftText: name, type,
+            items: type == 'singlePaper'
+                && [{leftText: "PS／Essay／RL／SoP", type}, {leftText: "个人简历", type}, {leftText: "学术文章", type}]
         });
+
+        // alert(JSON.stringify(services));
         actions.setAbroadExpertFormItems(services.map(mapService));
         actions.setAbroadExpertFormThumbnail(avatar);
         actions.setAbroadExpertFormName(name);

@@ -88,22 +88,25 @@ class CartPage extends Component {
             <View style={style.main}>
                 <Carts disableSwipe={false} items={computedItems}/>
                 <View style={style.bottomBar}>
-                    <TouchableOpacity
-                        onPress={() => actions.setAllCartItemSelected(!(selectedNum === items.length))}
+                    <View
+                        style={style.ctl}
                     >
-                        <View style={style.ctl}>
+                        <TouchableOpacity
+                            onPress={() => actions.setAllCartItemSelected(!(selectedNum === items.length))}
+                            style={{flexDirection: 'row', width: 65}}>
                             <Radio
                                 disabled
                                 selected={selectedNum !== 0 && selectedNum === items.length}>
                             </Radio>
                             <Text style={style.ctlText}>全选</Text>
-                        </View>
-                    </TouchableOpacity>
+                        </TouchableOpacity>
+                    </View>
                     <View style={style.info}>
                         <Text style={style.sum}>总计：{sum}</Text>
                         <Text style={style.save}>已节省：{saveSum}</Text>
                     </View>
                     <Touchable
+                        style={[style.done, {flex: 1},  selectedNum > 0 && {backgroundColor: '#fc6d34'}]}
                         onPress={selectedNum > 0 ? () => {
                                 actions.simplePayModalOpen();
                             } : null}
@@ -111,7 +114,6 @@ class CartPage extends Component {
                         <Animate.View
                             duration={DURATION}
                             transition="backgroundColor"
-                            style={[style.done, {flex: 1},  selectedNum > 0 && {backgroundColor: '#fc6d34'}]}
                         >
                             <Animate.Text
                                 transition={["color"]}

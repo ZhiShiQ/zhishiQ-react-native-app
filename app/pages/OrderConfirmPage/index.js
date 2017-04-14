@@ -185,11 +185,11 @@ class OrderConfirmPage extends Component {
     }
 
     renderInputAble(a) {
-        renderInputAble(a);
+        return renderInputAble(a);
     }
 
     renderSelectable(a) {
-        renderSelectable(a);
+        return renderSelectable(a);
     }
 
     _getBottomBtnsProps() {

@@ -193,7 +193,10 @@ class Routers extends React.Component {
             }, actions
         } = this.props;
 
-        const {abroadExpertFormIndex: index} = this.state;
+        const {abroadExpertFormIndex} = this.state;
+        const index = abroadExpertFormIndex.toString().split('-')[0];
+        const subIndex = abroadExpertFormIndex.toString().split('-')[1];
+
         switch (modalType) {
             case 'referer':
                 return {
@@ -231,9 +234,12 @@ class Routers extends React.Component {
                         full: true,
                         title: "确定",
                         onPress: () => {
-
                             actions.setCommonModalIsOpen(false);
-                            const {id, leftText: name, price, type} = items[index];
+                            let item = items[index];
+                            if (subIndex != null) {
+                                item = item.items[subIndex];
+                            }
+                            const {id, leftText: name, price, type} = item;
                             actions.setOrderConfirmType(type);
                             actions.setOrderConfirmTopic(name);
                             actions.setOrderConfirmPrice(price);
@@ -250,8 +256,11 @@ class Routers extends React.Component {
                         backgroundColor: '#ffb12e',
                         onPress: () => {
                             actions.setCommonModalIsOpen(false);
-                            const {id, leftText: name, price, type} = items[index];
-                            // alert(type+name);
+                            let item = items[index];
+                            if (subIndex != null) {
+                                item = item.items[subIndex];
+                            }
+                            const {id, leftText: name, price, type} = item;
                             actions.setOrderConfirmType(type);
                             actions.setOrderConfirmTopic(name);
                             actions.setOrderConfirmPrice(price);
@@ -490,7 +499,6 @@ class Routers extends React.Component {
                             rowHasChanged: (r1, r2) => !Map(r1).equals(Map(r2))
                         }).cloneWithRows(items.map((x, i) => ({
                             ...x,
-                            items: i == 0 ? null : null
                         })))
                     }
                     renderRow={(x, s, i) => {
@@ -550,7 +558,7 @@ class Routers extends React.Component {
             <Scene key="Root" backButtonImage={backIcon} navigationBarStyle={styles.navigationBarStyle}>
 
                 <Scene hideTabBar key="weeklyDay" component={conn(WeeklyDayPage)} title={'每周空闲时间'}/>
-                <Scene initial hideTabBar key="serviceTest" component={conn(ServiceTestPage)} title={'免费测评'}
+                <Scene hideTabBar key="serviceTest" component={conn(ServiceTestPage)} title={'免费测评'}
                        backButtonImage={backIcon}
                 />
                 <Scene hideTabBar key="submitSuccess" component={conn(SubmitSuccessPage)} title={'提交成功'}
@@ -568,7 +576,7 @@ class Routers extends React.Component {
                        }
                 />
 
-                <Scene hideTabBar key="entry" component={conn(EntryPage)} title={TITLE}/>
+                <Scene initial hideTabBar key="entry" component={conn(EntryPage)} title={TITLE}/>
                 <Scene hideTabBar key="oneStepDetail"
                        passProps params={{source: "onestep_detail"}}
                        component={conn(ServiceDetailPage)}

@@ -16,11 +16,10 @@ export default StyleSheet.create({
         alignItems: 'center',
     },
     ctl: {
-        flex: 0,
+        flex: 1,
         width: 132,
         marginLeft: 10,
-        flexDirection: 'row',
-        alignItems: 'center'
+        // alignItems: 'center'
     },
     ctlText: {
         fontSize: 16,
@@ -32,6 +31,7 @@ export default StyleSheet.create({
         paddingVertical: 5,
         alignSelf: 'stretch',
         // alignItems: 'flex-end',
+        // marginRight: 10,
         // justifyContent: 'flex-end'
     },
     sum: {
