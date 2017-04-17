@@ -58,13 +58,13 @@ class CartPage extends Component {
                 ...x,
                 onRemove: () => actions.delCartItemByIndex(index),
                 onControlPress: () => {
-                    // const select = {...this.state.selectedIndex}
-                    // if (!x.selected) {
-                    //     select[index] = true
-                    // } else {
-                    //     delete select[index];
-                    // }
-                    // this.setState({selectedIndex: select});
+                    /*const select = {...this.state.selectedIndex}
+                    if (!x.selected) {
+                        select[index] = true
+                    } else {
+                        delete select[index];
+                    }
+                    this.setState({selectedIndex: select});*/
                     actions.setCartItemSelectedByIndex(index, !x.selected)
                 },
                 onBtnPress: () => actions.discountModalOpen()
@@ -81,7 +81,6 @@ class CartPage extends Component {
     render() {
         const {store: {cart: {items}}, actions} = this.props;
         const {items: computedItems, saveSum, sum, selectedNum} = this.itemsWithFunc();
-
         const Touchable = selectedNum === 0 ? View : TouchableOpacity;
 
         return (

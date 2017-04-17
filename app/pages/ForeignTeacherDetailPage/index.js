@@ -438,7 +438,7 @@ class ForeignTeacherDetailPage extends Component {
             ...r, price, rightText: '¥'+price,
             leftText: name, type,
             items: type == 'singlePaper'
-                && [{leftText: "PS／Essay／RL／SoP", type}, {leftText: "个人简历", type}, {leftText: "学术文章", type}]
+                && [{leftText: "PS／Essay／RL／SoP", type, price}, {leftText: "个人简历", type, price}, {leftText: "学术文章", type, price}]
         });
 
         // alert(JSON.stringify(services));
