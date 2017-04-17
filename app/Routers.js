@@ -357,14 +357,14 @@ class Routers extends React.Component {
                     style={{fontSize: 14}}
                     date={start}
                     onDateChange={(date) => actions.setTimeRangeStart(date)}
-                    mode={"time"}
+                    mode={"datetime"}
                 />
                 <Text style={{alignSelf: 'center'}}>至</Text>
                 <DatePickerIOS
                     textColor="red"
                     date={end}
                     onDateChange={(date) => actions.setTimeRangeEnd(date)}
-                    mode={"time"}
+                    mode={"datetime"}
                 />
             </View>
         )
@@ -619,6 +619,22 @@ class Routers extends React.Component {
                            return <ConnectedDrop {...p} />
                        }}/>
 
+                <Scene key="foreignTeacher" component={conn(ForeignTeacherPage)}
+                       type={ActionConst.PUSH_OR_POP}
+                       hideTabBar
+                       title="外籍文书顾问"
+                       rightTitle="搜索"
+                       getRightTitle={() => searchIcon}
+                       onRight={() => alert()}
+                       backTitle=""/>
+                <Scene key="abroadExpert" component={conn(AbroadExpertPage)}
+                       hideTabBar
+                       type={ActionConst.PUSH_OR_POP}
+                       title="留学行家咨询"
+                       rightTitle="搜索"
+                       getRightTitle={() => searchIcon}
+                       onRight={() => alert()}/>
+
                 <Scene key="abroadExpertDetail" component={conn(AbroadExpertDetailPage)}
                        hideTabBar
                        type={ActionConst.PUSH_OR_POP}
@@ -710,22 +726,7 @@ class Routers extends React.Component {
                                    rightTitle="消息"
                                    onRight={() => Actions.messages()}
                                    title="服务" icon={TabIcon}/>
-                            <Scene key="abroadExpert" component={conn(AbroadExpertPage)}
-                                   hideTabBar
-                                   type={ActionConst.PUSH_OR_POP}
-                                   title="留学行家咨询"
-                                   rightTitle="搜索"
-                                   getRightTitle={() => searchIcon}
-                                   onRight={() => alert()}/>
 
-                            <Scene key="foreignTeacher" component={conn(ForeignTeacherPage)}
-                                   type={ActionConst.PUSH_OR_POP}
-                                   hideTabBar
-                                   title="外籍文书顾问"
-                                   rightTitle="搜索"
-                                   getRightTitle={() => searchIcon}
-                                   onRight={() => alert()}
-                                   backTitle=""/>
 
 
                             <Scene key="serviceClause" component={conn(ServiceClausePage)}

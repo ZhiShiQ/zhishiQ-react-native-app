@@ -64,7 +64,7 @@ class PersonInOrder extends Component {
                     <View style={{flexDirection: 'row'}}>
                         <Text style={{flex: 1, fontSize: 16, fontColor: '#4a4a4a', fontWeight: '600'}}>{name}</Text>
                         <Text style={{fontSize: 14, color: '#848484', alignSelf: 'flex-end'}}>
-                            <Text style={{color: !normal?'#ea5502':'#4a4a4a'}}>{average} </Text>分
+                            <Text style={{color: !normal?'#ea5502':'#4a4a4a'}}>{Number(average).toFixed(1)} </Text>分
                             <Text> </Text>
                             <Text style={{color: !normal?'#ea5502':'#4a4a4a'}}>{clients} </Text>服务
                         </Text>

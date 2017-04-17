@@ -3,7 +3,44 @@
  */
 import {_t, _debugger} from '../helpers';
 import * as $ from '../constant'
-
+import {teachersURL, oneStepURL} from '../helpers/remote-urls'
+import {stringify} from 'querystring'
+export const fetchOrderConfirmTeachers = (q) =>
+    (emit, getState) =>
+        fetch(teachersURL + '?' + stringify({q, pageSize: 5}))
+            .then(r => r.json())
+            .then(o => {
+                emit(setOrderConfirmTeachers(o.list.map(
+                    ({client_count, average_rate, schools, ...rest}) => ({
+                        ...rest,
+                        average: average_rate,
+                        clients: client_count,
+                        school: schools[0],
+                        intro: '面试招生官'
+                    })
+                )))
+            })
+export const fetchOrderConfirmOneStepOptions = () =>
+    (emit, getState) =>
+    emit(setOrderConfirmOptionsFetching(true)) &&
+    fetch(oneStepURL + '?' + stringify({service: 'service-full-package'}))
+        .then(r => r.json())
+        .then(o => {
+            const mapFunc = x => ({id: x.id, label: x.name})
+            let keys = Object.keys(o.school_domains);
+            const subs = keys.reduce((p, a) => {
+                p.push(o.school_domains[a].map(mapFunc));
+                return p;
+            }, []);
+            // alert(JSON.stringify(subs))
+            emit([
+                setOrderConfirmApplyDegrees(o.apply_degrees.map(mapFunc)),
+                setOrderConfirmApplyCountries(o.country_degrees.map(mapFunc)),
+                setOrderConfirmApplyFields(keys.map(s => ({label: s, id: s == '不确定' ? -1 : 1}))),
+                setOrderConfirmApplySubFields(subs)
+            ])
+        }).catch(ex => _debugger(ex))
+        .then(() => emit(setOrderConfirmOptionsFetching(false)))
 export const orderConfirmReset = () =>
     (emit, getState) =>
         emit([
@@ -29,6 +66,11 @@ export const setOrderConfirmLevelIndex = (levelIndex) => _t($.ORDER_CONFIRM_ROOT
 
 export const setOrderConfirmApplyFields = (applyFields) => _t($.ORDER_CONFIRM_ROOT_SET, {applyFields});
 export const setOrderConfirmApplyFieldIndex = (applyFieldIndex) => _t($.ORDER_CONFIRM_ROOT_SET, {applyFieldIndex});
+
+export const setOrderConfirmApplySubFields = (applySubFields) => _t($.ORDER_CONFIRM_ROOT_SET, {applySubFields});
+export const setOrderConfirmApplySubFieldIndex = (applySubFieldIndex) => _t($.ORDER_CONFIRM_ROOT_SET, {applySubFieldIndex});
+
+export const setOrderConfirmOptionsFetching = (isFetching) => _t($.ORDER_CONFIRM_ROOT_SET, {isFetching});
 
 export const setOrderConfirmApplyDegrees = (applyDegrees) => _t($.ORDER_CONFIRM_ROOT_SET, {applyDegrees});
 export const setOrderConfirmApplyDegreeIndex = (applyDegreeIndex) => _t($.ORDER_CONFIRM_ROOT_SET, {applyDegreeIndex});

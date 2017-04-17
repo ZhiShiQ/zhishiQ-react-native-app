@@ -27,9 +27,8 @@ import LinkItem from '../../components/LinkItem';
 import Hr from '../../components/Hr';
 import BottomBtns from '../../components/BottomBtns';
 import CirImage from '../../components/CirImage';
-
+import Loading from '../../components/Loading';
 import sty from './style';
-
 
 @autobind
 class OrderConfirmPage extends Component {
@@ -41,13 +40,20 @@ class OrderConfirmPage extends Component {
     }
 
     componentDidMount() {
+        const {
+            actions,
+            store:{
+                order_confirm:{isFetching}
+            }
+        }=this.props
+        setTimeout(() => actions.fetchOrderConfirmOneStepOptions(), 0)
     }
 
     componentWillReceiveProps(newProps) {
     }
 
     shouldComponentUpdate(newProps, newState, newContext) {
-        return !Map(this.props.store.order_confirm).equals(Map(newProps.store.order_confirm))
+        return !Map(this.props.store.order_confirm).equals(Map(newProps.store.order_confirm)) || !Map(newState).equals(Map(this.state))
     }
 
     componentWillUpdate(newProps, newState, newContext) {
@@ -62,7 +68,9 @@ class OrderConfirmPage extends Component {
     }
 
     static defaultProps = {}
-    state = {}
+    state = {
+    }
+
     static propTypes = {}
 
     get hr() {
@@ -99,10 +107,10 @@ class OrderConfirmPage extends Component {
 
         const items = selectAdviserIndex >= 0 ? [advisers[selectAdviserIndex]]
             : advisers.map((a, i) => ({
-                ...a, onPress: () => {
-                    actions.setOrderConfirmSelectAdviserIndex(i)
-                }, /*style: i == 0 && {paddingTop: 0}*/
-            }))
+            ...a, onPress: () => {
+                actions.setOrderConfirmSelectAdviserIndex(i)
+            }, /*style: i == 0 && {paddingTop: 0}*/
+        }))
         return (
             <ListView
                 scrollEnabled={false}
@@ -112,11 +120,11 @@ class OrderConfirmPage extends Component {
                 renderRow={(x, s, i) => this.renderPerson(x, i)}
                 renderSeparator={(x, i) => i != items.length - 1 ? this.hr : null}
                 renderFooter={() => selectAdviserIndex >= 0 ? this.renderResetButton({
-                        onPress: () => {
-                            actions.setOrderConfirmSelectAdviserIndex(-1);
-                            actions.setOrderConfirmAdvisers(advisers);
-                        }
-                    }) : null }
+                    onPress: () => {
+                        actions.setOrderConfirmSelectAdviserIndex(-1);
+                        actions.setOrderConfirmAdvisers(advisers);
+                    }
+                }) : null }
             />
         )
     }
@@ -126,10 +134,10 @@ class OrderConfirmPage extends Component {
 
         const items = selectTeacherIndex >= 0 ? [teachers[selectTeacherIndex]]
             : teachers.map((a, i) => ({
-                ...a, onPress: () => {
-                    actions.setOrderConfirmSelectTeacherIndex(i)
-                }, /*style: i == 0 && {paddingTop: 0}*/
-            }))
+            ...a, onPress: () => {
+                actions.setOrderConfirmSelectTeacherIndex(i)
+            }, /*style: i == 0 && {paddingTop: 0}*/
+        }))
         return (
             <ListView
                 scrollEnabled={false}
@@ -139,11 +147,11 @@ class OrderConfirmPage extends Component {
                 renderRow={(x, s, i) => this.renderPerson(x, i)}
                 renderSeparator={(x, i) => i != items.length - 1 ? this.hr : null}
                 renderFooter={() => selectTeacherIndex >= 0 ? this.renderResetButton({
-                        onPress: () => {
-                            actions.setOrderConfirmSelectTeacherIndex(-1);
-                            actions.setOrderConfirmTeachers(teachers);
-                        }
-                    }) : null }
+                    onPress: () => {
+                        actions.setOrderConfirmSelectTeacherIndex(-1);
+                        actions.setOrderConfirmTeachers(teachers);
+                    }
+                }) : null }
             />
         )
     }
@@ -212,14 +220,15 @@ class OrderConfirmPage extends Component {
         }
     }
 
-    pureText(text, btnText, rest, options={}) {
-        const {showIcon=false, onPress=()=>Actions.serviceClause()} = options;
+    pureText(text, btnText, rest, options = {}) {
+        const {showIcon = false, onPress = () => Actions.serviceClause()} = options;
         return (
             <View style={{
                 flexDirection: 'row', marginTop: 8,
                 marginBottom: 15, paddingLeft: 15,
             }}>
-                {btnText && showIcon && <Text style={{top: 3.5}}><EvilIcon size={18} color="#ea5502" name="check"/></Text>}
+                {btnText && showIcon &&
+                <Text style={{top: 3.5}}><EvilIcon size={18} color="#ea5502" name="check"/></Text>}
                 <Text style={{
                     color: '#a1a1a1',
                     lineHeight: 18,
@@ -256,10 +265,14 @@ class OrderConfirmPage extends Component {
             actions,
             store: {
                 order_confirm: {
-                    id, topic, skype, qq, price, want, _type = "completePaper"
+                    isFetching, id, topic, skype, qq, price, want, _type = "completePaper"
                 }
             }
         } = this.props;
+        if (isFetching) {
+            return <Loading/>;
+        }
+
         switch (_type) {
             case 'topic':
                 return this.renderTopic();
@@ -361,7 +374,7 @@ class OrderConfirmPage extends Component {
                     {this.hr}
                     <View style={{flex: 1}}>
                         { selectAdviserIndex < 0 &&
-                        <View style={{backgroundColor: '#fff', padding: 15, paddingBottom: advisers.length ? 0:15}}>
+                        <View style={{backgroundColor: '#fff', padding: 15, paddingBottom: advisers.length ? 0 : 15}}>
                             <TextInput
                                 autoCapitalize={false}
                                 autoCorrect={false}
@@ -457,24 +470,17 @@ class OrderConfirmPage extends Component {
                     {this.hr}
                     <View style={{flex: 1}}>
                         { selectTeacherIndex < 0 &&
-                        <View style={{backgroundColor: '#fff', padding: 15, paddingBottom: teachers.length ? 0:15}}>
+                        <View style={{backgroundColor: '#fff', padding: 15, paddingBottom: teachers.length ? 0 : 15}}>
                             <TextInput
                                 autoCapitalize={false}
                                 autoCorrect={false}
                                 onChangeText={(text) => {/*fetch Search*/
-                                    actions.setOrderConfirmTeachers([{
-                                        average: 4.8,
-                                        clients: 234,
-                                        name: "moyu..",
-                                        school: "伦敦艺术大学",
-                                        intro: "面试招生官"
-                                    }, {
-                                        average: 4.8,
-                                        clients: 234,
-                                        name: "moyu..",
-                                        school: "伦敦艺术大学",
-                                        intro: "面试招生官"
-                                    }])
+                                    text = text.trim()
+                                    if (!text) {
+                                        actions.setOrderConfirmTeachers([])
+                                    } else {
+                                        actions.fetchOrderConfirmTeachers(text)
+                                    }
                                 }}
                                 placeholder={"输入顾问名字，如：Andy"}
                                 editable={true}
@@ -491,7 +497,22 @@ class OrderConfirmPage extends Component {
                     </View>
                 </View>
                 }
-                {this.pureText('您可以在','顾问页面','查看符合您专业和愿望的顾问', {onPress: () => {}, showIcon: false})}
+                {this.pureText('您可以在', '顾问页面', '查看符合您专业和愿望的顾问', {
+                    onPress: () => {
+                        Actions.foreignTeacher({
+                            params: {
+                                fetchedCallback: () => {
+                                    const {store: {foreign_teacher: {filters: {others}}}} = this.props;
+                                    const i = others.findIndex(x=>x.id=='package_editor');
+
+                                    actions.setForeignTeacherFilterOtherTitle(i != 0 ? others[i].title : "其它服务");
+                                    actions.setForeignTeacherFilterOtherSelectedIndex(i);
+                                    actions.fetchForeignTeacher(1, {resetList: true});
+                                }
+                            }
+                        });
+                    }, showIcon: false
+                })}
             </View>
         )
     }
@@ -543,17 +564,7 @@ class OrderConfirmPage extends Component {
                         })))
                     })}
                     {this.hr}
-                    {this.renderSelectable({
-                        label: '申请领域',
-                        content: applyFieldIndex < 0 ? '请选择您申请领域' : applyFields[applyFieldIndex].label,
-                        labelWidth,
-                        contentHighlight: applyFieldIndex >= 0,
-                        onPress: () => actions.pickerModalOpen(applyFields.map(a => ({
-                            ...a, onPress: (a, i) => {
-                                actions.setOrderConfirmApplyFieldIndex(i)
-                            }
-                        })))
-                    })}
+                    {this._renderApplyFields(labelWidth)}
                     {this.pureText("系统会根据您需要申请的研究领域和申请学位匹配处理您的服务的顾问，因为这一点，全套文书服务中申请的每个项目都应该是这个领域的")}
 
 
@@ -564,6 +575,48 @@ class OrderConfirmPage extends Component {
                 <BottomBtns lefts={[{text: "收藏"}, {text: "客服"}]}
                             {...this._getBottomBtnsProps()}
                 />
+            </View>
+        )
+    }
+
+    _renderApplyFields(labelWidth) {
+        const {
+            actions,
+            store: {
+                order_confirm: {
+                    levels, levelIndex, applyCountries, applyCountryIndex,
+                    aimLangs, aimLangIndex, applyDegrees, applyDegreeIndex,
+                    applyFields, applyFieldIndex, applySubFields, applySubFieldIndex, selectAdviserIndex,
+                    adviseEnable, paperManagerEnable, skypeEnable
+                }
+            }
+        } = this.props;
+        return (
+            <View>
+                {this.renderSelectable({
+                    label: '申请领域',
+                    content: applyFieldIndex < 0 ? '请选择您申请领域' : applyFields[applyFieldIndex].label,
+                    labelWidth,
+                    contentHighlight: applyFieldIndex >= 0,
+                    onPress: () => actions.pickerModalOpen(applyFields.map(a => ({
+                        ...a, onPress: (a, i) => {
+                            actions.setOrderConfirmApplySubFieldIndex(-1)
+                            actions.setOrderConfirmApplyFieldIndex(i)
+                        }
+                    })))
+                })}
+                {applyFieldIndex >= 0 && applyFields[applyFieldIndex].id !== -1 &&
+                this.renderSelectable({
+                    label: '子领域',
+                    content: applySubFieldIndex < 0 ? '请选择您申请的子领域' : applySubFields[applyFieldIndex][applySubFieldIndex].label,
+                    labelWidth,
+                    contentHighlight: applySubFieldIndex >= 0,
+                    onPress: () => actions.pickerModalOpen(applySubFields[applyFieldIndex].map(a => ({
+                        ...a, onPress: (a, i) => {
+                            actions.setOrderConfirmApplySubFieldIndex(i)
+                        }
+                    })))
+                })}
             </View>
         )
     }
@@ -592,17 +645,7 @@ class OrderConfirmPage extends Component {
                 <ScrollView>
                     {this.header(labelWidth, '全套文书：')}
                     {sep(true, {height: 16})}
-                    {this.renderSelectable({
-                        label: '申请领域',
-                        content: applyFieldIndex < 0 ? '请选择您申请领域' : applyFields[applyFieldIndex].label,
-                        labelWidth,
-                        contentHighlight: applyFieldIndex >= 0,
-                        onPress: () => actions.pickerModalOpen(applyFields.map(a => ({
-                            ...a, onPress: (a, i) => {
-                                actions.setOrderConfirmApplyFieldIndex(i)
-                            }
-                        })))
-                    })}
+                    {this._renderApplyFields(labelWidth)}
                     {this.hr}
                     {this.renderSelectable({
                         label: '申请学位',
@@ -859,7 +902,6 @@ class OrderConfirmPage extends Component {
                 }
             }
         } = this.props;
-
         return (
             <View style={sty.main}>
                 <ScrollView>
@@ -876,16 +918,7 @@ class OrderConfirmPage extends Component {
                         })))
                     })}
                     {this.hr}
-                    {this.renderSelectable({
-                        label: '申请领域',
-                        content: applyFieldIndex < 0 ? '请选择您的申请领域' : applyFields[applyFieldIndex].label,
-                        contentHighlight: applyFieldIndex >= 0,
-                        onPress: () => actions.pickerModalOpen(applyFields.map(level => ({
-                            ...level, onPress: (a, i) => {
-                                actions.setOrderConfirmApplyFieldIndex(i)
-                            }
-                        })))
-                    })}
+                    {this._renderApplyFields()}
                     {sep(true, {height: 16})}
                     {this.renderSelectable({
                         label: '文档类型',

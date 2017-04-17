@@ -3,6 +3,7 @@
  */
 
 const HOST = "http://api.lb.dev.mydocumate.com/v1/";
+const HOST2 = "http://api.zry.dev.mydocumate.com/v1/";
 
 export const signInURL = HOST + "account/sign-in";
 export const signUpURL = HOST + "account/sign-up";
@@ -21,3 +22,6 @@ export const abroadExpertDetailURL = HOST + "course/view";
 export const abroadExpertDetailCommentURL = HOST + "course/reviews-of-topic";
 
 export const saoRedirect = "http://api.lb.dev.mydocumate.com/common/account/set-redirect-url";
+
+export const teachersURL =HOST2+"advisor/search";
+export const oneStepURL =HOST2+"select-option/get";

@@ -5,6 +5,7 @@ import {Map, List, Set, fromJS} from 'immutable';
 import * as $ from '../constant';
 
 const initialState = {
+    isFetching:true,
     id: -1,
     topic: '洒洒水',
     price: '',
@@ -19,6 +20,9 @@ const initialState = {
     // 申请领域
     applyFields: [{label: "GGG"}, {label: "HHH"}],
     applyFieldIndex: -1,
+    // 申请子领域
+    applySubFields: [[{label: "GGG1"}, {label: "HHH"}],[{label: "GGG2"}, {label: "HHH"}]],
+    applySubFieldIndex: -1,
     // 申请学位
     applyDegrees: [{label: "EEE"}, {label: "FFF"}],
     applyDegreeIndex: -1,

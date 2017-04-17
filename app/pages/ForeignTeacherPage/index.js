@@ -39,9 +39,14 @@ class ForeignTeacherPage extends Component {
     }
 
     componentWillMount() {
+        const {params={}} = this.props;
         const {store: {foreign_teacher: {list, isFetching, firstMount}}, actions} = this.props;
+        const {fetchedCallback} = params;
         if (!isFetching && firstMount) {
-            actions.fetchForeignTeacher(1, {reset: true});
+            actions.fetchForeignTeacher(1, {reset: true})
+                .then(() => fetchedCallback && fetchedCallback());
+        } else {
+            fetchedCallback && fetchedCallback();
         }
     }
 
