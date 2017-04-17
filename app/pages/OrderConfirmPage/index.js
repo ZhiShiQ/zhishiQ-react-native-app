@@ -53,13 +53,31 @@ class OrderConfirmPage extends Component {
     }
 
     shouldComponentUpdate(newProps, newState, newContext) {
-        return !Map(this.props.store.order_confirm).equals(Map(newProps.store.order_confirm)) || !Map(newState).equals(Map(this.state))
+        /*
+         qq: null,
+         skype: null,
+         discount: null
+        */
+        return !Map(this.props.store.order_confirm).equals(Map(newProps.store.order_confirm))
+            || newState.originPageCount != this.state.originPageCount
+            || newState.targetPageCount != this.state.targetPageCount
+            || newState.targetWordCount != this.state.targetWordCount
+            || newState.wordCount != this.state.wordCount
     }
 
     componentWillUpdate(newProps, newState, newContext) {
+        if (this.props.store.order_confirm.price == newProps.store.order_confirm.price) {
+            this.computePrice();
+        }
     }
 
     componentDidUpdate(oldProps, oldState, oldContext) {
+        const {actions} = this.props;
+        // console.info(!Map(this.props.store.order_confirm).equals(Map(oldProps.store.order_confirm)));
+        // console.info(this.props.store.order_confirm, oldProps.store.order_confirm);
+        // if (this.props.store.order_confirm.price == oldProps.store.order_confirm.price) {
+        //     this.computePrice();
+        // }
     }
 
     componentWillUnmount() {
@@ -69,6 +87,13 @@ class OrderConfirmPage extends Component {
 
     static defaultProps = {}
     state = {
+        targetPageCount: null,
+        originPageCount: null,
+        wordCount: null,
+        targetWordCount: null,
+        qq: null,
+        skype: null,
+        discount: null
     }
 
     static propTypes = {}
@@ -260,6 +285,60 @@ class OrderConfirmPage extends Component {
         )
     }
 
+    async computePrice () {
+        const {
+            actions,
+            store: {
+                order_confirm: {
+                    isFetching, id, topic, skype, qq, price, want, _type = "completePaper",
+                    levels, levelIndex, applyCountries, applyCountryIndex,
+                    aimLangs, aimLangIndex, applyDegrees, applyDegreeIndex,
+                    applyFields, applyFieldIndex, selectAdviserIndex,
+                    adviseSelects, adviseType, paperManagerEnable, skypeEnable,
+                    adviserLevels, adviserLevelIndex, advisers
+                }
+            }
+        } = this.props;
+        const {targetPageCount, originPageCount, wordCount} = this.state;
+        let params = {};
+
+        /*const struct = {
+            'oneStepApply': [{
+                key: "qq", src: 'state', value: 'qq'
+            }, {
+                key: "country", evalStr: "applyCountries[applyCountryIndex]"
+            }]
+        }
+
+        const arr = struct[_type].map(({key, src, value, evalStr})=>{
+            if (src) {
+                return {val: this[src][value], key}
+            } else {
+                return {val: eval(evalStr), key}
+            }
+        });
+
+        alert(JSON.stringify(arr));*/
+
+        switch (_type) {
+            case 'topic':
+                return;
+            case 'completePaper':
+                return;
+            case 'singlePaper':
+                return;
+            case 'oneStepApply':
+
+            case 'resume':
+                // levels[levelIndex]
+
+            default:
+        }
+
+        // todo: fetch()
+        // actions.setOrderConfirmPrice(200);
+    }
+
     render() {
         const {
             actions,
@@ -321,13 +400,15 @@ class OrderConfirmPage extends Component {
                     {this.renderInputAble({
                         label: "QQ",
                         labelWidth,
-                        placeholder: "输入您的QQ"
+                        placeholder: "输入您的QQ",
+                        onChangeText: (text) => this.setState({qq: text})
                     })}
                     {this.hr}
                     {this.renderInputAble({
                         label: "Skype",
                         labelWidth,
-                        placeholder: "输入您的Skype（选填）"
+                        placeholder: "输入您的Skype（选填）",
+                        onChangeText: (text) => this.setState({skype: text})
                     })}
                     {this.pureText("顾问会通过qq或skype与您取得联系")}
                     {this._renderFreeTime()}
@@ -736,7 +817,8 @@ class OrderConfirmPage extends Component {
                         label: '优惠码',
                         labelWidth,
                         placeholder: '请输入优惠码',
-                        onPress: () => actions.pickerModalOpen(true)
+                        onPress: () => actions.pickerModalOpen(true),
+                        onChangeText: (text) => this.setState({discount: text})
                     })}
 
                     {this.pureText("确定", "服务条款")}
@@ -838,19 +920,19 @@ class OrderConfirmPage extends Component {
                         label: '原稿字数',
                         placeholder: '原简历文稿单词数',
                         labelWidth,
-                        inputProps: {keyboardType: "numeric"}
+                        inputProps: {keyboardType: "numeric", onChangeText: (text) => this.setState({wordCount: text})}
                     })}
                     {this.hr}
                     {this.renderInputAble({
                         label: '原稿页数', placeholder: '请输入原稿页数',
                         labelWidth,
-                        inputProps: {keyboardType: "numeric"}
+                        inputProps: {keyboardType: "numeric", onChangeText: (text) => this.setState({originPageCount: text})}
                     })}
                     {this.hr}
                     {this.renderInputAble({
                         label: '终稿页数', placeholder: '请输入终稿页数',
                         labelWidth,
-                        inputProps: {keyboardType: "numeric"}
+                        inputProps: {keyboardType: "numeric", onChangeText: (text) => this.setState({targetPageCount: text})}
                     })}
                     {this.pureText('终稿一页字数大概为300单词，请您根据自己情况购买页数')}
 
@@ -958,12 +1040,12 @@ class OrderConfirmPage extends Component {
                     {this.renderInputAble({
                         label: '原稿字数',
                         placeholder: '请输入原稿字数',
-                        inputProps: {keyboardType: "numeric"}
+                        inputProps: {keyboardType: "numeric", onChangeText: (text) => this.setState({wordCount: text})}
                     })}
                     {this.hr}
                     {this.renderInputAble({
                         label: '终稿字数', placeholder: '请输入终稿期望字数',
-                        inputProps: {keyboardType: "numeric"}
+                        inputProps: {keyboardType: "numeric", onChangeText: (text) => this.setState({targetWordCount: text})}
                     })}
                     {this.pureText('顾问会参考您提供的终稿字数提供服务，语言润色服务终稿单词数浮动范围为原稿单词数上下10%')}
 
