@@ -264,7 +264,6 @@ class AbroadExpertDetailPage extends Component {
                     quality={summary.all}
                     pro={summary.professional}
                     manner={summary.attitude}
-
                     commentNum={total}
                     rate={average}
                 />

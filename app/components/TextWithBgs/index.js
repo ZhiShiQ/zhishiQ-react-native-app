@@ -60,7 +60,8 @@ class TextWithBgs extends Component {
     }
 
     renderOld() {
-        const {style, items, eachStyle, bgColor, color, borderColor} = this.props
+        let {style, items, eachStyle, bgColor, color, borderColor} = this.props
+        items = items.filter(x => !!x);
         return (
             <HrFlexLayout style={[sty.main, style, {}]}>
                 {
@@ -84,8 +85,8 @@ class TextWithBgs extends Component {
     }
 
     render() {
-        const {style, align, items, eachStyle, bgColor, color, borderColor, ...rest} = this.props
-
+        let {style, align, items, eachStyle, bgColor, color, borderColor, ...rest} = this.props
+        items = items.filter(x => !!x);
         if (items==null || items.length === 0) {
             return null;
         }

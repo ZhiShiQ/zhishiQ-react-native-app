@@ -6,18 +6,17 @@ import * as $ from '../constant';
 
 const initialState = {
     isFetching: true,
-
     isFullFetch: false,
 
     type: "",
     name: '',
 
     base: {
+        image: {},
         description: "提供针对个人陈述/推荐信/简历/小文章等留学文书的点评、语言润色、深度修改、辅导撰写等服务，权威外籍导师一对一个性化指导，助你的文书脱颖而出。"
     },
 
     detail: {
-
         /*
          [{
          title: "语言润色",

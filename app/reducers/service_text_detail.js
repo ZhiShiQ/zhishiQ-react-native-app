@@ -72,9 +72,9 @@ export default function (state=initialState, action) {
     let newState = {...state};
     const {type, ...rest} = action;
     switch (type) {
-        case $.ONE_STEP_SERVICE_DETAIL_ROOT_SET:
+        case $.SERVICE_TEXT_SERVICE_DETAIL_ROOT_SET:
             return {...newState, [rest.key]: rest.data};
-        case $.ONE_STEP_SERVICE_DETAIL_INNER_SET:
+        case $.SERVICE_TEXT_SERVICE_DETAIL_INNER_SET:
             return fromJS(newState).setIn(rest.keys, rest.data).toJS();
         default:
             return newState;

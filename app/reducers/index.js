@@ -30,6 +30,9 @@ export default combineReducers({
     service_detail: require('./service_detail').default,
     onestep_detail: require('./onestep_detail').default,
     sub_service_detail: require('./sub_service_detail').default,
-    service_test:require('./service_test').default,
+    service_test: require('./service_test').default,
     onestep_sub_service_detail: require('./onestep_sub_service_detail').default,
+    service_text_detail: require('./service_text_detail').default,
+    service_text_package_detail: require('./service_text_package_detail').default,
+    service_text_resume_detail: require('./service_text_resume_detail').default,
 })

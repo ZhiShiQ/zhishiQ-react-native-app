@@ -6,7 +6,8 @@ import {
     View,
     TouchableHighlight,
     TouchableOpacity,
-    Button
+    Button,
+    RefreshControl
 } from 'react-native';
 
 import {DURATION} from '../../constant'
@@ -14,6 +15,7 @@ import * as Animate from 'react-native-animatable';
 import style from './style';
 import Carts from '../../components/CartItems';
 import Radio from '../../components/Radio';
+import Loading from '../../components/Loading';
 
 AnimateTouchableOpacity = Animate.createAnimatableComponent(TouchableOpacity);
 
@@ -27,6 +29,12 @@ class CartPage extends Component {
     }
 
     componentDidMount() {
+        setTimeout(() => {
+            const {store: {cart: {items, isFetching, isFirst, isRefreshing}}, actions} = this.props;
+            if (isFirst) {
+                actions.fetchCarts();
+            }
+        }, 0);
     }
 
     componentWillReceiveProps(newProps) {
@@ -52,19 +60,19 @@ class CartPage extends Component {
     static propTypes = {}
 
     itemsWithFunc() {
-        const {store: {cart: {items}}, actions} = this.props;
+        const {store: {cart: {items, isFetching, isRefreshing}}, actions} = this.props;
         return items.reduce((a, x, index) => {
             a.items.push({
                 ...x,
                 onRemove: () => actions.delCartItemByIndex(index),
                 onControlPress: () => {
                     /*const select = {...this.state.selectedIndex}
-                    if (!x.selected) {
-                        select[index] = true
-                    } else {
-                        delete select[index];
-                    }
-                    this.setState({selectedIndex: select});*/
+                     if (!x.selected) {
+                     select[index] = true
+                     } else {
+                     delete select[index];
+                     }
+                     this.setState({selectedIndex: select});*/
                     actions.setCartItemSelectedByIndex(index, !x.selected)
                 },
                 onBtnPress: () => actions.discountModalOpen()
@@ -78,14 +86,38 @@ class CartPage extends Component {
         }, {items: [], saveSum: 0, sum: 0, selectedNum: 0});
     }
 
+    _onRefresh() {
+        const {store: {cart: {items, isFetching, isFirst, isRefreshing}}, actions} = this.props;
+        actions.fetchCarts().then(x => {
+            actions.setCartRefreshing(false);
+        });
+    }
+
+    _onEndReached() {
+        const {store: {cart: {items, isFetching, isFirst, isRefreshing}}, actions} = this.props;
+        actions.fetchCarts();
+    }
+
     render() {
-        const {store: {cart: {items}}, actions} = this.props;
+        const {store: {cart: {items, isFetching, isFirst, isRefreshing}}, actions} = this.props;
         const {items: computedItems, saveSum, sum, selectedNum} = this.itemsWithFunc();
         const Touchable = selectedNum === 0 ? View : TouchableOpacity;
+        if (isFirst && isFetching) {
+            return <Loading />;
+        }
 
         return (
             <View style={style.main}>
-                <Carts disableSwipe={false} items={computedItems}/>
+                <Carts disableSwipe={false} items={computedItems}
+                       refreshControl={
+                           <RefreshControl
+                               refreshing={isRefreshing}
+                               onRefresh={this._onRefresh}
+                           />
+                       }
+                       onEndReached={this._onEndReached}
+                       onEndReachedThreshold={100}
+                />
                 <View style={style.bottomBar}>
                     <View
                         style={style.ctl}
@@ -105,7 +137,7 @@ class CartPage extends Component {
                         <Text style={style.save}>已节省：{saveSum}</Text>
                     </View>
                     <Touchable
-                        style={[style.done, {flex: 1},  selectedNum > 0 && {backgroundColor: '#fc6d34'}]}
+                        style={[style.done, {flex: 1}, selectedNum > 0 && {backgroundColor: '#fc6d34'}]}
                         onPress={selectedNum > 0 ? () => {
                                 actions.simplePayModalOpen();
                             } : null}

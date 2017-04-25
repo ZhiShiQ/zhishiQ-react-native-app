@@ -6,8 +6,8 @@ import {signInURL, getVerifyURL, signUpURL} from '../helpers/remote-urls';
 import {stringify} from 'querystring';
 import * as $ from '../constant';
 
-const _setRoot = (key, data) => _t($.SERVICE_DETAIL_ROOT_SET, {key, data});
-const _setInner = (keys, data) => _t($.SERVICE_DETAIL_INNER_SET, {keys, data});
+const _setRoot = (key, data) => _t($.SERVICE_TEXT_PACK_SERVICE_DETAIL_ROOT_SET, {key, data});
+const _setInner = (keys, data) => _t($.SERVICE_TEXT_PACK_SERVICE_DETAIL_INNER_SET, {keys, data});
 
 export const setServiceDetailFetching = (isFetching) => _setRoot('isFetching', isFetching);
 export const setServiceDetailBase = (base) => _setRoot('base', base);

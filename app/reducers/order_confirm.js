@@ -5,7 +5,7 @@ import {Map, List, Set, fromJS} from 'immutable';
 import * as $ from '../constant';
 
 const initialState = {
-    isFetching:true,
+    isFetching: true,
     id: -1,
     topic: '洒洒水',
     price: '',
@@ -13,6 +13,7 @@ const initialState = {
     qq: '',
     skype: '',
     freeTime: '',
+    data: {},
 
     // 简历领域
     resumeFields: [{label: "GGG"}, {label: "HHH"}],
@@ -21,14 +22,14 @@ const initialState = {
     applyFields: [{label: "GGG"}, {label: "HHH"}],
     applyFieldIndex: -1,
     // 申请子领域
-    applySubFields: [[{label: "GGG1"}, {label: "HHH"}],[{label: "GGG2"}, {label: "HHH"}]],
+    applySubFields: [[{label: "GGG1"}, {label: "HHH"}], [{label: "GGG2"}, {label: "HHH"}]],
     applySubFieldIndex: -1,
     // 申请学位
     applyDegrees: [{label: "EEE"}, {label: "FFF"}],
     applyDegreeIndex: -1,
     // 申请国家
     applyCountries: [{label: "CCC"}, {label: "DDD"}],
-    applyCountryIndex: -1,
+    applyCountryIndex: 0,
     // 目标语言
     aimLangs: [{label: "AAA"}, {label: "BBB"}],
     aimLangIndex: -1,
@@ -60,9 +61,13 @@ const initialState = {
     ],
     adviserLevelIndex: 0,
 
+    urgentSelects: [
+        [{label: "不加急"}]
+    ],
+    urgentIndex: 0,
+
     paperManagerEnable: false,
     skypeEnable: false,
-    urgentEnable: false,
     preTranslateEnable: false,
 
     advisers: [],
@@ -71,11 +76,11 @@ const initialState = {
     teachers: [],
     selectTeacherIndex: -1,
 
-    // enum("completePaper", "singlePaper", "resume", "topic")
+    // enum("completePaper", "singlePaper", "resume", "topic", "oneStepApply")
     _type: "completePaper",
 };
 
-export default function (state=initialState, action) {
+export default function (state = initialState, action) {
     let newState = {...state};
     const {type, ...rest} = action;
     switch (type) {

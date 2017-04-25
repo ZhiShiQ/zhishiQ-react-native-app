@@ -6,6 +6,10 @@ import {UpdateAllList} from '../helpers/reducer-helper';
 import * as $ from '../constant';
 
 const initialState = {
+    isFetching: true,
+    isRefreshing: false,
+    isFirst: true,
+
     items: [{
         title: 'VIP文书辅导 ID:99999',
         content: 'VIP、3个项目、金融学、Abby R',
@@ -49,6 +53,9 @@ export default function (state=initialState, action) {
     let newState = {...state};
     const {type, ...rest} = action;
     switch (type) {
+        case $.SET_CART_ITEM_ROOT:
+            state[rest.key] = rest.data;
+            return state;
         case $.SET_CART_ITEM_SELECTED_BY_INDEX:
             state.items[rest.index].selected = rest.selected;
             return state;

@@ -69,7 +69,7 @@ class SubServiceDetailPage extends Component {
             store: {
                 sub_service_detail: {
                     type,//("oneStepApply")
-                    base: {description},
+                    base: {description, image},
                     detail: {items, subs}
                 }
             }
@@ -87,10 +87,10 @@ class SubServiceDetailPage extends Component {
                         <View
                             style={{flexDirection: 'row', padding: 15, alignItems: 'center', backgroundColor: '#fff'}}>
                             <View style={{paddingRight: 15}}>
-                                <Image style={{width: 100, height: 100, backgroundColor: '#eee'}}/>
+                                <Image style={{width: 100, height: 100, backgroundColor: '#eee'}} source={image} />
                             </View>
                             <View style={{flex: 1}}>
-                                <Text style={{color: '#4a4a4a', fontSize: 14, lineHeight: 18}}>提供针对个人陈述/推荐信/简历/小文章等留学文书的点评、语言润色、深度修改、辅导撰写等服务，权威外籍导师一对一个性化指导，助你的文书脱颖而出。</Text>
+                                <Text style={{color: '#4a4a4a', fontSize: 14, lineHeight: 18}}>{description}</Text>
                             </View>
                         </View>
                         {thinSep}
@@ -131,7 +131,8 @@ class SubServiceDetailPage extends Component {
                             }).cloneWithRows(items.map((x, i) => ({
                                 ...x, onBtnPress: () => {
                                     if (!isOneStepApply) {
-                                        this._pushOrderConfirm({index: i})
+                                        this._prePushOrderConfirm({index: i});
+                                        Actions.orderConfirm({params: {type: 'buy'}});
                                     } else {
 
                                     }
@@ -161,18 +162,21 @@ class SubServiceDetailPage extends Component {
                 <BottomBtns lefts={[{text: "客服", onPress: null}]}
                             subText={"加入购物车"}
                             onSubPress={() => {
+                                this._prePushOrderConfirm({index: 0});
+                                Actions.orderConfirm({params: {type: 'cart'}});
                             }}
                             mainText={"立即购买"}
                             onMainPress={() => {
                                 // 默认选择第一个服务等级。
-                                this._pushOrderConfirm({index: 0});
+                                this._prePushOrderConfirm({index: 0});
+                                Actions.orderConfirm({params: {type: 'buy'}});
                             }}
                 />
             </View>
         )
     }
 
-    _pushOrderConfirm({index = 0}) {
+    _prePushOrderConfirm({index = 0}) {
         const {
             actions,
             store: {
@@ -181,8 +185,10 @@ class SubServiceDetailPage extends Component {
                     base: {description, id},
                     detail: {items, subs}
                 }
-            }
+            },
+            params: {data, title}
         } = this.props;
+        // alert(type);
         actions.setOrderConfirmType(type);
         // actions.setOrderConfirmTopic(name);
         actions.setOrderConfirmLevels(
@@ -191,10 +197,16 @@ class SubServiceDetailPage extends Component {
         actions.setOrderConfirmPrice(items[index].bottom.price);
         actions.setOrderConfirmLevelIndex(index || 0);
         actions.setOrderConfirmId(id);
-        Actions.orderConfirm({params: {type: 'buy'}});
+
+        switch (type) {
+            case 'oneStepApply':
+                actions.setOrderConfirmData(data);
+                actions.setOrderConfirmTopic(title);
+                break;
+        }
     }
 
-    renderItem({title, contents, bottom, onBtnPress, onSubPress}, i) {
+    renderItem({title, contents=[], bottom, onBtnPress, onSubPress}, i) {
 
         return (
             <View key={i}>
@@ -205,7 +217,7 @@ class SubServiceDetailPage extends Component {
                     {contents.map((text, i) => (
                         <View key={i} style={{flexDirection: 'row'}}>
                             <Text style={[textStyle, {lineHeight: 20}]}>• </Text>
-                            <Text style={[textStyle, {lineHeight: 20}]}>{text}</Text>
+                            <Text style={[textStyle, {lineHeight: 20, flex: 1}]}>{text}</Text>
                         </View>
                     ))}
                 </CollapsibleIntro>
@@ -246,7 +258,7 @@ class SubServiceDetailPage extends Component {
         )
     }
 
-    renderSubItem({title, contents}, i) {
+    renderSubItem({title, contents=[]}, i) {
         // debugger;
         // alert(title, contents.length);
         // const {title: title1, contents: contents1} = contents;
@@ -263,9 +275,9 @@ class SubServiceDetailPage extends Component {
                             rowHasChanged: (r1, r2) => !Map(r1).equals(Map(r2))
                         }).cloneWithRows(contents)
                     }
-                    renderRow={({title, contents}, s, i) => (
+                    renderRow={({title, contents=[]}, s, i) => (
                         <Panel title={title}>
-                            {contents.map((c, i) => {
+                            {(!Array.isArray(contents) ? [contents] : contents).map((c, i) => {
                                 let title, contents, content;
                                 if (typeof c === 'string') {
                                     content = c;

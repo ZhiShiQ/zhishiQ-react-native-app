@@ -18,8 +18,8 @@ const initialState = {
         isFetching: false
     },
     login: {
-        user: "13240261691",
-        pwd: '111111',
+        user: "17788355180",
+        pwd: '66776677z',
 
         isFetching: false
     }

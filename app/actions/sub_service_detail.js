@@ -12,3 +12,4 @@ const _setInner = (keys, data) => _t($.SUB_SERVICE_DETAIL_INNER_SET, {keys, data
 export const setSubServiceDetailType = (type) => _setRoot('type', type);
 export const setSubServiceDetailItems = (items) => _setInner(['detail', 'items'], items);
 export const setSubServiceDetailSubs = (subs) => _setInner(['detail', 'subs'], subs);
+export const setSubServiceDetailBase = (subs) => _setInner(['detail', 'base'], subs);

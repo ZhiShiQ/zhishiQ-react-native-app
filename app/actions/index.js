@@ -20,9 +20,15 @@ export default {
     ...require('./order_confirm'),
     ...require('./home'),
     ...require('./weekly_day'),
-    service_detail: require('./service_detail'),
-    onestep_detail: require('./onestep_detail'),
     ...require('./sub_service_detail'),
     ...require('./service_test'),
     // onestep_sub_service_detail: require('./onestep_sub_service_detail'),
+}
+
+export const group = {
+    service_detail: require('./service_detail'),
+    onestep_detail: require('./onestep_detail'),
+    service_text_detail: require('./service_text_detail'),
+    service_text_package_detail: require('./service_text_package_detail'),
+    service_text_resume_detail: require('./service_text_resume_detail'),
 }

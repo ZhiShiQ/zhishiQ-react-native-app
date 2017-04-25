@@ -23,5 +23,19 @@ export const abroadExpertDetailCommentURL = HOST + "course/reviews-of-topic";
 
 export const saoRedirect = "http://api.lb.dev.mydocumate.com/common/account/set-redirect-url";
 
-export const teachersURL =HOST2+"advisor/search";
-export const oneStepURL =HOST2+"select-option/get";
+export const searchPeopleURL = HOST2 + "advisor/search";
+
+export const oneStepURL = HOST2 + "select-option/get";
+export const computePriceURL = HOST2 + "price-preview/get";
+
+export const oneStepViewURL = HOST2 + "service-full-package/view";
+export const oneStepCommentURL = HOST2 + "service-full-package/review";
+export const serviceTextPackViewURL = HOST2 + "service-text-package/view";
+export const serviceTextPackCommentURL = HOST2 + "service-text-package/review";
+export const serviceTextViewURL = HOST2 + "service-text-graduate/view";
+export const serviceTextCommentURL = HOST2 + "service-text-graduate/review";
+export const serviceResumeViewURL = HOST2 + "service-text-resume/view";
+export const serviceResumeCommentURL = HOST2 + "service-text-resume/review";
+
+export const oneStepCreateURL = HOST2 + "service-full-package/create";
+export const cartGetURL = HOST2 + "shopping-cart/get-order-family-json";

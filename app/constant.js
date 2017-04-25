@@ -23,11 +23,21 @@ export const badgeStyle = {
 /* start of sub service detail's logic related */
 export const SUB_SERVICE_DETAIL_ROOT_SET = uint();
 export const SUB_SERVICE_DETAIL_INNER_SET = uint();
+export const ONE_STEP_SUB_SERVICE_DETAIL_ROOT_SET = uint();
+export const ONE_STEP_SUB_SERVICE_DETAIL_INNER_SET = uint();
 /* end of sub service detail's logic related */
 
 /* start of service detail's logic related */
 export const SERVICE_DETAIL_ROOT_SET = uint();
 export const SERVICE_DETAIL_INNER_SET = uint();
+export const ONE_STEP_SERVICE_DETAIL_ROOT_SET = uint();
+export const ONE_STEP_SERVICE_DETAIL_INNER_SET = uint();
+export const SERVICE_TEXT_SERVICE_DETAIL_ROOT_SET = uint();
+export const SERVICE_TEXT_SERVICE_DETAIL_INNER_SET = uint();
+export const SERVICE_TEXT_PACK_SERVICE_DETAIL_ROOT_SET = uint();
+export const SERVICE_TEXT_PACK_SERVICE_DETAIL_INNER_SET = uint();
+export const SERVICE_TEXT_RESUME_SERVICE_DETAIL_ROOT_SET = uint();
+export const SERVICE_TEXT_RESUME_SERVICE_DETAIL_INNER_SET = uint();
 /* end of service detail's logic related */
 
 /* start of my common' logic related */
@@ -145,6 +155,8 @@ export const MY_COLLECTION_PEOPLE_SET = uint();
 /* end of my collections' logic related */
 
 /* start of cart's logic related */
+export const SET_CART_ITEM_ROOT = uint();
+
 export const DEL_CART_ITEM_BY_INDEX = uint();
 export const SET_CART_ITEM_SELECTED_BY_INDEX = uint();
 export const SET_ALL_CART_ITEM_SELECTED = uint();

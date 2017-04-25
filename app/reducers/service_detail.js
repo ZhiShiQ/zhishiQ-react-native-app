@@ -9,7 +9,7 @@ const initialState = {
     isCommentFetching: true,
     isCommentFirst: true,
 
-    isFullFetch: false,
+    isFirst: true,
 
     base: {
         cover: {},

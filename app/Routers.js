@@ -95,10 +95,21 @@ import * as $ from './constant';
 import {BACK_ICON, shareIcon, moreIcon, searchIcon} from './helpers/resource';
 const Alipay = require('react-native-yunpeng-alipay').default;
 
+import actions, {group} from './actions';
+
 const MapStateToProps = (state) => ({store: state})
 const MapDispatchToProps = (dispatch) => ({
     __dispatch: dispatch,
-    actions: bindActionCreators(require('./actions').default, dispatch)
+    actions: {
+        ...bindActionCreators(actions, dispatch),
+        ...((group) => {
+            const obj = {};
+            for (let k in group) {
+                obj[k] = bindActionCreators(group[k], dispatch);
+            }
+            return obj;
+        })(group)
+    }
 })
 const conn = (Component) => connect(MapStateToProps, MapDispatchToProps)(Component)
 const TITLE = "芝士圈留学";
@@ -183,6 +194,36 @@ class Routers extends React.Component {
         return !Map(this.props).equals(Map(newProps)) || !Map(this.state).equals(Map(newState))
     }
 
+    pressItem() {
+        const {
+            store: {
+                common: {
+                    openModal, modalType, abroadExpertForm: {items},
+                    timeRange: {deletable, start, end}
+                }
+            }, actions
+        } = this.props;
+        const {abroadExpertFormIndex} = this.state;
+        const index = abroadExpertFormIndex.toString().split('-')[0];
+        const subIndex = abroadExpertFormIndex.toString().split('-')[1];
+        actions.setCommonModalIsOpen(false);
+        let item = items[index];
+        if (subIndex != null) {
+            item = item.items[subIndex];
+        }
+        const {id, leftText: name, price, type} = item;
+        // alert(type);
+        actions.setOrderConfirmType(type);
+        actions.setOrderConfirmTopic(name);
+        actions.setOrderConfirmPrice(price);
+        actions.setOrderConfirmId(id);
+        switch (type) {
+            case 'oneStepApply':
+                actions.setOrderConfirmData({degree: item.degree.id});
+                break;
+        }
+    }
+
     _mapModalProps() {
         const {
             store: {
@@ -192,10 +233,6 @@ class Routers extends React.Component {
                 }
             }, actions
         } = this.props;
-
-        const {abroadExpertFormIndex} = this.state;
-        const index = abroadExpertFormIndex.toString().split('-')[0];
-        const subIndex = abroadExpertFormIndex.toString().split('-')[1];
 
         switch (modalType) {
             case 'referer':
@@ -234,16 +271,7 @@ class Routers extends React.Component {
                         full: true,
                         title: "确定",
                         onPress: () => {
-                            actions.setCommonModalIsOpen(false);
-                            let item = items[index];
-                            if (subIndex != null) {
-                                item = item.items[subIndex];
-                            }
-                            const {id, leftText: name, price, type} = item;
-                            actions.setOrderConfirmType(type);
-                            actions.setOrderConfirmTopic(name);
-                            actions.setOrderConfirmPrice(price);
-                            actions.setOrderConfirmId(id);
+                            this.pressItem();
                             Actions.orderConfirm({params: {type: 'buy'}});
                         }
                     }], height: 450 //height - 50
@@ -255,16 +283,7 @@ class Routers extends React.Component {
                         title: "加入购物车",
                         backgroundColor: '#ffb12e',
                         onPress: () => {
-                            actions.setCommonModalIsOpen(false);
-                            let item = items[index];
-                            if (subIndex != null) {
-                                item = item.items[subIndex];
-                            }
-                            const {id, leftText: name, price, type} = item;
-                            actions.setOrderConfirmType(type);
-                            actions.setOrderConfirmTopic(name);
-                            actions.setOrderConfirmPrice(price);
-                            actions.setOrderConfirmId(id);
+                            this.pressItem();
                             Actions.orderConfirm({params: {type: 'cart'}});
                         }
                     }], height: 450 // height - 50
@@ -580,7 +599,8 @@ class Routers extends React.Component {
                 <Scene hideTabBar key="oneStepDetail"
                        passProps params={{source: "onestep_detail"}}
                        component={conn(ServiceDetailPage)}
-                       title={'一站式留学服务'}/>
+                       title={'一站式留学服务'}
+                />
 
 
                 <Scene hideTabBar key="subServiceDetail" component={conn(SubServiceDetailPage)}
@@ -597,7 +617,13 @@ class Routers extends React.Component {
                        {/*}}*/}
                 {/*/>*/}
 
-                <Scene hideTabBar key="serviceDetail" component={conn(ServiceDetailPage)} title={"留学文书修改服务"}/>
+                <Scene
+                    hideTabBar key="serviceDetail" component={conn(ServiceDetailPage)}
+                    getTitle={({params = {}}) => {
+                        const {title = "留学文书修改服务"} = params;
+                        return <Text>{title}</Text>;
+                    }}
+                />
 
                 <Scene hideTabBar key="orderConfirmDetail" component={conn(OrderConfirmDetailPage)}
                        getTitle={({params = {}}) => {

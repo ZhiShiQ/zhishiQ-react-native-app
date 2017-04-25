@@ -18,6 +18,8 @@ import {Actions, ActionConst} from 'react-native-router-flux';
 import EvilIcon from 'react-native-vector-icons/EvilIcons';
 import Collapsible from 'react-native-collapsible';
 import {sep} from '../../helpers';
+import * as URL from '../../helpers/remote-urls'
+import * as HELPER from '../../helpers'
 import * as CONST from '../../constant';
 
 import InputExtra from '../../components/InputExtra';
@@ -43,10 +45,22 @@ class OrderConfirmPage extends Component {
         const {
             actions,
             store:{
-                order_confirm:{isFetching}
-            }
-        }=this.props
-        setTimeout(() => actions.fetchOrderConfirmOneStepOptions(), 0)
+                order_confirm:{isFetching, _type, data}
+            },
+            params: {fetchedCallback}
+        }=this.props;
+        setTimeout(() =>
+                actions.fetchOrderConfirmOptions()
+                    .then(x => fetchedCallback && fetchedCallback(x))
+                    .then(() => {
+                        const {applyDegrees} = this.props.store.order_confirm
+                        if (_type == 'oneStepApply') {
+                            let i = applyDegrees.findIndex(x => x.id == data.degree);
+                            i = i >= 0 ? i : 0;
+                            actions.setOrderConfirmApplyDegreeIndex(i);
+                        }
+                    })
+            , 0)
     }
 
     componentWillReceiveProps(newProps) {
@@ -57,7 +71,7 @@ class OrderConfirmPage extends Component {
          qq: null,
          skype: null,
          discount: null
-        */
+         */
         return !Map(this.props.store.order_confirm).equals(Map(newProps.store.order_confirm))
             || newState.originPageCount != this.state.originPageCount
             || newState.targetPageCount != this.state.targetPageCount
@@ -66,18 +80,27 @@ class OrderConfirmPage extends Component {
     }
 
     componentWillUpdate(newProps, newState, newContext) {
-        if (this.props.store.order_confirm.price == newProps.store.order_confirm.price) {
-            this.computePrice();
-        }
     }
 
     componentDidUpdate(oldProps, oldState, oldContext) {
         const {actions} = this.props;
-        // console.info(!Map(this.props.store.order_confirm).equals(Map(oldProps.store.order_confirm)));
-        // console.info(this.props.store.order_confirm, oldProps.store.order_confirm);
-        // if (this.props.store.order_confirm.price == oldProps.store.order_confirm.price) {
-        //     this.computePrice();
-        // }
+        if (this.props.store.order_confirm.price == oldProps.store.order_confirm.price
+            && this.props.store.order_confirm.applyFieldIndex == oldProps.store.order_confirm.applyFieldIndex
+            && this.props.store.order_confirm.isFetching == oldProps.store.order_confirm.isFetching
+        ) {
+            this.computePrice();
+        }
+
+        if (this.props.store.order_confirm.applyDegreeIndex >= 0
+            && this.props.store.order_confirm.applyDegreeIndex != oldProps.store.order_confirm.applyDegreeIndex
+            && this.props.store.order_confirm._type == oldProps.store.order_confirm._type
+            && this.props.store.order_confirm._type == 'oneStepApply'
+        ) {
+            let topic = this.props.store.order_confirm.topic;
+            let {applyDegrees, applyDegreeIndex} = this.props.store.order_confirm;
+            let name = topic.substr(0, topic.length - 4) + applyDegrees[applyDegreeIndex].label + topic.substr(-2)
+            actions.setOrderConfirmTopic(name);
+        }
     }
 
     componentWillUnmount() {
@@ -93,7 +116,8 @@ class OrderConfirmPage extends Component {
         targetWordCount: null,
         qq: null,
         skype: null,
-        discount: null
+        discount: null,
+        // wordCountEnable: true
     }
 
     static propTypes = {}
@@ -107,22 +131,24 @@ class OrderConfirmPage extends Component {
             actions, store: {order_confirm: {id, topic, skype, qq, price, want}}
         } = this.props;
         return (
-            <LinkItem
-                showIcon={false}
-                emphasize
-                leftComponent={
-                    <View style={{flexDirection: 'row'}}>
-                        <Text style={[{color: '#4a4a4a', fontSize: 16}, labelWidth && {width: labelWidth}]}>
-                            {key || '主题咨询：'}
-                        </Text>
-                        <Text numberOfLines={1} ellipsizeMode={"tail"}
-                              style={{color: '#4a4a4a', flex: 1, fontSize: 16}}>
-                            {title || topic}
-                        </Text>
-                    </View>
-                }
-                rightTextStyle={{color: '#ea5502', fontWeight: 'bold', fontSize: 16}} rightText={"￥" + price}
-            />
+            <View style={{}}>
+                <LinkItem
+                    showIcon={false}
+                    emphasize
+                    leftComponent={
+                        <View style={{flexDirection: 'row'}}>
+                            <Text style={[{color: '#4a4a4a', fontSize: 16}, labelWidth && {width: labelWidth}]}>
+                                {key || '主题咨询：'}
+                            </Text>
+                            <Text numberOfLines={1} ellipsizeMode={"tail"}
+                                  style={{color: '#4a4a4a', flex: 1, fontSize: 16}}>
+                                {title || topic}
+                            </Text>
+                        </View>
+                    }
+                    rightTextStyle={{color: '#ea5502', fontWeight: 'bold', fontSize: 16}} rightText={"￥" + price}
+                />
+            </View>
         )
     }
 
@@ -132,10 +158,10 @@ class OrderConfirmPage extends Component {
 
         const items = selectAdviserIndex >= 0 ? [advisers[selectAdviserIndex]]
             : advisers.map((a, i) => ({
-            ...a, onPress: () => {
-                actions.setOrderConfirmSelectAdviserIndex(i)
-            }, /*style: i == 0 && {paddingTop: 0}*/
-        }))
+                ...a, onPress: () => {
+                    actions.setOrderConfirmSelectAdviserIndex(i)
+                }, /*style: i == 0 && {paddingTop: 0}*/
+            }))
         return (
             <ListView
                 scrollEnabled={false}
@@ -145,11 +171,11 @@ class OrderConfirmPage extends Component {
                 renderRow={(x, s, i) => this.renderPerson(x, i)}
                 renderSeparator={(x, i) => i != items.length - 1 ? this.hr : null}
                 renderFooter={() => selectAdviserIndex >= 0 ? this.renderResetButton({
-                    onPress: () => {
-                        actions.setOrderConfirmSelectAdviserIndex(-1);
-                        actions.setOrderConfirmAdvisers(advisers);
-                    }
-                }) : null }
+                        onPress: () => {
+                            actions.setOrderConfirmSelectAdviserIndex(-1);
+                            actions.setOrderConfirmAdvisers(advisers);
+                        }
+                    }) : null }
             />
         )
     }
@@ -159,10 +185,10 @@ class OrderConfirmPage extends Component {
 
         const items = selectTeacherIndex >= 0 ? [teachers[selectTeacherIndex]]
             : teachers.map((a, i) => ({
-            ...a, onPress: () => {
-                actions.setOrderConfirmSelectTeacherIndex(i)
-            }, /*style: i == 0 && {paddingTop: 0}*/
-        }))
+                ...a, onPress: () => {
+                    actions.setOrderConfirmSelectTeacherIndex(i)
+                }, /*style: i == 0 && {paddingTop: 0}*/
+            }))
         return (
             <ListView
                 scrollEnabled={false}
@@ -172,11 +198,11 @@ class OrderConfirmPage extends Component {
                 renderRow={(x, s, i) => this.renderPerson(x, i)}
                 renderSeparator={(x, i) => i != items.length - 1 ? this.hr : null}
                 renderFooter={() => selectTeacherIndex >= 0 ? this.renderResetButton({
-                    onPress: () => {
-                        actions.setOrderConfirmSelectTeacherIndex(-1);
-                        actions.setOrderConfirmTeachers(teachers);
-                    }
-                }) : null }
+                        onPress: () => {
+                            actions.setOrderConfirmSelectTeacherIndex(-1);
+                            actions.setOrderConfirmTeachers(teachers);
+                        }
+                    }) : null }
             />
         )
     }
@@ -225,6 +251,107 @@ class OrderConfirmPage extends Component {
         return renderSelectable(a);
     }
 
+    get formData() {
+        const {
+            actions,
+            store: {
+                order_confirm: {
+                    isFetching, id, topic, skype, qq, price, want, _type = "completePaper",
+                    levels, levelIndex, applyCountries, applyCountryIndex,
+                    aimLangs, aimLangIndex, applyDegrees, applyDegreeIndex,
+                    applyFields, applyFieldIndex, selectAdviserIndex,
+                    adviseSelects, adviseType, paperManagerEnable, skypeEnable,
+                    adviserLevels, adviserLevelIndex, advisers, urgentSelects, urgentIndex,
+                    docLangs, docLangIndex, docTypeIndex, docTypes,
+                    applySubFields, applySubFieldIndex
+                }
+            }
+        } = this.props;
+        const {targetPageCount, targetWordCount, originPageCount, wordCount} = this.state;
+        let params = {};
+        params['is_urgent'] = urgentSelects[levelIndex][urgentIndex].id;
+        params['document_type'] = docTypes[docTypeIndex].id;
+        params['service_level'] = levels[levelIndex].id;
+
+        params['need_appoint_polisher'] = adviseSelects.find(({type}) => type == adviseType).id;
+
+        params['need_assistant'] = paperManagerEnable ? 1 : 0;
+
+        if (applyCountryIndex >= 0) {
+            params['apply_country'] = applyCountries[applyCountryIndex].id;
+        }
+
+        if (adviseType == 'person' && selectAdviserIndex >= 0) {
+            params['appointed_polish_advisor_name'] = advisers[selectAdviserIndex].name;
+        }
+        if (adviseType == 'level' && adviserLevelIndex >= 0) {
+            params['appointed_polisher_level'] = adviserLevels[adviserLevelIndex].id;
+        }
+
+        if (applyDegreeIndex >= 0) {
+            params['apply_degree'] = applyDegrees[applyDegreeIndex].id;
+        }
+        if (applyFieldIndex >= 0 && applyFields[applyFieldIndex].id != -1 && applySubFieldIndex > 0) {
+            params['domain_id'] = applySubFields[applyFieldIndex][applySubFieldIndex].id
+        }
+        if (wordCount) {
+            params['polish_word_count'] = wordCount;
+        }
+        if (targetWordCount) {
+            params['anticipated_output_word_count'] = targetWordCount;
+        }
+        if (docLangIndex >= 0) {
+            params['need_translation'] = docLangs[docLangIndex].id;
+        }
+
+        const filter = {
+            oneStepApply: [
+                'apply_country', 'apply_degree', 'domain_id',
+                'appointed_polish_advisor_name -> appointed_editor_name',
+                'need_appoint_polisher -> need_appoint_editor',
+            ]
+        }
+
+        let rule = filter[_type];
+        if (rule) {
+            const filteredParams = {};
+            rule.forEach(x => {
+                let ss = [];
+                if ((ss = x.split(' -> ')).length > 1) {
+                    filteredParams[ss[1]] = params[ss[0]];
+                } else {
+                    filteredParams[x] = params[x];
+                }
+            });
+            params = filteredParams;
+        }
+
+        return params;
+    }
+
+    async submitOrder() {
+        const params = this.formData;
+        try {
+            const token = await HELPER.getTokenJson();
+            let res = await fetch(URL.oneStepCreateURL, {
+                method: 'POST',
+                body: require('querystring').stringify(params),
+                headers: {
+                    ...token,
+                    'content-type': 'application/x-www-form-urlencoded'
+                }
+            });
+            let o = await res.json();
+            if (o.success) {
+                alert("已经添加至购物车中");
+            } else {
+                HELPER._debugger(o.message);
+            }
+        } catch (ex) {
+            HELPER._debugger(ex);
+        }
+    }
+
     _getBottomBtnsProps() {
         const {actions, params = {}} = this.props;
         const {type = "buy"} = params;
@@ -239,7 +366,8 @@ class OrderConfirmPage extends Component {
             case 'cart':
                 return {
                     subText: " 加入购物车", onSubPress: () => {
-                        Actions.tab_cart({type: ActionConst.JUMP});
+                        // Actions.tab_cart({type: ActionConst.JUMP});
+                        this.submitOrder();
                     }
                 }
         }
@@ -285,58 +413,38 @@ class OrderConfirmPage extends Component {
         )
     }
 
-    async computePrice () {
+    async computePrice() {
+        const mapObj = {
+            'singlePaper': {
+                textType: 'graduate',
+                service: "service-text-pro"
+            },
+            'completePaper': {
+                textType: 'graduate',
+            },
+            'oneStepApply': {
+                service_level: 2,
+                textType: 'graduate',
+                service: "service-full-package"
+            }
+        };
         const {
             actions,
             store: {
                 order_confirm: {
-                    isFetching, id, topic, skype, qq, price, want, _type = "completePaper",
-                    levels, levelIndex, applyCountries, applyCountryIndex,
-                    aimLangs, aimLangIndex, applyDegrees, applyDegreeIndex,
-                    applyFields, applyFieldIndex, selectAdviserIndex,
-                    adviseSelects, adviseType, paperManagerEnable, skypeEnable,
-                    adviserLevels, adviserLevelIndex, advisers
+                    isFetching, id, topic, skype, qq, price, want, _type = "completePaper"
                 }
             }
         } = this.props;
-        const {targetPageCount, originPageCount, wordCount} = this.state;
-        let params = {};
+        let params = this.formData;
+        params = {...params, ...mapObj[_type]};
 
-        /*const struct = {
-            'oneStepApply': [{
-                key: "qq", src: 'state', value: 'qq'
-            }, {
-                key: "country", evalStr: "applyCountries[applyCountryIndex]"
-            }]
-        }
-
-        const arr = struct[_type].map(({key, src, value, evalStr})=>{
-            if (src) {
-                return {val: this[src][value], key}
-            } else {
-                return {val: eval(evalStr), key}
-            }
-        });
-
-        alert(JSON.stringify(arr));*/
-
-        switch (_type) {
-            case 'topic':
-                return;
-            case 'completePaper':
-                return;
-            case 'singlePaper':
-                return;
-            case 'oneStepApply':
-
-            case 'resume':
-                // levels[levelIndex]
-
-            default:
-        }
-
-        // todo: fetch()
-        // actions.setOrderConfirmPrice(200);
+        const {stringify} = require('querystring');
+        let res = await fetch(URL.computePriceURL + "?" + stringify(params));
+        let o = await res.json();
+        o.preview.price_rmb != null && actions.setOrderConfirmPrice(o.preview.price_rmb);
+        // alert("params: "+JSON.stringify(params)+"\n"+"json: "+JSON.stringify(o));
+        // alert(JSON.stringify(o.preview));
     }
 
     render() {
@@ -349,7 +457,7 @@ class OrderConfirmPage extends Component {
             }
         } = this.props;
         if (isFetching) {
-            return <Loading/>;
+            return <Loading />;
         }
 
         switch (_type) {
@@ -460,19 +568,12 @@ class OrderConfirmPage extends Component {
                                 autoCapitalize={false}
                                 autoCorrect={false}
                                 onChangeText={(text) => {/*fetch Search*/
-                                    actions.setOrderConfirmAdvisers([{
-                                        average: 4.8,
-                                        clients: 234,
-                                        name: "moyu..",
-                                        school: "伦敦艺术大学",
-                                        intro: "面试招生官"
-                                    }, {
-                                        average: 4.8,
-                                        clients: 234,
-                                        name: "moyu..",
-                                        school: "伦敦艺术大学",
-                                        intro: "面试招生官"
-                                    }])
+                                    text = text.trim()
+                                    if (!text) {
+                                        actions.setOrderConfirmAdvisers([])
+                                    } else {
+                                        actions.fetchOrderConfirmAdvisor(text)
+                                    }
                                 }}
                                 placeholder={"输入顾问名字，如：Andy"}
                                 editable={true}
@@ -534,7 +635,7 @@ class OrderConfirmPage extends Component {
         return (
             <View>
                 {this.renderSelectable({
-                    label: '指定顾问',
+                    label: '主导师',
                     labelWidth,
                     content: teacherSelects.find(x => x.type == teacherType).label,
                     contentHighlight: true,
@@ -584,7 +685,7 @@ class OrderConfirmPage extends Component {
                             params: {
                                 fetchedCallback: () => {
                                     const {store: {foreign_teacher: {filters: {others}}}} = this.props;
-                                    const i = others.findIndex(x=>x.id=='package_editor');
+                                    const i = others.findIndex(x => x.id == 'package_editor');
 
                                     actions.setForeignTeacherFilterOtherTitle(i != 0 ? others[i].title : "其它服务");
                                     actions.setForeignTeacherFilterOtherSelectedIndex(i);
@@ -686,6 +787,7 @@ class OrderConfirmPage extends Component {
                         }
                     })))
                 })}
+                {this.hr}
                 {applyFieldIndex >= 0 && applyFields[applyFieldIndex].id !== -1 &&
                 this.renderSelectable({
                     label: '子领域',
@@ -723,8 +825,8 @@ class OrderConfirmPage extends Component {
 
         return (
             <View style={sty.main}>
+                {this.header(labelWidth, '全套文书：')}
                 <ScrollView>
-                    {this.header(labelWidth, '全套文书：')}
                     {sep(true, {height: 16})}
                     {this._renderApplyFields(labelWidth)}
                     {this.hr}
@@ -843,7 +945,7 @@ class OrderConfirmPage extends Component {
                     levels, levelIndex, applyCountries, applyCountryIndex,
                     aimLangs, aimLangIndex, applyDegrees, applyDegreeIndex, docTypes,
                     applyFields, applyFieldIndex, selectAdviserIndex, docTypeIndex,
-                    docLangs, docLangIndex, urgentEnable, resumeFieldIndex, resumeFields,
+                    docLangs, docLangIndex, urgentSelects, urgentIndex, resumeFieldIndex, resumeFields,
                     adviseEnable, paperManagerEnable, skypeEnable, preTranslateEnable
                 }
             }
@@ -853,8 +955,8 @@ class OrderConfirmPage extends Component {
 
         return (
             <View style={sty.main}>
+                {this.header(labelWidth, '简历服务：')}
                 <ScrollView>
-                    {this.header(labelWidth, '简历服务：')}
                     {sep(true, {height: 16})}
                     {this.renderSelectable({
                         label: '简历领域',
@@ -926,25 +1028,31 @@ class OrderConfirmPage extends Component {
                     {this.renderInputAble({
                         label: '原稿页数', placeholder: '请输入原稿页数',
                         labelWidth,
-                        inputProps: {keyboardType: "numeric", onChangeText: (text) => this.setState({originPageCount: text})}
+                        inputProps: {
+                            keyboardType: "numeric",
+                            onChangeText: (text) => this.setState({originPageCount: text})
+                        }
                     })}
                     {this.hr}
                     {this.renderInputAble({
                         label: '终稿页数', placeholder: '请输入终稿页数',
                         labelWidth,
-                        inputProps: {keyboardType: "numeric", onChangeText: (text) => this.setState({targetPageCount: text})}
+                        inputProps: {
+                            keyboardType: "numeric",
+                            onChangeText: (text) => this.setState({targetPageCount: text})
+                        }
                     })}
                     {this.pureText('终稿一页字数大概为300单词，请您根据自己情况购买页数')}
 
                     {this.renderSelectable({
                         label: '加急处理',
                         labelWidth,
-                        content: !urgentEnable ? '否' : '是',
+                        content: urgentSelects[levelIndex][urgentIndex].label,
                         contentHighlight: true,
-                        onPress: () => actions.pickerModalOpen([
-                                {label: "否", enable: false}, {label: '是', enable: true}
-                            ].map((x) => ({...x, onPress: () => actions.setOrderConfirmUrgentEnable(x.enable)}))
-                        )
+                        onPress: () => actions.pickerModalOpen(urgentSelects[levelIndex].map(a => ({
+                            ...a,
+                            onPress: (x, i) => actions.setOrderConfirmUrgentIndex(i)
+                        })))
                     })}
                     {this.pureText('注意：加急处理无法取消')}
 
@@ -979,15 +1087,15 @@ class OrderConfirmPage extends Component {
                     levels, levelIndex, applyCountries, applyCountryIndex,
                     aimLangs, aimLangIndex, applyDegrees, applyDegreeIndex, docTypes,
                     applyFields, applyFieldIndex, selectAdviserIndex, docTypeIndex,
-                    docLangs, docLangIndex, urgentEnable,
+                    docLangs, docLangIndex, urgentSelects, urgentIndex,
                     adviseEnable, paperManagerEnable, skypeEnable
                 }
             }
         } = this.props;
         return (
             <View style={sty.main}>
+                {this.header(undefined, '单项文书：', 'PS／Essay／RL／SoP')}
                 <ScrollView>
-                    {this.header(undefined, '单项文书：', 'PS／Essay／RL／SoP')}
                     {sep(true, {height: 16})}
                     {this.renderSelectable({
                         label: '申请学位',
@@ -1019,7 +1127,7 @@ class OrderConfirmPage extends Component {
                         contentHighlight: docLangIndex >= 0,
                         onPress: () => actions.pickerModalOpen(docLangs.map(level => ({
                             ...level, onPress: (a, i) => {
-                                actions.setOrderConfirmDocTypeIndex(i)
+                                actions.setOrderConfirmDocLangIndex(i)
                             }
                         })))
                     })}
@@ -1037,7 +1145,7 @@ class OrderConfirmPage extends Component {
                     })}
                     {this.pureText('这里需要一个关于服务等级的介绍，可能还有一个链接到单项文书产品页的链接，并且可以直接返回到这里')}
 
-                    {this.renderInputAble({
+                    {levels[levelIndex].id != 3 && this.renderInputAble({
                         label: '原稿字数',
                         placeholder: '请输入原稿字数',
                         inputProps: {keyboardType: "numeric", onChangeText: (text) => this.setState({wordCount: text})}
@@ -1045,22 +1153,21 @@ class OrderConfirmPage extends Component {
                     {this.hr}
                     {this.renderInputAble({
                         label: '终稿字数', placeholder: '请输入终稿期望字数',
-                        inputProps: {keyboardType: "numeric", onChangeText: (text) => this.setState({targetWordCount: text})}
+                        inputProps: {
+                            keyboardType: "numeric",
+                            onChangeText: (text) => this.setState({targetWordCount: text})
+                        }
                     })}
                     {this.pureText('顾问会参考您提供的终稿字数提供服务，语言润色服务终稿单词数浮动范围为原稿单词数上下10%')}
 
                     {this.renderSelectable({
                         label: '加急处理',
-                        content: urgentEnable ? "是" : '否',
+                        content: urgentSelects[levelIndex][urgentIndex].label,
                         contentHighlight: true,
-                        onPress: () => actions.pickerModalOpen(
-                            [{label: "否", enable: false}, {label: "是", enable: true}].map(a => ({
-                                ...a,
-                                onPress: ({enable}, i) => {
-                                    actions.setOrderConfirmUrgentEnable(enable)
-                                }
-                            }))
-                        )
+                        onPress: () => actions.pickerModalOpen(urgentSelects[levelIndex].map(a => ({
+                            ...a,
+                            onPress: (x, i) => actions.setOrderConfirmUrgentIndex(i)
+                        })))
                     })}
                     {this.pureText('注意：加急处理无法取消')}
 

@@ -37,7 +37,7 @@ class CartItems extends Component {
         disableSwipe: React.PropTypes.bool
     }
     render() {
-        const {items, disableSwipe} = this.props
+        const {items, disableSwipe, ...rest} = this.props
 
         return (
             <ListView
@@ -47,6 +47,7 @@ class CartItems extends Component {
                         rowHasChanged: (r1, r2)=>!Map(r1).equals(Map(r2)),
                     }).cloneWithRows(items)
                 }
+                {...rest}
             />
         )
     }
