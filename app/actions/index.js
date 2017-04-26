@@ -22,6 +22,7 @@ export default {
     ...require('./weekly_day'),
     ...require('./sub_service_detail'),
     ...require('./service_test'),
+    ...require('./mine'),
     // onestep_sub_service_detail: require('./onestep_sub_service_detail'),
 }
 

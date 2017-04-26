@@ -32,6 +32,8 @@ import LinkItems from '../../components/LinkItems';
 import * as Animatable from 'react-native-animatable';
 const AnimatableLinkItems = Animatable.createAnimatableComponent(LinkItems)
 
+export const NoMore = <View style={{marginVertical: 20, alignItems: 'center'}}><Text>没有更多了</Text></View>;
+
 @autobind
 class ForeignTeacherPage extends Component {
     constructor(props) {
@@ -81,7 +83,6 @@ class ForeignTeacherPage extends Component {
 
     render() {
         const {store: {foreign_teacher: {list, isFetching, firstMount, hasMore}}, actions} = this.props;
-        const NoMore = <View style={{marginVertical: 20, alignItems: 'center'}}><Text>没有更多了</Text></View>;
 
         return (
             <View style={{flex: 1}}>

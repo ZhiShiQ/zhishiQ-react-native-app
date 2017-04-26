@@ -36,3 +36,5 @@ export default combineReducers({
     service_text_package_detail: require('./service_text_package_detail').default,
     service_text_resume_detail: require('./service_text_resume_detail').default,
 })
+
+

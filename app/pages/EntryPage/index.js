@@ -18,7 +18,7 @@ import {Actions} from 'react-native-router-flux';
 import * as Animatable from 'react-native-animatable';
 import sty from './style';
 import {QQ_COLORFUL, WB_COLORFUL, WX_COLORFUL, BACK_ICON} from '../../helpers/resource'
-import {checkSigned} from '../../helpers'
+import {checkSigned, getData} from '../../helpers'
 
 import InputExtra from '../../components/InputExtra';
 import InputExtras from '../../components/InputExtras';
@@ -36,11 +36,19 @@ class EntryPage extends Component {
     }
 
     componentWillMount() {
-        checkSigned()
-            .then(f => {
-                !f && this.props.actions.setEntryIsChecked(true)
-                || Actions.tabbar({type: "replace"});
-            });
+        this.check();
+    }
+
+    async check() {
+        let f = await checkSigned();
+        let data = await getData();
+        if (f && data) {
+            this.props.actions.setMyAvatar({uri: data.avatar});
+            this.props.actions.setMyName(data.name);
+            Actions.tabbar({type: "replace"});
+        } else {
+            this.props.actions.setEntryIsChecked(true);
+        }
     }
 
     componentDidMount() {
@@ -68,9 +76,11 @@ class EntryPage extends Component {
         actions.setEntryRegPwd('');
     }
 
-    static defaultProps = {}
+    static
+    defaultProps = {}
     state = {}
-    static propTypes = {}
+    static
+    propTypes = {}
 
     render() {
         const {store: {entry: {reg, activeIndex, isChecked}}, actions} = this.props;
@@ -83,13 +93,14 @@ class EntryPage extends Component {
                 <ScrollTab
                     page={a.indexOf(activeIndex)}
                     initialPage={0}
-                    style={{flex: 1}}
-                    onChangeTab={({i}) => {actions.setEntryActiveIndex(a[+i])}}
+                    onChangeTab={({i}) => {
+                        actions.setEntryActiveIndex(a[+i])
+                    }}
                 >
                     <View style={{flex: 1}} tabLabel="登录">
-                        {this. loginPage}
+                        {this.loginPage}
                     </View>
-                    <View style={{flex: 1}} tabLabel="注册">
+                    <View tabLabel="注册">
                         {this.regPage}
                     </View>
                 </ScrollTab>
@@ -97,6 +108,7 @@ class EntryPage extends Component {
             </View>
         )
     }
+
     get social() {
         const logoStyle = {resizeMode: 'contain', width: 25, height: 30, marginBottom: 10};
         const textStyle = {fontSize: 12.5, color: '#848484'}
@@ -105,8 +117,10 @@ class EntryPage extends Component {
                 alignItems: 'center'
             }}>
                 <Text style={{marginBottom: 20, color: '#4a4a4a'}}>用社交账号登录</Text>
-                <HrFlexLayout style={{marginBottom: 30, justifyContent: 'space-around',
-                    alignSelf: 'stretch', marginHorizontal: 20}}>
+                <HrFlexLayout style={{
+                    marginBottom: 30, justifyContent: 'space-around',
+                    alignSelf: 'stretch', marginHorizontal: 20
+                }}>
                     <TouchableOpacity>
                         <View style={{alignItems: 'center'}}>
                             <Image style={logoStyle} source={{uri: QQ_COLORFUL}}/>
@@ -135,40 +149,40 @@ class EntryPage extends Component {
         const {isFetching} = login;
         return (
             <View style={{flex: 1}}>
-            <InputExtras
-                renderHeader={() => <View style={sty.top}></View>}
-                ref="inputs"
-                items={[{
-                    label: "帐号",
-                    inputProps: {
-                        value: login.user,
-                        placeholder: "注册邮箱、用户名或手机号码",
-                        placeholderTextColor: "",
-                        onChangeText: (text) => actions.setEntryLoginUser(text)
+                <InputExtras
+                    renderHeader={() => <View style={sty.top}></View>}
+                    ref="inputs"
+                    items={[{
+                        label: "帐号",
+                        inputProps: {
+                            value: login.user,
+                            placeholder: "注册邮箱、用户名或手机号码",
+                            placeholderTextColor: "",
+                            onChangeText: (text) => actions.setEntryLoginUser(text)
+                        }
+                    }, {
+                        label: "密码",
+                        rText: "忘记密码",
+                        onRight: () => Actions.resetPwdByPhone(),
+                        inputProps: {
+                            value: login.pwd,
+                            placeholder: "请输入密码",
+                            secureTextEntry: true,
+                            placeholderTextColor: "",
+                            onSubmitEditing: this._onSignIn,
+                            onChangeText: (text) => actions.setEntryLoginPwd(text)
+                        }
+                    }]}
+                    renderFooter={() =>
+                        <View style={{marginTop: 28}}>
+                            <BlockButton
+                                disabled={isFetching}
+                                title={" 登录 "}
+                                onPress={this._onSignIn}
+                            />
+                        </View>
                     }
-                }, {
-                    label: "密码",
-                    rText: "忘记密码",
-                    onRight: () => Actions.resetPwdByPhone(),
-                    inputProps: {
-                        value: login.pwd,
-                        placeholder: "请输入密码",
-                        secureTextEntry: true,
-                        placeholderTextColor: "",
-                        onSubmitEditing: this._onSignIn,
-                        onChangeText: (text) => actions.setEntryLoginPwd(text)
-                    }
-                }]}
-                renderFooter={() =>
-                    <View style={{marginTop: 28}}>
-                        <BlockButton
-                            disabled={isFetching}
-                            title={" 登录 "}
-                            onPress={this._onSignIn}
-                        />
-                    </View>
-                }
-            />
+                />
                 {this.social}
             </View>
         )
@@ -177,13 +191,20 @@ class EntryPage extends Component {
     _onSignIn() {
         const {store: {entry: {login, activeIndex}}, actions} = this.props;
         actions.fetchSignIn()
-            .then(f => f && Actions.tabbar({type: "replace"}));
+            .then(async f => {
+                let data = await getData();
+                if (f && data) {
+                    actions.setMyName(data.name);
+                    actions.setMyAvatar({uri: data.avatar});
+                    Actions.tabbar({type: "replace"});
+                }
+            });
     }
 
     _onSignUp() {
         const {store: {entry: {login, activeIndex}}, actions} = this.props;
         actions.fetchSignUp()
-            // .then(f => f && Actions.tabbar({type: "replace"}));
+        // .then(f => f && Actions.tabbar({type: "replace"}));
     }
 
     get regPage() {
@@ -195,10 +216,10 @@ class EntryPage extends Component {
                 ref="inputs"
                 items={[{
                     label: "＋86",
-                    rText: !isVerifySent?"发送验证码":"重新发送("+leftSecond+"s)",
-                    onRight: !isVerifySent? () => {
-                        actions.fetchVerify();
-                    } : null,
+                    rText: !isVerifySent ? "发送验证码" : "重新发送(" + leftSecond + "s)",
+                    onRight: !isVerifySent ? () => {
+                            actions.fetchVerify();
+                        } : null,
                     inputProps: {
                         defaultValue: reg.phone,
                         placeholder: "手机号码",

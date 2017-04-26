@@ -20,6 +20,8 @@ const initialState = {
     login: {
         user: "17788355180",
         pwd: '66776677z',
+        // user: "15651828732",
+        // pwd: "123456",
 
         isFetching: false
     }

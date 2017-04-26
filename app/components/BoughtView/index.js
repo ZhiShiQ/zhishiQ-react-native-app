@@ -74,15 +74,26 @@ class BoughtView extends Component {
         const {onPress, style, btnTitle, onBtnPress, btnDisabled, title, thumbnail, prompt, state, content, price, disCount} = this.props
         const Touchable = btnDisabled ? View : TouchableOpacity;
         const stateMap = {
-            'ing': ["进行中", "服务进行中"], 'wait': ["待反馈", "提交反馈"]
+            'ing': ["进行中", "服务进行中"],
+            'handling': ["进行中", "服务进行中"],
+            'start': ["进行中", "服务进行中"],
+            'wait': ["待反馈", "提交反馈"],
+            'feedback': ["待反馈", "提交反馈"],
         };
 
+        const arr = stateMap[state] || [state, state];
+        const s1 = arr[0],
+              s2 = arr[1];
+
+        const ing = state === 'ing' || state === 'handling' || state === 'start';
+        const wait = state === 'wait' || state === 'feedback';
+        // alert(JSON.stringify(thumbnail));
         return (
             <TouchableOpacity onPress={onPress} style={[sty.main, style]}>
                 <View style={sty.mainContainer}>
                     <View style={sty.mainTitleContainer}>
                         <Text style={sty.titleText}>{title}</Text>
-                        <Text style={[sty.stateText, state === 'wait' && {color: '#ea5502'}]}>{ stateMap[state][0] }</Text>
+                        <Text style={[sty.stateText, state === 'wait' && {color: '#ea5502'}]}>{s1}</Text>
                     </View>
                     <View style={sty.mainInnerContainer}>
                         <View style={sty.imageContainer}><CirImage style={sty.image} size={50} source={thumbnail} /></View>
@@ -98,7 +109,7 @@ class BoughtView extends Component {
                             {disCount && <Text style={[sty.countText, {}]}>已优惠¥{disCount}</Text>}
                         </View>
                         <View style={sty.footerRight}>
-                            <Text style={sty.priceText}>实付：¥{price}</Text>
+                            <Text style={sty.priceText}>实付：¥{price.toString().indexOf('.')>=0?Number(price).toFixed(2):price}</Text>
                         </View>
                     </View>
                     <Hr color={'#e5e5e5'} marginBottom={4} style={{marginHorizontal: 15}}/>
@@ -107,16 +118,16 @@ class BoughtView extends Component {
                         diabled={btnDisabled}
                         onPress={btnDisabled?null:onBtnPress}
                         style={[{borderRadius: 3, paddingVertical: 6, paddingHorizontal: 10, backgroundColor: '#fff'},
-                            state === 'ing' && {borderWidth: 1, borderColor: '#848484'},
-                            state === 'wait' && {backgroundColor: '#fc6d34'},]}
+                            ing && {borderWidth: 1, borderColor: '#848484'},
+                            wait && {backgroundColor: '#fc6d34'},]}
                     >
                         <View style={[
 
                         ]}>
                             <Text style={[sty.btnText,
-                                state === 'ing' && {color: '#848484'},
-                                state === 'wait' && {color: '#fff'}
-                            ]}>{stateMap[state][1]}</Text>
+                                ing && {color: '#848484'},
+                                wait && {color: '#fff'}
+                            ]}>{s2}</Text>
                         </View>
                     </Touchable>
                     </View>

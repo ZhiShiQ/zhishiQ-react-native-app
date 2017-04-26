@@ -1,7 +1,7 @@
 /**
  * Created by moyu on 2017/2/26.
  */
-import {_t, _debugger, setToken} from '../helpers';
+import {_t, _debugger, setToken, setData} from '../helpers';
 import {signInURL, getVerifyURL, signUpURL} from '../helpers/remote-urls';
 import {stringify} from 'querystring';
 import * as $ from '../constant';
@@ -34,11 +34,16 @@ export const fetchSignIn = () => {
                         clearTimeout(timer);
                         emit(resetEntryRegVerify())
                     }
-                    return setToken(JSON.stringify({auth_key: json.data.auth_key, id: json.data.id}))
-                        .then((a) => {
-                            emit(setEntryLoginIsFetching(false))
-                            return true;
-                        });
+                    return setData({
+                        avatar: json.data.avatar,
+                        name: json.data.display_name
+                    }).then(() => {
+                        return setToken(JSON.stringify({auth_key: json.data.auth_key, id: json.data.id}))
+                            .then((a) => {
+                                emit(setEntryLoginIsFetching(false))
+                                return true;
+                            });
+                    });
                 }
             }).catch(ex => {
                 _debugger(ex);

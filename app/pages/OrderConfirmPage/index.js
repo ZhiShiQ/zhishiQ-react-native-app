@@ -459,7 +459,6 @@ class OrderConfirmPage extends Component {
         if (isFetching) {
             return <Loading />;
         }
-
         switch (_type) {
             case 'topic':
                 return this.renderTopic();
@@ -590,6 +589,7 @@ class OrderConfirmPage extends Component {
                     </View>
                 </View>
                 }
+                {adviseType == 'level' && this.hr}
                 {adviseType == 'level' &&
                 this.renderSelectable({
                     label: "选择等级",

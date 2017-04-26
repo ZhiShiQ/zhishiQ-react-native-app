@@ -5,7 +5,7 @@
 const HOST = "http://api.lb.dev.mydocumate.com/v1/";
 const HOST2 = "http://api.zry.dev.mydocumate.com/v1/";
 
-export const signInURL = HOST + "account/sign-in";
+export const signInURL = HOST2 + "account/sign-in";
 export const signUpURL = HOST + "account/sign-up";
 export const resetPwdURL = HOST + "account/reset-password";
 
@@ -39,3 +39,5 @@ export const serviceResumeCommentURL = HOST2 + "service-text-resume/review";
 
 export const oneStepCreateURL = HOST2 + "service-full-package/create";
 export const cartGetURL = HOST2 + "shopping-cart/get-order-family-json";
+
+export const orderListURL = HOST2 + "user-backend";

@@ -77,7 +77,13 @@ export const sep = (noBorder, style, props) => {
 import {set, get, remove} from './storage';
 const memStorage = {}
 
+export async function setData (data) {
+    return await set('@data', JSON.stringify(data));
+}
 
+export async function getData () {
+    return JSON.parse(await get('@data'));
+}
 
 export async function setToken (token) {
     memStorage['token'] = token;

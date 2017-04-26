@@ -89,7 +89,7 @@ class MinePage extends Component {
     static propTypes = {}
 
     render() {
-        const {store: {mine: {username}}, linkItems, iconItems} = this.props
+        const {store: {mine: {username, avatar}}, linkItems, iconItems} = this.props
 
         return (
             <View style={style.main}>
@@ -97,7 +97,7 @@ class MinePage extends Component {
                     renderHeader={() =>
                         <View>
                             <View style={style.avatarContainer}>
-                                <CirImage size={70} />
+                                <CirImage size={70} source={avatar} />
                                 <Text style={style.username}>{username}</Text>
                             </View>
                             <LinkItem showBorder="bottom" leftText="我的订单" rightText="全部订单" onPress={Actions.totalOrder}/>

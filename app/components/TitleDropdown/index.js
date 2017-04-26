@@ -107,7 +107,7 @@ class TitleDropdown extends Component {
             <View key={sID} >
                 <LinkItem
                     onPress={() => {
-                        rowData.onPress && rowData.onPress(sID, rowData.title);
+                        rowData.onPress && rowData.onPress(sID, rowData);
                     }}
                     leftText={typeof rowData === 'string' ? rowData : rowData.title} showBorder={null}
                     showIcon={selectedIndex == sID}

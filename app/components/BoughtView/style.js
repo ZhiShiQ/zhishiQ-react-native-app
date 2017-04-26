@@ -72,11 +72,11 @@ export default StyleSheet.create({
         fontSize: 13.6
     },
     stateText: {
-        flex: 1,
+        // flex: 1,
         textAlign: 'right'
     },
     footerRight: {
-        // flex: 1,
+        flex: 0,
         marginLeft: 10
     },
     bottomContainer: {

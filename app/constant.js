@@ -40,6 +40,11 @@ export const SERVICE_TEXT_RESUME_SERVICE_DETAIL_ROOT_SET = uint();
 export const SERVICE_TEXT_RESUME_SERVICE_DETAIL_INNER_SET = uint();
 /* end of service detail's logic related */
 
+/* start of mine' logic related */
+export const MINE_ROOT_SET = uint();
+export const MINE_INNER_SET = uint();
+/* end of mine' logic related */
+
 /* start of my common' logic related */
 export const SET_COMMON_MODAL_OPEN = uint();
 export const SET_COMMON_MODAL_TYPE = uint();
@@ -142,6 +147,8 @@ export const ABROAD_EXPERT_DETAIL_COMMENT_COMMENTS_SET = uint();
 
 /* start of my total order's logic related */
 export const SET_MY_ACTIVE_TOTAL_ORDER_TITLE_INDEX = uint();
+export const MY_TOTAL_ORDER_ROOT_SET = uint();
+export const MY_TOTAL_ORDER_INNER_SET = uint();
 
 /* end of my total order's logic related */
 

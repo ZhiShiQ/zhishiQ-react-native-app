@@ -7,6 +7,7 @@ import {
     TouchableHighlight,
     TouchableOpacity,
     ListView,
+    RefreshControl,
     ScrollView,
     StyleSheet,
     Button
@@ -17,6 +18,8 @@ import sty from './style';
 import HorizontalMenu from '../../components/HorizontalMenu'
 import ScrollTab from '../../components/ScrollTab';
 import BoughtViews from '../../components/BoughtViews';
+import Loading from '../../components/Loading';
+import {NoMore} from '../../pages/ForeignTeacherPage';
 import {sep} from '../../helpers';
 import ModalDropdown from 'react-native-modal-dropdown';
 
@@ -30,6 +33,18 @@ class TotalOrderPage extends Component {
     }
 
     componentDidMount() {
+        this.firstFetch();
+    }
+
+    firstFetch(id=this.activeId) {
+        // alert(id+","+this.activeId);
+        const {actions, store: {my_total_order: {
+            [id+'_isFirst']: isFirst=true
+        }}} = this.props;
+
+        setTimeout(() => {
+            isFirst && actions.fetchMyTotalOrder("reset");
+        }, 0)
     }
 
     componentWillReceiveProps(newProps) {
@@ -46,6 +61,7 @@ class TotalOrderPage extends Component {
     }
 
     componentWillUnmount() {
+        this.props.actions.resetMyTotalOrderFirst();
     }
 
     static defaultProps = {
@@ -64,36 +80,105 @@ class TotalOrderPage extends Component {
     static propTypes = {}
 
     render() {
-        const {store: {
-            my_total_order: {
-                items
-            }
-        }, actions} = this.props;
-        const boughtList = items;
+        const {
+            store: {
+                my_total_order: {
+                    items, menus, titleIndex, activeIndex
+                }
+            }, actions
+        } = this.props;
 
         return (
             /*<View sty={sty.main}>*/
-                <ScrollTab
-                    style={{flex: 1}}
-                    page={0}
-                    /*tabContainerStyle={{flexWrap: 'wrap'}}*/
-                    tabBarStyle={{height: 33}}
-                    tabBarTextStyle={{fontSize: 13}}
-                >
-                    <View style={{flex: 1}} tabLabel="全部">
-                        <BoughtViews
-                            renderHeader={() => sep(true)}
-                            items={boughtList} />
-                    </View>
-                    <View tabLabel="待付款"></View>
-                    <View tabLabel="待开始"></View>
-                    <View tabLabel="进行中"></View>
-                    <View tabLabel="待反馈"></View>
-                    <View tabLabel="待确认"></View>
-                    <View tabLabel="待评价"></View>
-                    <View tabLabel="已取消"></View>
-                </ScrollTab>
+            <ScrollTab
+                style={{flex: 1}}
+                onChangeTab={({i})=>{
+                    actions.setMyTotalOrderIndex(+i);
+                    this.firstFetch(menus[i].id);
+                }}
+                page={activeIndex}
+                initialPage={0}
+                /*tabContainerStyle={{flexWrap: 'wrap'}}*/
+                tabBarStyle={{height: 33}}
+                tabBarTextStyle={{fontSize: 13}}
+            >
+                {
+                    menus.map(({name, id}, i) => (
+                        <View style={{flex: 1}} tabLabel={name} key={i}>
+                            {this.renderList(id)}
+                        </View>
+                    ))
+                }
+            </ScrollTab>
             /*</View>*/
+        )
+    }
+
+    get activeId() {
+        const {
+            store: {
+                my_total_order: {
+                    menus, activeIndex
+                }
+            }, actions
+        } = this.props;
+        return menus[activeIndex].id;
+    }
+
+    get activeItems() {
+        return this._getItems(this.activeId);
+    }
+
+    _getItems(id = this.activeId) {
+        const {
+            store: {
+                my_total_order
+            }, actions
+        } = this.props;
+        return my_total_order[id + '_items'];
+    }
+
+    renderList(id) {
+        const {store: {my_total_order}, actions} = this.props;
+        const {
+            [id + '_currentPage']: currentPage,
+            [id + '_items']: items = [],
+            [id + '_isRefreshing']: isRefreshing=false,
+            [id + '_isFirst']: isFirst=true,
+            [id + '_hasMore']: hasMore=true,
+            [id + '_isFetching']: isFetching=true,
+        } = my_total_order;
+        if (isFirst && isFetching) {
+            return <Loading />;
+        }
+        return (
+            <BoughtViews
+                initialListSize={10}
+                onEndReachedThreshold={0}
+                onEndReached={(evt) => {
+                    if (!isFetching && hasMore) {
+                        actions.fetchMyTotalOrder("append");
+                    }
+                }}
+                refreshControl={
+                    <RefreshControl
+                        refreshing={isRefreshing}
+                        onRefresh={() => {
+                            actions.fetchMyTotalOrder("refresh");
+                        }}
+                    />
+                }
+                renderFooter={() => {
+                    if (isFetching && !isRefreshing) {
+                        return <Loading/>;
+                    }
+                    if (!hasMore) {
+                        return NoMore;
+                    }
+                }}
+                renderHeader={() => sep(true)}
+                items={items}
+            />
         )
     }
 }

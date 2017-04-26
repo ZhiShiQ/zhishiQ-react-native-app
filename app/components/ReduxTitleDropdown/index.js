@@ -37,19 +37,15 @@ class ReduxTitleDropdown extends Component {
         const {
             store: {
                 common: {openModal},
-                my_total_order: {titleIndex}
+                my_total_order: {titleIndex, filters}
             },
             actions
         } = this.props;
-        const list = [
-            '所有服务', '单项服务',
-            '一站式申请', '留学行家咨询', '全套文书服务',
-            '国际快递', '留学文书免费试改', '雅思写作评阅服务',
-            '简历', '学术文章'
-        ].map(title => ({
-            title,
-            onPress: (index, value) => {
+        const list = filters.map(x => ({
+            ...x,
+            onPress: (index, data) => {
                 actions.setMyActiveTotalOrderTitleIndex(index);
+                actions.fetchMyTotalOrder("reset");
                 setTimeout(()=>{
                     this.refs.drop.hideDropDown();
                 }, 100)

@@ -25,7 +25,22 @@ export const fetchOrderConfirmTeachers = (q) =>
 
 const mapObj = {
     completePaper: {
-        // role: 'package_editor'
+        service: "service_text_resume",
+        role: 'editor',
+        adviseSelects: [
+            {label: "不指定", type: "none", id: 0},
+            {label: "指定文书顾问", type: "person", id: 1},
+            {label: "指定顾问等级", type: "level", id: 2}
+        ]
+    },
+    resume: {
+        service: "service_text_resume",
+        role: 'editor',
+        adviseSelects: [
+            {label: "不指定", type: "none", id: 0},
+            {label: "指定文书顾问", type: "person", id: 1},
+            {label: "指定顾问等级", type: "level", id: 2}
+        ]
     },
     oneStepApply: {
         service: "service_full_package",
@@ -74,7 +89,7 @@ export const fetchOrderConfirmAdvisor = (q) =>
 const mapFunc = x => ({id: x.id, label: x.name})
 
 export const fetchOrderConfirmOneStepOptions = () =>
-    _fetchOrderConfirmOptions({service: 'service-full-package'})
+    _fetchOrderConfirmOptions({service: 'service_full_package'})
 
 export const fetchOrderConfirmOptions = () =>
     (emit, getState) => {
@@ -86,10 +101,10 @@ export const fetchOrderConfirmOptions = () =>
     }
 
 export const fetchOrderConfirmSinglePaperOptions = () =>
-    _fetchOrderConfirmOptions({service: 'service-text-pro'})
+    _fetchOrderConfirmOptions({service: 'service_text_graduate'})
 
 
-const _fetchOrderConfirmOptions = ({service='service-full-package', adviseSelects}) =>
+const _fetchOrderConfirmOptions = ({service='service_full_package', adviseSelects}) =>
     (emit, getState) =>
     emit(setOrderConfirmOptionsFetching(true)) &&
     fetch(oneStepURL + '?' + stringify({service}))
@@ -116,18 +131,19 @@ const _fetchOrderConfirmOptions = ({service='service-full-package', adviseSelect
                     ])
                 )
             }
-            // alert(JSON.stringify(subs))
             emit([
                 adviseSelects && setOrderConfirmAdviseSelects(adviseSelects),
-                o.apply_degrees && setOrderConfirmApplyDegrees(o.apply_degrees.map(mapFunc)),
-                o.apply_countries && setOrderConfirmApplyCountries(o.apply_countries.map(mapFunc)),
-                o.document_types && setOrderConfirmDocTypes(o.document_types.map(mapFunc)),
+                o.apply_degrees && o.apply_degrees.length && setOrderConfirmApplyDegrees(o.apply_degrees.map(mapFunc)),
+                o.apply_countries && o.apply_countries.length && setOrderConfirmApplyCountries(o.apply_countries.map(mapFunc)),
+                o.document_types && o.document_types.length && setOrderConfirmDocTypes(o.document_types.map(mapFunc)),
                 o.need_translation && setOrderConfirmDocLangs(o.need_translation.map(mapFunc)),
-                o.advisor_level && setOrderConfirmAdviserLevels(o.advisor_level.map(mapFunc)),
-                o.service_level && setOrderConfirmLevels(o.service_level.map(mapFunc))
+                o.advisor_level && o.advisor_level.length && setOrderConfirmAdviserLevels(o.advisor_level.map(mapFunc)),
+                o.service_level && o.service_level.length && setOrderConfirmLevels(o.service_level.map(mapFunc))
             ])
         }).catch(ex => _debugger(ex))
-        .then(() => emit(setOrderConfirmOptionsFetching(false)))
+        .then(() => {
+            emit(setOrderConfirmOptionsFetching(false))
+        })
 
 
 export const orderConfirmReset = () =>
